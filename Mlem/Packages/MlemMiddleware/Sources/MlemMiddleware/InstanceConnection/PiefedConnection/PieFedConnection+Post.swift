@@ -170,18 +170,6 @@ public extension PieFedConnection {
         return try response.posts.map { try .init(from: $0) }
     }
     
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.featureUnsupported
-    }
-    
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
         let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: read)
         try await perform(request)

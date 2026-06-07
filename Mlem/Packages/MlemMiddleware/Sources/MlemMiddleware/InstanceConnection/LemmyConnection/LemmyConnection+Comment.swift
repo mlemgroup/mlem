@@ -206,58 +206,15 @@ public extension LemmyConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        try await searchComments(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            createSortType: { _ in sort.v3PostApiType },
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
-    }
-    
-    func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
-        try await searchComments(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            createSortType: { _  in sort.v3ApiType },
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
-    }
-
-    private func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        createSortType: @escaping (LemmyEndpointVersion) throws -> LemmySortType?,
-        timeRangeSeconds: Int?
-    ) async throws -> [Comment2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            try LemmySearchRequest(
+            LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: communityId,
                 communityName: nil,
                 creatorId: creatorId,
                 type_: .comments,
-                sort: createSortType(endpoint),
+                sort: sort.v3PostApiType,
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,

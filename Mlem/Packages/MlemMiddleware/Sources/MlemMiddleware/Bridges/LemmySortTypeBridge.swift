@@ -9,11 +9,6 @@ import Foundation
 import Rest
 import URLEncoder
 
-// The `LemmySearch.sort` property uses `LemmySortType` pre-0.20 and
-// uses `LemmySearchSortType` post-0.20, even when interacting using the v3 api.
-// The type of that property is manually overriden with this type, which
-// can then be converted into either of those two types.
-
 public typealias ApiBridgeable = Codable & Hashable & Sendable
 
 public enum ApiBridge<OldType: ApiBridgeable, NewType: ApiBridgeable>: Codable, Hashable, Sendable {
