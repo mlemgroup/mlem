@@ -147,7 +147,7 @@ extension SearchView {
             defaultSort = .top(.limited(.month))
         }
 
-        postLoader.searchPostFetcher.setSortType(.v3(filtersActive ? postFilters.sort : defaultSort))
+        postLoader.searchPostFetcher.setSortType(filtersActive ? postFilters.sort : defaultSort)
         postLoader.searchPostFetcher.query = query
         postLoader.searchPostFetcher.creatorId = filtersActive ? postFilters.creator?.id : nil
         postLoader.searchPostFetcher.communityId = nil
