@@ -56,7 +56,7 @@ public extension LemmyConnection {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(

@@ -262,7 +262,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot]
     
     @discardableResult

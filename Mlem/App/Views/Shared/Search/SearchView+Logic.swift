@@ -120,12 +120,8 @@ extension SearchView {
             context: filtersTracker.filterContext
         )
         
-        let defaultSort: SearchSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
+        let software = try await refreshApi.software
+        let defaultSort: PersonSortType = .default(software: software)
         
         try await personLoader.refresh(
             query: query,

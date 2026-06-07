@@ -31,6 +31,8 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .communitySortType(sort):
             version >= sort.minimumVersion
+        case let .personSortType(sort):
+            version >= sort.minimumVersion
         case let .searchSortType(sort):
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
@@ -107,6 +109,12 @@ private extension CommunitySortType {
              .activeUserCount,
              .localSubscriberCount: .infinity
         }
+    }
+}
+
+private extension PersonSortType {
+    var minimumVersion: SiteVersion {
+        self.pieFedSearchSortType != nil ? .zero : .infinity
     }
 }
 

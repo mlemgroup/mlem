@@ -100,22 +100,15 @@ extension SearchView {
     
     @Observable
     class PersonFilters {
-        var sort: SearchSortType
+        var sort: PersonSortType
         var instance: InstanceFilter = .any
 
-        private let defaultSort: SearchSortType
+        private let defaultSort: PersonSortType
 
         var isDefault: Bool { sort == defaultSort }
         
         init(software: SiteSoftware) {
-            let sort: SearchSortType
-
-            if software.supports(.searchSortType(.top(.allTime))) {
-                sort = .top(.allTime)
-            } else {
-                sort = .top(.limited(.month))
-            }
-
+            let sort = PersonSortType.default(software: software)
             self.sort = sort
             self.defaultSort = sort
         }

@@ -11,6 +11,7 @@ public enum Feature: Hashable {
     case postSortType(PostSortType)
     case commentSortType(CommentSortType)
     case communitySortType(CommunitySortType)
+    case personSortType(PersonSortType)
     case searchSortType(SearchSortType)
     case sortTimeRange(SortTimeRange)
     case listingType(ListingType)

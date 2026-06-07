@@ -53,12 +53,15 @@ extension SearchView {
     @ViewBuilder
     private var personFiltersView: some View {
         if let personFilters {
-            Menu(personFilters.sort.label(timeRangeFormat: .topOnly), icon: personFilters.sort.icon) {
+            Menu(personFilters.sort.label, icon: personFilters.sort.icon) {
                 Picker("Sort", selection: Binding(
                     get: { personFilters.sort }, set: { self.personFilters?.sort = $0 }
                 )) {
-                    ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
-                        Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
+                    let sortTypes = PersonSortType.allCases.filter {
+                        appState.firstApi.supports(.personSortType($0), defaultValue: true)
+                    }
+                    ForEach(sortTypes, id: \.self) { item in
+                        Label(item.label, icon: item.icon)
                     }
                 }
             }

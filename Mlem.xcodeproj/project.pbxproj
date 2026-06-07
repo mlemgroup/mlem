@@ -76,6 +76,7 @@
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		032509282FD566B6006F8394 /* CommunitySortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */; };
 		0325092A2FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */; };
+		0325092C2FD58E35006F8394 /* PersonSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */; };
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
@@ -696,6 +697,7 @@
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunitySortType+Extensions.swift"; sourceTree = "<group>"; };
 		032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActiveUserTimeRange+Extensions.swift"; sourceTree = "<group>"; };
+		0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -2142,6 +2144,7 @@
 				038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */,
 				0368F34E2D734066007DEB70 /* SearchSortType+Extensions.swift */,
 				032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */,
+				0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */,
 				032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */,
 				03A818AC2EDCDBA20023E9E8 /* FederationMode+Extensions.swift */,
 				0368F34C2D733215007DEB70 /* SortTimeRange+Extensions.swift */,
@@ -2840,6 +2843,7 @@
 				0331715E2CCD6D95002DA370 /* ContentPurgeEditorView.swift in Sources */,
 				CDBFCB652C03920C008CD468 /* PostLinkHostView.swift in Sources */,
 				03B04FC02C5FC32300824128 /* SimpleAvatarView.swift in Sources */,
+				0325092C2FD58E35006F8394 /* PersonSortType+Extensions.swift in Sources */,
 				031CA5B72E599F7E00CF0C0F /* View+QuickSwipes.swift in Sources */,
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,

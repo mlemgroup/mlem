@@ -31,6 +31,8 @@ public extension LemmyConnection {
             version >= sort.minimumVersion
         case let .communitySortType(sort):
             version >= sort.minimumVersion
+        case let .personSortType(sort):
+            sort.supports(version: version)
         case let .searchSortType(sort):
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
@@ -95,6 +97,17 @@ private extension CommunitySortType {
             .v1_0_0
         } else {
             .zero
+        }
+    }
+}
+
+private extension PersonSortType {
+    func supports(version: SiteVersion) -> Bool {
+        switch (self.v3ApiType, self.v4ApiType) {
+        case (nil, nil): false
+        case (nil, _): version >= .v1_0_0
+        case (_, nil): version < .v1_0_0
+        case (_, _): true
         }
     }
 }
