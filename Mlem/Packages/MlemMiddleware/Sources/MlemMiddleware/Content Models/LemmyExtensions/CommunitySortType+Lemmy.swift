@@ -20,7 +20,7 @@ extension CommunitySortType {
         case .old: .old
         case .commentCount: .mostComments
         case .subscriberCount: .topAll
-        case .activeUserCount(.sixMonth): .topSixMonths
+        case .activeUserCount(.sixMonths): .topSixMonths
         case .activeUserCount(.month): .topMonth
         case .activeUserCount(.week): .topWeek
         case .activeUserCount(.day): .topDay
@@ -43,7 +43,7 @@ extension CommunitySortType {
         case .postCount: .posts
         case .subscriberCount: .subscribers
         case .localSubscriberCount: .subscribersLocal
-        case .activeUserCount(.sixMonth): .activeSixMonths
+        case .activeUserCount(.sixMonths): .activeSixMonths
         case .activeUserCount(.month): .activeMonthly
         case .activeUserCount(.week): .activeWeekly
         case .activeUserCount(.day): .activeDaily

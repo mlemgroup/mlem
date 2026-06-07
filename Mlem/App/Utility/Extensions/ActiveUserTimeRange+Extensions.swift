@@ -15,7 +15,7 @@ extension ActiveUserTimeRange {
         case .day: .limited(.day)
         case .week: .limited(.week)
         case .month: .limited(.month)
-        case .sixMonth: .limited(.sixMonth)
+        case .sixMonths: .limited(.sixMonth)
         }
 
         return sortTimeRange.label(abbreviateUnits: false)

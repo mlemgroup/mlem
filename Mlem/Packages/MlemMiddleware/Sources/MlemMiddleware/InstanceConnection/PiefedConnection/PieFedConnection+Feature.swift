@@ -67,7 +67,7 @@ private extension SiteVersion {
     static let v1_3_0: Self = .init("1.3.0")
     static let v1_4_0: Self = .init("1.4.0")
     static let v1_6_10: Self = .init("1.6.10")
-    static let v1_6_27: Self = .init("1.6.37")
+    static let v1_6_27: Self = .init("1.6.27")
 }
 
 private extension PostSortType {

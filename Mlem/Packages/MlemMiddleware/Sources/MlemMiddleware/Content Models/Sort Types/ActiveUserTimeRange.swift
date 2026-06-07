@@ -8,5 +8,5 @@
 import Foundation
 
 public enum ActiveUserTimeRange: Hashable, Sendable, CaseIterable {
-    case sixMonth, month, week, day
+    case day, week, month, sixMonths
 }

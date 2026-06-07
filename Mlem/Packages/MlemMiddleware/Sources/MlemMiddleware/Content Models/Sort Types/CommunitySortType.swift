@@ -36,7 +36,7 @@ public enum CommunitySortType: Hashable, Sendable, CaseIterable {
     public static let allCases: [CommunitySortType] = basicCases + [
         .name(.ascending),
         .name(.descending),
-        .activeUserCount(.sixMonth),
+        .activeUserCount(.sixMonths),
         .activeUserCount(.month),
         .activeUserCount(.week),
         .activeUserCount(.day),
