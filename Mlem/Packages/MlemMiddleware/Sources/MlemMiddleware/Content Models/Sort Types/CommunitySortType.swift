@@ -22,17 +22,20 @@ public enum CommunitySortType: Hashable, Sendable, CaseIterable {
     // Sort by the date of the last post or comment made to the community
     case newPostsOrComments
 
-    public static var allCases: [CommunitySortType] = [
+    public static let basicCases: [CommunitySortType] = [
         .hot,
         .new,
         .old,
-        .name(.ascending),
-        .name(.descending),
         .commentCount,
         .postCount,
         .subscriberCount,
         .localSubscriberCount,
-        .newPostsOrComments,
+        .newPostsOrComments
+    ]
+
+    public static let allCases: [CommunitySortType] = basicCases + [
+        .name(.ascending),
+        .name(.descending),
         .activeUserCount(.sixMonth),
         .activeUserCount(.month),
         .activeUserCount(.week),

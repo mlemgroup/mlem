@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum ActiveUserTimeRange: Hashable, Sendable {
+public enum ActiveUserTimeRange: Hashable, Sendable, CaseIterable {
     case sixMonth, month, week, day
 }
