@@ -173,7 +173,6 @@
 		0368799A2DA1320000E796EF /* ComponentViews in Frameworks */ = {isa = PBXBuildFile; productRef = 036879992DA1320000E796EF /* ComponentViews */; };
 		0368F3432D72796B007DEB70 /* LanguagePickerSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368F3422D72796B007DEB70 /* LanguagePickerSheetView.swift */; };
 		0368F34D2D733215007DEB70 /* SortTimeRange+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368F34C2D733215007DEB70 /* SortTimeRange+Extensions.swift */; };
-		0368F34F2D734066007DEB70 /* SearchSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368F34E2D734066007DEB70 /* SearchSortType+Extensions.swift */; };
 		0368F3692D7349D8007DEB70 /* LanguageListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0368F3682D7349D8007DEB70 /* LanguageListRowBody.swift */; };
 		0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3522BFA514B001EFEDF /* ToastLocation.swift */; };
 		0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0369B3552BFA6824001EFEDF /* InboxView.swift */; };
@@ -791,7 +790,6 @@
 		03600D922D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyBypassImageProxySettingsView.swift; sourceTree = "<group>"; };
 		0368F3422D72796B007DEB70 /* LanguagePickerSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerSheetView.swift; sourceTree = "<group>"; };
 		0368F34C2D733215007DEB70 /* SortTimeRange+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SortTimeRange+Extensions.swift"; sourceTree = "<group>"; };
-		0368F34E2D734066007DEB70 /* SearchSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSortType+Extensions.swift"; sourceTree = "<group>"; };
 		0368F3682D7349D8007DEB70 /* LanguageListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageListRowBody.swift; sourceTree = "<group>"; };
 		0369B3522BFA514B001EFEDF /* ToastLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLocation.swift; sourceTree = "<group>"; };
 		0369B3552BFA6824001EFEDF /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
@@ -2142,7 +2140,6 @@
 				03049A1D2C6508F400FF6889 /* RegistrationMode+Extensions.swift */,
 				0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */,
 				038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */,
-				0368F34E2D734066007DEB70 /* SearchSortType+Extensions.swift */,
 				032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */,
 				0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */,
 				032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */,
@@ -3199,7 +3196,6 @@
 				035394952CA1AE6300795AA5 /* InstanceUptimeView.swift in Sources */,
 				CDB2EC862BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift in Sources */,
 				CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */,
-				0368F34F2D734066007DEB70 /* SearchSortType+Extensions.swift in Sources */,
 				03D2A63D2C010CD400ED4FF2 /* UserSession.swift in Sources */,
 				03AFD0E12C3B30390054B8AD /* InstanceListRow.swift in Sources */,
 				CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */,

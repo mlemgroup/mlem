@@ -140,14 +140,7 @@ extension SearchView {
             context: filtersTracker.filterContext
         )
 
-        let defaultSort: PostSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
-
-        postLoader.searchPostFetcher.setSortType(filtersActive ? postFilters.sort : defaultSort)
+        postLoader.searchPostFetcher.setSortType(filtersActive ? postFilters.sort : .top(.allTime))
         postLoader.searchPostFetcher.query = query
         postLoader.searchPostFetcher.creatorId = filtersActive ? postFilters.creator?.id : nil
         postLoader.searchPostFetcher.communityId = nil

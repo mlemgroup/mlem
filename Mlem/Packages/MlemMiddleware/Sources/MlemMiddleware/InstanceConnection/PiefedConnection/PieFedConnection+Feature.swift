@@ -33,8 +33,6 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .personSortType(sort):
             version >= sort.minimumVersion
-        case let .searchSortType(sort):
-            version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
@@ -115,16 +113,6 @@ private extension CommunitySortType {
 private extension PersonSortType {
     var minimumVersion: SiteVersion {
         self.pieFedSearchSortType != nil ? .zero : .infinity
-    }
-}
-
-private extension SearchSortType {
-    var minimumVersion: SiteVersion {
-        switch self {
-        case .new: .zero
-        case .old: .infinity
-        case let .top(timeRange): timeRange.minimumVersion
-        }
     }
 }
 
