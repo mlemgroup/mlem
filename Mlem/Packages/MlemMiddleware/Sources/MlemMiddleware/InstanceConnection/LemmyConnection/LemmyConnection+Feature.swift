@@ -89,7 +89,13 @@ private extension CommentSortType {
 
 private extension CommunitySortType {
     var minimumVersion: SiteVersion {
-        self.v3ApiType == nil ? .v1_0_0 : .zero
+        if self.v4ApiType == nil {
+            .infinity
+        } else if self.v3ApiType == nil {
+            .v1_0_0
+        } else {
+            .zero
+        }
     }
 }
 
