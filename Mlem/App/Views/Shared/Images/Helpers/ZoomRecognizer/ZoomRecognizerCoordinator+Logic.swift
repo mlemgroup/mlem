@@ -28,7 +28,7 @@ extension ZoomRecognizerCoordinator {
             updateOffsetForPanGesture(gesture)
         case .ended, .cancelled:
             panType = .none
-            guard let view = gesture.view else {
+            guard let view = gesture.view, let bounds else {
                 assertionFailure("Missing view or bounds")
                 return
             }
@@ -36,7 +36,7 @@ extension ZoomRecognizerCoordinator {
             initialScale = scale
             
             let gestureVelocity = gesture.velocity(in: view)
-            let maxOffsets = maxOffsets.compute(scale)
+            let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: scale))
             let xOob = abs(offset.width) >= maxOffsets.width
             let yOob = abs(offset.height) >= maxOffsets.height
             if !(xOob && yOob),
@@ -77,8 +77,13 @@ extension ZoomRecognizerCoordinator {
             let yAnchor = (((scale * bounds.height) / 2) - offset.height) / (scale * bounds.height)
             anchor = .init(x: xAnchor, y: yAnchor)
         case .changed:
+            guard let bounds else {
+                assertionFailure("No bounds")
+                return
+            }
+            
             let newScale = (initialScale + (gesture.translation(in: nil).y / -60)).bounded(lower: 1.0, upper: 4.0)
-            let maxOffsets = maxOffsets.compute(newScale)
+            let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: newScale))
             let offsetDeltas = computeOffsetDeltas(scaleFactor: newScale / initialScale)
             let newOffset = initialOffset + offsetDeltas
             
@@ -200,6 +205,11 @@ extension ZoomRecognizerCoordinator {
             return
         }
         
+        guard let bounds else {
+            assertionFailure("No bounds")
+            return
+        }
+        
         // set up initial times
         if momentum.xt0 == nil {
             momentum.xt0 = displayLink.timestamp
@@ -209,7 +219,7 @@ extension ZoomRecognizerCoordinator {
         }
         
         // check out-of-bounds
-        let maxOffsets = maxOffsets.compute(scale)
+        let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: scale))
         if !momentum.xOob, abs(offset.width) >= maxOffsets.width {
             initialOffset.width = maxOffsets.width * (offset.width < 0 ? -1 : 1)
             momentum.xLeftBounds(at: displayLink.timestamp)
@@ -260,15 +270,15 @@ extension ZoomRecognizerCoordinator {
     
     // MARK: - Bounds
     
-    /// If bounds are not set, initializes them using the given UIView. The view is declared as optional to make this function
-    /// easy to call, but is expected to be defined.
-    func initializeBounds(view: UIView?) {
+    /// If bounds are not set or `force` is true, initializes them using the given UIView.
+    /// `view` is optional to make this function easy to call, but is expected to be defined.
+    func initializeBounds(view: UIView?, force: Bool = false) {
         guard let view else {
             assertionFailure("No view")
             return
         }
         
-        if bounds == nil, view.bounds != .zero {
+        if (view.bounds != .zero && bounds == nil) || force {
             bounds = .init(width: view.bounds.width, height: view.bounds.height)
         }
     }
@@ -290,7 +300,7 @@ extension ZoomRecognizerCoordinator {
         
         let boundedScale: CGFloat = scale.bounded(lower: 1.0, upper: 4.0)
         let offsetDeltas = computeOffsetDeltas(scaleFactor: boundedScale / initialScale) + activeOffset
-        let maxOffsets = maxOffsets.compute(boundedScale)
+        let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: boundedScale))
         
         let newOffset: CGSize = .init(
             width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
