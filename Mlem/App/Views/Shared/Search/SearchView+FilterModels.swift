@@ -121,17 +121,9 @@ extension SearchView {
     
     @Observable
     class PostFilters {
-        var sort: PostSortType
+        var sort: PostSortType = .top(.allTime)
         var creator: Person?
         var location: LocationFilter = .any
-        
-        init(software: SiteSoftware) {
-            if software.supports(.searchSortType(.top(.allTime))) {
-                self.sort = .top(.allTime)
-            } else {
-                self.sort = .top(.limited(.month))
-            }
-        }
     }
     
     @Observable

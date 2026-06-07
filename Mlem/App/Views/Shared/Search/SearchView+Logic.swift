@@ -58,7 +58,7 @@ extension SearchView {
             let software = try await appState.firstApi.software
             communityFilters = .init(software: software)
             personFilters = .init(software: software)
-            postFilters = .init(software: software)
+            postFilters = .init()
         } catch {
             handleError(error)
         }
