@@ -92,7 +92,10 @@ extension SearchView {
     private var commentFiltersView: some View {
         Menu(commentFilters.sort.label(timeRangeFormat: .topOnly), icon: commentFilters.sort.icon) {
             Picker("Sort", selection: $commentFilters.sort) {
-                ForEach(CommentSortType.legacyCases, id: \.self) { item in
+                let sortTypes = CommentSortType.legacyCases.filter {
+                    appState.firstApi.supports(.commentSortType($0), defaultValue: true)
+                }
+                ForEach(sortTypes, id: \.self) { item in
                     Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }
