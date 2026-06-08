@@ -35,7 +35,6 @@ struct DeveloperSettingsView: View {
         Form {
             Section {
                 Toggle(String("Developer Mode"), isOn: $developerMode)
-                NavigationLink(String("Error Log"), destination: .settings(.errorLog))
             }
             
             errorToastTimeoutSection

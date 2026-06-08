@@ -12,6 +12,9 @@ struct AdvancedSettingsView: View {
         Form {
             Section {
                 NavigationLink("Cache", destination: .settings(.cache))
+                NavigationLink("Error Log", destination: .settings(.errorLog))
+            }
+            Section {
                 NavigationLink("Developer", destination: .settings(.developer))
             }
         }
