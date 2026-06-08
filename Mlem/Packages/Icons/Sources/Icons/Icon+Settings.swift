@@ -78,6 +78,7 @@ public extension Icon {
         public let imageViewerControls: Icon = .init("ellipsis")
         public let imageViewerDismissSensitivity: Icon = .applySquare("arrow.down.to.line")
         public let avatar: Icon = .applyCircle("circle.dashed.inset.fill")
+        public let cache: Icon = .applyCircle("externaldrive.fill")
     }
     
     static let settings: SettingsIcons = .init()

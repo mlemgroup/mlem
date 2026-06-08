@@ -50,6 +50,7 @@ enum SettingsPage: Hashable {
     case modMailInteractionBar
     case separateModeratorActions
     case licences, document(Document)
+    case cache
 
     static func contextMenu(_ keyPath: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>) -> Self {
         .contextMenu(.init(keyPath))
@@ -283,6 +284,8 @@ enum SettingsPage: Hashable {
                     NavigationLink(doc.title, destination: .settings(.document(doc)))
                 }
             }
+        case .cache:
+            CacheSettingsView()
         }
     }
     
