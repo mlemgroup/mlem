@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TapFriendlyLinksSettingsView: View {
-    @Setting(\.links_displayMode) var tappableLinksDisplayMode
+    @Setting(\.links_displayMode) var tapFriendlyLinksDisplayMode
     
     var body: some View {
         Form {
@@ -17,18 +17,18 @@ struct TapFriendlyLinksSettingsView: View {
                     "Tap-Friendly Links",
                     icon: .settings.tapFriendlyLinks,
                     isOn: Binding(
-                        get: { tappableLinksDisplayMode != .disabled },
+                        get: { tapFriendlyLinksDisplayMode != .disabled },
                         set: { newValue in
                             withAnimation(.easeOut(duration: 0.1)) {
-                                tappableLinksDisplayMode = newValue ? .large : .disabled
+                                tapFriendlyLinksDisplayMode = newValue ? .large : .disabled
                             }
                         }
                     )
                 )
             }
-            if tappableLinksDisplayMode != .disabled {
+            if tapFriendlyLinksDisplayMode != .disabled {
                 Section("Show Full URL") {
-                    Picker("Show Full URL", icon: .markdown.inlineCode, selection: $tappableLinksDisplayMode) {
+                    Picker("Show Full URL", icon: .markdown.inlineCode, selection: $tapFriendlyLinksDisplayMode) {
                         Text("Automatic").tag(TapFriendlyLinksDisplayMode.contextual)
                         Text("Always").tag(TapFriendlyLinksDisplayMode.large)
                         Text("Never").tag(TapFriendlyLinksDisplayMode.compact)
@@ -36,7 +36,7 @@ struct TapFriendlyLinksSettingsView: View {
                     .pickerStyle(.inline)
                     .labelsHidden()
                 } footer: {
-                    if tappableLinksDisplayMode != .disabled {
+                    if tapFriendlyLinksDisplayMode != .disabled {
                         Text("If set to \"Automatic\", the full URL will be hidden in compact comments.")
                     }
                 }
