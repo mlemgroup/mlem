@@ -10,18 +10,53 @@ import SwiftUI
 
 struct AdvancedSettingsView: View {
     @Environment(BackendClient.self) var backendClient
+    @Environment(ErrorsTracker.self) var errorsTracker
+
+    @Setting(\.dev_errorTimeout) var errorToastTimeout
 
     @Setting(\.dev_developerMode) var developerMode
     
     @State var backendStatus: BackendHealthCheck?
     @State var lastBackendStatusCheck: Date?
 
+    var secondsFormat: Duration.UnitsFormatStyle {
+        .units(
+            allowed: [.seconds],
+            width: .narrow,
+            fractionalPart: .show(length: 1)
+        )
+    }
+
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "Advanced",
+                description: nil,
+                icon: .settings.advanced
+            )
+            .gradientTint(.themedNeutralAccent)
+
             Section {
-                NavigationLink("Cache", destination: .settings(.cache))
-                NavigationLink("Error Log", destination: .settings(.errorLog))
-                NavigationLink("Error Notification Timeout", destination: .settings(.errorToastTimeout))
+                NavigationLink(
+                    "Cache",
+                    value: ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file),
+                    fallbackValue: "",
+                    destination: .settings(.cache)
+                )
+
+                NavigationLink(
+                    "Error Log",
+                    value: .init(localized: errorLogLabel),
+                    fallbackValue: String(errorsTracker.errors.count),
+                    destination: .settings(.errorLog)
+                )
+
+                NavigationLink(
+                    "Error Notification Timeout",
+                    value: Duration.seconds(1.5).formatted(secondsFormat),
+                    fallbackValue: "",
+                    destination: .settings(.errorToastTimeout)
+                )
             }
 
             backendStatusSection
@@ -30,7 +65,9 @@ struct AdvancedSettingsView: View {
                 Toggle("Developer Mode", isOn: $developerMode)
             }
         }
-        .navigationTitle("Advanced")
+        .withConditionalLabelStyle()
+        .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Advanced")
     }
 
     @ViewBuilder
@@ -96,6 +133,14 @@ struct AdvancedSettingsView: View {
                 backendStatus = nil
             }
             lastBackendStatusCheck = .now
+        }
+    }
+
+    var errorLogLabel: LocalizedStringResource {
+        if errorsTracker.errors.isEmpty {
+            "None"
+        } else {
+            "\(errorsTracker.errors.count) errors"
         }
     }
 }
