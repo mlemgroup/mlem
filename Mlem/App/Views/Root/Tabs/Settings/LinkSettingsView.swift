@@ -17,6 +17,8 @@ struct LinkSettingsView: View {
     @Setting(\.links_embedLoops) var embedLoops
     @Setting(\.behavior_autoplayMedia) var autoplayMedia
     @Setting(\.behavior_muteVideos) var muteVideos
+    @Setting(\.person_showAvatar) var showPersonAvatar
+    @Setting(\.community_showAvatar) var showCommunityAvatar
 
     var body: some View {
         Form {
@@ -58,6 +60,8 @@ struct LinkSettingsView: View {
                 )
                 NavigationLink(
                     "Avatars",
+                    value: .init(localized: avatarNavigationLinkValue),
+                    fallbackValue: "",
                     icon: .settings.showAvatar,
                     destination: .settings(.avatars)
                 )
@@ -88,6 +92,15 @@ struct LinkSettingsView: View {
             "In Browser"
         } else {
             openLinksInReaderMode ? "In Reader" : "In Mlem"
+        }
+    }
+
+    var avatarNavigationLinkValue: LocalizedStringResource {
+        switch (showPersonAvatar, showCommunityAvatar) {
+        case (true, true): "On"
+        case (true, false): "Users Only"
+        case (false, true): "Communities Only"
+        case (false, false): "Off"
         }
     }
     
