@@ -60,8 +60,6 @@ struct DeveloperSettingsView: View {
                 Button(String("Create Silent Error")) {
                     handleError(ApiClientError.noEntityFound, silent: true)
                 }
-            } header: {
-                Text(verbatim: "Debug Tools")
             }
             Button(String("Reset Settings State")) {
                 do {
