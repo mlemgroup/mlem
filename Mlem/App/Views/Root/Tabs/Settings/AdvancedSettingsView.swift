@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AdvancedSettingsView: View {
+    @Setting(\.dev_developerMode) var developerMode
+
     var body: some View {
         Form {
             Section {
@@ -16,6 +18,10 @@ struct AdvancedSettingsView: View {
                 NavigationLink("Error Notification Timeout", destination: .settings(.errorToastTimeout))
             }
             Section {
+                Section {
+                    Toggle("Developer Mode", isOn: $developerMode)
+                }
+
                 NavigationLink("Developer", destination: .settings(.developer))
             }
         }

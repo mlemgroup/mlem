@@ -23,7 +23,6 @@ struct DeveloperSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
-    @Setting(\.dev_developerMode) var developerMode
     
     @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
@@ -32,10 +31,6 @@ struct DeveloperSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
-                Toggle(String("Developer Mode"), isOn: $developerMode)
-            }
-
             Section {
                 if let backendStatus {
                     if backendStatus.unhealthyReasons.isEmpty {
