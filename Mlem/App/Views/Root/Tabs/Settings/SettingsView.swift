@@ -53,7 +53,7 @@ struct SettingsView: View {
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
-                    destination: .settings(.links)
+                    destination: .settings(.mediaAndLinks)
                 )
                 .gradientTint(.themedColorfulAccent(4))
                 NavigationLink(

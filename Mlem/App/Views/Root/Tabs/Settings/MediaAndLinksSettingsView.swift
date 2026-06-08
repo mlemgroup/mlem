@@ -8,7 +8,7 @@
 import SwiftUI
 import Theming
 
-struct LinkSettingsView: View {
+struct MediaAndLinksSettingsView: View {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
     @Setting(\.links_readerMode) var openLinksInReaderMode
     @Setting(\.links_shareMode) var linkSharingMode

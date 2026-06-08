@@ -26,7 +26,7 @@ enum SettingsPage: Hashable {
     case defaultFeed, haptics, accountAgeVisibility
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
-    case links, embedding
+    case mediaAndLinks, embedding
     case imageViewer, imageViewerControls, imageViewerDismissSensitivity
     case avatars, animatedAvatars
     case externalLinks, sharingLinks, tapFriendlyLinks
@@ -144,8 +144,8 @@ enum SettingsPage: Hashable {
             CommentJumpButtonSettingsView()
         case .inbox:
             InboxSettingsView()
-        case .links:
-            LinkSettingsView()
+        case .mediaAndLinks:
+            MediaAndLinksSettingsView()
         case .externalLinks:
             ExternalLinkSettingsView()
         case .sharingLinks:

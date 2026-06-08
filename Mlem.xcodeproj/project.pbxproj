@@ -138,7 +138,7 @@
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
 		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
-		03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */; };
+		03531EEC2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */; };
 		03531EEE2C2D9298004A3464 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EED2C2D9298004A3464 /* SearchSheetView.swift */; };
 		03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF02C2DA298004A3464 /* SearchResultsView.swift */; };
 		03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF42C2DA610004A3464 /* NavigationSearchType.swift */; };
@@ -757,7 +757,7 @@
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
 		03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlayView.swift; sourceTree = "<group>"; };
 		03500C2C2BF7FC2500CAA076 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkSettingsView.swift; sourceTree = "<group>"; };
+		03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAndLinksSettingsView.swift; sourceTree = "<group>"; };
 		03531EED2C2D9298004A3464 /* SearchSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
 		03531EF02C2DA298004A3464 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		03531EF42C2DA610004A3464 /* NavigationSearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchType.swift; sourceTree = "<group>"; };
@@ -1358,7 +1358,7 @@
 				CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */,
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
-				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
+				03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */,
 				038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */,
 				038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */,
 				038E5E8A2F6D6C3800C54DEB /* ImageViewerDismissSettingsView.swift */,
@@ -2773,7 +2773,7 @@
 				039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD332D792CA7175500A53988 /* PlayButton.swift in Sources */,
 				03A9FD1E2D7CFF0D007A734D /* Palette+Dracula.swift in Sources */,
-				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
+				03531EEC2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift in Sources */,
 				038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */,
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
 				039F588A2C7B54FE00C61658 /* GeneralSettingsView.swift in Sources */,
