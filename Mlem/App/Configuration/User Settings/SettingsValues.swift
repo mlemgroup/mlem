@@ -61,7 +61,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
     var inbox_showRead: Bool
-    var links_displayMode: TappableLinksDisplayMode
+    var links_displayMode: TapFriendlyLinksDisplayMode
     var links_openInBrowser: Bool
     var links_readerMode: Bool
     var links_shareMode: LinkSharingMode
@@ -219,7 +219,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
             self.tab_inbox_badgeIncludedTypes = includedTypes
         }
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
-        self.links_displayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
+        self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance

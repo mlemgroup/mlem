@@ -29,7 +29,7 @@ enum SettingsPage: Hashable {
     case links, embedding
     case imageViewer, imageViewerControls, imageViewerDismissSensitivity
     case avatars, animatedAvatars
-    case externalLinks, sharingLinks, tappableLinks
+    case externalLinks, sharingLinks, tapFriendlyLinks
     case importExportSettings
     case theme, icon
     case post, comment, inbox, community, person, instance, subscriptionList
@@ -150,8 +150,8 @@ enum SettingsPage: Hashable {
             ExternalLinkSettingsView()
         case .sharingLinks:
             SharingLinksSettingsView()
-        case .tappableLinks:
-            TappableLinksSettingsView()
+        case .tapFriendlyLinks:
+            TapFriendlyLinksSettingsView()
         case .embedding:
             EmbeddingSettingsView()
         case .avatars:

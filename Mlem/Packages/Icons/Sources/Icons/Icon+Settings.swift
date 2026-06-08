@@ -61,7 +61,7 @@ public extension Icon {
         public let settingsIcons: Icon = .init("fleuron")
         public let privacy: Icon = .init("hand.raised")
         public let openExternalLinks: Icon = .init("arrow.up.right")
-        public let tappableLinks: Icon = .init("hand.tap")
+        public let tapFriendlyLinks: Icon = .init("hand.tap")
         public let general: Icon = .init("gear")
         public let safety: Icon = .init("shield.lefthalf.filled")
         public let accessibility: Icon = .init("hand.point.up.braille.fill")

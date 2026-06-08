@@ -1,5 +1,5 @@
 //
-//  TappableLinksSettingsView.swift
+//  TapFriendlyLinksSettingsView.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2025-01-28.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct TappableLinksSettingsView: View {
+struct TapFriendlyLinksSettingsView: View {
     @Setting(\.links_displayMode) var tappableLinksDisplayMode
     
     var body: some View {
         Form {
             Section {
                 Toggle(
-                    "Tappable Links",
-                    icon: .settings.tappableLinks,
+                    "Tap-Friendly Links",
+                    icon: .settings.tapFriendlyLinks,
                     isOn: Binding(
                         get: { tappableLinksDisplayMode != .disabled },
                         set: { newValue in
@@ -29,9 +29,9 @@ struct TappableLinksSettingsView: View {
             if tappableLinksDisplayMode != .disabled {
                 Section("Show Full URL") {
                     Picker("Show Full URL", icon: .markdown.inlineCode, selection: $tappableLinksDisplayMode) {
-                        Text("Automatic").tag(TappableLinksDisplayMode.contextual)
-                        Text("Always").tag(TappableLinksDisplayMode.large)
-                        Text("Never").tag(TappableLinksDisplayMode.compact)
+                        Text("Automatic").tag(TapFriendlyLinksDisplayMode.contextual)
+                        Text("Always").tag(TapFriendlyLinksDisplayMode.large)
+                        Text("Never").tag(TapFriendlyLinksDisplayMode.compact)
                     }
                     .pickerStyle(.inline)
                     .labelsHidden()
@@ -42,7 +42,7 @@ struct TappableLinksSettingsView: View {
                 }
             }
         }
-        .navigationTitle("Tappable Links")
+        .navigationTitle("Tap-Friendly Links")
         .withConditionalLabelStyle()
     }
 }

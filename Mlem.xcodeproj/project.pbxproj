@@ -288,7 +288,7 @@
 		039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58962C7B68F100C61658 /* AboutMlemView.swift */; };
 		039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58982C7B697D00C61658 /* Bundle+Extensions.swift */; };
 		03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */; };
-		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
+		03A630EF2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */; };
 		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
 		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
 		03A6315E2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */; };
@@ -901,7 +901,7 @@
 		039F58962C7B68F100C61658 /* AboutMlemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMlemView.swift; sourceTree = "<group>"; };
 		039F58982C7B697D00C61658 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkSettingsView.swift; sourceTree = "<group>"; };
-		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
+		03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapFriendlyLinksSettingsView.swift; sourceTree = "<group>"; };
 		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
 		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
 		03A6315C2D4D15F1009A47A6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1362,7 +1362,7 @@
 				038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */,
 				038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */,
 				038E5E8A2F6D6C3800C54DEB /* ImageViewerDismissSettingsView.swift */,
-				03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */,
+				03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */,
 				03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */,
 				030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */,
 				038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */,
@@ -2846,7 +2846,7 @@
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				03A9FD182D7CFC20007A734D /* Palette+Oled.swift in Sources */,
-				03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */,
+				03A630EF2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift in Sources */,
 				038E62E02F6F0FC600C54DEB /* ContextMenuConfiguration.swift in Sources */,
 				CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */,
 				0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */,

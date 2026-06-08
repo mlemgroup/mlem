@@ -12,7 +12,7 @@ struct LinkSettingsView: View {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
     @Setting(\.links_readerMode) var openLinksInReaderMode
     @Setting(\.links_shareMode) var linkSharingMode
-    @Setting(\.links_displayMode) var tappableLinksDisplayMode
+    @Setting(\.links_displayMode) var tapFriendlyLinksDisplayMode
     @Setting(\.comment_compact) var compactComments
     @Setting(\.links_embedLoops) var embedLoops
     @Setting(\.behavior_autoplayMedia) var autoplayMedia
@@ -44,11 +44,11 @@ struct LinkSettingsView: View {
                     destination: .settings(.sharingLinks)
                 )
                 NavigationLink(
-                    "Tappable Links",
-                    value: tappableLinksDisplayMode == .disabled ? "Off" : "On",
+                    "Tap-Friendly Links",
+                    value: tapFriendlyLinksDisplayMode == .disabled ? "Off" : "On",
                     fallbackValue: "",
-                    icon: .settings.tappableLinks,
-                    destination: .settings(.tappableLinks)
+                    icon: .settings.tapFriendlyLinks,
+                    destination: .settings(.tapFriendlyLinks)
                 )
             }
 
