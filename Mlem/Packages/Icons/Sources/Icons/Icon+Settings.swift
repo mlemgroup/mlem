@@ -30,7 +30,7 @@ public extension Icon {
         public let thumbnail: Icon = .init("photo")
         public let author: Icon = .init("signature")
         public let leftRight: Icon = .init("arrow.left.arrow.right")
-        public let developerMode: Icon = .init("wrench.adjustable.fill")
+        public let developerMode: Icon = .init("hammer")
         public let limitImageHeightSetting: Icon = .init("rectangle.compress.vertical")
         public let appLockSettings: Icon = .init("lock.app.dashed")
         public let sidebar: Icon = .init("sidebar.left")

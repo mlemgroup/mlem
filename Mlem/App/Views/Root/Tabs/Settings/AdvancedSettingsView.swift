@@ -27,11 +27,7 @@ struct AdvancedSettingsView: View {
             backendStatusSection
 
             Section {
-                Section {
-                    Toggle("Developer Mode", isOn: $developerMode)
-                }
-
-                NavigationLink("Developer", destination: .settings(.developer))
+                Toggle("Developer Mode", isOn: $developerMode)
             }
         }
         .navigationTitle("Advanced")
