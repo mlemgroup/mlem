@@ -138,9 +138,9 @@ struct AdvancedSettingsView: View {
 
     var errorLogLabel: LocalizedStringResource {
         if errorsTracker.errors.isEmpty {
-            "None"
+            "No Errors"
         } else {
-            "\(errorsTracker.errors.count) errors"
+            "\(errorsTracker.errors.count) Errors"
         }
     }
 }
