@@ -9,6 +9,11 @@ import os
 import SwiftUI
 import UIKit
 
+struct ScaledBounds: Equatable {
+    let bounds: CGSize
+    let scale: CGFloat
+}
+
 enum PanType {
     case move, zoom, custom, none
 }
@@ -46,12 +51,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     /// Computes the maximum allowed offsets for a given scale.
     /// - Note: to get the minimum offset, multiply the return value by -1.
-    lazy var maxOffsets: CachedComputation<CGFloat, CGSize> = .init { input in
-        guard let bounds = self.bounds else {
-            assertionFailure("No bounds")
-            return .zero
-        }
-        return bounds.scaled(by: (input - 1) / 2)
+    lazy var maxOffsets: CachedComputation<ScaledBounds, CGSize> = .init { input in
+        return input.bounds.scaled(by: (input.scale - 1) / 2)
     }
     
     let leftZoomSliderHitbox: CGRect = .init(
@@ -70,8 +71,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         customDragEnded: (() -> Void)? = nil,
         customTap: (() -> Void)? = nil
     ) {
-        _scale = scale
-        _offset = offset
+        self._scale = scale
+        self._offset = offset
         self.customDragMoved = customDragMoved
         self.customDragEnded = customDragEnded
         self.customTap = customTap
@@ -138,7 +139,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             targetZoomScale = 3
             anchor = .init(x: location.x / bounds.width, y: location.y / bounds.height)
             let offsetDeltas = computeOffsetDeltas(scaleFactor: targetZoomScale / initialScale)
-            let maxOffsets = maxOffsets.compute(targetZoomScale)
+            let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: targetZoomScale))
             
             newOffset = .init(
                 width: (initialOffset.width + offsetDeltas.width).bounded(lower: -maxOffsets.width, upper: maxOffsets.width),
@@ -159,8 +160,13 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     @objc
     func handleSingleTap(gesture: MomentumResetTapGestureRecognizer) {
         initializeBounds(view: gesture.view)
+        
+        guard let bounds else {
+            assertionFailure("No bounds")
+            return
+        }
 
-        let maxOffsets = maxOffsets.compute(scale)
+        let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: scale))
         if abs(offset.width) > maxOffsets.width || abs(offset.height) > maxOffsets.height {
             resetToBounds(activeOffset: offset - initialOffset)
         }
