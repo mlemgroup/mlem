@@ -53,7 +53,7 @@ struct AdvancedSettingsView: View {
 
                 NavigationLink(
                     "Error Notification Timeout",
-                    value: Duration.seconds(1.5).formatted(secondsFormat),
+                    value: Duration.seconds(errorToastTimeout).formatted(secondsFormat),
                     fallbackValue: "",
                     destination: .settings(.errorToastTimeout)
                 )

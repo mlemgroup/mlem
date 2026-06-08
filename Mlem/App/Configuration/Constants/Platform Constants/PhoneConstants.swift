@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // iPhone-specific constants
 extension PlatformConstants {
@@ -24,7 +25,7 @@ extension PlatformConstants {
         mediumItemCornerRadius: 8,
         smallItemCornerRadius: 6,
         appIconSize: 60,
-        appIconCornerRadius: 10,
+        appIconCornerRadius: UIDevice.isIos26 ? 16 : 10,
         settingsIconSize: 28,
         barIconSize: 15.5,
         barIconCornerRadius: 4,
