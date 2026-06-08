@@ -8,6 +8,13 @@
 import Foundation
 
 public extension LemmyConnection {
+    func getVersionFallback() async throws -> SiteVersion {
+        let response = try await performingForEndpoint { endpoint in
+            LemmyFallbackGetVersionRequest(endpoint: endpoint)
+        }
+        return response.version
+    }
+
     func getAccountToken(
         usernameOrEmail: String,
         password: String,

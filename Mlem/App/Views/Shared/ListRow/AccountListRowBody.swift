@@ -7,9 +7,11 @@
 
 import NukeUI
 import SwiftUI
+import Theming
 
 struct AccountListRowBody: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.palette) var palette
     
     enum Complication: CaseIterable {
         case instance, lastUsed, responseTime, isActive, unreadCount
@@ -66,30 +68,47 @@ struct AccountListRowBody: View {
         }
     }
     
-    var captionText: String? {
-        var output: [String] = []
+    var captionText: AttributedString? {
+        var output: [AttributedString] = []
         if complications.contains(.instance) {
             if account is GuestAccount {
                 output.append(.init(localized: "Guest"))
             } else {
-                output.append("@\(account.api.host)")
+                output.append(.init("@\(account.api.host)"))
             }
         }
-        if complications.contains(.lastUsed), let timeText {
-            if (account as? GuestAccount)?.isSaved ?? true {
-                output.append(timeText)
-            } else {
-                output.append(.init(localized: "Temporary"))
+
+        // The responseTime check ensures that we are not showing stale data.
+        // Once the unread count has been fetched, the version will have been updated.
+        if let software = account.siteSoftware, !software.isSupported, responseTime != nil {
+            var str = AttributedString(localized: "Unsupported")
+            str.foregroundColor = ThemedColor.themedWarning.resolve(with: palette)
+            output.append(str)
+        } else {
+            if complications.contains(.lastUsed), let timeText {
+                if (account as? GuestAccount)?.isSaved ?? true {
+                    output.append(.init(timeText))
+                } else {
+                    output.append(.init(localized: "Temporary"))
+                }
+            }
+            if complications.contains(.responseTime), let responseTime {
+                let measurement = Measurement(value: Double(Int(responseTime * 1000)), unit: UnitDuration.milliseconds)
+                let formatter = MeasurementFormatter()
+                formatter.unitOptions = .providedUnit
+                formatter.unitStyle = .short
+                output.append(.init(formatter.string(from: measurement)))
             }
         }
-        if complications.contains(.responseTime), let responseTime {
-            let measurement = Measurement(value: Double(Int(responseTime * 1000)), unit: UnitDuration.milliseconds)
-            let formatter = MeasurementFormatter()
-            formatter.unitOptions = .providedUnit
-            formatter.unitStyle = .short
-            output.append(formatter.string(from: measurement))
+
+        var result = AttributedString()
+        for (index, item) in output.enumerated() {
+            result += item
+            if index < output.count - 1 {
+                result += AttributedString(" • ")
+            }
         }
-        return output.joined(separator: " • ")
+        return result
     }
 }
 

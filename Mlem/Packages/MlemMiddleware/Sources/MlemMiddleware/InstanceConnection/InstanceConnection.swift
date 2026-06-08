@@ -23,6 +23,11 @@ public protocol InstanceConnection {
     var myPersonId: Int? { get async throws }
     func ensureContextPresence() async throws
 
+    // This should do the minimum work required to retrieve the version,
+    // and should be compatible with as many versions as possible (including
+    // those outside Mlem's supported version range).
+    func getVersionFallback() async throws -> SiteVersion
+
     // MARK: - Post
     
     func getPosts(

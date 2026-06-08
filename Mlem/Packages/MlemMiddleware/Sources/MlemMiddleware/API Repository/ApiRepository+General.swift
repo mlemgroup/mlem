@@ -8,6 +8,13 @@
 import Foundation
 
 extension ApiRepository {
+    func getSoftwareFallback() async throws -> SiteSoftware {
+        try await performingForConnection { connection in
+            let version = try await connection.getVersionFallback()
+            return SiteSoftware(type: type(of: connection).softwareType, version: version)
+        }
+    }
+
     func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> String {
         try await performingForConnection { connection in
             try await connection.getAccountToken(

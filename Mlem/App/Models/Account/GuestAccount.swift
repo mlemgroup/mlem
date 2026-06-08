@@ -18,12 +18,14 @@ class GuestAccount: Account {
     var avatar: URL?
     var activityState: AccountActivityState
     let accountType: AccountType = .guest
+    var versionWarningIgnored: SiteVersion?
     
     fileprivate init(url: URL) throws {
         guard let host = url.host() else { throw DecodingError.invalidHost }
         self.actorId = .instance(host: host)
         self.activityState = .inactive(lastUsed: nil)
         self.api = .getApiClient(url: url, username: nil)
+        self.versionWarningIgnored = nil
     }
   
     // TODO: updated mocks
@@ -43,7 +45,7 @@ class GuestAccount: Account {
     
     enum CodingKeys: String, CodingKey {
         // Keys are named this way to be consistent with the `UserAccount.CodingKey` cases
-        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState, siteSoftware
+        case storedNickname, instanceLink, siteVersion, avatarUrl, lastUsed, activityState, siteSoftware, versionWarningIgnored
     }
     
     enum DecodingError: Error {
@@ -72,6 +74,8 @@ class GuestAccount: Account {
             self.activityState = .inactive(lastUsed: lastUsed)
         }
 
+        self.versionWarningIgnored = try values.decodeIfPresent(SiteVersion?.self, forKey: .versionWarningIgnored) ?? nil
+
         let actorId = try values.decode(ActorIdentifier.self, forKey: .instanceLink)
         self.actorId = actorId
         self.api = ApiClient.getApiClient(url: actorId.url, username: nil)
@@ -85,6 +89,7 @@ class GuestAccount: Account {
         try container.encode(avatar, forKey: .avatarUrl)
         try container.encode(activityState, forKey: .activityState)
         try container.encode(api.baseUrl, forKey: .instanceLink)
+        try container.encode(versionWarningIgnored, forKey: .versionWarningIgnored)
     }
     
     @MainActor
@@ -102,7 +107,19 @@ class GuestAccount: Account {
             AccountsTracker.main.saveAccounts(ofType: .guest)
         }
     }
-    
+
+    func updateSoftware(_ software: SiteSoftware) {
+        if self.siteSoftware != software {
+            self.siteSoftware = software
+            AccountsTracker.main.saveAccounts(ofType: .guest)
+        }
+    }
+
+    func ignoreVersionWarning(_ ignore: Bool) {
+        self.versionWarningIgnored = ignore ? self.siteSoftware?.version : nil
+        AccountsTracker.main.saveAccounts(ofType: .guest)
+    }
+
     var name: String { actorId.host }
     
     var isActive: Bool { AppState.main.guestSession === self }

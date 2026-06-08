@@ -106,6 +106,11 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onChange(of: appState.firstAccount.shouldShowVersionWarning, initial: true) {
+                    if appState.firstAccount.shouldShowVersionWarning, navigationModel.layers.isEmpty {
+                        navigationModel.openSheet(.unsupportedVersion(appState.firstAccount))
+                    }
+                }
                 .onChange(of: scenePhase) {
                     if scenePhase == .active {
                         eventsTracker.refreshIfStale()

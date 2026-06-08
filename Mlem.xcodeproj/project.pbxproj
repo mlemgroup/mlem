@@ -77,6 +77,10 @@
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
+		0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */; };
+		0325FF322FD41D58006F8394 /* LoginVersionWarningView+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF312FD41D58006F8394 /* LoginVersionWarningView+Content.swift */; };
+		0325FF342FD43068006F8394 /* UnsupportedVersionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */; };
+		0325FF362FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */; };
 		03267D822BED489C009D6268 /* AvatarBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D812BED489C009D6268 /* AvatarBannerView.swift */; };
 		03267D842BED49CE009D6268 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03267D832BED49CE009D6268 /* AccountSettingsView.swift */; };
 		032A22012EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */; };
@@ -696,6 +700,10 @@
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
+		0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVersionWarningView.swift; sourceTree = "<group>"; };
+		0325FF312FD41D58006F8394 /* LoginVersionWarningView+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginVersionWarningView+Content.swift"; sourceTree = "<group>"; };
+		0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedVersionWarningView.swift; sourceTree = "<group>"; };
+		0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedVersionDescriptionView.swift; sourceTree = "<group>"; };
 		03267D812BED489C009D6268 /* AvatarBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarBannerView.swift; sourceTree = "<group>"; };
 		03267D832BED49CE009D6268 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		032A22002EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContentFeedLoader+Extensions.swift"; sourceTree = "<group>"; };
@@ -2040,6 +2048,8 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */,
+				0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
@@ -2370,6 +2380,8 @@
 				0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */,
 				0320B6662C93504600D38548 /* SignUpView+Logic.swift */,
 				0320B6592C8CBB0D00D38548 /* SignUpView+EmailConfirmationView.swift */,
+				0325FF2F2FD40CB4006F8394 /* LoginVersionWarningView.swift */,
+				0325FF312FD41D58006F8394 /* LoginVersionWarningView+Content.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2786,6 +2798,7 @@
 				035DF9112EB2AA160021DE8C /* PersonContentGridView+FeedLoaderType.swift in Sources */,
 				03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
+				0325FF342FD43068006F8394 /* UnsupportedVersionWarningView.swift in Sources */,
 				03134A582BEC1C46002662CC /* AccountListSettingsView.swift in Sources */,
 				CDCC1BA72D99BDB7006579DF /* GestureRecognizers.swift in Sources */,
 				03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */,
@@ -2856,6 +2869,7 @@
 				0389DDC52C38917A0005B808 /* InboxItemProviding+Extensions.swift in Sources */,
 				036ED67B2D0B004D0018E5EA /* AdvancedSortView+SortButton.swift in Sources */,
 				CD13CC5B2C588B34001AF428 /* WebView.swift in Sources */,
+				0325FF322FD41D58006F8394 /* LoginVersionWarningView+Content.swift in Sources */,
 				0372EC202D370F0200257095 /* RegistrationApplicationDenialEditorView.swift in Sources */,
 				039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */,
 				03AB484F2CBAE33500567FF9 /* MarkdownWithLinkList.swift in Sources */,
@@ -2916,6 +2930,7 @@
 				CDD4A0A02C8B985D0001AD1A /* ImportExportSettingsView.swift in Sources */,
 				03B431B62C454D49001A1EB5 /* UIImage+Extensions.swift in Sources */,
 				03EC86462E9E9D4D004698BB /* PopupAnchorModel.swift in Sources */,
+				0325FF362FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift in Sources */,
 				CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */,
 				CD1446212A5B328E00610EF1 /* Privacy Policy.swift in Sources */,
 				03AFD0E32C3C0C540054B8AD /* InstanceView.swift in Sources */,
@@ -3231,6 +3246,7 @@
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,
 				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
 				03F6BDAF2D516636006A425E /* CommunityMockType.swift in Sources */,
+				0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */,
 				0300309D2C4163C9009A65FF /* CommentTreeTracker.swift in Sources */,
 				03A631CC2D4FD18C009A47A6 /* Post+Mock.swift in Sources */,
 				03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */,

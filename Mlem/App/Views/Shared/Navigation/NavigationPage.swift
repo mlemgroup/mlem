@@ -92,6 +92,7 @@ enum NavigationPage: Hashable {
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case unavailableContentInfo
+    case unsupportedVersion(_ account: AccountHashWrapper)
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
@@ -289,6 +290,10 @@ enum NavigationPage: Hashable {
         advancedSorting(.init(wrappedValue: sort))
     }
 
+    static func unsupportedVersion(_ account: any Account) -> NavigationPage {
+        unsupportedVersion(.init(wrappedValue: account))
+    }
+
     static func actionSheet(
         _ actions: [ActionSheetSection],
         environment: EnvironmentValues,
@@ -331,6 +336,18 @@ struct HashWrapper<Value>: Hashable, Identifiable {
     
     static func == (lhs: HashWrapper, rhs: HashWrapper) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+struct AccountHashWrapper: Hashable {
+    var wrappedValue: any Account
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(wrappedValue.hashValue)
+    }
+    
+    static func == (lhs: AccountHashWrapper, rhs: AccountHashWrapper) -> Bool {
+        lhs.hashValue == rhs.hashValue
     }
 }
 
