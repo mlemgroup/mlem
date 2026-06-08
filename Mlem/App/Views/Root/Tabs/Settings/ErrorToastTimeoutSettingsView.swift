@@ -10,6 +10,14 @@ import SwiftUI
 struct ErrorToastTimeoutSettingsView: View {
     @Setting(\.dev_errorTimeout) var errorToastTimeout
 
+    var secondsFormat: Duration.UnitsFormatStyle {
+        .units(
+            allowed: [.seconds],
+            width: .narrow,
+            fractionalPart: .show(length: 1)
+        )
+    }
+
     var body: some View {
         Form {
             SettingsHeaderView(
@@ -27,7 +35,7 @@ struct ErrorToastTimeoutSettingsView: View {
                         if errorToastTimeout == 100_000 {
                             Image(systemName: "infinity")
                         } else {
-                            Text(String(format: "%.1f", errorToastTimeout) + "s")
+                            Text(Duration.seconds(errorToastTimeout), format: secondsFormat)
                         }
                     }
                     .foregroundStyle(.themedSecondary)
@@ -40,7 +48,7 @@ struct ErrorToastTimeoutSettingsView: View {
                     in: 0.5...10
                 )
             } footer: {
-                Text("Default: 1.5s")
+                Text("Default: \(Duration.seconds(1.5), format: secondsFormat)")
             }
         }
         .withConditionalLabelStyle()
