@@ -26,40 +26,8 @@ struct DeveloperSettingsView: View {
     
     @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
-    @State var backendStatus: BackendHealthCheck?
-    @State var lastBackendStatusCheck: Date?
-    
     var body: some View {
         Form {
-            Section {
-                if let backendStatus {
-                    if backendStatus.unhealthyReasons.isEmpty {
-                        backendStatusRow(isHealthy: true)
-                    } else {
-                        backendStatusRow(isHealthy: false)
-                        
-                        ForEach(Array(backendStatus.unhealthyReasons.enumerated()), id: \.offset) { _, reason in
-                            Text(reason)
-                                .padding(.leading, Constants.main.standardSpacing)
-                                .foregroundStyle(.themedNegative)
-                        }
-                    }
-                } else {
-                    backendStatusRow(isHealthy: nil)
-                }
-                
-                Button("Refresh") { checkBackendStatus() }
-            } header: {
-                Text(verbatim: "Backend")
-            } footer: {
-                if let lastBackendStatusCheck {
-                    Text(verbatim: "Refreshed \(lastBackendStatusCheck.formatted(date: .abbreviated, time: .standard))")
-                } else {
-                    Text(verbatim: "Refreshing...")
-                }
-            }
-            .onAppear { checkBackendStatus() }
-            
             #if DEBUG
                 Section {
                     Toggle(String("Use QC Mlem Backend"),
@@ -106,32 +74,5 @@ struct DeveloperSettingsView: View {
             }
         }
         .navigationTitle("Developer")
-    }
-
-    @ViewBuilder
-    private func backendStatusRow(isHealthy: Bool?) -> some View {
-        HStack {
-            Text(verbatim: "Status")
-            Spacer()
-            if let isHealthy {
-                Image(icon: .general.circle)
-                    .foregroundStyle(isHealthy ? .themedPositive : .themedNegative)
-                    .symbolVariant(.fill)
-            } else {
-                ProgressView()
-            }
-        }
-    }
-    
-    private func checkBackendStatus() {
-        Task {
-            do {
-                backendStatus = try await backendClient.healthCheck()
-            } catch {
-                handleError(error)
-                backendStatus = nil
-            }
-            lastBackendStatusCheck = .now
-        }
     }
 }
