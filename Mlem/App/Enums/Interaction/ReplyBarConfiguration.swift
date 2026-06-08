@@ -10,7 +10,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct ReplyBarConfiguration: InteractionBarConfiguration, SwipeActionConfiguration {
+struct ReplyBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]

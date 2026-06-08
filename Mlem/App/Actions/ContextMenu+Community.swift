@@ -21,7 +21,11 @@ extension ActionButtons {
 extension View {
     func contextMenu(community: Community) -> some View {
         contextMenu {
-            ActionButtons(community: community)
+            CustomizableActionMenu(
+                entity: community,
+                configuration: \.interactionBar_community,
+                customizable: true
+            )
         }
     }
 

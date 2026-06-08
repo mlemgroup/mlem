@@ -10,6 +10,7 @@ import Media
 
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
+    @Environment(MediaTracker.self) var mediaTracker: MediaTracker
     @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     
@@ -17,10 +18,8 @@ struct MediaView: View {
     @Setting(\.dev_developerMode) var developerMode
     
     @State var loader: MediaLoader
-    @Binding var controlState: MediaControlState
+    @State var controlState: MediaControlState
     @State var quickLookUrl: URL?
-    
-    let url: URL?
     
     // appearance
     let aspectRatio_: CoreMediaView.AspectRatioBounds?
@@ -36,6 +35,8 @@ struct MediaView: View {
     let enableContextMenu: Bool
     let enableImageViewer: Bool
     let onTapActions: (() -> Void)?
+    
+    @State var mediaLockId: UUID = .init()
     
     var fullSizeUrl: URL? { Mlem.fullSizeUrl(url: loader.url) }
     var uiImage: UIImage { loader.mediaType?.image ?? .blank }
@@ -65,9 +66,8 @@ struct MediaView: View {
     ///     the specified actions and open the image viewer
     ///  - Warning: Changing the following parameters may cause unexpected view identity changes: `enableContextMenu`, `contentMode`
     init(
-        url: URL?,
         size: CGSize? = nil,
-        controlState: Binding<MediaControlState>? = nil,
+        controlState: MediaControlState,
         aspectRatioBounds: CoreMediaView.AspectRatioBounds? = nil,
         contentMode: ContentMode = .fit,
         cornerRadius: CGFloat = 0,
@@ -77,8 +77,6 @@ struct MediaView: View {
         enableImageViewer: Bool = false,
         onTapActions: (() -> Void)? = nil
     ) {
-        self.url = url
-        
         self.overlays = .init(overlays)
         self.aspectRatio_ = aspectRatioBounds
         self.contentMode = contentMode
@@ -89,34 +87,36 @@ struct MediaView: View {
         self.enableImageViewer = enableImageViewer
         self.onTapActions = onTapActions
 
-        self._loader = .init(wrappedValue: .init(
-            url: url,
+        self.loader = .init(
+            url: controlState.url,
             size: size,
-            autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy)
-        ))
-        if let controlState {
-            self._controlState = controlState
-        } else {
-            self._controlState = .constant(.init(
-                blurred: false,
-                animating: false,
-                muted: Settings.get(\.behavior_muteVideos)
-            ))
-        }
-        _controlState.wrappedValue.url = url
+            autoBypassImageProxy: Settings.get(\.privacy_autoBypassImageProxy))
+        self.controlState = controlState
     }
     
-    static func largeImage(url: URL, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) -> MediaView {
-        .init(
-            url: url,
-            controlState: .constant(.init(
+    /// Creates a large image with sensible defaults
+    /// - Parameters:
+    ///   - url: URL to use for the URL
+    ///   - shouldBlur: Whether this image should appear blurred. This will be ignored if a control state is already present
+    ///   for this image.
+    ///   - withOverlays: Overlays to display in additino to the defaults (controls and error, plus nsfw if shouldBlur is true)
+    ///   - onTapActions: Callback triggered when the image is tapped
+    static func largeImage(url: URL, shouldBlur: Bool, withOverlays: Set<Overlay> = [], onTapActions: (() -> Void)? = nil) -> MediaView {
+        let controlState: MediaControlState = MediaTracker.main.controlState(for: url) {
+            .init(
+                url: url,
                 blurred: shouldBlur,
                 animating: Settings.get(\.behavior_autoplayMedia),
                 muted: Settings.get(\.behavior_muteVideos)
-            )),
+            )
+        }
+        
+        let defaultOverlays: Set<Overlay> = shouldBlur ? [.controls, .error, .nsfw] : [.controls, .error]
+        return .init(
+            controlState: controlState,
             aspectRatioBounds: .imageDefault,
             cornerRadius: Constants.main.mediumItemCornerRadius,
-            overlays: .init(shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]),
+            overlays: defaultOverlays.union(withOverlays),
             enableContextMenu: true,
             enableImageViewer: true,
             onTapActions: onTapActions
@@ -126,7 +126,7 @@ struct MediaView: View {
     var body: some View {
         content
             .dynamicBlur(blurred: loader.mediaType != nil && controlState.blurred)
-            .withAnimationControls()
+            .withAnimationControls(mediaLockId: mediaLockId)
             .overlay(nsfwOverlay)
             .overlay(developerOverlay)
             .overlay(errorOverlay)
@@ -134,13 +134,26 @@ struct MediaView: View {
             .withContextMenu(menuContent: contextMenuContent, isEnabled: enableContextMenu && loader.error == nil)
             .gesture(TapGesture().onEnded(tapActions), isEnabled: enableTap)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onChange(of: url, initial: true) {
+            .onChange(of: controlState.url, initial: true) {
                 Task {
-                    await loader.load(url)
+                    await loader.load(controlState.url)
+                }
+            }
+            .onChange(of: loader.url, initial: false) {
+                // Proxy bypass is handled inside MediaLoader, but the control state and media tracker both need
+                // to be updated so that the control state has a loadable URL and the media tracker knows that both
+                // the original and the bypassed URL point to the same piece of media.
+                // Updating controlState.url does trigger the onChange above, but MediaLoader.load will ignore the duplicate request
+                if let url = loader.url {
+                    controlState.url = url
+                    mediaTracker.addAlias(for: url, controlState: controlState)
                 }
             }
             .onChange(of: loader.mediaType?.isAnimated, initial: true) {
                 controlState.animationAvailable = loader.mediaType?.isAnimated ?? false
+            }
+            .onAppear {
+                controlState.mediaLockId = mediaLockId
             }
             .environment(controlState)
             .environment(overlays)
@@ -162,7 +175,9 @@ struct MediaView: View {
             } else {
                 image
                     .onDisappear {
-                        controlState.animating = false
+                        if controlState.mediaLockId == mediaLockId {
+                            controlState.mediaLockId = nil
+                        }
                     }
             }
         }
