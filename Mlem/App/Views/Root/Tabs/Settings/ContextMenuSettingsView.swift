@@ -10,6 +10,7 @@ import Actions
 import SwiftUI
 
 struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
+    @Environment(NavigationLayer.self) var navigation
     @Binding var configuration: [ActionSeed]
 
     var body: some View {
@@ -29,7 +30,9 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
             }
         }
         .toolbar {
-            CloseButtonToolbarItem(ios18Label: .xmark)
+            if navigation.isInsideSheet {
+                CloseButtonToolbarItem(ios18Label: .xmark)
+            }
         }
         .navigationTitle("Customize Context Menu")
         .navigationBarTitleDisplayMode(.inline)

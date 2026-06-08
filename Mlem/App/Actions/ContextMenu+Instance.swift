@@ -16,9 +16,11 @@ extension View {
     func contextMenu(instance: (any InstanceActionProviding)?) -> some View {
         if let instance {
             contextMenu {
-                ActionButtons { _ in
-                    InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
-                }
+                CustomizableActionMenu(
+                    entity: instance,
+                    configuration: \.interactionBar_instance,
+                    customizable: true
+                )
             }
         } else {
             self
@@ -46,17 +48,6 @@ extension View {
 extension ToolbarEllipsisMenu {
     init(instance: any InstanceActionProviding) where Content == ActionButtons {
         self.init {
-            ActionButtons { _ in
-                InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
-            }
-        }
-    }
-}
-
-extension View {
-    @ViewBuilder
-    func contextMenu(instance: any InstanceActionProviding) -> some View {
-        contextMenu {
             ActionButtons { _ in
                 InstanceActionConfiguration.availableActions.all.compactMap { $0.createAction(instance) }
             }
