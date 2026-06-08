@@ -231,7 +231,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_dismissThreshold = try container.decodeIfPresent(Int.self, forKey: ._imageViewer_dismissThreshold) ?? 10
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
-        self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .divider
+        self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
         self.post_defaultSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_defaultSort) ?? .hot
         self.post_fallbackSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_fallbackSort) ?? .hot
         self.post_limitImageHeight = try container.decodeIfPresent(Bool.self, forKey: ._post_limitImageHeight) ?? true
@@ -346,7 +346,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_dismissThreshold = 10
         self.media_animatedAvatars = UIAccessibility.isReduceMotionEnabled ? .never : .always
         self.menus_allModActions = false
-        self.menus_modActionGrouping = .divider
+        self.menus_modActionGrouping = .combined
         self.post_defaultSort = .hot
         self.post_fallbackSort = .hot
         self.post_limitImageHeight = true
