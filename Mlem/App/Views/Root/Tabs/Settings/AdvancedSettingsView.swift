@@ -13,6 +13,7 @@ struct AdvancedSettingsView: View {
             Section {
                 NavigationLink("Cache", destination: .settings(.cache))
                 NavigationLink("Error Log", destination: .settings(.errorLog))
+                NavigationLink("Error Notification Timeout", destination: .settings(.errorToastTimeout))
             }
             Section {
                 NavigationLink("Developer", destination: .settings(.developer))

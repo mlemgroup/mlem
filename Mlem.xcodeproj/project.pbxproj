@@ -76,6 +76,7 @@
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
 		03250CE82FD71085006F8394 /* AvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CE72FD71085006F8394 /* AvatarSettingsView.swift */; };
 		03250CEA2FD71303006F8394 /* CacheSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CE92FD71303006F8394 /* CacheSettingsView.swift */; };
+		03250CEC2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */; };
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
@@ -696,6 +697,7 @@
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
 		03250CE72FD71085006F8394 /* AvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSettingsView.swift; sourceTree = "<group>"; };
 		03250CE92FD71303006F8394 /* CacheSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSettingsView.swift; sourceTree = "<group>"; };
+		03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorToastTimeoutSettingsView.swift; sourceTree = "<group>"; };
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -1321,6 +1323,7 @@
 				03250CE72FD71085006F8394 /* AvatarSettingsView.swift */,
 				CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */,
 				03250CE92FD71303006F8394 /* CacheSettingsView.swift */,
+				03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */,
 				0368F3672D7349C2007DEB70 /* Discussion Languages */,
 				CD3485BC2D50156E006748B8 /* ZoomSliderSettingsView.swift */,
 				039F58962C7B68F100C61658 /* AboutMlemView.swift */,
@@ -3262,6 +3265,7 @@
 				036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
+				03250CEC2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift in Sources */,
 				0353949C2CA4B3E800795AA5 /* CrossPostListView.swift in Sources */,
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,

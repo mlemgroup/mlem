@@ -37,7 +37,7 @@ enum SettingsPage: Hashable {
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
-    case about, advanced, developer, errorLog
+    case about, advanced, developer, errorLog, errorToastTimeout
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
@@ -286,6 +286,8 @@ enum SettingsPage: Hashable {
             }
         case .cache:
             CacheSettingsView()
+        case .errorToastTimeout:
+            ErrorToastTimeoutSettingsView()
         }
     }
     
