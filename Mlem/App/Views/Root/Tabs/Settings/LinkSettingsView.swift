@@ -56,6 +56,11 @@ struct LinkSettingsView: View {
                     icon: .settings.imageViewer,
                     destination: .settings(.imageViewer)
                 )
+                NavigationLink(
+                    "Avatars",
+                    icon: .settings.showAvatar,
+                    destination: .settings(.avatars)
+                )
             }
             
             Section {

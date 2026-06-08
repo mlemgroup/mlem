@@ -17,16 +17,11 @@ struct GeneralSettingsView: View {
     @Setting(\.feed_default) var defaultFeed
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
-    @Setting(\.media_animatedAvatars) var animatedAvatars
     @Setting(\.events_showEvents) var showEvents
 
     // gestures
     @Setting(\.behavior_enableQuickSwipes) var swipeActionsEnabled
     @Setting(\.navigation_swipeAnywhere) var swipeAnywhereToNavigate
-    
-    // avatars
-    @Setting(\.person_showAvatar) var showPersonAvatar
-    @Setting(\.community_showAvatar) var showCommunityAvatar
     
     var body: some View {
         Form {
@@ -89,22 +84,6 @@ struct GeneralSettingsView: View {
                 }
             }
             
-            Section {
-                Toggle("User Avatar", icon: .lemmy.person, isOn: $showPersonAvatar)
-                    .symbolVariant(.circle)
-                Toggle("Community Avatar", icon: .lemmy.community, isOn: $showCommunityAvatar)
-                    .symbolVariant(.circle)
-                if #available(iOS 18, *) {
-                    NavigationLink(
-                        "Animated Avatars",
-                        value: .init(localized: animatedAvatars.label),
-                        fallbackValue: "",
-                        icon: .general.playCircle,
-                        destination: .settings(.animatedAvatars)
-                    )
-                }
-            }
-
             Section {
                 Toggle("Show Events", icon: .lemmy.event, isOn: $showEvents)
             }

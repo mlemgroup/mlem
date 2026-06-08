@@ -74,6 +74,7 @@
 		0320B6692C93506300D38548 /* SearchView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6682C93506300D38548 /* SearchView+Logic.swift */; };
 		0324FA772C1F0AE100F6247D /* Readout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA762C1F0AE100F6247D /* Readout.swift */; };
 		0324FA7B2C1F2CD200F6247D /* InfoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */; };
+		03250CE82FD71085006F8394 /* AvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CE72FD71085006F8394 /* AvatarSettingsView.swift */; };
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
@@ -692,6 +693,7 @@
 		0320B6682C93506300D38548 /* SearchView+Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SearchView+Logic.swift"; sourceTree = "<group>"; };
 		0324FA762C1F0AE100F6247D /* Readout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readout.swift; sourceTree = "<group>"; };
 		0324FA7A2C1F2CD200F6247D /* InfoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoStackView.swift; sourceTree = "<group>"; };
+		03250CE72FD71085006F8394 /* AvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSettingsView.swift; sourceTree = "<group>"; };
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -1314,6 +1316,7 @@
 			isa = PBXGroup;
 			children = (
 				81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */,
+				03250CE72FD71085006F8394 /* AvatarSettingsView.swift */,
 				CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */,
 				0368F3672D7349C2007DEB70 /* Discussion Languages */,
 				CD3485BC2D50156E006748B8 /* ZoomSliderSettingsView.swift */,
@@ -2881,6 +2884,7 @@
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
 				CDDA49A82F7044D2004A5AFF /* InstanceStubResolutionPage.swift in Sources */,
 				0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */,
+				03250CE82FD71085006F8394 /* AvatarSettingsView.swift in Sources */,
 				03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */,
 				814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,

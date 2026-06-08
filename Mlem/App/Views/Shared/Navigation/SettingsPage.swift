@@ -28,7 +28,7 @@ enum SettingsPage: Hashable {
     case safetyBlurNsfw, safetyWarnings
     case links, embedding
     case imageViewer, imageViewerControls, imageViewerDismissSensitivity
-    case animatedAvatars
+    case avatars, animatedAvatars
     case externalLinks, sharingLinks, tappableLinks
     case importExportSettings
     case theme, icon
@@ -153,6 +153,8 @@ enum SettingsPage: Hashable {
             TappableLinksSettingsView()
         case .embedding:
             EmbeddingSettingsView()
+        case .avatars:
+            AvatarSettingsView()
         case .animatedAvatars:
             AnimatedAvatarSettingsView()
         case .sorting:
