@@ -28,43 +28,41 @@ struct DeveloperSettingsView: View {
     
     var body: some View {
         Form {
-            #if DEBUG
-                Section {
-                    Toggle(String("Use QC Mlem Backend"),
-                           isOn: .init(get: { backendClient.environment == .qualityControl },
-                                       set: { backendClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
-                    
-                    Toggle(String("Use QC Events API"),
-                           isOn: .init(get: { eventsTracker.environment == .qualityControl },
-                                       set: { eventsTracker.changeEnvironment(to: $0 ? .qualityControl : .production) }))
-                } footer: {
-                    Text(verbatim: "These settings will be cleared when the app restarts.")
-                }
-
-                Section {
-                    Button(String("Trigger Onboarding")) {
-                        navigation.showFullScreenCover(.onboarding)
-                    }
-                    
-                    Button(String("Reset Feed Welcome Banner")) {
-                        showFeedWelcomePrompt = true
-                    }
-                    
-                    Button(String("Reset Feed TestFlight Banner")) {
-                        lastTestFlightUpdate = nil
-                    }
+            Section {
+                Toggle(String("Use QC Mlem Backend"),
+                       isOn: .init(get: { backendClient.environment == .qualityControl },
+                                   set: { backendClient.changeEnvironment(to: $0 ? .qualityControl : .production) }))
                 
-                    Button(String("Create Error")) {
-                        handleError(ApiClientError.insufficientPermissions)
-                    }
-                
-                    Button(String("Create Silent Error")) {
-                        handleError(ApiClientError.noEntityFound, silent: true)
-                    }
-                } header: {
-                    Text(verbatim: "Debug Tools")
+                Toggle(String("Use QC Events API"),
+                       isOn: .init(get: { eventsTracker.environment == .qualityControl },
+                                   set: { eventsTracker.changeEnvironment(to: $0 ? .qualityControl : .production) }))
+            } footer: {
+                Text(verbatim: "These settings will be cleared when the app restarts.")
+            }
+            
+            Section {
+                Button(String("Trigger Onboarding")) {
+                    navigation.showFullScreenCover(.onboarding)
                 }
-            #endif
+                
+                Button(String("Reset Feed Welcome Banner")) {
+                    showFeedWelcomePrompt = true
+                }
+                
+                Button(String("Reset Feed TestFlight Banner")) {
+                    lastTestFlightUpdate = nil
+                }
+                
+                Button(String("Create Error")) {
+                    handleError(ApiClientError.insufficientPermissions)
+                }
+                
+                Button(String("Create Silent Error")) {
+                    handleError(ApiClientError.noEntityFound, silent: true)
+                }
+            } header: {
+                Text(verbatim: "Debug Tools")
+            }
             Button(String("Reset Settings State")) {
                 do {
                     try persistenceRepository.deleteAllSystemSettings()

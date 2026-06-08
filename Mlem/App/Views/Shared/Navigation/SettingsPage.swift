@@ -37,7 +37,7 @@ enum SettingsPage: Hashable {
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
-    case about, advanced, developer, errorLog, errorToastTimeout
+    case about, advanced, errorLog, errorToastTimeout
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
@@ -51,6 +51,9 @@ enum SettingsPage: Hashable {
     case separateModeratorActions
     case licences, document(Document)
     case cache
+    #if DEBUG
+    case developer
+    #endif
 
     static func contextMenu(_ keyPath: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>) -> Self {
         .contextMenu(.init(keyPath))
@@ -112,8 +115,6 @@ enum SettingsPage: Hashable {
             ImportExportSettingsView()
         case .advanced:
             AdvancedSettingsView()
-        case .developer:
-            DeveloperSettingsView()
         case .errorLog:
             ErrorLogView()
         case .about:
@@ -288,6 +289,10 @@ enum SettingsPage: Hashable {
             CacheSettingsView()
         case .errorToastTimeout:
             ErrorToastTimeoutSettingsView()
+        #if DEBUG
+        case .developer:
+            DeveloperSettingsView()
+        #endif
         }
     }
     
