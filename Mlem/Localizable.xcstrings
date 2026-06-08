@@ -2902,7 +2902,14 @@
       }
     },
     "Customize how long error notifications remain on-screen." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how long error notifications remain on-screen."
+          }
+        }
+      }
     },
     "Customize how moderator actions are separated from regular actions in context menus." : {
       "extractionState" : "stale",
@@ -2962,7 +2969,14 @@
       }
     },
     "Customize the appearance of instances." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of instances."
+          }
+        }
+      }
     },
     "Customize the appearance of the tab bar." : {
       "localizations" : {
@@ -2975,7 +2989,14 @@
       }
     },
     "Customize the appearance of users." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of users."
+          }
+        }
+      }
     },
     "Customize the image viewer's buttons and gestures." : {
       "localizations" : {
