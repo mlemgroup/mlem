@@ -17,7 +17,6 @@ struct GeneralSettingsView: View {
     @Setting(\.feed_default) var defaultFeed
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
-    @Setting(\.person_ageVisibility) var accountAgeVisibility
     @Setting(\.media_animatedAvatars) var animatedAvatars
     @Setting(\.events_showEvents) var showEvents
 
@@ -88,16 +87,6 @@ struct GeneralSettingsView: View {
                         )
                     )
                 }
-            }
-            
-            Section {
-                NavigationLink(
-                    "Show Account Age",
-                    value: .init(localized: accountAgeVisibility.label),
-                    fallbackValue: "",
-                    icon: .lemmy.newAccountFlair,
-                    destination: .settings(.accountAgeVisibility)
-                )
             }
             
             Section {
