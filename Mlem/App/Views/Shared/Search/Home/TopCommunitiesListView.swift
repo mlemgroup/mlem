@@ -39,7 +39,10 @@ struct TopCommunitiesListView: View {
                 do {
                     if communityLoader == nil {
                         let software = try await appState.firstApi.software
-                        communityLoader = .init(api: appState.firstApi, sort: .default(software: software))
+                        communityLoader = .init(
+                            api: appState.firstApi,
+                            sort: .default(software: software)
+                        )
                         try await communityLoader?.refresh(listing: .all)
                     }
                 } catch {
