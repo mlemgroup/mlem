@@ -20,7 +20,7 @@ struct CacheSettingsView: View {
 
             Section {
                 HStack {
-                    Text("Cache Usage")
+                    Text("Disk Usage")
                     Spacer()
                     TimelineView(.periodic(from: .now, by: 0.5)) { _ in
                         Text(ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file))
