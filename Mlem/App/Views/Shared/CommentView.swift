@@ -181,11 +181,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
-            if comment.notificationsEnabled.value ?? false {
-                Image(icon: .lemmy.notification)
-                    .symbolVariant(.fill)
-                    .foregroundStyle(.themedSecondary)
-            }
+            notificationIndicatorView
             switch moderatorActionGrouping {
             case .separateMenu:
                 if comment.canModerate {
@@ -203,6 +199,22 @@ struct CommentView<EmbeddedContent: View>: View {
             return commentReportInteractionBar
         }
         return commentInteractionBar
+    }
+
+    @ViewBuilder
+    var notificationIndicatorView: some View {
+        let notificationsEnabled = comment.notificationsEnabled.value ?? false
+        Group {
+            if notificationsEnabled, !comment.isOwnComment {
+                Image(icon: .lemmy.notification)
+                    .symbolVariant(.fill)
+            } else if !notificationsEnabled, comment.isOwnComment {
+                Image(icon: .lemmy.notification)
+                    .symbolVariant(.slash.fill)
+            }
+        }
+        .imageScale(.small)
+        .foregroundStyle(.themedSecondary)
     }
 }
 
