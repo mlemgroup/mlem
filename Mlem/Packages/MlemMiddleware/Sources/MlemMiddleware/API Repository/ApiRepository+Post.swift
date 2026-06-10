@@ -170,7 +170,13 @@ extension ApiRepository {
             try await connection.savePost(id: id, save: save)
         }
     }
-    
+
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.setPostNotificationsEnabled(id: id, enabled: enabled)
+        }
+    }
+
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
         try await performingForConnection { connection in
             try await connection.deletePost(id: id, delete: delete)

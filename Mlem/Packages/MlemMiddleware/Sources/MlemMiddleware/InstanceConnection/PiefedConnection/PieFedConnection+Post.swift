@@ -220,6 +220,13 @@ public extension PieFedConnection {
     }
     
     @discardableResult
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot {
+        let request = PieFedSubscribePostRequest(postId: id, subscribe: enabled)
+        let response = try await perform(request)
+        return try .init(from: response.postView)
+    }
+
+    @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
         let request = PieFedDeletePostRequest(postId: id, deleted: delete)
         let response = try await perform(request)

@@ -360,6 +360,11 @@ public extension LemmyConnection {
     }
     
     @discardableResult
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot {
+        throw ApiClientError.featureUnsupported
+    }
+
+    @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyDeletePostRequest(

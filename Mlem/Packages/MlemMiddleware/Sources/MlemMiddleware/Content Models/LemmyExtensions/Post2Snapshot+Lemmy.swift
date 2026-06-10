@@ -75,6 +75,7 @@ extension Post2Snapshot {
             creatorBlocked: creatorBlocked,
             votes: votes,
             saved: saved,
+            notificationsEnabled: false,
             read: read,
             hidden: hidden
         )
@@ -137,6 +138,7 @@ extension Post2Snapshot {
             creatorBlocked: creatorBlocked,
             votes: votes,
             saved: saved,
+            notificationsEnabled: false,
             read: read,
             hidden: hidden
         )

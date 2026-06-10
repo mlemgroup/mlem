@@ -97,6 +97,8 @@ public protocol InstanceConnection {
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot
     @discardableResult
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot
+    @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot
     func hidePost(id: Int, hide: Bool) async throws
     

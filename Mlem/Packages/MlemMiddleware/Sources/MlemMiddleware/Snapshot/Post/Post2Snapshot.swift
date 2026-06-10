@@ -24,6 +24,7 @@ public struct Post2Snapshot: CacheIdentifiable, PostSnapshotProviding {
     public let creatorBlocked: Bool
     public let votes: VotesModel
     public let saved: Bool
+    public let notificationsEnabled: Bool
     public var read: Bool
     public var hidden: Bool
     
@@ -42,6 +43,7 @@ public struct Post2Snapshot: CacheIdentifiable, PostSnapshotProviding {
         creatorBlocked: Bool,
         votes: VotesModel,
         saved: Bool,
+        notificationsEnabled: Bool,
         read: Bool,
         hidden: Bool
     ) {
@@ -56,6 +58,7 @@ public struct Post2Snapshot: CacheIdentifiable, PostSnapshotProviding {
         self.creatorBlocked = creatorBlocked
         self.votes = votes
         self.saved = saved
+        self.notificationsEnabled = notificationsEnabled
         self.read = read
         self.hidden = hidden
     }
