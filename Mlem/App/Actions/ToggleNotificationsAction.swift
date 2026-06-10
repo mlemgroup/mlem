@@ -29,13 +29,13 @@ extension ActionSeed {
 extension ToggleNotificationsAction {
     static let enableLabel: ActionLabel = .init(
         "Enable Notifications",
-        icon: .lemmy.notification,
+        icon: .lemmy.enableNotifications,
         color: .themedColorfulAccent(4)
     )
 
     static let disableLabel: ActionLabel = .init(
         "Disable Notifications",
-        icon: .lemmy.notification,
+        icon: .lemmy.disableNotifications,
         color: .themedColorfulAccent(4)
     )
     

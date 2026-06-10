@@ -230,6 +230,8 @@ public extension Icon {
         }
 
         public let notification: Icon = .init("bell")
+        public let enableNotifications: Icon = .init("bell")
+        public let disableNotifications: Icon = .init("bell.slash")
     }
     
     static let lemmy: LemmyIcons = .init()
