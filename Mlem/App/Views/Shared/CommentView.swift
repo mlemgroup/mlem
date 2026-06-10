@@ -181,6 +181,10 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
+            if comment.watched.value ?? false {
+                Image(icon: .general.show)
+                    .foregroundStyle(.themedSecondary)
+            }
             switch moderatorActionGrouping {
             case .separateMenu:
                 if comment.canModerate {

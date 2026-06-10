@@ -205,6 +205,18 @@ public extension Comment {
             }
         }
     }
+
+    // Watch
+    
+    func updateWatched(_ newValue: Bool) {
+        watched.value_ = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                try await .init(api: self.api, snapshot: .comment2(self.api.repository.watchComment(id: self.id, watch: newValue)))
+            }
+        }
+    }
     
     // Remove
     

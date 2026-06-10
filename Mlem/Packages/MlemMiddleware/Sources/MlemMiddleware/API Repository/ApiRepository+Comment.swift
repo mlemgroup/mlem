@@ -151,6 +151,12 @@ extension ApiRepository {
         }
     }
     
+    func watchComment(id: Int, watch: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.watchComment(id: id, watch: watch)
+        }
+    }
+    
     func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.deleteComment(id: id, delete: delete)

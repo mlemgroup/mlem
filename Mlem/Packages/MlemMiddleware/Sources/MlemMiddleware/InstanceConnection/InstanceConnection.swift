@@ -227,6 +227,8 @@ public protocol InstanceConnection {
     @discardableResult
     func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot
     @discardableResult
+    func watchComment(id: Int, watch: Bool) async throws -> Comment2Snapshot
+    @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot
     
     @discardableResult
