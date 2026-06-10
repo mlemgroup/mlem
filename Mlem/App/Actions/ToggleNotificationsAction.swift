@@ -72,8 +72,20 @@ extension ToggleNotificationsAction {
 
     @MainActor
     func execute(environment: EnvironmentValues) {
-        if let currentValue = entity.notificationsEnabled.value {
-            entity.updateNotificationsEnabled(!currentValue)
+        guard let currentValue = entity.notificationsEnabled.value else { return }
+        let newValue = !currentValue
+
+        entity.updateNotificationsEnabled(newValue)
+        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+
+        let toast: ToastType
+
+        if newValue {
+            toast = .basic("Notifications Enabled", icon: .lemmy.enableNotifications)
+        } else {
+            toast = .basic("Notifications Disabled", icon: .lemmy.disableNotifications)
         }
+
+        environment.toastModel?.add(toast)
     }
 }
