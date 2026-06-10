@@ -32,7 +32,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
     var creatorBannedFromCommunity: Bool?
     var votes: VotesModel?
     var saved: Bool?
-    var watched: Bool?
+    var notificationsEnabled: Bool?
     
     /// Constructs a CommentProperties from a given snapshot
     @MainActor
@@ -61,7 +61,7 @@ public struct CommentProperties: UnifiedPropertiesProviding {
             creatorBannedFromCommunity = snapshot2.creatorBannedFromCommunity
             votes = snapshot2.votes
             saved = snapshot2.saved
-            watched = snapshot2.watched
+            notificationsEnabled = snapshot2.notificationsEnabled
         }
         
         actorId = snapshot1.actorId
@@ -97,6 +97,6 @@ public struct CommentProperties: UnifiedPropertiesProviding {
         self.creatorBannedFromCommunity = other.creatorBannedFromCommunity ?? self.creatorBannedFromCommunity
         self.votes = other.votes ?? self.votes
         self.saved = other.saved ?? self.saved
-        self.watched = other.watched ?? self.watched
+        self.notificationsEnabled = other.notificationsEnabled ?? self.notificationsEnabled
     }
 }

@@ -44,7 +44,7 @@ extension Comment2Snapshot {
             creatorBannedFromCommunity: comment.creatorBannedFromCommunity,
             votes: votes,
             saved: saved,
-            watched: false
+            notificationsEnabled: false
         )
     }
     
@@ -84,7 +84,7 @@ extension Comment2Snapshot {
             creatorBannedFromCommunity: report.creatorBannedFromCommunity,
             votes: votes,
             saved: saved,
-            watched: false
+            notificationsEnabled: false
         )
     }
 
@@ -100,7 +100,7 @@ extension Comment2Snapshot {
             creatorBannedFromCommunity: reply.creatorBannedFromCommunity,
             votes: .init(from: reply.counts, myVote: .guaranteedInit(from: reply.myVote)),
             saved: reply.saved,
-            watched: false
+            notificationsEnabled: false
         )
     }
 
@@ -116,7 +116,7 @@ extension Comment2Snapshot {
             creatorBannedFromCommunity: mention.creatorBannedFromCommunity,
             votes: .init(from: mention.counts, myVote: .guaranteedInit(from: mention.myVote)),
             saved: mention.saved,
-            watched: false
+            notificationsEnabled: false
         )
     }
 }

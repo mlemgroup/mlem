@@ -58,7 +58,7 @@ public class Comment:
     public var creatorBannedFromCommunity: ExpectedValue<Bool>
     public var votes: ExpectedValue<VotesModel>
     public var saved: ExpectedValue<Bool>
-    public var watched: ExpectedValue<Bool>
+    public var notificationsEnabled: ExpectedValue<Bool>
     
     public init(api: ApiClient, properties: CommentProperties) {
         self.api = api
@@ -89,8 +89,8 @@ public class Comment:
         self.creatorBannedFromCommunity = dummyExpectedValue(properties.creatorBannedFromCommunity)
         self.votes = dummyExpectedValue(properties.votes)
         self.saved = dummyExpectedValue(properties.saved)
-        self.watched = dummyExpectedValue(properties.watched)
-        
+        self.notificationsEnabled = dummyExpectedValue(properties.notificationsEnabled)
+
         func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
             .init(
                 value: value,
@@ -105,7 +105,7 @@ public class Comment:
         self.creatorBannedFromCommunity = expectedValue(properties.creatorBannedFromCommunity)
         self.votes = expectedValue(properties.votes)
         self.saved = expectedValue(properties.saved)
-        self.watched = expectedValue(properties.watched)
+        self.notificationsEnabled = expectedValue(properties.notificationsEnabled)
     }
     
     @MainActor
@@ -209,7 +209,7 @@ public extension Comment {
     // Watch
     
     func updateWatched(_ newValue: Bool) {
-        watched.value_ = newValue
+        notificationsEnabled.value_ = newValue
         
         Task {
             await updateQueue.addItem {
@@ -366,7 +366,7 @@ public extension Comment {
               let creatorBannedFromCommunity = creatorBannedFromCommunity.value_,
               let votes = votes.value_,
               let saved = saved.value_,
-            let watched = watched.value_ else {
+            let notificationsEnabled = notificationsEnabled.value_ else {
             assertionFailure("takeSnapshot2() called without high-tier fields available")
             return nil
         }
@@ -416,7 +416,7 @@ public extension Comment {
             creatorBannedFromCommunity: creatorBannedFromCommunity,
             votes: votes,
             saved: saved,
-            watched: watched
+            notificationsEnabled: notificationsEnabled
         )
     }
 }

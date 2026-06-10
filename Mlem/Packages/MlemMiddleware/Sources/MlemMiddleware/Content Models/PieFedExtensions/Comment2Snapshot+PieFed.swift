@@ -26,7 +26,7 @@ public extension Comment2Snapshot {
             creatorBannedFromCommunity: comment.creatorBannedFromCommunity,
             votes: votes,
             saved: comment.saved,
-            watched: comment.activityAlert
+            notificationsEnabled: comment.activityAlert
         )
     }
     
@@ -47,7 +47,7 @@ public extension Comment2Snapshot {
             creatorBannedFromCommunity: report.creatorBannedFromCommunity,
             votes: votes,
             saved: report.saved,
-            watched: report.activityAlert ?? false
+            notificationsEnabled: report.activityAlert ?? false
         )
     }
 
@@ -68,7 +68,7 @@ public extension Comment2Snapshot {
             creatorBannedFromCommunity: reply.creatorBannedFromCommunity,
             votes: votes,
             saved: reply.saved,
-            watched: reply.activityAlert ?? false
+            notificationsEnabled: reply.activityAlert ?? false
         )
     }
 }
