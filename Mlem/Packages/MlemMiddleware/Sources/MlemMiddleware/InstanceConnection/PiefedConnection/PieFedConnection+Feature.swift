@@ -50,7 +50,7 @@ public extension PieFedConnection {
             version >= .v1_3_0
         case .userNotes, .searchLocalComments, .fetchLinkMetadata:
             version >= .v1_4_0
-        case .moderatorSetNsfw: true
+        case .moderatorSetNsfw, .toggleNotifications: true
         case .modlog:
             version >= .v1_6_10
         default: false

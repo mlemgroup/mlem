@@ -66,4 +66,5 @@ public enum Feature: Hashable {
     case customPostThumbnail
 
     case userNotes
+    case toggleNotifications
 }

@@ -57,8 +57,12 @@ extension ToggleNotificationsAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
-        return .enabled
+        if entity.api.canInteract(appState: environment.appState),
+            entity.api.supports(.toggleNotifications, defaultValue: false) {
+            .enabled
+        } else {
+            .hidden
+        }
     }
 }
 
