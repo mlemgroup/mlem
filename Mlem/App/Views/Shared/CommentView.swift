@@ -182,7 +182,8 @@ struct CommentView<EmbeddedContent: View>: View {
                 ProgressView()
             }
             if comment.notificationsEnabled.value ?? false {
-                Image(icon: .general.show)
+                Image(icon: .lemmy.notification)
+                    .symbolVariant(.fill)
                     .foregroundStyle(.themedSecondary)
             }
             switch moderatorActionGrouping {
