@@ -296,7 +296,7 @@ public extension LemmyConnection {
     }
     
     @discardableResult
-    func watchComment(id: Int, watch: Bool) async throws -> Comment2Snapshot {
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool) async throws -> Comment2Snapshot {
         throw ApiClientError.featureUnsupported
     }
     

@@ -203,8 +203,8 @@ public extension PieFedConnection {
     }
     
     @discardableResult
-    func watchComment(id: Int, watch: Bool) async throws -> Comment2Snapshot {
-        let request = PieFedSubscribeCommentRequest(commentId: id, subscribe: watch)
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool) async throws -> Comment2Snapshot {
+        let request = PieFedSubscribeCommentRequest(commentId: id, subscribe: enabled)
         let response = try await perform(request)
         return try .init(from: response.commentView)
     }

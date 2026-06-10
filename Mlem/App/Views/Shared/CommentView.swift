@@ -181,7 +181,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
-            if comment.watched.value ?? false {
+            if comment.notificationsEnabled.value ?? false {
                 Image(icon: .general.show)
                     .foregroundStyle(.themedSecondary)
             }

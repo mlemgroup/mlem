@@ -151,9 +151,9 @@ extension ApiRepository {
         }
     }
     
-    func watchComment(id: Int, watch: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
-            try await connection.watchComment(id: id, watch: watch)
+            try await connection.setCommentNotificationsEnabled(id: id, enabled: enabled)
         }
     }
     
