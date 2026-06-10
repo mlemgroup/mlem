@@ -25,7 +25,8 @@ public extension Comment2Snapshot {
             creatorIsAdmin: comment.creatorIsAdmin,
             creatorBannedFromCommunity: comment.creatorBannedFromCommunity,
             votes: votes,
-            saved: comment.saved
+            saved: comment.saved,
+            watched: comment.activityAlert
         )
     }
     
@@ -45,7 +46,8 @@ public extension Comment2Snapshot {
             creatorIsAdmin: report.creatorIsAdmin,
             creatorBannedFromCommunity: report.creatorBannedFromCommunity,
             votes: votes,
-            saved: report.saved
+            saved: report.saved,
+            watched: report.activityAlert ?? false
         )
     }
 
@@ -65,7 +67,8 @@ public extension Comment2Snapshot {
             creatorIsAdmin: reply.creatorIsAdmin,
             creatorBannedFromCommunity: reply.creatorBannedFromCommunity,
             votes: votes,
-            saved: reply.saved
+            saved: reply.saved,
+            watched: reply.activityAlert ?? false
         )
     }
 }
