@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ToggleNotificationsAction: SimpleLabelAction {
-    let entity: Comment
+    let entity: any NotificationToggleProviding
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct ToggleNotificationsAction: SimpleLabelAction {
 extension ActionSeed {
     static let toggleNotifications = ActionSeed("toggleNotifications") { entity in
         switch entity {
-        case let entity as Comment: ToggleNotificationsAction(entity: entity)
+        case let entity as any NotificationToggleProviding: ToggleNotificationsAction(entity: entity)
         default: nil
         }
     }

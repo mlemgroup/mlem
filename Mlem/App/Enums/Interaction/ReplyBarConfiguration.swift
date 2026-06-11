@@ -128,6 +128,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration {
                 .selectText,
                 .share,
                 .createImage,
+                .toggleNotifications,
                 .report,
                 .edit,
                 .delete
