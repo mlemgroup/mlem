@@ -12,7 +12,7 @@ struct NotificationIndicatorView: View {
     let entity: any NotificationToggleProviding
 
     var body: some View {
-        if let myPersonId = entity.api.myPerson?.id {
+        if let myPersonId = entity.api.myPerson?.id, entity.api.supports(.toggleNotifications, defaultValue: false) {
             content(myPersonId: myPersonId)
         }
     }
