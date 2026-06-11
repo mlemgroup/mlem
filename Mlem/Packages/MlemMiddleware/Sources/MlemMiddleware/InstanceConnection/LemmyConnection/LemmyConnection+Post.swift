@@ -229,7 +229,6 @@ public extension LemmyConnection {
         }
     }
     
-    // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
         page: Int = 1,
