@@ -49,9 +49,10 @@ internal struct PageCursor: Hashable {
         }
     }
 
-    internal var requireCursorString: String {
+    internal var requireCursorString: String? {
         get throws(PageCursorError) {
             switch cursorType {
+            case .pageNumber(1): nil
             case .pageNumber: throw .pageCursorRequired
             case let .cursorString(value): value
             }

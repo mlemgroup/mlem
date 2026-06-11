@@ -7,29 +7,28 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getPosts(
         communityId: Int,
+        cursor: PageCursor,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
         limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             try LemmyListPostsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.apiType(for: endpoint),
-                page: cursor == nil ? page : nil,
+                page: cursor.pageNumber,
                 limit: limit,
                 communityId: communityId,
                 communityName: nil,
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                pageCursor: cursor,
+                pageCursor: cursor.cursorString,
                 showHidden: showHidden,
                 showRead: nil,
                 showNsfw: nil,
@@ -46,34 +45,35 @@ public extension LemmyConnection {
                 searchUrlOnly: nil
             )
         }
-        return try (
-            posts: response.items.map { try .init(from: $0) },
-            cursor: response.nextPage
+        return try .fromLemmyV3(
+            items: response.items.map { try .init(from: $0) },
+            limit: limit,
+            inputCursor: cursor,
+            outputCursor: response.nextPage
         )
     }
     
     func getPosts(
         feed: ListingType,
+        cursor: PageCursor,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
         limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             try LemmyListPostsRequest(
                 endpoint: endpoint,
                 type_: feed.apiType,
                 sort: sort.apiType(for: endpoint),
-                page: cursor == nil ? page : nil,
+                page: cursor.pageNumber,
                 limit: limit,
                 communityId: nil,
                 communityName: nil,
                 savedOnly: filter == .saved,
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
-                pageCursor: cursor,
+                pageCursor: cursor.cursorString,
                 showHidden: showHidden,
                 showRead: nil,
                 showNsfw: nil,
@@ -90,9 +90,11 @@ public extension LemmyConnection {
                 searchUrlOnly: nil
             )
         }
-        return try (
-            posts: response.items.map { try .init(from: $0) },
-            cursor: response.nextPage
+        return try .fromLemmyV3(
+            items: response.items.map { try .init(from: $0) },
+            limit: limit,
+            inputCursor: cursor,
+            outputCursor: response.nextPage
         )
     }
 
@@ -100,34 +102,39 @@ public extension LemmyConnection {
         personId: Int,
         communityId: Int? = nil,
         sort: PostSortType = .new,
-        page: Int,
+        cursor: PageCursor,
         limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot]) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
-            LemmyReadPersonRequest(
+            if endpoint == .v4 {
+                // TODO
+                throw ApiClientError.featureUnsupported
+            }
+            return LemmyReadPersonRequest(
                 endpoint: endpoint,
                 personId: personId,
                 username: nil,
                 sort: sort.v3ApiType,
-                page: page,
+                page: try cursor.requirePageNumber,
                 limit: limit,
                 communityId: communityId,
                 savedOnly: savedOnly
             )
         }
-        return try (
-            person: .init(from: response),
-            posts: response.posts?.map { try .init(from: $0) } ?? []
+        return try .fromLemmyV3(
+            items: response.posts?.map { try .init(from: $0) } ?? [],
+            limit: limit,
+            inputCursor: cursor,
+            outputCursor: nil
         )
     }
 
     func getPostHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
+        cursor: PageCursor,
         limit: Int
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
@@ -136,9 +143,7 @@ public extension LemmyConnection {
                 // unsupported and requiring a page number instead.
                 // See LemmyNet/lemmy#6171
 
-                guard let page else {
-                    throw ApiClientError.featureUnsupported
-                }
+                let page = try cursor.requirePageNumber
 
                 let request = LemmyListPostsRequest(
                     endpoint: .v3,
@@ -168,43 +173,45 @@ public extension LemmyConnection {
                     searchUrlOnly: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)        
-                return try (
-                    posts: response.items.map { try .init(from: $0) },
+                return try .fromLemmyV3(
+                    items: response.items.map { try .init(from: $0) },
+                    limit: limit,
+                    inputCursor: cursor,
                     // Cursor intentionally omitted here. See comment above
-                    cursor: nil
+                    outputCursor: nil
                 )
-            case .v4:
-                if let page, page != 1 {
-                    throw ApiClientError.featureUnsupported
-                }
 
-                switch type {
-                case .saved:
-                let request = LemmyListPersonSavedRequest(
-                    type_: .all,
-                    searchTerm: nil,
-                    pageCursor: cursor,
-                    limit: limit
-                )
-                let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    posts: response.items.compactMap(\.postValue).map { try .init(from: $0) },
-                    cursor: response.nextPage
-                )
-                default: 
-                let request = LemmyListPersonLikedRequest(
-                    type_: .all,
-                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
-                    pageCursor: cursor,
-                    limit: limit
-                )
-                let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    posts: response.items.compactMap(\.postValue).map { try .init(from: $0) },
-                    cursor: response.nextPage
-                )
-                }
+            case .v4:
+                let response = try await self.v4GetPostHistory(type: type, cursor: cursor, limit: limit)
+                return try .init(from: response.toPostsResponse()) { try .init(from: $0) }
             }
+        }
+    }
+
+    private func v4GetPostHistory(
+        type: GetContentFilter,
+        cursor: PageCursor,
+        limit: Int
+    ) async throws -> LemmyPagedResponse<LemmyPostCommentCombinedView> {
+        let cursorString = try cursor.requireCursorString
+
+        switch type {
+        case .saved:
+            let request = LemmyListPersonSavedRequest(
+                type_: .all,
+                searchTerm: nil,
+                pageCursor: cursorString,
+                limit: limit
+            )
+            return try await self.perform(request, endpoint: .v4)
+        case .upvoted, .downvoted:
+            let request = LemmyListPersonLikedRequest(
+                type_: .all,
+                likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                pageCursor: cursorString,
+                limit: limit
+            )
+            return try await self.perform(request, endpoint: .v4)
         }
     }
 
@@ -231,13 +238,13 @@ public extension LemmyConnection {
     
     func searchPosts(
         query: String,
-        page: Int = 1,
+        cursor: PageCursor,
         limit: Int = 20,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: PostSortType
-    ) async throws -> [Post2Snapshot] {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(
                 endpoint: endpoint,
@@ -248,7 +255,7 @@ public extension LemmyConnection {
                 type_: .posts,
                 sort: sort.v3ApiType,
                 listingType: filter.apiType,
-                page: page,
+                page: try cursor.requirePageNumber,
                 limit: limit,
                 postTitleOnly: false,
                 searchTerm: query,
@@ -260,7 +267,12 @@ public extension LemmyConnection {
                 pageCursor: nil
             )
         }
-        return try response.posts.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            items: response.posts.map { try .init(from: $0) },
+            limit: limit,
+            inputCursor: cursor,
+            outputCursor: nil
+        )
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
@@ -499,19 +511,24 @@ public extension LemmyConnection {
     @discardableResult
     func getPostVotes(
         id: Int,
-        page: Int = 1,
+        cursor: PageCursor,
         limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
+    ) async throws -> PagedResponse<PersonVoteSnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListPostLikesRequest(
                 endpoint: endpoint,
                 postId: id,
-                page: page,
+                page: try cursor.requirePageNumber,
                 limit: limit,
                 pageCursor: nil
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            items: response.items.map { try .init(from: $0) },
+            limit: limit,
+            inputCursor: cursor,
+            outputCursor: nil
+        )
     }
 
     @discardableResult

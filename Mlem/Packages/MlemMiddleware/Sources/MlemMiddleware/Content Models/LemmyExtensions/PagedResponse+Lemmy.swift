@@ -8,7 +8,10 @@
 import Foundation
 
 extension PagedResponse {
-    init<T>(from response: LemmyPagedResponse<T>, converter: (T) -> Value) {
+    init<T, E>(
+        from response: LemmyPagedResponse<T>,
+        converter: (T) throws(E) -> Value
+    ) throws(E) {
 
         let nextLocation: PageLocation
 
@@ -18,7 +21,7 @@ extension PagedResponse {
             nextLocation = .end
         }
 
-        self.init(items: response.items.map(converter), nextLocation: nextLocation)
+        try self.init(items: response.items.map(converter), nextLocation: nextLocation)
     }
 
     // On Lemmy v3, some requests use the page number system and others
