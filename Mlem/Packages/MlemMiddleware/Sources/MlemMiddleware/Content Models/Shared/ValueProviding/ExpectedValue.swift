@@ -24,6 +24,16 @@ public struct ExpectedValue<T>: ValueProviding {
         }
         return nil
     }
+
+    public var tryValue: T {
+        get throws(ExpectedValueError) {
+            if let value_ {
+                return value_
+            } else {
+                throw .init()
+            }
+        }
+    }
     
     /// Callback expected to update value_
     let provideValue: () async throws -> Void
@@ -38,4 +48,8 @@ func dummyExpectedValue<T>(_ value: T?) -> ExpectedValue<T> {
     .init(
         value: value,
         provideValue: { assertionFailure("Dummy function! This should not be called") })
+}
+
+public struct ExpectedValueError: Error, CustomStringConvertible {
+    public let description: String = "Called `.tryValue` and the value was not present."
 }

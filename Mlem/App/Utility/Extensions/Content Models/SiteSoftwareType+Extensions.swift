@@ -9,6 +9,13 @@ import Foundation
 import MlemMiddleware
 
 extension SiteSoftwareType {
+    var label: LocalizedStringResource {
+        switch self {
+        case .lemmy: "Lemmy"
+        case .pieFed: "PieFed"
+        }
+    }
+
     var minimumSupportedVersion: SiteVersion {
         switch self {
         case .lemmy: .init("0.19.0")

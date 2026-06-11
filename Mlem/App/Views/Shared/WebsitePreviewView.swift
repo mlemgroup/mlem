@@ -11,19 +11,22 @@ import SwiftUI
 
 struct WebsitePreviewView: View {
     @Environment(\.openURL) private var openURL
+    @Environment(MediaTracker.self) var mediaTracker
     
     @Setting(\.post_webPreview_showIcon) var showFavicons
     @Setting(\.behavior_muteVideos) var muteVideos
 
     let shouldBlur: Bool
+    let nsfw: Bool
     
     let link: PostLink
     var onTapActions: (() -> Void)?
     
-    init(link: PostLink, shouldBlur: Bool, onTapActions: (() -> Void)? = nil) {
+    init(link: PostLink, shouldBlur: Bool, nsfw: Bool, onTapActions: (() -> Void)? = nil) {
         self.link = link
         self.onTapActions = onTapActions
         self.shouldBlur = shouldBlur
+        self.nsfw = nsfw
     }
     
     var body: some View {
@@ -61,15 +64,17 @@ struct WebsitePreviewView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let thumbnailUrl = link.effectiveThumbnail {
                 MediaView(
-                    url: thumbnailUrl,
-                    controlState: .constant(.init(
-                        blurred: shouldBlur,
-                        animating: false,
-                        muted: muteVideos
-                    )),
+                    controlState: mediaTracker.controlState(for: thumbnailUrl) {
+                        .init(
+                            url: thumbnailUrl,
+                            blurred: shouldBlur,
+                            animating: false,
+                            muted: muteVideos
+                        )
+                    },
                     aspectRatioBounds: .bounded(vertical: .init(width: 1, height: 1), horizontal: nil),
                     contentMode: .fill,
-                    overlays: shouldBlur ? [.controls, .nsfw, .error] : [.controls, .error]
+                    overlays: shouldBlur || nsfw ? [.controls, .nsfw, .error] : [.controls, .error]
                 )
                 .overlay(alignment: .bottomLeading) {
                     LinkHostView(link: link, withCapsule: true)

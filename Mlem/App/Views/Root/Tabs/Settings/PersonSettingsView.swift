@@ -21,6 +21,9 @@ struct PersonSettingsView: View {
             .gradientTint(.themedPersonAccent)
             Section {
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.person)))
+                NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_person)))
+            }
+            Section {
                 NavigationLink(
                     "Show Account Age",
                     value: .init(localized: accountAgeVisibility.label),

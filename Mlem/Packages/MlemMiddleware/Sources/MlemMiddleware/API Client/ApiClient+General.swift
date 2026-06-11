@@ -22,6 +22,10 @@ public extension ApiClient {
         }
         return myAdminIndex < targetAdminIndex
     }
+
+    func getSoftwareFallback() async throws -> SiteSoftware {
+        try await repository.getSoftwareFallback()
+    }
     
     func getAccountToken(usernameOrEmail: String, password: String, totpToken: String?) async throws -> String {
         try await repository.getAccountToken(usernameOrEmail: usernameOrEmail, password: password, totpToken: totpToken)

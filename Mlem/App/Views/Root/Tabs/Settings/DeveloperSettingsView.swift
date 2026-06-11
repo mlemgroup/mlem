@@ -16,6 +16,7 @@ import Theming
 // be burdening translators with these when they'll never be used
 
 struct DeveloperSettingsView: View {
+    @Environment(AppState.self) var appState
     @Environment(BackendClient.self) var backendClient
     @Environment(EventsTracker.self) var eventsTracker
     
@@ -93,6 +94,10 @@ struct DeveloperSettingsView: View {
                     
                     Button(String("Reset Feed TestFlight Banner")) {
                         lastTestFlightUpdate = nil
+                    }
+
+                    Button(String("Reset Version Warning")) {
+                        appState.firstAccount.ignoreVersionWarning(false)
                     }
                 
                     Button(String("Create Error")) {

@@ -35,6 +35,7 @@ struct ContentView: View {
     var appState: AppState { .main }
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
+    var mediaTracker: MediaTracker { .main }
 
     var filtersTracker: FiltersTracker { .main }
     var errorsTracker: ErrorsTracker { .main }
@@ -79,6 +80,7 @@ struct ContentView: View {
                 .environment(expandedPostHistoryTracker)
                 .environment(backendClient)
                 .environment(eventsTracker)
+                .environment(mediaTracker)
                 .environment(ToastModel.main)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
@@ -102,6 +104,11 @@ struct ContentView: View {
                                 handleError(error)
                             }
                         }
+                    }
+                }
+                .onChange(of: appState.firstAccount.shouldShowVersionWarning, initial: true) {
+                    if appState.firstAccount.shouldShowVersionWarning, navigationModel.layers.isEmpty {
+                        navigationModel.openSheet(.unsupportedVersion(appState.firstAccount))
                     }
                 }
                 .onChange(of: scenePhase) {
