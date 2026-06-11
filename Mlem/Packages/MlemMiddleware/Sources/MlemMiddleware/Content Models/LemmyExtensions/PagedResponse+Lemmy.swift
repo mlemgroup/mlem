@@ -28,26 +28,25 @@ extension PagedResponse {
     // use the cursor system. This method decodes both cases.
     //
     static func fromLemmyV3(
+        pageInfo info: PageInfo,
         items: [Value],
-        limit: Int,
-        inputCursor: PageCursor,
-        outputCursor outputCursor_: String?
+        nextCursor nextCursor_: String?
     ) throws(PageCursor.PageCursorError) -> Self {
-        let outputCursor = outputCursor_.map { PageCursor(cursorType: .cursorString($0)) }
+        let nextCursor = nextCursor_.map { PageCursor(cursorType: .cursorString($0)) }
 
         let nextLocation: PageLocation
 
-        if let outputCursor {
+        if let nextCursor {
             // On Lemmy v3, getting an identical cursor signals the end of the feed.
-            if outputCursor != inputCursor {
-                nextLocation = .at(outputCursor)
+            if nextCursor != info.cursor {
+                nextLocation = .at(nextCursor)
             } else {
                 nextLocation = .end
             }
-        } else if items.count < limit {
+        } else if items.count < info.limit {
             nextLocation = .end
         } else {
-            let cursor = try inputCursor.stepForward()
+            let cursor = try info.cursor.stepForward()
             nextLocation = .at(cursor)
         } 
 
