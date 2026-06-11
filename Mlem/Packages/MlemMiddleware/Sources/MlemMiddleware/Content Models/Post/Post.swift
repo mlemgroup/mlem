@@ -30,7 +30,8 @@ public class Post:
     DeletableProviding,
     ReportableProviding,
     RemovableProviding,
-    PurgableProviding {    
+    PurgableProviding,
+    NotificationToggleProviding {
     public typealias Properties = PostProperties
     
     public var api: ApiClient

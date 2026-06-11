@@ -20,7 +20,8 @@ public class Comment:
     PurgableProviding,
     CommentResolvable,
     Sharable,
-    PersonContentProviding {
+    PersonContentProviding,
+    NotificationToggleProviding {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
