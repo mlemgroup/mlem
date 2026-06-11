@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getComment(id: Int) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetCommentRequest(endpoint: endpoint, id: id)
@@ -27,19 +27,18 @@ public extension LemmyConnection {
     
     func getComments(
         sort: CommentSortType,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int?,
-        limit: Int,
         filter: GetContentFilter?
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.v3CommentApiType,
                 maxDepth: maxDepth,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 communityName: nil,
                 postId: nil,
@@ -54,25 +53,28 @@ public extension LemmyConnection {
                 searchTerm: nil
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.items.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
 
     func getComments(
         postId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.v3CommentApiType,
                 maxDepth: maxDepth,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 communityName: nil,
                 postId: postId,
@@ -81,31 +83,34 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
+                pageCursor: pageInfo.cursor.cursorString,
                 creatorId: nil,
                 creatorUsername: nil,
                 searchTerm: nil
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.items.map { try .init(from: $0) },
+            nextCursor: response.nextPage
+        )
     }
     
     func getComments(
         parentId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommentsRequest(
                 endpoint: endpoint,
                 type_: .all,
                 sort: sort.v3CommentApiType,
                 maxDepth: maxDepth,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 communityName: nil,
                 postId: nil,
@@ -114,27 +119,32 @@ public extension LemmyConnection {
                 likedOnly: filter == .upvoted,
                 dislikedOnly: filter == .downvoted,
                 timeRangeSeconds: sort.timeRangeSeconds,
-                pageCursor: nil,
+                pageCursor: pageInfo.cursor.cursorString,
                 creatorId: nil,
                 creatorUsername: nil,
                 searchTerm: nil
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.items.map { try .init(from: $0) },
+            nextCursor: response.nextPage
+        )
     }
 
     func getCommentHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                guard let page else {
-                    throw ApiClientError.featureUnsupported
-                }
+                // Cursors are supported on v3, but are super slow when
+                // querying saved posts. For that reason, we're considering them
+                // unsupported and requiring a page number instead.
+                // See LemmyNet/lemmy#6171
+
+                let page = try pageInfo.cursor.requirePageNumber
 
                 let request = LemmyListCommentsRequest(
                     endpoint: .v3,
@@ -142,7 +152,7 @@ public extension LemmyConnection {
                     sort: .new,
                     maxDepth: nil,
                     page: page,
-                    limit: limit,
+                    limit: pageInfo.limit,
                     communityId: nil,
                     communityName: nil,
                     postId: nil,
@@ -157,54 +167,53 @@ public extension LemmyConnection {
                     searchTerm: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)
-                return try (
-                    comments: response.items.map { try .init(from: $0) },
-                    cursor: response.nextPage
+                return try .fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: response.items.map { try .init(from: $0) },
+                    // Cursor intentionally omitted here. See comment above
+                    nextCursor: nil
                 )
             case .v4:
-                switch type {
-                case .saved:
-                let request = LemmyListPersonSavedRequest(
-                    type_: .comments,
-                    searchTerm: nil,
-                    pageCursor: cursor,
-                    limit: limit
-                )
-                let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    comments: response.items.compactMap(\.commentValue).map {
-                        try .init(from: $0)
-                    },
-                    cursor: response.nextPage
-                )
-                default:
-                let request = LemmyListPersonLikedRequest(
-                    type_: .comments,
-                    likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
-                    pageCursor: cursor,
-                    limit: limit
-                )
-                let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    comments: response.items.compactMap(\.commentValue).map {
-                        try .init(from: $0)
-                    },
-                    cursor: response.nextPage
-                )
-                }
+                let response = try await self.v4GetCommentHistory(type: type, pageInfo: pageInfo)
+                return try .init(from: response.toCommentsResponse()) { try .init(from: $0) }
             }
         }
     }
     
+    private func v4GetCommentHistory(
+        type: GetContentFilter,
+        pageInfo: PageInfo
+    ) async throws -> LemmyPagedResponse<LemmyPostCommentCombinedView> {
+        let cursorString = try pageInfo.cursor.requireCursorString
+
+        switch type {
+        case .saved:
+            let request = LemmyListPersonSavedRequest(
+                type_: .all,
+                searchTerm: nil,
+                pageCursor: cursorString,
+                limit: pageInfo.limit
+            )
+            return try await self.perform(request, endpoint: .v4)
+        case .upvoted, .downvoted:
+            let request = LemmyListPersonLikedRequest(
+                type_: .all,
+                likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
+                pageCursor: cursorString,
+                limit: pageInfo.limit
+            )
+            return try await self.perform(request, endpoint: .v4)
+        }
+    }
+
     func searchComments(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmySearchRequest(
                 endpoint: endpoint,
@@ -215,8 +224,8 @@ public extension LemmyConnection {
                 type_: .comments,
                 sort: sort.v3PostApiType,
                 listingType: filter.apiType,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 postTitleOnly: false,
                 searchTerm: query,
                 creatorUsername: nil,
@@ -227,7 +236,11 @@ public extension LemmyConnection {
                 pageCursor: nil
             )
         }
-        return try response.comments.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.comments.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
     
     @discardableResult
@@ -328,20 +341,20 @@ public extension LemmyConnection {
     }
     
     @discardableResult
-    func getCommentVotes(
-        id: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
+    func getCommentVotes(id: Int, pageInfo: PageInfo) async throws -> PagedResponse<PersonVoteSnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommentLikesRequest(
                 endpoint: endpoint,
                 commentId: id,
-                page: page,
-                limit: limit,
-                pageCursor: nil
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.items.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
 }
