@@ -5,7 +5,7 @@
 //  Created by Sjmarf on 2026-06-11.
 //
 
-internal struct PageCursor: Hashable {
+public struct PageCursor: Hashable {
     internal enum CursorType: Hashable {
         case pageNumber(Int) // Starts at 1
         case cursorString(String)
@@ -22,7 +22,7 @@ internal struct PageCursor: Hashable {
         self.cursorType = cursorType
     }
 
-    internal static var first: PageCursor {
+    public static var first: PageCursor {
         .init(cursorType: .pageNumber(1))
     }
 
@@ -72,7 +72,7 @@ extension PageCursor: CustomStringConvertible {
         }
     }
 
-    var description: String {
+    public var description: String {
         "PageCursor(\(innerDescription))"
     }
 }

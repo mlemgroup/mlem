@@ -5,7 +5,12 @@
 //  Created by Sjmarf on 2026-06-11.
 //
 
-internal struct PagedResponse<Value> {
-    let items: [Value]
-    let nextLocation: PageLocation
+public struct PagedResponse<Value> {
+    public let items: [Value]
+    public let nextLocation: PageLocation
+
+    public init(items: [Value], nextLocation: PageLocation) {
+        self.items = items
+        self.nextLocation = nextLocation
+    }
 }
