@@ -61,7 +61,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
     var inbox_showRead: Bool
-    var links_displayMode: TappableLinksDisplayMode
+    var links_displayMode: TapFriendlyLinksDisplayMode
     var links_openInBrowser: Bool
     var links_readerMode: Bool
     var links_shareMode: LinkSharingMode
@@ -219,7 +219,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
             self.tab_inbox_badgeIncludedTypes = includedTypes
         }
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
-        self.links_displayMode = try container.decodeIfPresent(TappableLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
+        self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
         self.links_shareMode = try container.decodeIfPresent(LinkSharingMode.self, forKey: ._links_shareMode) ?? .myInstance
@@ -231,7 +231,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_dismissThreshold = try container.decodeIfPresent(Int.self, forKey: ._imageViewer_dismissThreshold) ?? 10
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
-        self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .divider
+        self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
         self.post_defaultSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_defaultSort) ?? .hot
         self.post_fallbackSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_fallbackSort) ?? .hot
         self.post_limitImageHeight = try container.decodeIfPresent(Bool.self, forKey: ._post_limitImageHeight) ?? true
@@ -346,7 +346,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_dismissThreshold = 10
         self.media_animatedAvatars = UIAccessibility.isReduceMotionEnabled ? .never : .always
         self.menus_allModActions = false
-        self.menus_modActionGrouping = .divider
+        self.menus_modActionGrouping = .combined
         self.post_defaultSort = .hot
         self.post_fallbackSort = .hot
         self.post_limitImageHeight = true

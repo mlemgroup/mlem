@@ -44,9 +44,14 @@ struct CollapsibleSection<Content: View>: View {
                 }
                 .font(.footnote)
                 .contentShape(.rect)
-                .onTapGesture { withAnimation(.default) { collapsed.toggle() }}
-                .padding(.vertical, 6)
-                .padding(.horizontal, 16)
+                .onTapGesture {
+                    withAnimation(.default) {
+                        collapsed.toggle()
+                    }
+                }
+                .padding(.vertical, 12)
+                .padding(.leading, 20)
+                .padding(.trailing, 16)
             }
             
             if !collapsed {
@@ -66,7 +71,7 @@ struct CollapsibleSection<Content: View>: View {
             }
         }
         .background(.themedSecondaryGroupedBackground)
-        .clipShape(RoundedRectangle(cornerRadius: Constants.main.mediumItemCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: UIDevice.isIos26 ? 24 : 16))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
     }

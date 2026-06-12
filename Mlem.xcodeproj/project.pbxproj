@@ -77,6 +77,9 @@
 		032509282FD566B6006F8394 /* CommunitySortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */; };
 		0325092A2FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */; };
 		0325092C2FD58E35006F8394 /* PersonSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */; };
+		03250CE82FD71085006F8394 /* AvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CE72FD71085006F8394 /* AvatarSettingsView.swift */; };
+		03250CEA2FD71303006F8394 /* CacheSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CE92FD71303006F8394 /* CacheSettingsView.swift */; };
+		03250CEC2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */; };
 		0325B93A2D3A9E8100E28B97 /* InboxBadgeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */; };
 		0325B93C2D3AA62500E28B97 /* InboxItemType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */; };
 		0325B93E2D3AAE9E00E28B97 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */; };
@@ -142,14 +145,14 @@
 		03500C272BF69D1D00CAA076 /* ToastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C262BF69D1D00CAA076 /* ToastModel.swift */; };
 		03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */; };
 		03500C2D2BF7FC2500CAA076 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03500C2C2BF7FC2500CAA076 /* ToastView.swift */; };
-		03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */; };
+		03531EEC2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */; };
 		03531EEE2C2D9298004A3464 /* SearchSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EED2C2D9298004A3464 /* SearchSheetView.swift */; };
 		03531EF12C2DA298004A3464 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF02C2DA298004A3464 /* SearchResultsView.swift */; };
 		03531EF52C2DA610004A3464 /* NavigationSearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03531EF42C2DA610004A3464 /* NavigationSearchType.swift */; };
 		035394862C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394852C9CDC1100795AA5 /* SubscriptionListNavigationButton.swift */; };
 		0353948B2CA076D000795AA5 /* InboxView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948A2CA076D000795AA5 /* InboxView+Views.swift */; };
 		0353948D2CA080EB00795AA5 /* FeedWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948C2CA080EB00795AA5 /* FeedWelcomeView.swift */; };
-		0353948F2CA088E600795AA5 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */; };
+		0353948F2CA088E600795AA5 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0353948E2CA088E600795AA5 /* DeveloperSettingsView.swift */; settings = {COMPILER_FLAGS = DEBUG; }; };
 		035394932CA1AE2C00795AA5 /* UptimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394922CA1AE2C00795AA5 /* UptimeData.swift */; };
 		035394952CA1AE6300795AA5 /* InstanceUptimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394942CA1AE6300795AA5 /* InstanceUptimeView.swift */; };
 		035394992CA1B20B00795AA5 /* InstanceView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035394982CA1B20B00795AA5 /* InstanceView+Logic.swift */; };
@@ -291,7 +294,7 @@
 		039F58972C7B68F100C61658 /* AboutMlemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58962C7B68F100C61658 /* AboutMlemView.swift */; };
 		039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58982C7B697D00C61658 /* Bundle+Extensions.swift */; };
 		03A630ED2D497005009A47A6 /* ExternalLinkSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */; };
-		03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */; };
+		03A630EF2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */; };
 		03A630F12D497674009A47A6 /* ShieldsBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */; };
 		03A630F42D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */; };
 		03A6315E2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6315D2D4D1A1B009A47A6 /* DefaultFeedSettingsView.swift */; };
@@ -702,6 +705,9 @@
 		032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunitySortType+Extensions.swift"; sourceTree = "<group>"; };
 		032509292FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActiveUserTimeRange+Extensions.swift"; sourceTree = "<group>"; };
 		0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonSortType+Extensions.swift"; sourceTree = "<group>"; };
+		03250CE72FD71085006F8394 /* AvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSettingsView.swift; sourceTree = "<group>"; };
+		03250CE92FD71303006F8394 /* CacheSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSettingsView.swift; sourceTree = "<group>"; };
+		03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorToastTimeoutSettingsView.swift; sourceTree = "<group>"; };
 		0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBadgeSettingsView.swift; sourceTree = "<group>"; };
 		0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InboxItemType+Extensions.swift"; sourceTree = "<group>"; };
 		0325B93D2D3AAE9E00E28B97 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
@@ -765,7 +771,7 @@
 		03500C262BF69D1D00CAA076 /* ToastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModel.swift; sourceTree = "<group>"; };
 		03500C2A2BF7F1B100CAA076 /* ToastOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlayView.swift; sourceTree = "<group>"; };
 		03500C2C2BF7FC2500CAA076 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkSettingsView.swift; sourceTree = "<group>"; };
+		03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAndLinksSettingsView.swift; sourceTree = "<group>"; };
 		03531EED2C2D9298004A3464 /* SearchSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheetView.swift; sourceTree = "<group>"; };
 		03531EF02C2DA298004A3464 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		03531EF42C2DA610004A3464 /* NavigationSearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchType.swift; sourceTree = "<group>"; };
@@ -908,7 +914,7 @@
 		039F58962C7B68F100C61658 /* AboutMlemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMlemView.swift; sourceTree = "<group>"; };
 		039F58982C7B697D00C61658 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkSettingsView.swift; sourceTree = "<group>"; };
-		03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableLinksSettingsView.swift; sourceTree = "<group>"; };
+		03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapFriendlyLinksSettingsView.swift; sourceTree = "<group>"; };
 		03A630F02D497674009A47A6 /* ShieldsBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsBadgeView.swift; sourceTree = "<group>"; };
 		03A630F32D4976EB009A47A6 /* ShieldsBadgeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShieldsBadgeView+Logic.swift"; sourceTree = "<group>"; };
 		03A6315C2D4D15F1009A47A6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1328,7 +1334,10 @@
 			isa = PBXGroup;
 			children = (
 				81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */,
+				03250CE72FD71085006F8394 /* AvatarSettingsView.swift */,
 				CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */,
+				03250CE92FD71303006F8394 /* CacheSettingsView.swift */,
+				03250CEB2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift */,
 				0368F3672D7349C2007DEB70 /* Discussion Languages */,
 				CD3485BC2D50156E006748B8 /* ZoomSliderSettingsView.swift */,
 				039F58962C7B68F100C61658 /* AboutMlemView.swift */,
@@ -1363,11 +1372,11 @@
 				CDD4A09F2C8B985D0001AD1A /* ImportExportSettingsView.swift */,
 				0325B9392D3A9E8100E28B97 /* InboxBadgeSettingsView.swift */,
 				039F58942C7B618F00C61658 /* InboxSettingsView.swift */,
-				03531EEB2C2D81DC004A3464 /* LinkSettingsView.swift */,
+				03531EEB2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift */,
 				038E5C122F6D617C00C54DEB /* ImageViewerSettingsView.swift */,
 				038E5E882F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift */,
 				038E5E8A2F6D6C3800C54DEB /* ImageViewerDismissSettingsView.swift */,
-				03A630EE2D497143009A47A6 /* TappableLinksSettingsView.swift */,
+				03A630EE2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift */,
 				03A630EC2D497005009A47A6 /* ExternalLinkSettingsView.swift */,
 				030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */,
 				038028D72CACAB960091A8A2 /* ModeratorSettingsView.swift */,
@@ -2785,7 +2794,7 @@
 				039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD332D792CA7175500A53988 /* PlayButton.swift in Sources */,
 				03A9FD1E2D7CFF0D007A734D /* Palette+Dracula.swift in Sources */,
-				03531EEC2C2D81DC004A3464 /* LinkSettingsView.swift in Sources */,
+				03531EEC2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift in Sources */,
 				038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */,
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
 				039F588A2C7B54FE00C61658 /* GeneralSettingsView.swift in Sources */,
@@ -2861,7 +2870,7 @@
 				035BE08D2BDE88EC00F77D73 /* NavigationLayerView.swift in Sources */,
 				035BE0872BDD8DA000F77D73 /* NavigationRootView.swift in Sources */,
 				03A9FD182D7CFC20007A734D /* Palette+Oled.swift in Sources */,
-				03A630EF2D497143009A47A6 /* TappableLinksSettingsView.swift in Sources */,
+				03A630EF2D497143009A47A6 /* TapFriendlyLinksSettingsView.swift in Sources */,
 				038E62E02F6F0FC600C54DEB /* ContextMenuConfiguration.swift in Sources */,
 				CDCC7FF12D9B27D800CE18DA /* ZoomRecognizerCoordinator+GestureRecognition.swift in Sources */,
 				0315B1BE2C74C3D6006D4F82 /* CommentEditorView+Logic.swift in Sources */,
@@ -2904,8 +2913,10 @@
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
+				03250CEA2FD71303006F8394 /* CacheSettingsView.swift in Sources */,
 				CDDA49A82F7044D2004A5AFF /* InstanceStubResolutionPage.swift in Sources */,
 				0320B6672C93504600D38548 /* SignUpView+Logic.swift in Sources */,
+				03250CE82FD71085006F8394 /* AvatarSettingsView.swift in Sources */,
 				03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */,
 				814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,
@@ -3282,6 +3293,7 @@
 				036ED67D2D0B006C0018E5EA /* TopSortPicker.swift in Sources */,
 				030FF67F2BC8544700F6BFAC /* CustomTabBarController.swift in Sources */,
 				CD4D58F82B87B0D100B82964 /* InternetSpeed.swift in Sources */,
+				03250CEC2FD71722006F8394 /* ErrorToastTimeoutSettingsView.swift in Sources */,
 				0353949C2CA4B3E800795AA5 /* CrossPostListView.swift in Sources */,
 				0382A7F02C09F0F800C79DDA /* PersonView.swift in Sources */,
 				CDBFCB6C2C054AA7008CD468 /* TilePostView.swift in Sources */,

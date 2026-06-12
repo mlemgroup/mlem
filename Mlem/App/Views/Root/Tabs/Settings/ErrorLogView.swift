@@ -17,7 +17,7 @@ struct ErrorLogView: View {
         FancyScrollView {
             LazyVStack(spacing: Constants.main.standardSpacing) {
                 if errorsTracker.errors.isEmpty {
-                    Text(verbatim: "No errors")
+                    Text("No errors")
                         .foregroundStyle(.themedSecondary)
                 }
                 ForEach(Array(errorsTracker.errors.enumerated()), id: \.offset) { _, errorDetails in
@@ -27,7 +27,7 @@ struct ErrorLogView: View {
             }
         }
         .themedGroupedBackground()
-        .navigationTitle(String("Error Log"))
+        .navigationTitle("Error Log")
         .toolbar {
             if !errorsTracker.errors.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -39,7 +39,7 @@ struct ErrorLogView: View {
                             ) {
                                 navigation.model?.shareInfo = .init(url: url)
                             } else {
-                                ToastModel.main.add(.failure(String("Failed to share error log")))
+                                ToastModel.main.add(.failure("Failed to share error log"))
                             }
                         }
                     } label: {
@@ -54,14 +54,14 @@ struct ErrorLogView: View {
     func errorView(_ details: ErrorDetails) -> some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                Text(details.title ?? "Error")
+                Text(details.title ?? .init(localized: "Error"))
                     .fontWeight(.semibold)
                 
                 Spacer()
                 
                 Button {
                     UIPasteboard.general.string = details.errorText()
-                    ToastModel.main.add(.success(String("Copied")))
+                    ToastModel.main.add(.success("Copied"))
                 } label: {
                     Text(Image(icon: .general.copy))
                         .font(.subheadline)

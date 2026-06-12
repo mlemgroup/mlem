@@ -504,6 +504,9 @@
         }
       }
     },
+    "%lld Errors" : {
+
+    },
     "%lld more links..." : {
       "localizations" : {
         "en" : {
@@ -1444,6 +1447,9 @@
         }
       }
     },
+    "Avatars" : {
+
+    },
     "Average: %@" : {
       "localizations" : {
         "fr" : {
@@ -1463,6 +1469,9 @@
           }
         }
       }
+    },
+    "Backend Status" : {
+
     },
     "Ban" : {
       "localizations" : {
@@ -1861,6 +1870,9 @@
         }
       }
     },
+    "Cache Usage" : {
+
+    },
     "Cake Day" : {
       "localizations" : {
         "fr" : {
@@ -2107,6 +2119,12 @@
     "Choose when the image viewer controls should appear." : {
 
     },
+    "Choose whether avatars should be shown, and whether they should animate." : {
+
+    },
+    "Choose whether moderator actions appear in a separate menu." : {
+
+    },
     "Choose whether to show a user's account age next to their username." : {
       "localizations" : {
         "fr" : {
@@ -2315,6 +2333,9 @@
         }
       }
     },
+    "Combined" : {
+
+    },
     "Comment" : {
       "localizations" : {
         "fr" : {
@@ -2427,6 +2448,9 @@
           }
         }
       }
+    },
+    "Communities Only" : {
+
     },
     "Community" : {
       "localizations" : {
@@ -2893,7 +2917,18 @@
         }
       }
     },
+    "Customize how long error notifications remain on-screen." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how long error notifications remain on-screen."
+          }
+        }
+      }
+    },
     "Customize how moderator actions are separated from regular actions in context menus." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2950,7 +2985,14 @@
       }
     },
     "Customize the appearance of instances." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of instances."
+          }
+        }
+      }
     },
     "Customize the appearance of the tab bar." : {
       "localizations" : {
@@ -2963,7 +3005,14 @@
       }
     },
     "Customize the appearance of users." : {
-
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of users."
+          }
+        }
+      }
     },
     "Customize the image viewer's buttons and gestures." : {
       "localizations" : {
@@ -3044,6 +3093,9 @@
           }
         }
       }
+    },
+    "Default: %@" : {
+
     },
     "Delete" : {
       "localizations" : {
@@ -3187,6 +3239,9 @@
         }
       }
     },
+    "Developer Mode" : {
+
+    },
     "Diagnosing..." : {
       "localizations" : {
         "fr" : {
@@ -3249,6 +3304,7 @@
       }
     },
     "Disk Usage" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3295,6 +3351,7 @@
       }
     },
     "Divider" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3587,6 +3644,12 @@
           }
         }
       }
+    },
+    "Error Log" : {
+
+    },
+    "Error Notification Timeout" : {
+
     },
     "EULA" : {
       "localizations" : {
@@ -3883,6 +3946,9 @@
           }
         }
       }
+    },
+    "Failed to share error log" : {
+
     },
     "Failed to unblock!" : {
       "localizations" : {
@@ -5768,6 +5834,12 @@
         }
       }
     },
+    "No errors" : {
+
+    },
+    "No Errors" : {
+
+    },
     "No image" : {
       "localizations" : {
         "fr" : {
@@ -7227,6 +7299,12 @@
         }
       }
     },
+    "Refreshed at %@" : {
+
+    },
+    "Refreshing..." : {
+
+    },
     "Registration" : {
       "localizations" : {
         "fr" : {
@@ -7919,6 +7997,9 @@
         }
       }
     },
+    "Separate" : {
+
+    },
     "Separate Actions Using" : {
       "localizations" : {
         "fr" : {
@@ -7930,6 +8011,7 @@
       }
     },
     "Separate Menu" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8068,6 +8150,9 @@
           }
         }
       }
+    },
+    "Show avatars for..." : {
+
     },
     "Show Bot Accounts" : {
       "localizations" : {
@@ -8787,6 +8872,9 @@
     "Tap to expand" : {
 
     },
+    "Tap to refresh" : {
+
+    },
     "Tap to show slur filter regex." : {
       "localizations" : {
         "fr" : {
@@ -8807,7 +8895,11 @@
         }
       }
     },
+    "Tap-Friendly Links" : {
+
+    },
     "Tappable Links" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9334,6 +9426,9 @@
           }
         }
       }
+    },
+    "Timeout" : {
+
     },
     "Title" : {
       "localizations" : {
@@ -10232,6 +10327,9 @@
           }
         }
       }
+    },
+    "Users Only" : {
+
     },
     "Version" : {
       "localizations" : {
