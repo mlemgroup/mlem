@@ -23,6 +23,11 @@ public protocol InstanceConnection {
     var myPersonId: Int? { get async throws }
     func ensureContextPresence() async throws
 
+    // This should do the minimum work required to retrieve the version,
+    // and should be compatible with as many versions as possible (including
+    // those outside Mlem's supported version range).
+    func getVersionFallback() async throws -> SiteVersion
+
     // MARK: - Post
     
     func getPosts(
@@ -73,16 +78,6 @@ public protocol InstanceConnection {
         creatorId: Int?,
         filter: ListingType,
         sort: PostSortType
-    ) async throws -> [Post2Snapshot]
-    
-    func searchPosts(
-        query: String,
-        page: Int,
-        limit: Int,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        sort: SearchSortType
     ) async throws -> [Post2Snapshot]
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws
@@ -207,16 +202,6 @@ public protocol InstanceConnection {
         sort: CommentSortType
     ) async throws -> [Comment2Snapshot]
     
-    func searchComments(
-        query: String,
-        page: Int,
-        limit: Int,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        sort: SearchSortType
-    ) async throws -> [Comment2Snapshot]
-    
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot
     @discardableResult
@@ -262,7 +247,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot]
     
     @discardableResult
@@ -348,7 +333,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: CommunitySortType
     ) async throws -> [Community2Snapshot]
     
     @discardableResult

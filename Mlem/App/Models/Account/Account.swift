@@ -19,6 +19,7 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hasha
     var avatar: URL? { get }
     var activityState: AccountActivityState { get set }
     var accountType: AccountType { get }
+    var versionWarningIgnored: SiteVersion? { get }
     
     // Computed
     var nickname: String { get }
@@ -28,6 +29,8 @@ protocol Account: AnyObject, Codable, ActorIdentifiable, ProfileProviding, Hasha
     var uniqueStringId: String { get }
     
     func setNickname(_ newValue: String)
+    func updateSoftware(_ software: SiteSoftware)
+    func ignoreVersionWarning(_ ignore: Bool)
 }
 
 enum AccountActivityState: Codable, Hashable {
@@ -72,4 +75,13 @@ extension Account {
     }
     
     var nickname: String { storedNickname ?? name }
+
+    var shouldShowVersionWarning: Bool {
+        guard let siteSoftware, !siteSoftware.isSupported else { return false }
+        if let versionWarningIgnored {
+            return versionWarningIgnored != siteSoftware.version
+        } else {
+            return true
+        }
+    }
 }

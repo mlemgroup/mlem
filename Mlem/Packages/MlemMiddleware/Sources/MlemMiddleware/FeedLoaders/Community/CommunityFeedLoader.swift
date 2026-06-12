@@ -11,7 +11,7 @@ import Foundation
 class CommunityFetcher: Fetcher<Community> {
     var query: String
     var listing: ListingType
-    var sort: SearchSortType
+    var sort: CommunitySortType
     var hostApi: ApiClient?
     
     init(
@@ -19,7 +19,7 @@ class CommunityFetcher: Fetcher<Community> {
         query: String,
         pageSize: Int,
         listing: ListingType,
-        sort: SearchSortType,
+        sort: CommunitySortType,
         hostApi: ApiClient?
     ) {
         self.query = query
@@ -60,7 +60,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community> {
         query: String = "",
         pageSize: Int = 20,
         listing: ListingType = .all,
-        sort: SearchSortType = .top(.allTime),
+        sort: CommunitySortType = .subscriberCount,
         hostApi: ApiClient? = nil
     ) {
         self.api = api
@@ -86,7 +86,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community> {
     public func refresh(
         query: String? = nil,
         listing: ListingType? = nil,
-        sort: SearchSortType? = nil,
+        sort: CommunitySortType? = nil,
         clearBeforeRefresh: Bool = false
     ) async throws {
         communityFetcher.query = query ?? communityFetcher.query

@@ -12,6 +12,7 @@ import SwiftUI
 struct ProfileSettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(MediaTracker.self) var mediaTracker
     
     @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
@@ -157,7 +158,9 @@ struct ProfileSettingsView: View {
             VStack(spacing: 0) {
                 if let bannerUrl = profileDetails.banner {
                     MediaView(
-                        url: bannerUrl,
+                        controlState: mediaTracker.controlState(for: bannerUrl) {
+                            .init(url: bannerUrl, blurred: false, animating: false, muted: true)
+                        },
                         contentMode: .fill,
                         enableContextMenu: true,
                         enableImageViewer: true

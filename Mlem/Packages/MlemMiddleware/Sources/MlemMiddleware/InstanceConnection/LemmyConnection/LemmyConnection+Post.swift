@@ -229,7 +229,6 @@ public extension LemmyConnection {
         }
     }
     
-    // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
         page: Int = 1,
@@ -239,58 +238,15 @@ public extension LemmyConnection {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
-        try await searchPosts(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            createSortType: { _ in sort.v3ApiType },
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
-    }
-    
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot] {
-        try await searchPosts(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            createSortType: { _ in sort.v3ApiType },
-            timeRangeSeconds: sort.timeRangeSeconds
-        )
-    }
-    
-    private func searchPosts(
-        query: String,
-        page: Int,
-        limit: Int,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        createSortType: @escaping (LemmyEndpointVersion) throws -> LemmySortType?,
-        timeRangeSeconds: Int?
-    ) async throws -> [Post2Snapshot] {
         let response = try await performingForEndpoint { endpoint in
-            try LemmySearchRequest(
+            LemmySearchRequest(
                 endpoint: endpoint,
                 q: query,
                 communityId: communityId,
                 communityName: nil,
                 creatorId: creatorId,
                 type_: .posts,
-                sort: createSortType(endpoint),
+                sort: sort.v3ApiType,
                 listingType: filter.apiType,
                 page: page,
                 limit: limit,

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum SiteVersion: Equatable, Hashable {
+public enum SiteVersion: Equatable, Hashable, Sendable {
     case release(major: Int, minor: Int, patch: Int)
     case other(String)
     case zero

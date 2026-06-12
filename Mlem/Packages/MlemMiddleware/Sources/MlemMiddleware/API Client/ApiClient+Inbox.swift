@@ -104,10 +104,10 @@ public extension ApiClient {
     }
     
     /// Get an ``UnreadCount`` object that continues to be updated by the ``ApiClient`` whenever an inbox item is marked read/unread.
-    func getUnreadCount(alwaysMakeCalls: Bool = false) async throws -> UnreadCount {
+    func getUnreadCount() async throws -> UnreadCount {
         try await inboxLock.withLock {
             let unreadCount = unreadCount ?? .init(api: self)
-            try await unreadCount.refresh(alwaysMakeCalls: alwaysMakeCalls)
+            try await unreadCount.refresh()
             self.unreadCount = unreadCount
             return unreadCount
         }

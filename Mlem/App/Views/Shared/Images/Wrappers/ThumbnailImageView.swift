@@ -22,19 +22,12 @@ struct ThumbnailImageView: View {
     @State var quickLookUrl: URL?
     
     let post: Post
+    let url: URL?
     let size: Size
     let frame: CGSize
     
     enum Size {
         case standard, tile
-    }
-    
-    var url: URL? {
-        switch post.type {
-        case let .media(url), let .embedded(url, _): url
-        case let .link(link): link.thumbnail
-        default: nil
-        }
     }
     
     var onTapActions: (() -> Void)? {
@@ -61,7 +54,17 @@ struct ThumbnailImageView: View {
         self.size = size
         self.frame = frame
         
+        let mediaUrl: URL?
+        switch post.type {
+        case let .media(url), let .embedded(url, _): mediaUrl = url
+        case let .link(link): mediaUrl = link.thumbnail
+        default: mediaUrl = nil
+        }
+        self.url = mediaUrl
+        
+        // NOT using tracker state, as thumbnails should not share blur or animation with full image
         self._mediaControlState = .init(wrappedValue: .init(
+            url: mediaUrl,
             blurred: blurred,
             animating: false,
             enableAnimation: false,
@@ -87,9 +90,8 @@ struct ThumbnailImageView: View {
     @ViewBuilder
     var content: some View {
         MediaView(
-            url: url,
             size: frame,
-            controlState: $mediaControlState,
+            controlState: mediaControlState,
             aspectRatioBounds: .absoluteSquare,
             contentMode: .fill,
             cornerRadius: size == .tile ? 0 : Constants.main.smallItemCornerRadius,

@@ -43,8 +43,11 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort sort_: PersonSortType? = nil
     ) async throws -> [Person] {
+        let software = try await self.software
+        let sort = sort_ ?? .default(software: software)
+
         let snapshots = try await repository.searchPeople(
             query: query,
             page: page,

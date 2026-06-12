@@ -26,6 +26,7 @@ struct InboxSettingsView: View {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.inboxNotification)))
+                NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_reply)))
             }
             if AccountsTracker.main.highestLevelAccountType >= .moderator {
                 Section {

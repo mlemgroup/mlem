@@ -8,6 +8,12 @@
 import Foundation
 
 public extension PieFedConnection {
+    func getVersionFallback() async throws -> SiteVersion {
+        let request = PieFedFallbackGetVersionRequest()
+        let response = try await perform(request)
+        return response.version
+    }
+
     func getAccountToken(
         usernameOrEmail: String,
         password: String,

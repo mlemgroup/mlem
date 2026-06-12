@@ -195,6 +195,19 @@
         }
       }
     },
+    "%@ is running %@, and Mlem requires %@ or later.\n\nConsider choosing another instance, or asking your server administrators to upgrade.\n\nYou can choose to continue anyway, but some features may not work on this version." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is running %2$@, and Mlem requires %3$@ or later.\n\nConsider choosing another instance, or asking your server administrators to upgrade.\n\nYou can choose to continue anyway, but some features may not work on this version."
+          }
+        }
+      }
+    },
+    "%@ is unsupported" : {
+
+    },
     "%@ locked a post" : {
       "localizations" : {
         "fr" : {
@@ -2657,6 +2670,9 @@
           }
         }
       }
+    },
+    "Continue Anyway" : {
+
     },
     "Contrast" : {
       "localizations" : {

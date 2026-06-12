@@ -35,3 +35,26 @@ extension ListingType {
         }
     }
 }
+
+extension ListingType {
+    init(from type: LemmyPersonListingType) throws(ApiClientError) {
+        let value: Self? = switch type {
+        case .all: .all
+        case .local: .local
+        }
+
+        guard let value else {
+            throw .featureUnsupported
+        }
+
+        self = value
+    }
+
+    var personApiType: LemmyPersonListingType? {
+        switch self {
+        case .all: .all
+        case .local: .local
+        case .subscribed, .moderated, .popular, .suggested: nil
+        }
+    }
+}

@@ -222,7 +222,7 @@ struct CommentEditorView: View {
                     Spacer()
                     selectTextButton
                 }
-                LargePostBodyView(post: post, isPostPage: true, shouldBlur: false)
+                LargePostBodyView(post: post, isPostPage: true, shouldBlur: post.nsfw)
                 ExpectedView(post.creator) { creator in
                     FullyQualifiedLinkView(
                         creator,

@@ -29,7 +29,9 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .commentSortType(sort):
             version >= sort.minimumVersion
-        case let .searchSortType(sort):
+        case let .communitySortType(sort):
+            version >= sort.minimumVersion
+        case let .personSortType(sort):
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
@@ -65,6 +67,7 @@ private extension SiteVersion {
     static let v1_3_0: Self = .init("1.3.0")
     static let v1_4_0: Self = .init("1.4.0")
     static let v1_6_10: Self = .init("1.6.10")
+    static let v1_6_27: Self = .init("1.6.27")
 }
 
 private extension PostSortType {
@@ -95,13 +98,21 @@ private extension CommentSortType {
     }
 }
 
-private extension SearchSortType {
+private extension CommunitySortType {
     var minimumVersion: SiteVersion {
         switch self {
-        case .new: .zero
-        case .old: .infinity
-        case let .top(timeRange): timeRange.minimumVersion
+        case .new, .old, .postCount, .newPostsOrComments: .zero
+        case .federationDate, .subscriberCount: .v1_6_27
+        case .hot, .name, .commentCount,
+             .activeUserCount,
+             .localSubscriberCount: .infinity
         }
+    }
+}
+
+private extension PersonSortType {
+    var minimumVersion: SiteVersion {
+        self.pieFedSearchSortType != nil ? .zero : .infinity
     }
 }
 
