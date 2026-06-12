@@ -47,7 +47,6 @@ public extension PieFedConnection {
         feed: ListingType,
         pageInfo: PageInfo,
         sort: PostSortType,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
     ) async throws -> PagedResponse<Post2Snapshot> {
@@ -59,7 +58,7 @@ public extension PieFedConnection {
             type_: feed.pieFedListingType,
             sort: sort.pieFedSortType,
             pageCursor: page,
-            limit: limit,
+            limit: pageInfo.limit,
             communityId: nil,
             personId: nil,
             communityName: nil,
@@ -84,7 +83,6 @@ public extension PieFedConnection {
         communityId: Int? = nil,
         pageInfo: PageInfo,
         sort: PostSortType = .new,
-        limit: Int,
         savedOnly: Bool = false
     ) async throws -> PagedResponse<Post2Snapshot> {
         throw ApiClientError.featureUnsupported
