@@ -126,15 +126,19 @@ struct AdvancedSettingsView: View {
     }
     
     private func checkBackendStatus() {
-        Task {
+        backendStatus = nil
+        Task.detached {
+            let newStatus: BackendHealthCheck?
             do {
-                backendStatus = nil
-                backendStatus = try await backendClient.healthCheck()
+                newStatus = try await backendClient.healthCheck()
             } catch {
                 handleError(error)
-                backendStatus = nil
+                newStatus = nil
             }
-            lastBackendStatusCheck = .now
+            Task { @MainActor in 
+                self.backendStatus = newStatus
+                self.lastBackendStatusCheck = .now
+            }
         }
     }
 
