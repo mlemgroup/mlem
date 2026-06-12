@@ -5,38 +5,148 @@
 //  Created by Sjmarf on 25/08/2024.
 //
 
-import Nuke
+import MlemBackend
 import SwiftUI
 
 struct AdvancedSettingsView: View {
+    @Environment(BackendClient.self) var backendClient
+    @Environment(ErrorsTracker.self) var errorsTracker
+
+    @Setting(\.dev_errorTimeout) var errorToastTimeout
+
+    @Setting(\.dev_developerMode) var developerMode
+    
+    @State var backendStatus: BackendHealthCheck?
+    @State var lastBackendStatusCheck: Date?
+
+    var secondsFormat: Duration.UnitsFormatStyle {
+        .units(
+            allowed: [.seconds],
+            width: .narrow,
+            fractionalPart: .show(length: 1)
+        )
+    }
+
     var body: some View {
         Form {
+            SettingsHeaderView(
+                title: "Advanced",
+                description: nil,
+                icon: .settings.advanced
+            )
+            .gradientTint(.themedNeutralAccent)
+
             Section {
-                HStack {
-                    Text("Cache")
-                    Spacer()
-                    TimelineView(.periodic(from: .now, by: 0.5)) { _ in
-                        Text(ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file))
-                            .foregroundStyle(.themedSecondary)
-                    }
-                }
+                NavigationLink(
+                    "Cache",
+                    value: ByteCountFormatter.string(fromByteCount: Int64(URLCache.shared.currentDiskUsage), countStyle: .file),
+                    fallbackValue: "",
+                    destination: .settings(.cache)
+                )
+
+                NavigationLink(
+                    "Error Log",
+                    value: .init(localized: errorLogLabel),
+                    fallbackValue: String(errorsTracker.errors.count),
+                    destination: .settings(.errorLog)
+                )
+
+                NavigationLink(
+                    "Error Notification Timeout",
+                    value: Duration.seconds(errorToastTimeout).formatted(secondsFormat),
+                    fallbackValue: "",
+                    destination: .settings(.errorToastTimeout)
+                )
             }
-            header: {
-                Text("Disk Usage")
-            }
-            footer: {
-                // Nesting "500 MB" so we can change it later without re-localizing
-                Text("Images are cached on your device for fast reuse. The maximum cache size is around \("500 MB").")
-            }
-            Button("Clear Cache") {
-                URLCache.shared.removeAllCachedResponses()
-                ImagePipeline.shared.cache.removeAll()
-                ToastModel.main.add(.success("Cache Cleared"))
-            }
+
+            backendStatusSection
+
             Section {
-                NavigationLink("Developer", destination: .settings(.developer))
+                Toggle("Developer Mode", isOn: $developerMode)
+            } footer: {
+                Text("Show additional debug information. Not recommended for normal use.")
             }
         }
-        .navigationTitle("Advanced")
+        .withConditionalLabelStyle()
+        .contentMargins(.top, 16)
+        .hiddenNavigationTitle("Advanced")
+    }
+
+    @ViewBuilder
+    var backendStatusSection: some View {
+        Section {
+            if let backendStatus {
+                if backendStatus.unhealthyReasons.isEmpty {
+                    backendStatusRow(isHealthy: true)
+                } else {
+                    backendStatusRow(isHealthy: false)
+                        
+                    ForEach(Array(backendStatus.unhealthyReasons.enumerated()), id: \.offset) { _, reason in
+                        Text(reason)
+                            .padding(.leading, Constants.main.standardSpacing)
+                            .foregroundStyle(.themedNegative)
+                    }
+                }
+            } else {
+                backendStatusRow(isHealthy: nil)
+            }
+        } footer: {
+            if let lastBackendStatusCheck {
+                Text("Refreshed at \(lastBackendStatusCheck, format: .dateTime.hour().minute().second())")
+            } else {
+                Text("Refreshing...")
+            }
+        }
+        .onAppear { checkBackendStatus() }
+    }
+
+    @ViewBuilder
+    private func backendStatusRow(isHealthy: Bool?) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Backend Status")
+                Text("Tap to refresh")
+                    .font(.footnote)
+                    .foregroundStyle(.themedSecondary)
+            }
+            Spacer()
+            if let isHealthy {
+                Image(icon: .general.circle)
+                    .foregroundStyle(isHealthy ? .themedPositive : .themedNegative)
+                    .symbolVariant(.fill)
+            } else {
+                ProgressView()
+                    .tint(.themedSecondary)
+            }
+        }
+        .contentShape(.rect)
+        .onTapGesture {
+            checkBackendStatus()
+        }
+    }
+    
+    private func checkBackendStatus() {
+        backendStatus = nil
+        Task.detached {
+            let newStatus: BackendHealthCheck?
+            do {
+                newStatus = try await backendClient.healthCheck()
+            } catch {
+                handleError(error)
+                newStatus = nil
+            }
+            Task { @MainActor in 
+                self.backendStatus = newStatus
+                self.lastBackendStatusCheck = .now
+            }
+        }
+    }
+
+    var errorLogLabel: LocalizedStringResource {
+        if errorsTracker.errors.isEmpty {
+            "No Errors"
+        } else {
+            "\(errorsTracker.errors.count) Errors"
+        }
     }
 }

@@ -14,7 +14,7 @@ struct ModeratorActionSeparationSettingsView: View {
         Form {
             SettingsHeaderView(
                 title: "Moderator Actions",
-                description: "Customize how moderator actions are separated from regular actions in context menus."
+                description: "Choose whether moderator actions appear in a separate menu."
             ) {}
             Section {
                 Picker("Separate Actions Using", icon: .settings.menuItems, selection: $moderatorActionGrouping) {
