@@ -63,6 +63,8 @@ struct AdvancedSettingsView: View {
 
             Section {
                 Toggle("Developer Mode", isOn: $developerMode)
+            } footer: {
+                Text("Show additional debug information. Not recommended for normal use.")
             }
         }
         .withConditionalLabelStyle()
