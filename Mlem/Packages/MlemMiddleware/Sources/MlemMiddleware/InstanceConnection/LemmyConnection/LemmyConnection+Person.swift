@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyReadPersonRequest(
@@ -53,12 +53,11 @@ public extension LemmyConnection {
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
         sort: PersonSortType
-    ) async throws -> [Person2Snapshot] {
-        let people = try await processingForEndpoint { endpoint in
+    ) async throws -> PagedResponse<Person2Snapshot> {
+        try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
                 guard let sortType = sort.v3ApiType else {
@@ -73,8 +72,8 @@ public extension LemmyConnection {
                     type_: .users,
                     sort: sortType,
                     listingType: filter.apiType,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     postTitleOnly: false,
                     searchTerm: query,
                     creatorUsername: nil,
@@ -84,7 +83,12 @@ public extension LemmyConnection {
                     showNsfw: nil,
                     pageCursor: nil
                 )
-                return try await self.perform(request, endpoint: .v3).users ?? []
+                let response = try await self.perform(request, endpoint: .v3)
+                return try PagedResponse.fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: try response.persons?.map { try .init(from: $0) } ?? [],
+                    nextCursor: nil
+                )
             case .v4:
                 guard let sortType = sort.v4ApiType else {
                     throw ApiClientError.featureUnsupported
@@ -97,13 +101,13 @@ public extension LemmyConnection {
                     sort: sortType,
                     searchTerm: query,
                     searchTitleOnly: nil,
-                    pageCursor: nil,
-                    limit: limit
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
                 )
-                return try await self.perform(request, endpoint: .v4).items
+                let response = try await self.perform(request, endpoint: .v4)
+                return try .init(from: response) { try .init(from: $0) }
             }
         }
-        return try people.map { try .init(from: $0) }
     }
     
     @discardableResult
@@ -195,8 +199,7 @@ public extension LemmyConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
@@ -210,8 +213,8 @@ public extension LemmyConnection {
                 personId: id,
                 username: nil,
                 sort: sort.v3ApiType,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 savedOnly: savedOnly
             )
