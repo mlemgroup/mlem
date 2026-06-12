@@ -37,7 +37,7 @@ public class Fetcher<Item: FeedLoadable> {
     
     var api: ApiClient
     var pageSize: Int
-    private var location: PageLocation = .start
+    internal var location: PageLocation = .start
     
     init(api: ApiClient, pageSize: Int) {
         self.api = api
@@ -51,7 +51,7 @@ public class Fetcher<Item: FeedLoadable> {
 
         let response: PagedResponse<Item>
         do {
-             response = try await fetchContent(cursor)
+             response = try await fetchContent(.init(cursor: cursor, limit: pageSize))
         } catch is CancellationError {
             return .cancelled
         }
@@ -65,7 +65,7 @@ public class Fetcher<Item: FeedLoadable> {
         }
     }
     
-    func fetchContent(_ cursor: PageCursor) async throws -> PagedResponse<Item> {
+    func fetchContent(_ cursor: PageInfo) async throws -> PagedResponse<Item> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
