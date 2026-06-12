@@ -110,23 +110,23 @@ internal extension LemmyConnection {
     }
     
     @discardableResult
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommunitiesRequest(
                 endpoint: endpoint,
                 type_: .subscribed,
                 sort: endpoint == .v4 ? .new(.nameAsc) : .old(.new),
                 showNsfw: true,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 timeRangeSeconds: nil,
                 multiCommunityId: nil,
                 searchTerm: nil,
                 searchTitleOnly: nil,
-                pageCursor: nil
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .init(from: response.toPagedResponse()) { try .init(from: $0) }
     }
     
     @discardableResult

@@ -71,16 +71,19 @@ internal extension PieFedConnection {
     }
     
     @discardableResult
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         let request = PieFedListCommunitiesRequest(
             type_: .subscribed,
             sort: nil,
             showNsfw: true,
-            page: page,
-            limit: limit
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit
         )
         let response = try await perform(request)
-        return try response.communities.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: response.communities.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult

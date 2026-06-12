@@ -42,17 +42,15 @@ public class SearchPostFetcher: Fetcher<Post> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> Fetcher<Post>.FetchResponse {
-        let response: [Post] = try await api.searchPosts(
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Post> {
+        try await api.searchPosts(
             query: query,
-            page: page,
-            limit: pageSize,
+            pageInfo: pageInfo,
             communityId: communityId,
             creatorId: creatorId,
             filter: listing,
             sort: sortType
         )
-        return .init(items: response, prevCursor: nil, nextCursor: nil)
     }
 }
 

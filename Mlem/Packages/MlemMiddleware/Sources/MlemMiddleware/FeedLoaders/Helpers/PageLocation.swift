@@ -20,7 +20,7 @@ public enum PageLocation: Hashable {
 }
 
 extension PageLocation: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case let .at(cursor): "PageLocation(\(cursor.innerDescription))"
         case .end: "PageLocation(END)"

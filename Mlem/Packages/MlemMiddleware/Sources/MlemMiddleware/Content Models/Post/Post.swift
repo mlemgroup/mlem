@@ -438,17 +438,15 @@ public extension Post {
     
     func getComments(
         sort: CommentSortType = .hot,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
+    ) async throws -> PagedResponse<Comment> {
         try await api.getComments(
             postId: id,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
     }
@@ -490,8 +488,8 @@ public extension Post {
     
     // Get Votes
     
-    func getVotes(page: Int, limit: Int) async throws -> [PersonVote] {
-        try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
+    func getVotes(pageInfo: PageInfo) async throws -> PagedResponse<PersonVote> {
+        try await api.getPostVotes(id: id, communityId: communityId, pageInfo: pageInfo)
     }
     
     // Deleted

@@ -65,7 +65,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         return .success(newItems)
     }
     
-    override func fetchContent(_ cursor: PageCursor) async throws -> PagedResponse<PersonContent> {
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<PersonContent> {
         fatalError("Unsupported loading operation")
     }
     

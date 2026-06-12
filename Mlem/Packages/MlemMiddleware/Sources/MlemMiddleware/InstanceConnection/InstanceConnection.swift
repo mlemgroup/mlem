@@ -42,7 +42,6 @@ internal protocol InstanceConnection {
         feed: ListingType,
         pageInfo: PageInfo,
         sort: PostSortType,
-        limit: Int,
         filter: GetContentFilter?,
         showHidden: Bool
     ) async throws -> PagedResponse<Post2Snapshot>
@@ -52,7 +51,6 @@ internal protocol InstanceConnection {
         communityId: Int?,
         pageInfo: PageInfo,
         sort: PostSortType,
-        limit: Int,
         savedOnly: Bool
     ) async throws -> PagedResponse<Post2Snapshot>
         
@@ -163,7 +161,6 @@ internal protocol InstanceConnection {
         pageInfo: PageInfo,
         sort: CommentSortType,
         maxDepth: Int?,
-        limit: Int,
         filter: GetContentFilter?
     ) async throws -> PagedResponse<Comment2Snapshot>
     
@@ -234,7 +231,7 @@ internal protocol InstanceConnection {
         pageInfo: PageInfo,
         filter: ListingType,
         sort: PersonSortType
-    ) async throws -> PagedResponse<Comment2Snapshot>
+    ) async throws -> PagedResponse<Person2Snapshot>
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot

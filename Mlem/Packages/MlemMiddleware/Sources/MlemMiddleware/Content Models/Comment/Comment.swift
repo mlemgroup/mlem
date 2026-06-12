@@ -283,11 +283,10 @@ public extension Comment {
         guard let first = parentCommentIds.first else { return [] }
         let comments = try await api.getComments(
             parentId: first,
+            pageInfo: .init(cursor: .first, limit: 1000),
             sort: .new,
-            page: 1,
-            maxDepth: parentCommentIds.count,
-            limit: 1000
-        )
+            maxDepth: parentCommentIds.count
+        ).items
         var i = 0
         return comments.filter { comment in
             if comment.id == parentCommentIds[i] {
@@ -301,34 +300,35 @@ public extension Comment {
     func getChildren(
         sort: CommentSortType = .hot,
         includedParentCount: Int = 0,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
+    ) async throws -> PagedResponse<Comment> {
         let parentId: Int
         if includedParentCount <= 0 {
             parentId = id
         } else {
             parentId = parentCommentIds.dropLast(includedParentCount - 1).last ?? parentCommentIds.first ?? id
         }
-        let comments = try await api.getComments(
+        let response = try await api.getComments(
             parentId: parentId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
         if includedParentCount <= 0 {
-            return comments
+            return response
         }
         
-        return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
+        return .init(
+            items: response.items.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id },
+            nextLocation: response.nextLocation
+        )
     }
     
-    func getVotes(page: Int, limit: Int, communityId: Int) async throws -> [PersonVote] {
-        try await api.getCommentVotes(id: id, communityId: communityId, page: page, limit: limit)
+    func getVotes(pageInfo: PageInfo, communityId: Int) async throws -> PagedResponse<PersonVote> {
+        try await api.getCommentVotes(id: id, communityId: communityId, pageInfo: pageInfo)
     }
 }
 

@@ -72,7 +72,7 @@ class CommentTreeTracker: Hashable {
         guard loadingState == .idle else { return }
         loadingState = .loading
         do {
-            var newComments = try await fetchComments(page: 1)
+            var newComments = try await fetchComments()
 
             if let ensuredComment {
                 let comment = try await ensuredComment.asComment()
@@ -87,11 +87,10 @@ class CommentTreeTracker: Hashable {
                     if let firstAbsentParentId {
                         let extraComments = try await api.getComments(
                             parentId: firstAbsentParentId,
+                            pageInfo: .init(cursor: .first, limit: 999),
                             sort: sort,
-                            page: 1,
-                            maxDepth: 8,
-                            limit: 999
-                        )
+                            maxDepth: 8
+                        ).items
                         newComments.append(contentsOf: extraComments)
                     }
                 }
@@ -109,23 +108,21 @@ class CommentTreeTracker: Hashable {
     }
     
     @MainActor
-    private func fetchComments(page: Int) async throws -> [Comment] {
+    private func fetchComments() async throws -> [Comment] {
         switch root {
         case let .post(post):
             return try await post.getComments(
                 sort: sort,
-                page: page,
-                maxDepth: Settings.get(\.comment_maxDepth),
-                limit: 50
-            )
+                pageInfo: .init(cursor: .first, limit: 50),
+                maxDepth: Settings.get(\.comment_maxDepth)
+            ).items
         case let .comment(comment, parentCount):
             return try await comment.getChildren(
                 sort: sort,
                 includedParentCount: parentCount,
-                page: page,
-                maxDepth: min(8, Settings.get(\.comment_maxDepth)) + parentCount,
-                limit: 999
-            )
+                pageInfo: .init(cursor: .first, limit: 999),
+                maxDepth: min(8, Settings.get(\.comment_maxDepth)) + parentCount
+            ).items
         }
     }
     
