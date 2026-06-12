@@ -81,6 +81,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
             )
             postStream.addItems(response.posts)
             commentStream.addItems(response.comments)
+            self.location = response.nextLocation
         }
         
         let nextPost = try await postStream.nextItemSortVal(sortType: sortType)

@@ -124,8 +124,8 @@ public extension ApiClient {
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
-        let snapshots = try await repository.getContent(
+    ) async throws -> (person: Person, posts: [Post], comments: [Comment], nextLocation: PageLocation) {
+        let response = try await repository.getContent(
             authorId: id,
             sort: sort,
             pageInfo: pageInfo,
@@ -133,9 +133,10 @@ public extension ApiClient {
             communityId: communityId
         )
         return await (
-            person: caches.person.getModel(api: self, from: .person3(snapshots.person)),
-            posts: caches.post.getModels(api: self, from: snapshots.posts.map { .post2($0) }),
-            comments: caches.comment.getModels(api: self, from: snapshots.comments.map { .comment2($0) })
+            person: caches.person.getModel(api: self, from: .person3(response.person)),
+            posts: caches.post.getModels(api: self, from: response.posts.map { .post2($0) }),
+            comments: caches.comment.getModels(api: self, from: response.comments.map { .comment2($0) }),
+            nextLocation: response.nextLocation
         )
     }
     

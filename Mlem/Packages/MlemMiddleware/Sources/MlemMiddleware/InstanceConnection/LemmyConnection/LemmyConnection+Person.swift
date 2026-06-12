@@ -202,7 +202,7 @@ internal extension LemmyConnection {
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let response = try await performingForEndpoint { endpoint in
             if endpoint == .v4 {
                 // TODO: Use LemmyListPersonContentRequest here
@@ -219,10 +219,23 @@ internal extension LemmyConnection {
                 savedOnly: savedOnly
             )
         }
+
+        let posts: [Post2Snapshot] = try response.posts?.map { try .init(from: $0) } ?? []
+        let comments: [Comment2Snapshot] = try response.comments?.map { try .init(from: $0) } ?? []
+
+        let nextLocation: PageLocation
+
+        if posts.count < pageInfo.limit && comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
-            posts: response.posts?.map { try .init(from: $0) } ?? [],
-            comments: response.comments?.map { try .init(from: $0) } ?? []
+            posts: posts,
+            comments: comments,
+            nextLocation: nextLocation
         )
     }
     

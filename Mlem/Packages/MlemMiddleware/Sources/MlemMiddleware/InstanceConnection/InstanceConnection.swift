@@ -263,7 +263,7 @@ internal protocol InstanceConnection {
         pageInfo: PageInfo,
         savedOnly: Bool?,
         communityId: Int?
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot])
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation)
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?)
     func deleteAccount(password: String, deleteContent: Bool) async throws

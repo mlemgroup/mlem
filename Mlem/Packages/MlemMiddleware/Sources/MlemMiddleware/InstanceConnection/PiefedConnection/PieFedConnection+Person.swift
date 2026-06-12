@@ -140,7 +140,7 @@ public extension PieFedConnection {
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let request = PieFedGetPersonDetailsRequest(
             personId: id,
             username: nil,
@@ -152,10 +152,19 @@ public extension PieFedConnection {
             includeContent: true
         )
         let response = try await perform(request)
+
+        let nextLocation: PageLocation
+        if response.posts.count < pageInfo.limit && response.comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
             posts: response.posts.map { try .init(from: $0) },
-            comments: response.comments.map { try .init(from: $0) }
+            comments: response.comments.map { try .init(from: $0) },
+            nextLocation: nextLocation
         )
     }
     

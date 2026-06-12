@@ -99,7 +99,7 @@ extension ApiRepository {
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         try await performingForConnection { connection in
             try await connection.getContent(
                 authorId: id,
