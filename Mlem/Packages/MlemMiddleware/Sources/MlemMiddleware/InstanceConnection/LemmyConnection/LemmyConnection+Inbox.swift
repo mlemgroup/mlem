@@ -7,125 +7,128 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getMessages(
         creatorId: Int? = nil,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [Message2Snapshot] {
+    ) async throws -> PagedResponse<Message2Snapshot> {
         let response = try await performingForEndpoint { _ in
             LemmyGetPrivateMessageRequest(
                 unreadOnly: unreadOnly,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 creatorId: creatorId
             )
         }
-        return try response.privateMessages.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: try response.privateMessages.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
     
     func getReplyNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                guard let page else { throw ApiClientError.featureUnsupported }
                 let request = LemmyListRepliesRequest(
                     sort: .new,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     unreadOnly: unreadOnly
                 )
                 let response = try await self.perform(request, endpoint: .v3)
-                return try (notifications: response.replies.map { try .init(from: $0) }, cursor: nil)
+                return try .fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: response.replies.map { try .init(from: $0) },
+                    nextCursor: nil
+                )
             case .v4:
                 let request = LemmyListNotificationsRequest(
                     type_: .reply,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
-                    pageCursor: cursor,
-                    limit: limit
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    notifications: response.items.map { try .init(from: $0) },
-                    cursor: response.nextPage
-                )
+                return try .init(from: response) {
+                    try .init(from: $0)
+                }
             }
         }
     }
 
     func getMentionNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                guard let page else { throw ApiClientError.featureUnsupported }
                 let request = LemmyListMentionsRequest(
                     sort: .new,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     unreadOnly: unreadOnly
                 )
                 let response = try await self.perform(request, endpoint: .v3)
-                return try (notifications: response.mentions.map { try .init(from: $0) }, cursor: nil)
+                return try .fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: response.mentions.map { try .init(from: $0) },
+                    nextCursor: nil
+                )
             case .v4:
                 let request = LemmyListNotificationsRequest(
                     type_: .mention,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
-                    pageCursor: cursor,
-                    limit: limit
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    notifications: response.items.map { try .init(from: $0) },
-                    cursor: response.nextPage
-                )
+                return try .init(from: response) {
+                    try .init(from: $0)
+                }
             }
         }
     }
 
     func getMessageNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                guard let page else { throw ApiClientError.featureUnsupported }
                 let request = LemmyGetPrivateMessageRequest(
                     unreadOnly: unreadOnly,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     creatorId: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)
-                return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
+                return try .fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: response.privateMessages.map { try .init(from: $0) },
+                    nextCursor: nil
+                )
             case .v4:
                 let request = LemmyListNotificationsRequest(
                     type_: .privateMessage,
                     unreadOnly: unreadOnly,
                     creatorId: nil,
-                    pageCursor: cursor,
-                    limit: limit
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
                 )
                 let response = try await self.perform(request, endpoint: .v4)
-                return try (
-                    notifications: response.items.map { try .init(from: $0) },
-                    cursor: response.nextPage
-                )
+                return try .init(from: response) {
+                    try .init(from: $0)
+                }
             }
         }
     }
