@@ -24,6 +24,27 @@ extension PagedResponse {
         try self.init(items: response.items.map(converter), nextLocation: nextLocation)
     }
 
+    static func compact<T, E>(
+        from response: LemmyPagedResponse<T>,
+        converter: (T) throws(E) -> Value?
+    ) throws(E) -> Self {
+
+        let nextLocation: PageLocation
+
+        if let nextPage = response.nextPage {
+            nextLocation = .at(.init(cursorType: .cursorString(nextPage)))
+        } else {
+            nextLocation = .end
+        }
+
+        // Swift compiler doesn't like direct `.compactMap` for some reason
+        let items = try response.items
+            .map(converter)
+            .compactMap { $0 }
+        
+        return .init(items: items, nextLocation: nextLocation)
+    }
+
     // On Lemmy v3, some requests use the page number system and others
     // use the cursor system. This method decodes both cases.
     //
