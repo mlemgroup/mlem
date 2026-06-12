@@ -50,11 +50,10 @@ public extension PieFedConnection {
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
         sort: PersonSortType
-    ) async throws -> [Person2Snapshot] {
+    ) async throws -> PagedResponse<Person2Snapshot> {
         guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
@@ -63,15 +62,18 @@ public extension PieFedConnection {
             type_: .users,
             sort: sort,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        return try response.users.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.users.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
@@ -135,8 +137,7 @@ public extension PieFedConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
     ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
@@ -144,8 +145,8 @@ public extension PieFedConnection {
             personId: id,
             username: nil,
             sort: .new,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             savedOnly: nil,
             includeContent: true

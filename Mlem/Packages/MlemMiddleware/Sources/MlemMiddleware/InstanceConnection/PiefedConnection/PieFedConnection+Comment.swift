@@ -58,6 +58,7 @@ internal extension PieFedConnection {
         pageInfo: PageInfo,
         sort: CommentSortType,
         maxDepth: Int? = nil,
+        limit: Int,
         filter: GetContentFilter? = nil
     ) async throws -> PagedResponse<Comment2Snapshot> {
         guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
@@ -68,7 +69,7 @@ internal extension PieFedConnection {
             sort: sort,
             maxDepth: maxDepth,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            limit: limit,
             communityId: nil,
             postId: postId,
             parentId: nil,

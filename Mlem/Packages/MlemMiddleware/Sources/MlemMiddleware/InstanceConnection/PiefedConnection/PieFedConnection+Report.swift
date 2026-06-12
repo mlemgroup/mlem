@@ -13,30 +13,27 @@ public extension PieFedConnection {
     }
     
     func getPostReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         postId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         throw ApiClientError.featureUnsupported
     }
-    
+
     func getCommentReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         commentId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         throw ApiClientError.featureUnsupported
     }
-    
+
     func getMessageReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         throw ApiClientError.featureUnsupported
     }
     
