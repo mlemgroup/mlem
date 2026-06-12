@@ -26,8 +26,8 @@ internal extension LemmyConnection {
     }
     
     func getComments(
-        sort: CommentSortType,
         pageInfo: PageInfo,
+        sort: CommentSortType,
         maxDepth: Int?,
         filter: GetContentFilter?
     ) async throws -> PagedResponse<Comment2Snapshot> {

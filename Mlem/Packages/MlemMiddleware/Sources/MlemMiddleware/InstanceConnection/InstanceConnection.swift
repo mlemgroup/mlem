@@ -152,8 +152,8 @@ internal protocol InstanceConnection {
     func getComment(url: URL) async throws -> Comment2Snapshot
 
     func getComments(
-        sort: CommentSortType,
         pageInfo: PageInfo,
+        sort: CommentSortType,
         maxDepth: Int?,
         filter: GetContentFilter?
     ) async throws -> PagedResponse<Comment2Snapshot>
