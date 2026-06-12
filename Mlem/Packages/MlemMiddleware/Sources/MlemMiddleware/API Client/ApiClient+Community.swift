@@ -37,18 +37,12 @@ public extension ApiClient {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort sort_: SearchSortType? = nil,
+        sort sort_: CommunitySortType? = nil,
         hostApi: ApiClient? = nil
     ) async throws -> [Community] {
-        let sort: SearchSortType
-        if let sort_ {
-            sort = sort_
-        } else if try await software.supports(.searchSortType(.top(.allTime))) {
-            sort = .top(.allTime)
-        } else {
-            sort = .top(.limited(.month))
-        }
-        
+        let software = try await self.software
+        let sort = sort_ ?? .default(software: software)
+
         let snapshots = try await repository.searchCommunities(
             query: query,
             page: page,

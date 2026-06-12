@@ -58,7 +58,7 @@ extension SearchView {
             let software = try await appState.firstApi.software
             communityFilters = .init(software: software)
             personFilters = .init(software: software)
-            postFilters = .init(software: software)
+            postFilters = .init()
         } catch {
             handleError(error)
         }
@@ -101,13 +101,9 @@ extension SearchView {
             hostApi: refreshApi == appState.firstApi ? nil : appState.firstApi
         )
         
-        let defaultSort: SearchSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
-        
+        let software = try await refreshApi.software
+        let defaultSort: CommunitySortType = .default(software: software)
+
         try await communityLoader.refresh(
             query: query,
             listing: (!filtersActive || communityFilters.instance == .any) ? .all : .local,
@@ -124,12 +120,8 @@ extension SearchView {
             context: filtersTracker.filterContext
         )
         
-        let defaultSort: SearchSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
+        let software = try await refreshApi.software
+        let defaultSort: PersonSortType = .default(software: software)
         
         try await personLoader.refresh(
             query: query,
@@ -148,14 +140,7 @@ extension SearchView {
             context: filtersTracker.filterContext
         )
 
-        let defaultSort: PostSortType
-        if try await refreshApi.supports(.searchSortType(.top(.allTime))) {
-            defaultSort = .top(.allTime)
-        } else {
-            defaultSort = .top(.limited(.month))
-        }
-
-        postLoader.searchPostFetcher.setSortType(.v3(filtersActive ? postFilters.sort : defaultSort))
+        postLoader.searchPostFetcher.setSortType(filtersActive ? postFilters.sort : .top(.allTime))
         postLoader.searchPostFetcher.query = query
         postLoader.searchPostFetcher.creatorId = filtersActive ? postFilters.creator?.id : nil
         postLoader.searchPostFetcher.communityId = nil
@@ -203,7 +188,7 @@ extension SearchView {
         try await commentLoader.refresh(
             query: query,
             listing: listing,
-            sort: .v3(filtersActive ? commentFilters.sort : .top(.allTime)),
+            sort: filtersActive ? commentFilters.sort : .top(.allTime),
             clearBeforeRefresh: clearBeforeRefresh
         )
     }

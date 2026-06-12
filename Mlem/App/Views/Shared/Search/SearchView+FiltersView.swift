@@ -41,7 +41,7 @@ extension SearchView {
             CommunitySearchSortPicker(sort: Binding(
                 get: { communityFilters.sort }, set: { self.communityFilters?.sort = $0 }
             ))
-            .buttonStyle(.feedFilter(isOn: communityFilters.sort != .top(.allTime)))
+            .buttonStyle(.feedFilter(isOn: !communityFilters.isDefault))
             InstancePicker(
                 filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 }),
                 requiredFeature: .searchLocalCommunities
@@ -53,16 +53,19 @@ extension SearchView {
     @ViewBuilder
     private var personFiltersView: some View {
         if let personFilters {
-            Menu(personFilters.sort.label(timeRangeFormat: .topOnly), icon: personFilters.sort.icon) {
+            Menu(personFilters.sort.label, icon: personFilters.sort.icon) {
                 Picker("Sort", selection: Binding(
                     get: { personFilters.sort }, set: { self.personFilters?.sort = $0 }
                 )) {
-                    ForEach(SearchSortType.legacyPersonCases, id: \.self) { item in
-                        Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
+                    let sortTypes = PersonSortType.allCases.filter {
+                        appState.firstApi.supports(.personSortType($0), defaultValue: true)
+                    }
+                    ForEach(sortTypes, id: \.self) { item in
+                        Label(item.label, icon: item.icon)
                     }
                 }
             }
-            .buttonStyle(.feedFilter(isOn: personFilters.sort != .top(.allTime)))
+            .buttonStyle(.feedFilter(isOn: !personFilters.isDefault))
             InstancePicker(
                 filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 }),
                 requiredFeature: .searchLocalPeople
@@ -89,7 +92,10 @@ extension SearchView {
     private var commentFiltersView: some View {
         Menu(commentFilters.sort.label(timeRangeFormat: .topOnly), icon: commentFilters.sort.icon) {
             Picker("Sort", selection: $commentFilters.sort) {
-                ForEach(CommentSortType.legacyCases, id: \.self) { item in
+                let sortTypes = CommentSortType.legacyCases.filter {
+                    appState.firstApi.supports(.commentSortType($0), defaultValue: true)
+                }
+                ForEach(sortTypes, id: \.self) { item in
                     Label(item.label(timeRangeFormat: .topOnly), icon: item.icon)
                 }
             }

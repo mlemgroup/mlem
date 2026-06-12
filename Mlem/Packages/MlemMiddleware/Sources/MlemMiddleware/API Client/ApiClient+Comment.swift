@@ -113,27 +113,6 @@ public extension ApiClient {
         return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
     }
     
-    func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Comment] {
-        let snapshots = try await repository.searchComments(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            sort: sort
-        )
-        return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
-    }
-    
     // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment {

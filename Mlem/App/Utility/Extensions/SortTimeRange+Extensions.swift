@@ -29,7 +29,7 @@ extension SortTimeRange {
         }
     }
     
-    private func label(abbreviateUnits: Bool) -> String {
+    func label(abbreviateUnits: Bool) -> String {
         switch self {
         case let .limited(timeInterval):
             var seconds = Int(timeInterval)

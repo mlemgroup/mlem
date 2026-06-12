@@ -133,27 +133,6 @@ public extension ApiClient {
         return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
     }
     
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post] {
-        let snapshots = try await repository.searchPosts(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            sort: sort
-        )
-        return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
-    }
-    
     /// Mark the given posts as read.
     /// Calling this will also mark any queued posts as read unless `includeQueuedPosts` is set to `false`.
     func markPostsAsRead(

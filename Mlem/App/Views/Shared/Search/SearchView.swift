@@ -78,7 +78,7 @@ struct SearchView: View {
         self._postLoader = .init(
             wrappedValue: .init(
                 api: appState.firstApi,
-                sortType: .v3(.top(.allTime)),
+                sortType: .top(.allTime),
                 prefetchingConfiguration: .forPostSize(Settings.get(\.post_size)),
                 urlCache: Constants.main.urlCache
             )

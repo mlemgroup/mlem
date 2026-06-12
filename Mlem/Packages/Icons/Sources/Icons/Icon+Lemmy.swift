@@ -171,6 +171,7 @@ public extension Icon {
         public let controversialSort: Icon = .init("bolt")
         public let topSort: Icon = .init("trophy")
         public let alphabeticalSort: Icon = .init("textformat")
+        public let activeUserSort: Icon = .init("person.2.wave.2")
         public let scoreSort: Icon = .init("star")
         public let usersSort: Icon = .init("person.2")
         public let versionSort: Icon = .init("server.rack")
