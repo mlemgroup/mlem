@@ -28,7 +28,12 @@ struct PostSubscriptionIndicatorSettingsView: View {
     var previewSection: some View {
         Section {
             UnevenRoundedRectangle(
-                cornerRadii: .init(topLeading: 16, bottomLeading: 0, bottomTrailing: 10, topTrailing: 0)
+                cornerRadii: .init(
+                    topLeading: 16,
+                    bottomLeading: 0,
+                    bottomTrailing: UIDevice.isIos26 ? 26 : 10,
+                    topTrailing: 0
+                )
             )
             .fill(.themedTertiaryGroupedBackground)
             .strokeBorder(colorScheme == .light ? .themedSecondaryGroupedBackground : .clear, lineWidth: 2)

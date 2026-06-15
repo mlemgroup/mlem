@@ -56,31 +56,54 @@ public extension LemmyConnection {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot] {
-        let response = try await performingForEndpoint { endpoint in
-            LemmySearchRequest(
-                endpoint: endpoint,
-                q: query,
-                communityId: nil,
-                communityName: nil,
-                creatorId: nil,
-                type_: .users,
-                sort: sort.v3ApiType,
-                listingType: filter.apiType,
-                page: page,
-                limit: limit,
-                postTitleOnly: false,
-                searchTerm: query,
-                creatorUsername: nil,
-                timeRangeSeconds: nil,
-                titleOnly: false,
-                postUrlOnly: nil,
-                showNsfw: nil,
-                pageCursor: nil
-            )
+        let people = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let sortType = sort.v3ApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                let request = LemmySearchRequest(
+                    endpoint: .v3,
+                    q: query,
+                    communityId: nil,
+                    communityName: nil,
+                    creatorId: nil,
+                    type_: .users,
+                    sort: sortType,
+                    listingType: filter.apiType,
+                    page: page,
+                    limit: limit,
+                    postTitleOnly: false,
+                    searchTerm: query,
+                    creatorUsername: nil,
+                    timeRangeSeconds: nil,
+                    titleOnly: false,
+                    postUrlOnly: nil,
+                    showNsfw: nil,
+                    pageCursor: nil
+                )
+                return try await self.perform(request, endpoint: .v3).users ?? []
+            case .v4:
+                guard let sortType = sort.v4ApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                guard let listingType = filter.personApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                let request = LemmyListPersonsRequest(
+                    type_: listingType,
+                    sort: sortType,
+                    searchTerm: query,
+                    searchTitleOnly: nil,
+                    pageCursor: nil,
+                    limit: limit
+                )
+                return try await self.perform(request, endpoint: .v4).items
+            }
         }
-        return try response.users?.map { try .init(from: $0) } ?? []
+        return try people.map { try .init(from: $0) }
     }
     
     @discardableResult

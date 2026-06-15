@@ -80,16 +80,6 @@ public protocol InstanceConnection {
         sort: PostSortType
     ) async throws -> [Post2Snapshot]
     
-    func searchPosts(
-        query: String,
-        page: Int,
-        limit: Int,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot]
-    
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws
     func markPostAsRead(id: Int, read: Bool) async throws
     @discardableResult
@@ -214,16 +204,6 @@ public protocol InstanceConnection {
         sort: CommentSortType
     ) async throws -> [Comment2Snapshot]
     
-    func searchComments(
-        query: String,
-        page: Int,
-        limit: Int,
-        communityId: Int?,
-        creatorId: Int?,
-        filter: ListingType,
-        sort: SearchSortType
-    ) async throws -> [Comment2Snapshot]
-    
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot
     @discardableResult
@@ -271,7 +251,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot]
     
     @discardableResult
@@ -357,7 +337,7 @@ public protocol InstanceConnection {
         page: Int,
         limit: Int,
         filter: ListingType,
-        sort: SearchSortType
+        sort: CommunitySortType
     ) async throws -> [Community2Snapshot]
     
     @discardableResult

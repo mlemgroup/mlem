@@ -188,7 +188,7 @@ struct CommentView<EmbeddedContent: View>: View {
                     EllipsisMenu(icon: .lemmy.moderation, size: 24, comment: comment, type: [.moderator])
                 }
                 EllipsisMenu(size: 24, comment: comment, type: [.basic])
-            case .divider:
+            case .combined:
                 EllipsisMenu(size: 24, comment: comment)
             }
         }

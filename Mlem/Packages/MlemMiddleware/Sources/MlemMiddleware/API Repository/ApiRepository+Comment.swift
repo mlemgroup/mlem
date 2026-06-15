@@ -117,28 +117,6 @@ extension ApiRepository {
         }
     }
     
-    func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
-        try await performingForConnection { connection in
-            try await connection.searchComments(
-                query: query,
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                creatorId: creatorId,
-                filter: filter,
-                sort: sort
-            )
-        }
-    }
-    
     func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.voteOnComment(id: id, score: score)

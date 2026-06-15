@@ -25,7 +25,7 @@ extension ApiRepository {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType,
+        sort: CommunitySortType,
         hostApi: ApiClient? = nil
     ) async throws -> [Community2Snapshot] {
         try await performingForConnection { connection in

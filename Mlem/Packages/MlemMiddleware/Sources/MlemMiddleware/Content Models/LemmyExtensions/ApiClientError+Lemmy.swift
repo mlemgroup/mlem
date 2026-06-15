@@ -29,7 +29,8 @@ extension ApiClientError {
             .applicationPending
         case "email_not_verified":
             .emailNotVerified
-        case "not_mod_or_admin":
+        case "not_mod_or_admin",
+             "not_a_mod_or_admin":
             .notModOrAdmin
         case "not_admin",
              "not_an_admin":

@@ -32,7 +32,7 @@ extension ApiRepository {
         page: Int = 1,
         limit: Int = 20,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
+        sort: PersonSortType
     ) async throws -> [Person2Snapshot] {
         try await performingForConnection { connection in
             try await connection.searchPeople(

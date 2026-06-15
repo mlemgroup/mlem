@@ -30,7 +30,7 @@ public extension Icon {
         public let thumbnail: Icon = .init("photo")
         public let author: Icon = .init("signature")
         public let leftRight: Icon = .init("arrow.left.arrow.right")
-        public let developerMode: Icon = .init("wrench.adjustable.fill")
+        public let developerMode: Icon = .init("hammer")
         public let limitImageHeightSetting: Icon = .init("rectangle.compress.vertical")
         public let appLockSettings: Icon = .init("lock.app.dashed")
         public let sidebar: Icon = .init("sidebar.left")
@@ -61,7 +61,7 @@ public extension Icon {
         public let settingsIcons: Icon = .init("fleuron")
         public let privacy: Icon = .init("hand.raised")
         public let openExternalLinks: Icon = .init("arrow.up.right")
-        public let tappableLinks: Icon = .init("hand.tap")
+        public let tapFriendlyLinks: Icon = .init("hand.tap")
         public let general: Icon = .init("gear")
         public let safety: Icon = .init("shield.lefthalf.filled")
         public let accessibility: Icon = .init("hand.point.up.braille.fill")
@@ -77,6 +77,8 @@ public extension Icon {
         public let imageViewer: Icon = .init("rectangle.portrait.center.inset.filled")
         public let imageViewerControls: Icon = .init("ellipsis")
         public let imageViewerDismissSensitivity: Icon = .applySquare("arrow.down.to.line")
+        public let avatar: Icon = .applyCircle("circle.dashed.inset.fill")
+        public let cache: Icon = .applyCircle("externaldrive.fill")
     }
     
     static let settings: SettingsIcons = .init()

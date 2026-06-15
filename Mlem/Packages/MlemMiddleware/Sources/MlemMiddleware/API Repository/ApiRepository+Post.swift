@@ -125,28 +125,6 @@ extension ApiRepository {
         }
     }
     
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot] {
-        try await performingForConnection { connection in
-            try await connection.searchPosts(
-                query: query,
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                creatorId: creatorId,
-                filter: filter,
-                sort: sort
-            )
-        }
-    }
-    
     func markPostAsRead(id: Int, read: Bool = true) async throws {
         try await performingForConnection { connection in
             try await connection.markPostAsRead(id: id, read: read)
