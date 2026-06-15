@@ -33,7 +33,7 @@ struct BlockListView: View {
     
     var body: some View {
         FancyScrollView {
-            BubblePicker(availableTabs, selected: $selectedTab, label: \.label, value: { tab in
+            BubblePicker(Tab.allCases, selected: $selectedTab, label: \.label, value: { tab in
                 guard let blockList = (appState.firstSession as? UserSession)?.blocks else { return 0 }
                 switch tab {
                 case .people:
@@ -75,14 +75,6 @@ struct BlockListView: View {
             }
         }
         .navigationTitle("Block List")
-    }
-    
-    var availableTabs: [Tab] {
-        var output: [Tab] = [.people, .communities]
-        if appState.firstApi.supports(.viewInstanceBlockList, defaultValue: false) {
-            output.append(.instances)
-        }
-        return output
     }
 }
 
