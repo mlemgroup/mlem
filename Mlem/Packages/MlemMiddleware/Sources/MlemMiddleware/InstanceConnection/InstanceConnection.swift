@@ -87,6 +87,8 @@ public protocol InstanceConnection {
     @discardableResult
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot
     @discardableResult
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot
+    @discardableResult
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot
     func hidePost(id: Int, hide: Bool) async throws
     
@@ -206,6 +208,8 @@ public protocol InstanceConnection {
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot
     @discardableResult
     func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot
+    @discardableResult
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool) async throws -> Comment2Snapshot
     @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot
     

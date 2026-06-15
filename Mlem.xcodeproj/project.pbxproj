@@ -25,6 +25,7 @@
 		0305EBAA2D32B3B80066E5AD /* ModlogView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */; };
 		0305EBAC2D32C9300066E5AD /* ModlogEntryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */; };
 		0305EBB22D35C1B70066E5AD /* RegistrationApplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0305EBB12D35C1B70066E5AD /* RegistrationApplicationView.swift */; };
+		030705B32FDACC4E00B304B9 /* NotificationIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030705B22FDACC4E00B304B9 /* NotificationIndicatorView.swift */; };
 		030778EC2C52ED350018E61C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 030778EB2C52ED350018E61C /* Localizable.xcstrings */; };
 		030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */; };
 		030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */; };
@@ -655,6 +656,7 @@
 		0305EBA92D32B3B80066E5AD /* ModlogView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogView+Logic.swift"; sourceTree = "<group>"; };
 		0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogEntryType+Extensions.swift"; sourceTree = "<group>"; };
 		0305EBB12D35C1B70066E5AD /* RegistrationApplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationApplicationView.swift; sourceTree = "<group>"; };
+		030705B22FDACC4E00B304B9 /* NotificationIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationIndicatorView.swift; sourceTree = "<group>"; };
 		030778EB2C52ED350018E61C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		030BCB1A2C3EA5FD0037680F /* InstanceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceDetailsView.swift; sourceTree = "<group>"; };
 		030E95E62C80A20A0045BC2C /* View+NavigationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationTransition.swift"; sourceTree = "<group>"; };
@@ -2067,6 +2069,7 @@
 				CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */,
 				0397D45F2C66113F002C6CDC /* CommentBodyView.swift */,
 				033F84BA2C2ACB96002E3EDF /* CommentView.swift */,
+				030705B22FDACC4E00B304B9 /* NotificationIndicatorView.swift */,
 				CD43E8B22BF2C24E007C3D71 /* ContentLoader.swift */,
 				030FF67E2BC8544600F6BFAC /* CustomTabBarController.swift */,
 				030FF67C2BC8524500F6BFAC /* CustomTabItem.swift */,
@@ -3344,6 +3347,7 @@
 				03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */,
 				B1B78D642A51D53900F72485 /* AppDelegate.swift in Sources */,
 				03ABE5B62DB79A0E00374AFF /* DateComponents+Extensions.swift in Sources */,
+				030705B32FDACC4E00B304B9 /* NotificationIndicatorView.swift in Sources */,
 				037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
