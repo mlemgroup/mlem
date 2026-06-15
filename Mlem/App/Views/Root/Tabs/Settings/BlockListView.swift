@@ -29,7 +29,7 @@ struct BlockListView: View {
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
     @State var communities: [Community] = []
-    @State var instances: [Instance] = []
+    @State var instances: [InstanceStub] = []
     
     var body: some View {
         FancyScrollView {
@@ -54,8 +54,10 @@ struct BlockListView: View {
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                SearchResultsView(results: instances.filter(\.blocked_.realizedValue)) { instance in
-                    InstanceListRow(instance, showBlockStatus: false)
+                ForEach(instances, id: \.self) { instance in
+                    InstanceRow(instance: instance)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                        .padding(.bottom, Constants.main.halfSpacing)
                 }
             }
         }
@@ -83,3 +85,15 @@ struct BlockListView: View {
         return output
     }
 }
+
+private struct InstanceRow: View {
+    let instance: InstanceStub
+
+    var body: some View {
+        Text(instance.actorId.host)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+    }
+} 

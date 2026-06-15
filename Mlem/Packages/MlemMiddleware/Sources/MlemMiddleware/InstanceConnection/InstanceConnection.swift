@@ -390,7 +390,7 @@ public protocol InstanceConnection {
     
     func resolve(url: URL) async throws -> ResolvedContent
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot])
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String])
     
     func getModlog(
         page: Int,

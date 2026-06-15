@@ -81,7 +81,7 @@ extension ApiRepository {
         }
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
         try await performingForConnection { connection in
             try await connection.getBlocked()
         }
