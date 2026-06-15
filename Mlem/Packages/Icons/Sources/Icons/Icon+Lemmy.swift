@@ -229,6 +229,10 @@ public extension Icon {
         public func notificationCount(_ count: Int) -> Icon {
             .init(count <= 50 ? "\(count).circle.fill" : "exclamationmark.circle.fill")
         }
+
+        public let notification: Icon = .init("bell")
+        public let enableNotifications: Icon = .init("bell")
+        public let disableNotifications: Icon = .init("bell.slash")
     }
     
     static let lemmy: LemmyIcons = .init()

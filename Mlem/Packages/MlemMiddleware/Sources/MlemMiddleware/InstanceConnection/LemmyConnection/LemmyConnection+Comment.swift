@@ -265,6 +265,11 @@ internal extension LemmyConnection {
     }
     
     @discardableResult
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool) async throws -> Comment2Snapshot {
+        throw ApiClientError.featureUnsupported
+    }
+    
+    @discardableResult
     func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyDeleteCommentRequest(endpoint: endpoint, commentId: id, deleted: delete)

@@ -117,6 +117,12 @@ extension ApiRepository {
         }
     }
     
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.setCommentNotificationsEnabled(id: id, enabled: enabled)
+        }
+    }
+    
     func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.deleteComment(id: id, delete: delete)

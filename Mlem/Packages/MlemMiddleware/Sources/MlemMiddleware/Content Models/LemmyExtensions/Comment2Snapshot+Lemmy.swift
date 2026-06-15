@@ -43,7 +43,8 @@ extension Comment2Snapshot {
             creatorIsAdmin: comment.creatorIsAdmin,
             creatorBannedFromCommunity: comment.creatorBannedFromCommunity,
             votes: votes,
-            saved: saved
+            saved: saved,
+            notificationsEnabled: false
         )
     }
     
@@ -82,7 +83,8 @@ extension Comment2Snapshot {
             creatorIsAdmin: report.creatorIsAdmin ?? false,
             creatorBannedFromCommunity: report.creatorBannedFromCommunity,
             votes: votes,
-            saved: saved
+            saved: saved,
+            notificationsEnabled: false
         )
     }
 
@@ -97,7 +99,8 @@ extension Comment2Snapshot {
             creatorIsAdmin: reply.creatorIsAdmin,
             creatorBannedFromCommunity: reply.creatorBannedFromCommunity,
             votes: .init(from: reply.counts, myVote: .guaranteedInit(from: reply.myVote)),
-            saved: reply.saved
+            saved: reply.saved,
+            notificationsEnabled: false
         )
     }
 
@@ -112,7 +115,8 @@ extension Comment2Snapshot {
             creatorIsAdmin: mention.creatorIsAdmin,
             creatorBannedFromCommunity: mention.creatorBannedFromCommunity,
             votes: .init(from: mention.counts, myVote: .guaranteedInit(from: mention.myVote)),
-            saved: mention.saved
+            saved: mention.saved,
+            notificationsEnabled: false
         )
     }
 }

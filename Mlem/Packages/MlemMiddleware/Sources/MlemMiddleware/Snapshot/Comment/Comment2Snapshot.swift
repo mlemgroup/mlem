@@ -23,9 +23,10 @@ public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
     public let creatorBannedFromCommunity: Bool
     public let votes: VotesModel
     public let saved: Bool
-    
+    public let notificationsEnabled: Bool
+
     public var cacheId: Int { comment.cacheId }
-    
+
     public init(
         comment: Comment1Snapshot,
         creator: Person1Snapshot,
@@ -36,7 +37,8 @@ public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
         creatorIsAdmin: Bool,
         creatorBannedFromCommunity: Bool,
         votes: VotesModel,
-        saved: Bool
+        saved: Bool,
+        notificationsEnabled: Bool
     ) {
         self.comment = comment
         self.creator = creator
@@ -48,6 +50,7 @@ public struct Comment2Snapshot: CacheIdentifiable, CommentSnapshotProviding {
         self.creatorBannedFromCommunity = creatorBannedFromCommunity
         self.votes = votes
         self.saved = saved
+        self.notificationsEnabled = notificationsEnabled
     }
     
     public func merge(with snapshot: any CommentSnapshotProviding) -> any CommentSnapshotProviding {
