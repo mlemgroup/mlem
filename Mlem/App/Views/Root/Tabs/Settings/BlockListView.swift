@@ -87,6 +87,8 @@ struct BlockListView: View {
 }
 
 private struct InstanceRow: View {
+    @Environment(NavigationLayer.self) var navigation
+
     let instance: InstanceStub
 
     var body: some View {
@@ -96,5 +98,8 @@ private struct InstanceRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
             .contextMenu(instance: instance)
+            .onTapGesture {
+                navigation.push(.instanceStub(instance))
+            }
     }
 } 
