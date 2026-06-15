@@ -54,7 +54,7 @@ struct BlockListView: View {
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                ForEach(instances, id: \.self) { instance in
+                ForEach(instances.filter { $0.blocked.realizedValue }, id: \.self) { instance in
                     InstanceRow(instance: instance)
                         .padding(.horizontal, Constants.main.standardSpacing)
                         .padding(.bottom, Constants.main.halfSpacing)
@@ -92,8 +92,9 @@ private struct InstanceRow: View {
     var body: some View {
         Text(instance.actorId.host)
             .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.vertical, 12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .contextMenu(instance: instance)
     }
 } 
