@@ -165,11 +165,20 @@ public extension LemmyConnection {
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyGetSiteRequest(endpoint: endpoint)
+        let myUser = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                let request = LemmyGetSiteRequest(endpoint: .v3)
+                let response = try await self.perform(request, endpoint: .v3)
+                return response.myUser
+            case .v4:
+                let request = LemmyGetMyUserRequest()
+                let response = try await self.perform(request, endpoint: .v4)
+                return response
+            }
         }
         
-        guard let myUser = response.myUser else { return ([], [], []) }
+        guard let myUser else { return ([], [], []) }
 
         let instances: [String]
         if let blocks = myUser.instanceCommunitiesBlocks {
