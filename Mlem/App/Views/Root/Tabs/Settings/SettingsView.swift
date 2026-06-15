@@ -53,7 +53,7 @@ struct SettingsView: View {
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
-                    destination: .settings(.links)
+                    destination: .settings(.mediaAndLinks)
                 )
                 .gradientTint(.themedColorfulAccent(4))
                 NavigationLink(
@@ -103,6 +103,10 @@ struct SettingsView: View {
                     .gradientTint(.themedColorfulAccent(2))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
                     .gradientTint(.themedNeutralAccent)
+                #if DEBUG
+                NavigationLink("Developer", icon: .settings.developerMode, destination: .settings(.developer))
+                    .gradientTint(.themedColorfulAccent(2))
+                #endif
             }
         }
         .labelStyle(.squircle)

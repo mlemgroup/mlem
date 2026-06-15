@@ -8,15 +8,17 @@
 import SwiftUI
 import Theming
 
-struct LinkSettingsView: View {
+struct MediaAndLinksSettingsView: View {
     @Setting(\.links_openInBrowser) var openLinksInBrowser
     @Setting(\.links_readerMode) var openLinksInReaderMode
     @Setting(\.links_shareMode) var linkSharingMode
-    @Setting(\.links_displayMode) var tappableLinksDisplayMode
+    @Setting(\.links_displayMode) var tapFriendlyLinksDisplayMode
     @Setting(\.comment_compact) var compactComments
     @Setting(\.links_embedLoops) var embedLoops
     @Setting(\.behavior_autoplayMedia) var autoplayMedia
     @Setting(\.behavior_muteVideos) var muteVideos
+    @Setting(\.person_showAvatar) var showPersonAvatar
+    @Setting(\.community_showAvatar) var showCommunityAvatar
 
     var body: some View {
         Form {
@@ -42,11 +44,11 @@ struct LinkSettingsView: View {
                     destination: .settings(.sharingLinks)
                 )
                 NavigationLink(
-                    "Tappable Links",
-                    value: tappableLinksDisplayMode == .disabled ? "Off" : "On",
+                    "Tap-Friendly Links",
+                    value: tapFriendlyLinksDisplayMode == .disabled ? "Off" : "On",
                     fallbackValue: "",
-                    icon: .settings.tappableLinks,
-                    destination: .settings(.tappableLinks)
+                    icon: .settings.tapFriendlyLinks,
+                    destination: .settings(.tapFriendlyLinks)
                 )
             }
 
@@ -55,6 +57,13 @@ struct LinkSettingsView: View {
                     "Image Viewer",
                     icon: .settings.imageViewer,
                     destination: .settings(.imageViewer)
+                )
+                NavigationLink(
+                    "Avatars",
+                    value: .init(localized: avatarNavigationLinkValue),
+                    fallbackValue: "",
+                    icon: .settings.showAvatar,
+                    destination: .settings(.avatars)
                 )
             }
             
@@ -83,6 +92,15 @@ struct LinkSettingsView: View {
             "In Browser"
         } else {
             openLinksInReaderMode ? "In Reader" : "In Mlem"
+        }
+    }
+
+    var avatarNavigationLinkValue: LocalizedStringResource {
+        switch (showPersonAvatar, showCommunityAvatar) {
+        case (true, true): "On"
+        case (true, false): "Users Only"
+        case (false, true): "Communities Only"
+        case (false, false): "Off"
         }
     }
     

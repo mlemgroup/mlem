@@ -126,6 +126,6 @@ private extension LinkData {
     }
 }
 
-enum TappableLinksDisplayMode: String, Codable, CaseIterable {
+enum TapFriendlyLinksDisplayMode: String, Codable, CaseIterable {
     case disabled, large, compact, contextual
 }

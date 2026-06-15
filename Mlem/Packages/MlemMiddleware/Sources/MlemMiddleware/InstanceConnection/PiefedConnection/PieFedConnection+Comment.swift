@@ -149,7 +149,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
     ) async throws -> [Comment2Snapshot] {
-        guard let sort = sort.piefedSortType else {
+        guard let sort = sort.piefedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedSearchRequest(
@@ -171,18 +171,6 @@ public extension PieFedConnection {
         return try comments.map { try .init(from: $0) } 
     }
     
-    func searchComments(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
-        throw ApiClientError.featureUnsupported
-    }
-
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
         let request = PieFedLikeCommentRequest(

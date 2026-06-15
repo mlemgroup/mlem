@@ -148,7 +148,7 @@ public extension PieFedConnection {
         filter: ListingType = .all,
         sort: PostSortType
     ) async throws -> [Post2Snapshot] {
-        guard let sort = sort.pieFedSortType else {
+        guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         if communityId != nil || creatorId != nil {
@@ -168,18 +168,6 @@ public extension PieFedConnection {
         )
         let response = try await perform(request)
         return try response.posts.map { try .init(from: $0) }
-    }
-    
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot] {
-        throw ApiClientError.featureUnsupported
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {

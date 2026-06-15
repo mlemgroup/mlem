@@ -8,6 +8,14 @@
 import Foundation
 
 public extension SortTimeRange {
+    var pieFedSearchSortType: PieFedSearchSortType? {
+        switch self {
+        case .allTime: .topAll
+        case let .limited(timeInterval):
+            LegacySortTimeRangeLimit(timeInterval)?.pieFedSearchSortType
+        }
+    }
+
     var pieFedSortType: PieFedSortType? {
         switch self {
         case .allTime: .topAll
