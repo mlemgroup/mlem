@@ -13,7 +13,7 @@ struct ShareInstancePickerView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let entity: any Sharable
+    let entity: any Sharable & ContentModel
     
     var body: some View {
         VStack(spacing: 16) {
