@@ -72,9 +72,13 @@ extension TranslateAction {
             do {
                 if entity.content.translatedMarkdown == nil {
                     let translated = try await translate(entity.content.string)    
-                    entity.content.translatedMarkdown = .init(translated)
+                    withAnimation {
+                        entity.content.translatedMarkdown = .init(translated)
+                    }
                 } else {
-                    entity.content.translatedMarkdown = nil
+                    withAnimation {
+                        entity.content.translatedMarkdown = nil
+                    }
                 }
             } catch {
                 handleError(error)
