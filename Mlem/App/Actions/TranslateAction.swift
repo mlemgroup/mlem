@@ -8,6 +8,7 @@
 import Actions
 import MlemMiddleware
 import SwiftUI
+import Translation
 
 struct TranslateAction: SimpleLabelAction {
     let entity: Comment
@@ -42,7 +43,13 @@ extension TranslateAction {
    static var label: ActionLabel { translateLabel }
 
    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-       Self.translateLabel
+       let visibility: ActionVisiblity
+       if #available(iOS 26, *) {
+           visibility = .enabled
+       } else {
+           visibility = .hidden
+       }
+       return Self.translateLabel.withVisibility(visibility)
    }
 }
 
@@ -51,5 +58,24 @@ extension TranslateAction {
 extension TranslateAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
+        if #available(iOS 26, *) {
+            internalExecute(environment: environment)
+        } else {
+            assertionFailure()
+        }
+    }
+
+    @MainActor
+    @available(iOS 26, *)
+    private func internalExecute(environment: EnvironmentValues) {
+        let session = TranslationSession.init(installedSource: .init(identifier: "de"), target: .init(identifier: "en"))
+        Task {
+            do {
+                let result = try await session.translate(entity.content.string)
+                print(result.targetText)
+            } catch {
+                handleError(error)
+            }
+        }
     }
 }
