@@ -42,7 +42,7 @@ public class Comment:
     public let postId: Int
     public let parentCommentIds: [Int]
     public let created: Date
-    public var content: LazyMarkdown
+    public var content: TranslatableMarkdown
     public var updated: Date?
     public var distinguished: Bool
     public var languageId: Int

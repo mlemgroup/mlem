@@ -43,7 +43,7 @@ struct MarkdownWithLinkList: View {
     }
     
     init(
-        _ markdown: LazyMarkdown,
+        _ markdown: TranslatableMarkdown,
         configuration: MarkdownConfigurationType = .default,
         showLinkCaptions: Bool = true
     ) {

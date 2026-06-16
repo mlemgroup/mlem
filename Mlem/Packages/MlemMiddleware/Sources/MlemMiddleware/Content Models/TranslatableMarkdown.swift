@@ -10,7 +10,7 @@ import LemmyMarkdownUI
 import Observation
 
 @Observable
-public class LazyMarkdown {
+public class TranslatableMarkdown {
     private var string_: String
     private var markdown_: [BlockNode]?
     public var translatedMarkdown: [BlockNode]?
