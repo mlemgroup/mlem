@@ -43,14 +43,20 @@ extension TranslateAction {
    static var label: ActionLabel { translateLabel }
 
    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-       let visibility: ActionVisiblity
-       if #available(iOS 26, *) {
-           visibility = .enabled
+       if self.entity.content.translated == .untranslated {
+           Self.translateLabel.withVisibility(visibility(environment))
        } else {
-           visibility = .hidden
+           Self.showOriginalLabel.withVisibility(visibility(environment))
        }
-       return Self.translateLabel.withVisibility(visibility)
    }
+
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+       if #available(iOS 26, *) {
+           .enabled
+       } else {
+           .hidden
+       }
+    }
 }
 
 // MARK: - Behavior
