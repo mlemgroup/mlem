@@ -11,7 +11,7 @@ import LemmyMarkdownUI
 public class LazyMarkdown {
     private var string_: String
     private var markdown_: [BlockNode]?
-    private var translatedMarkdown: [BlockNode]?
+    public var translatedMarkdown: [BlockNode]?
 
     init(_ string: String) {
         self.string_ = string
@@ -38,3 +38,4 @@ public class LazyMarkdown {
         }
     }
 }
+

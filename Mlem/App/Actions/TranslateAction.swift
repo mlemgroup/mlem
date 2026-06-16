@@ -68,14 +68,24 @@ extension TranslateAction {
     @MainActor
     @available(iOS 26, *)
     private func internalExecute(environment: EnvironmentValues) {
-        let session = TranslationSession.init(installedSource: .init(identifier: "de"), target: .init(identifier: "en"))
         Task {
             do {
-                let result = try await session.translate(entity.content.string)
-                print(result.targetText)
+                if entity.content.translatedMarkdown == nil {
+                    let translated = try await translate(entity.content.string)    
+                    entity.content.translatedMarkdown = .init(translated)
+                } else {
+                    entity.content.translatedMarkdown = nil
+                }
             } catch {
                 handleError(error)
             }
         }
+    }
+
+    @available(iOS 26, *)
+    private func translate(_ text: String) async throws -> String {
+        let session = TranslationSession.init(installedSource: .init(identifier: "de"), target: .init(identifier: "en"))
+        let result = try await session.translate(entity.content.string)
+        return result.targetText
     }
 }
