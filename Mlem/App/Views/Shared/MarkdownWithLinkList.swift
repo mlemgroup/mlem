@@ -6,6 +6,7 @@
 //
 
 import LemmyMarkdownUI
+import MlemMiddleware
 import SwiftUI
 
 struct MarkdownWithLinkList: View {
@@ -41,6 +42,16 @@ struct MarkdownWithLinkList: View {
         self.showLinkCaptions = showLinkCaptions
     }
     
+    init(
+        _ markdown: LazyMarkdown,
+        configuration: MarkdownConfigurationType = .default,
+        showLinkCaptions: Bool = true
+    ) {
+        self.blocks = markdown.markdown
+        self.markdownConfiguration = configuration
+        self.showLinkCaptions = showLinkCaptions
+    }
+
     var showSubtitle: Bool {
         tappableLinksDisplayMode == .large || tappableLinksDisplayMode == .contextual && showLinkCaptions
     }

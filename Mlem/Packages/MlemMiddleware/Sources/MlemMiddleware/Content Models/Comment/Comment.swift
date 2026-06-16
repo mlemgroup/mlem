@@ -42,7 +42,7 @@ public class Comment:
     public let postId: Int
     public let parentCommentIds: [Int]
     public let created: Date
-    public var content: String
+    public var content: LazyMarkdown
     public var updated: Date?
     public var distinguished: Bool
     public var languageId: Int
@@ -71,7 +71,7 @@ public class Comment:
         self.postId = properties.postId
         self.parentCommentIds = properties.parentCommentIds
         self.created = properties.created
-        self.content = properties.content
+        self.content = .init(properties.content)
         self.updated = properties.updated
         self.distinguished = properties.distinguished
         self.languageId = properties.languageId
@@ -112,7 +112,7 @@ public class Comment:
     @MainActor
     public func update(with properties: CommentProperties) {
         if !properties.removed {
-            setIfChanged(\.content, properties.content)
+            setIfChanged(\.content.string, properties.content)
         }
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.distinguished, properties.distinguished)
@@ -271,7 +271,7 @@ public extension Comment {
     // Edit
     
     func edit(content: String, languageId: Int?) async throws {
-        self.content = content
+        self.content.string = content
         if let languageId {
             self.languageId = languageId
         }
@@ -350,7 +350,7 @@ public extension Comment {
 
 extension Comment: CustomDebugStringConvertible {
     public var debugDescription: String {
-        "Comment(\(self.id), \"\(self.content.prefix(25))\")"
+        "Comment(\(self.id), \"\(self.content.string.prefix(25))\")"
     }
 }
 
@@ -381,7 +381,7 @@ public extension Comment {
                     postId: postId,
                     parentCommentIds: parentCommentIds,
                     created: created,
-                    content: content,
+                    content: content.string,
                     updated: updated,
                     distinguished: distinguished,
                     languageId: languageId,
