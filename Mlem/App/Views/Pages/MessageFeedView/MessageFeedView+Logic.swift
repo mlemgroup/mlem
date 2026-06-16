@@ -31,7 +31,7 @@ extension MessageFeedView {
         }
     }
     
-    func editMessage(_ message: any Message) async {
+    func editMessage(_ message: any DeprecatedMessage) async {
         do {
             try await message.edit(content: textView.text)
             editing = nil

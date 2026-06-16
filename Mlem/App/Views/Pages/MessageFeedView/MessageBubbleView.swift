@@ -14,7 +14,7 @@ struct MessageBubbleView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
     
-    let message: any Message
+    let message: any DeprecatedMessage
     
     var body: some View {
         Group {

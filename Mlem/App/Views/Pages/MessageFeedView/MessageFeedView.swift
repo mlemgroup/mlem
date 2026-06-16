@@ -20,7 +20,7 @@ struct MessageFeedView: View {
     
     let person: Person
     let focusTextField: Bool
-    @State var editing: (any Message)?
+    @State var editing: (any DeprecatedMessage)?
     
     /// Tracks whether the text view was firstResponder when a sheet was opened. Nil when no sheet is open.
     @State var textViewWasFirstResponder: Bool?
@@ -35,7 +35,7 @@ struct MessageFeedView: View {
         person: Person,
         messageContent: String = "",
         focusTextField: Bool,
-        editing: (any Message)?
+        editing: (any DeprecatedMessage)?
     ) {
         self.person = person
         self.focusTextField = focusTextField

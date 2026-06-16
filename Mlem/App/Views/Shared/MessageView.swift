@@ -16,12 +16,12 @@ struct MessageView<EmbeddedContent: View>: View {
     
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     
-    let message: any Message
+    let message: any DeprecatedMessage
     let notification: InboxNotification?
     let embeddedContent: EmbeddedContent
     
     init(
-        message: any Message,
+        message: any DeprecatedMessage,
         notification: InboxNotification?,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {

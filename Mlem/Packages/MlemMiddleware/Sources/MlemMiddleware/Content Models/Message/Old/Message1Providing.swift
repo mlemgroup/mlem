@@ -37,7 +37,7 @@ public protocol Message1Providing:
     var recipient_: Person? { get }
 }
 
-public typealias Message = Message1Providing
+public typealias DeprecatedMessage = Message1Providing
 
 // SelectableContentProviding conformance
 public extension Message1Providing {
