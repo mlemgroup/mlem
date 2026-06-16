@@ -11,9 +11,15 @@ import Observation
 
 @Observable
 public class TranslatableMarkdown {
+    public enum TranslationState: Hashable {
+        case untranslated
+        case translating
+        case translated([BlockNode])
+    }
+
     private var string_: String
     private var markdown_: [BlockNode]?
-    public var translatedMarkdown: [BlockNode]?
+    public var translated: TranslationState = .untranslated
 
     init(_ string: String) {
         self.string_ = string
@@ -24,7 +30,7 @@ public class TranslatableMarkdown {
         set {
             self.string_ = newValue
             self.markdown_ = nil
-            self.translatedMarkdown = nil
+            self.translated = .untranslated
         }
     }
 

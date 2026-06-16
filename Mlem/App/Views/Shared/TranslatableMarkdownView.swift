@@ -14,14 +14,23 @@ struct TranslatableMarkdownView: View {
     var showLinkCaptions: Bool = true
 
     var body: some View {
-        if let translated = markdown.translatedMarkdown {
+        switch markdown.translated {
+        case let .translated(translated):
             VStack(alignment: .leading) {
                 MarkdownWithLinkList(translated, showLinkCaptions: showLinkCaptions)
                 Text("Translated")
                     .font(.footnote)
                     .foregroundStyle(.themedSecondary)
             }
-        } else {
+        case .translating:
+            VStack(alignment: .leading) {
+                MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
+                    .opacity(0.5)
+                Text("Translating...")
+                    .font(.footnote)
+                    .foregroundStyle(.themedSecondary)
+            }
+        case .untranslated:
             MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
         }
     }

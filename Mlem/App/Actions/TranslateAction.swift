@@ -69,19 +69,22 @@ extension TranslateAction {
     @available(iOS 26, *)
     private func internalExecute(environment: EnvironmentValues) {
         Task {
+            let shouldTranslate = entity.content.translated == .untranslated
+            entity.content.translated = .translating
             do {
-                if entity.content.translatedMarkdown == nil {
+                if shouldTranslate {
                     let translated = try await translate(entity.content.string)    
                     withAnimation {
-                        entity.content.translatedMarkdown = .init(translated)
+                        entity.content.translated = .translated(.init(translated))
                     }
                 } else {
                     withAnimation {
-                        entity.content.translatedMarkdown = nil
+                        entity.content.translated = .untranslated
                     }
                 }
             } catch {
                 handleError(error)
+                entity.content.translated = .untranslated
             }
         }
     }
