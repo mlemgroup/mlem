@@ -27,7 +27,16 @@ struct CommentBodyView: View {
                     missingContentMessage("Comment was removed")
                 }
             } else {
-                MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
+                if let translated = comment.content.translatedMarkdown {
+                    VStack(alignment: .leading) {
+                        MarkdownWithLinkList(translated, showLinkCaptions: !compactComments)
+                        Text("Translated")
+                            .font(.footnote)
+                            .foregroundStyle(.themedSecondary)
+                    }
+                } else {
+                    MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
+                }
             }
         }
         .fixedSize(horizontal: false, vertical: true)

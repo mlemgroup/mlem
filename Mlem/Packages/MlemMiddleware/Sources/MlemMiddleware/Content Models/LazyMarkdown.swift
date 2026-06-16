@@ -7,7 +7,9 @@
 
 import Foundation
 import LemmyMarkdownUI
+import Observation
 
+@Observable
 public class LazyMarkdown {
     private var string_: String
     private var markdown_: [BlockNode]?
