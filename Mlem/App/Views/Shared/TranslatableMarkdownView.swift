@@ -25,10 +25,13 @@ struct TranslatableMarkdownView: View {
         case .translating:
             VStack(alignment: .leading) {
                 MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
-                    .opacity(0.5)
-                Text("Translating...")
-                    .font(.footnote)
-                    .foregroundStyle(.themedSecondary)
+                HStack {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text("Translating...")
+                }
+                .font(.footnote)
+                .foregroundStyle(.themedSecondary)
             }
         case .untranslated:
             MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
