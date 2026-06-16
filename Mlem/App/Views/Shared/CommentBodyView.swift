@@ -22,21 +22,12 @@ struct CommentBodyView: View {
                 missingContentMessage("Comment was deleted")
             } else if comment.removed {
                 if exposeRemovedContent {
-                    MarkdownWithLinkList(comment.content, configuration: .removedContent, showLinkCaptions: !compactComments)
+                    TranslatableMarkdownView(markdown: comment.content, configuration: .removedContent, showLinkCaptions: !compactComments)
                 } else {
                     missingContentMessage("Comment was removed")
                 }
             } else {
-                if let translated = comment.content.translatedMarkdown {
-                    VStack(alignment: .leading) {
-                        MarkdownWithLinkList(translated, showLinkCaptions: !compactComments)
-                        Text("Translated")
-                            .font(.footnote)
-                            .foregroundStyle(.themedSecondary)
-                    }
-                } else {
-                    MarkdownWithLinkList(comment.content, showLinkCaptions: !compactComments)
-                }
+                TranslatableMarkdownView(markdown: comment.content, showLinkCaptions: !compactComments)
             }
         }
         .fixedSize(horizontal: false, vertical: true)

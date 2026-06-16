@@ -42,16 +42,6 @@ struct MarkdownWithLinkList: View {
         self.showLinkCaptions = showLinkCaptions
     }
     
-    init(
-        _ markdown: TranslatableMarkdown,
-        configuration: MarkdownConfigurationType = .default,
-        showLinkCaptions: Bool = true
-    ) {
-        self.blocks = markdown.markdown
-        self.markdownConfiguration = configuration
-        self.showLinkCaptions = showLinkCaptions
-    }
-
     var showSubtitle: Bool {
         tappableLinksDisplayMode == .large || tappableLinksDisplayMode == .contextual && showLinkCaptions
     }
