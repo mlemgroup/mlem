@@ -100,21 +100,9 @@ extension TranslateAction {
                     }
                 }
                 
-            } catch let TranslationError.languageUnavailable(from: source, to: target, status: status) {
-                handleError(
-                    TranslationError.languageUnavailable(from: source, to: target, status: status),
-                    silent: true
-                )
+            } catch let TranslationError.languageUnavailable(from: source, to: target, status: .unsupported) {
+                showUnsupportedToast(environment: environment, source: source, target: target)
                 entity.content.translated = .untranslated
-                let sourceLabel = environment.locale.localizedString(forLanguageCode: source.languageCode?.identifier ?? "") ?? ""
-                let targetLabel = environment.locale.localizedString(forLanguageCode: target.languageCode?.identifier ?? "") ?? ""
-                environment.toastModel?.add(.basic(
-                    "Unsupported Language",
-                    subtitle: "Cannot translate from \(sourceLabel) to \(targetLabel).",
-                    icon: .general.translate,
-                    color: .themedColorfulAccent(9),
-                    duration: 5
-                ))
             } catch {
                 handleError(error)
                 entity.content.translated = .untranslated
@@ -149,7 +137,23 @@ extension TranslateAction {
         throw TranslationError.couldNotDetermineLanguage
     }
 
-    func detectLanguage(of text: String) async -> Locale.Language? {
+    private func showUnsupportedToast(
+        environment: EnvironmentValues,
+        source: Locale.Language,
+        target: Locale.Language
+    ) {
+        let sourceLabel = environment.locale.localizedString(forLanguageCode: source.languageCode?.identifier ?? "") ?? ""
+        let targetLabel = environment.locale.localizedString(forLanguageCode: target.languageCode?.identifier ?? "") ?? ""
+        environment.toastModel?.add(.basic(
+            "Unsupported Language",
+            subtitle: "Cannot translate from \(sourceLabel) to \(targetLabel).",
+            icon: .general.translate,
+            color: .themedColorfulAccent(9),
+            duration: 5
+        ))
+    }
+
+    private func detectLanguage(of text: String) async -> Locale.Language? {
         let task = Task.detached(priority: .userInitiated) {
             let recognizer = NLLanguageRecognizer()
             recognizer.processString(text)
