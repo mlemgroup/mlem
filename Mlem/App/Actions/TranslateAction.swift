@@ -7,6 +7,7 @@
 
 import Actions
 import MlemMiddleware
+import NaturalLanguage
 import SwiftUI
 import Translation
 
@@ -99,8 +100,21 @@ extension TranslateAction {
 
     @available(iOS 26, *)
     private func translate(_ text: String) async throws -> String {
-        let session = TranslationSession.init(installedSource: .init(identifier: "de"), target: .init(identifier: "en"))
+        let sourceLanguage = detectLanguage(of: text)
+        guard let sourceLanguage else {
+            print("Couldn't determine source language")
+            return ""
+        }
+        print(sourceLanguage)
+        let session = TranslationSession.init(installedSource: sourceLanguage, target: .init(identifier: "en"))
         let result = try await session.translate(entity.content.string)
         return result.targetText
+    }
+
+    func detectLanguage(of text: String) -> Locale.Language? {
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(text)
+        guard let language = recognizer.dominantLanguage else { return nil }
+        return Locale.Language(identifier: language.rawValue)
     }
 }
