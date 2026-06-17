@@ -99,6 +99,22 @@ extension TranslateAction {
                         entity.content.translated = .untranslated
                     }
                 }
+                
+            } catch let TranslationError.languageUnavailable(from: source, to: target, status: status) {
+                handleError(
+                    TranslationError.languageUnavailable(from: source, to: target, status: status),
+                    silent: true
+                )
+                entity.content.translated = .untranslated
+                let sourceLabel = environment.locale.localizedString(forLanguageCode: source.languageCode?.identifier ?? "") ?? ""
+                let targetLabel = environment.locale.localizedString(forLanguageCode: target.languageCode?.identifier ?? "") ?? ""
+                environment.toastModel?.add(.basic(
+                    "Unsupported Language",
+                    subtitle: "Cannot translate from \(sourceLabel) to \(targetLabel).",
+                    icon: .general.translate,
+                    color: .themedColorfulAccent(9),
+                    duration: 5
+                ))
             } catch {
                 handleError(error)
                 entity.content.translated = .untranslated
