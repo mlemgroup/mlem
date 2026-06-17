@@ -71,9 +71,15 @@ extension TranslateAction {
             assertionFailure()
         }
     }
+}
+
+@available(iOS 26, *)
+extension TranslateAction {
+    enum TranslationError: Error {
+        case couldNotDetermineLanguage
+    }
 
     @MainActor
-    @available(iOS 26, *)
     private func internalExecute(environment: EnvironmentValues) {
         Task {
             let shouldTranslate = entity.content.translated == .untranslated
@@ -98,23 +104,35 @@ extension TranslateAction {
         }
     }
 
-    @available(iOS 26, *)
     private func translate(_ text: String) async throws -> String {
-        let sourceLanguage = detectLanguage(of: text)
-        guard let sourceLanguage else {
-            print("Couldn't determine source language")
-            return ""
-        }
-        print(sourceLanguage)
+        let sourceLanguage = try await determineLanguage(of: text)
         let session = TranslationSession.init(installedSource: sourceLanguage, target: .init(identifier: "en"))
         let result = try await session.translate(entity.content.string)
         return result.targetText
     }
 
-    func detectLanguage(of text: String) -> Locale.Language? {
-        let recognizer = NLLanguageRecognizer()
-        recognizer.processString(text)
-        guard let language = recognizer.dominantLanguage else { return nil }
-        return Locale.Language(identifier: language.rawValue)
+    private func determineLanguage(of text: String) async throws -> Locale.Language {
+        if let myInstance = entity.api.myInstance, let language = myInstance.language(withId: entity.languageId) {
+            return language
+        }
+
+        if let language = await detectLanguage(of: text) {
+            return language
+        }
+
+        throw TranslationError.couldNotDetermineLanguage
+    }
+
+    func detectLanguage(of text: String) async -> Locale.Language? {
+        let task = Task.detached(priority: .userInitiated) {
+            let recognizer = NLLanguageRecognizer()
+            recognizer.processString(text)
+            guard let language = recognizer.dominantLanguage else {
+                return nil as Locale.Language?
+            }
+            return Locale.Language(identifier: language.rawValue)
+        }
+
+        return await task.value
     }
 }
