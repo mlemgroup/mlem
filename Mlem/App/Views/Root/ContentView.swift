@@ -68,7 +68,14 @@ struct ContentView: View {
                 .navigationSheetModifiers(
                     nextLayer: navigationModel.layers.first,
                     isTopSheet: navigationModel.layers.isEmpty,
-                    shareInfo: .init(get: { navigationModel.shareInfo }, set: { navigationModel.shareInfo = $0 }),
+                    shareInfo: .init(
+                        get: { navigationModel.shareInfo },
+                        set: { navigationModel.shareInfo = $0 }
+                    ),
+                    translationConfiguration: .init(
+                        get: { navigationModel.translationConfiguration },
+                        set: { navigationModel.translationConfiguration = $0 }
+                    ),
                     contentPickerTracker: navigationModel.contentPickerTracker
                 )
                 .accentColor(ThemedColor.themedAccent.resolve(with: colorPalette.palette)) // deprecated, but .tint colors menu buttons

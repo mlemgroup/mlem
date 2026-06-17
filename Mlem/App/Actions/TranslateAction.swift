@@ -32,13 +32,13 @@ extension TranslateAction {
     static let translateLabel: ActionLabel = .init(
         "Translate",
         icon: .general.translate,
-        color: .themedColorfulAccent(9)
+        color: .themedTranslationAccent
     )
 
     static let showOriginalLabel: ActionLabel = .init(
         "Show Original",
         icon: .general.translate,
-        color: .themedColorfulAccent(9)
+        color: .themedTranslationAccent
     )
 
    static var label: ActionLabel { translateLabel }
@@ -83,7 +83,7 @@ extension TranslateAction {
 
     @MainActor
     private func internalExecute(environment: EnvironmentValues) {
-        Task {
+        Task { @MainActor in
             let shouldTranslate = entity.content.translated == .untranslated
             withAnimation {
                 entity.content.translated = .translating
@@ -91,17 +91,27 @@ extension TranslateAction {
             do {
                 if shouldTranslate {
                     let translated = try await translate(entity.content.string)    
-                    withAnimation {
+                    withAnimation(.easeInOut(duration: 1.0)) {
                         entity.content.translated = .translated(.init(translated))
                     }
                 } else {
-                    withAnimation {
+                    withAnimation(.easeInOut(duration: 1.0)) {
                         entity.content.translated = .untranslated
                     }
                 }
                 
             } catch let TranslationError.languageUnavailable(from: source, to: target, status: .unsupported) {
                 showUnsupportedToast(environment: environment, source: source, target: target)
+                entity.content.translated = .untranslated
+            } catch let TranslationError.languageUnavailable(from: source, to: target, status: .supported) {
+                if let navigation = environment.navigation?.model {
+                    let newConfig = TranslationSession.Configuration(source: source, target: target)
+                    if newConfig == navigation.translationConfiguration {
+                        navigation.translationConfiguration?.invalidate()
+                    } else {
+                        navigation.translationConfiguration = newConfig
+                    }
+                }
                 entity.content.translated = .untranslated
             } catch {
                 handleError(error)
@@ -148,7 +158,7 @@ extension TranslateAction {
             "Unsupported Language",
             subtitle: "Cannot translate from \(sourceLabel) to \(targetLabel).",
             icon: .general.translate,
-            color: .themedColorfulAccent(9),
+            color: .themedTranslationAccent,
             duration: 5
         ))
     }

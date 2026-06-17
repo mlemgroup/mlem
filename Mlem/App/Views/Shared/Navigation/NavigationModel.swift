@@ -7,6 +7,7 @@
 
 import PhotosUI
 import SwiftUI
+import Translation
 
 @Observable
 class NavigationModel {
@@ -53,6 +54,7 @@ class NavigationModel {
     var mediaUrl: URL?
     var shareInfo: ShareInfo?
     var pendingOpenURL: URL?
+    var translationConfiguration: TranslationSession.Configuration?
 
     @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
