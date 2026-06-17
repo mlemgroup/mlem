@@ -77,6 +77,8 @@ extension TranslateAction {
 extension TranslateAction {
     enum TranslationError: Error {
         case couldNotDetermineLanguage
+        // swiftlint:disable:next identifier_name
+        case languageUnavailable(from: Locale.Language, to: Locale.Language, status: LanguageAvailability.Status)
     }
 
     @MainActor
@@ -106,7 +108,15 @@ extension TranslateAction {
 
     private func translate(_ text: String) async throws -> String {
         let sourceLanguage = try await determineLanguage(of: text)
-        let session = TranslationSession.init(installedSource: sourceLanguage, target: .init(identifier: "en"))
+        let targetLanguage = Locale.current.language
+        let availability = LanguageAvailability()
+        let status = await availability.status(from: sourceLanguage, to: targetLanguage)
+
+        guard status == .installed else {
+            throw TranslationError.languageUnavailable(from: sourceLanguage, to: targetLanguage, status: status)
+        }
+
+        let session = TranslationSession.init(installedSource: sourceLanguage, target: targetLanguage)
         let result = try await session.translate(entity.content.string)
         return result.targetText
     }
