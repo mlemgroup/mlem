@@ -22,13 +22,13 @@ struct TranslatableMarkdownView: View {
             case let .translated(translated):
                 MarkdownWithLinkList(translated, showLinkCaptions: showLinkCaptions)
                     .transition(.asymmetric(insertion: .glowReveal, removal: .opacity))
-            case .untranslated:
-                MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
-                    .transition(.opacity)
             case .translating:
                 MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
                     .transition(.asymmetric(insertion: .opacity, removal: .glowReveal))
                     .modifier(GlowFlashModifier())
+            case .untranslated:
+                MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
+                    .transition(.opacity)
             }
         }
     }
@@ -46,12 +46,14 @@ private struct GlowFlashModifier: ViewModifier {
                     .overlay {
                         ThemedColor.themedColorfulAccent(9)
                             .resolve(with: palette)
-                            .opacity(phase ? 1 : 0)
+                            .opacity(phase ? 0.7 : 0)
                             .blendMode(.sourceAtop)
                 }
             }
             .onAppear {
-                trigger = true
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    trigger = true
+                }
             }
     }
 }

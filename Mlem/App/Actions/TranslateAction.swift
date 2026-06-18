@@ -85,17 +85,17 @@ extension TranslateAction {
     private func internalExecute(environment: EnvironmentValues) {
         Task { @MainActor in
             let shouldTranslate = entity.content.translated == .untranslated
-            withAnimation {
-                entity.content.translated = .translating
-            }
             do {
                 if shouldTranslate {
+                    withAnimation {
+                        entity.content.translated = .translating
+                    }
                     let translated = try await translate(entity.content.string)    
                     withAnimation(.easeInOut(duration: 1.0)) {
                         entity.content.translated = .translated(.init(translated))
                     }
                 } else {
-                    withAnimation(.easeInOut(duration: 1.0)) {
+                    withAnimation(.easeInOut(duration: 0.2)) {
                         entity.content.translated = .untranslated
                     }
                 }
