@@ -31,6 +31,7 @@ extension Date {
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")!
         return dateFormatter.string(from: self)
     }
     
@@ -60,10 +61,16 @@ extension Date {
 
     func isAnniversaryDate(_ otherDate: Date) -> Bool {
         var calendar = Calendar.current
+        calendar.timeZone = TimeZone(identifier: "UTC")!
         let date = calendar.dateComponents([.month, .day, .year], from: self)
         let current = calendar.dateComponents([.month, .day, .year], from: otherDate)
 
-        return date.month == current.month && date.day == current.day && date.year != current.year
+        // Year component must be explicitly unwrapped for less than comparison
+        guard let dateYear = date.year, let currentYear = current.year else { return false }
+
+        return date.month == current.month &&
+        date.day == current.day &&
+        dateYear < currentYear
     }
 
     // https://stackoverflow.com/a/48652058/17629371
