@@ -17,13 +17,13 @@ private struct NavigationSheetModifier: ViewModifier {
     let isTopSheet: Bool
     
     @Binding var shareInfo: NavigationModel.ShareInfo?
-    @Binding var translationConfiguration: TranslationSession.Configuration?
+    @Binding var translationConfiguration: TranslationConfiguration
     
     init(
         nextLayer: NavigationLayer?,
         isTopSheet: Bool,
         shareInfo: Binding<NavigationModel.ShareInfo?>,
-        translationConfiguration: Binding<TranslationSession.Configuration?>,
+        translationConfiguration: Binding<TranslationConfiguration>,
         // This tomfoolery exists to prevent this view being subject to NavigationModel view updates, which caused #1492
         contentPickerTracker: @escaping () -> NavigationModel.ContentPickerTracker?
     ) {
@@ -83,9 +83,12 @@ private struct NavigationSheetModifier: ViewModifier {
                 }),
                 matching: .images
             )
-            .translationTask(translationConfiguration) { session in
+            .translationTask(translationConfiguration.sessionConfig) { session in
                 do {
-                    try await session.prepareTranslation()
+                    if translationConfiguration.presentationNeeded {
+                        try await session.prepareTranslation()
+                        translationConfiguration.presentationNeeded = false
+                    }
                 } catch {
                     handleError(error)
                 }
@@ -148,7 +151,7 @@ private struct ComputeNextLayerModifier: ViewModifier {
                     set: { layer.model?.shareInfo = $0 }
                 ),
                 translationConfiguration: .init(
-                    get: { layer.model?.translationConfiguration },
+                    get: { layer.model?.translationConfiguration ?? .init() },
                     set: { layer.model?.translationConfiguration = $0 }
                 ),
                 contentPickerTracker: layer.model?.contentPickerTracker
@@ -176,7 +179,7 @@ extension View {
         nextLayer: NavigationLayer?,
         isTopSheet: Bool,
         shareInfo: Binding<NavigationModel.ShareInfo?>,
-        translationConfiguration: Binding<TranslationSession.Configuration?>,
+        translationConfiguration: Binding<TranslationConfiguration>,
         contentPickerTracker: @autoclosure @escaping () -> NavigationModel.ContentPickerTracker?
     ) -> some View {
         modifier(NavigationSheetModifier(

@@ -106,11 +106,12 @@ extension TranslateAction {
             } catch let TranslationError.languageUnavailable(from: source, to: target, status: .supported) {
                 if let navigation = environment.navigation?.model {
                     let newConfig = TranslationSession.Configuration(source: source, target: target)
-                    if newConfig == navigation.translationConfiguration {
-                        navigation.translationConfiguration?.invalidate()
+                    if newConfig == navigation.translationConfiguration.sessionConfig {
+                        navigation.translationConfiguration.sessionConfig?.invalidate()
                     } else {
-                        navigation.translationConfiguration = newConfig
+                        navigation.translationConfiguration.sessionConfig = newConfig
                     }
+                    navigation.translationConfiguration.presentationNeeded = true
                 }
                 entity.content.translated = .untranslated
             } catch {

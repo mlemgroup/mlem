@@ -54,7 +54,8 @@ class NavigationModel {
     var mediaUrl: URL?
     var shareInfo: ShareInfo?
     var pendingOpenURL: URL?
-    var translationConfiguration: TranslationSession.Configuration?
+
+    var translationConfiguration: TranslationConfiguration = .init()
 
     @MainActor
     private func openSheet(_ page: NavigationPage, hasNavigationStack: Bool? = nil, isFullScreenCover: Bool) {
@@ -100,4 +101,9 @@ class NavigationModel {
     func showFullScreenCover(_ page: NavigationPage, hasNavigationStack: Bool? = nil) {
         openSheet(page, hasNavigationStack: hasNavigationStack, isFullScreenCover: true)
     }
+}
+
+struct TranslationConfiguration {
+    var sessionConfig: TranslationSession.Configuration?
+    var presentationNeeded: Bool = false
 }
