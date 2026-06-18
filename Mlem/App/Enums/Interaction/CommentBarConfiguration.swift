@@ -137,6 +137,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
                 .selectText,
                 .share,
                 .createImage,
+                .toggleNotifications,
                 .report,
                 .edit,
                 .delete

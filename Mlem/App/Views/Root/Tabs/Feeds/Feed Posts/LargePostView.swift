@@ -73,6 +73,8 @@ struct LargePostView: View {
                     if !isPostPage, differentiateWithoutColor, readPostIndicator == .checkmark {
                         ReadCheck(read: post.read)
                     }
+
+                    NotificationIndicatorView(entity: post)
                     
                     if post.nsfw {
                         Image(icon: .lemmy.nsfwTag)

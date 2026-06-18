@@ -181,6 +181,7 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
+            NotificationIndicatorView(entity: comment)
             switch moderatorActionGrouping {
             case .separateMenu:
                 if comment.canModerate {

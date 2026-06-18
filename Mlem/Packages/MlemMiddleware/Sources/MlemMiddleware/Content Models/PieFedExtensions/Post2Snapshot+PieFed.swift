@@ -27,6 +27,7 @@ public extension Post2Snapshot {
             creatorBlocked: false,
             votes: votes,
             saved: post.saved,
+            notificationsEnabled: post.activityAlert ?? false,
             read: overrideRead ?? post.read,
             hidden: post.hidden
         )
@@ -47,6 +48,7 @@ public extension Post2Snapshot {
             creatorBlocked: report.creatorBlocked,
             votes: votes,
             saved: report.saved,
+            notificationsEnabled: false,
             read: false,
             hidden: false
         )
