@@ -55,12 +55,17 @@ extension Date {
     }
     
     var isAnniversaryToday: Bool {
-        let calendar = Calendar.current
+        return isAnniversaryDate(.now)
+    }
+
+    func isAnniversaryDate(_ otherDate: Date) -> Bool {
+        var calendar = Calendar.current
         let date = calendar.dateComponents([.month, .day, .year], from: self)
-        let current = calendar.dateComponents([.month, .day, .year], from: .now)
+        let current = calendar.dateComponents([.month, .day, .year], from: otherDate)
+
         return date.month == current.month && date.day == current.day && date.year != current.year
     }
-    
+
     // https://stackoverflow.com/a/48652058/17629371
     func messagesRelativeDate() -> String {
         let dateFormatter = DateFormatter()
