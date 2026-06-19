@@ -12,7 +12,7 @@ struct NukeRewriteDataLoader: DataLoading {
     let base: any DataLoading
 
     init() {
-        var configuration = URLSessionConfiguration()
+        let configuration = URLSessionConfiguration.background(withIdentifier: "mlemNuke")
         configuration.httpAdditionalHeaders = ["User-Agent": "MlemUserAgent"]
         self.base = DataLoader(configuration: configuration)
     }
