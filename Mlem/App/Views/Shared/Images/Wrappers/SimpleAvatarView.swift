@@ -7,7 +7,6 @@
 
 import MlemMiddleware
 import Nuke
-import Rest
 import SwiftUI
 
 struct SimpleAvatarView: View {

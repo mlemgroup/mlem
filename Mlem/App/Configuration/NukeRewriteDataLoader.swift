@@ -7,14 +7,13 @@
 
 import Foundation
 import Nuke
-import Rest
 
 struct NukeRewriteDataLoader: DataLoading {
     let base: any DataLoading
 
     init() {
         var configuration = URLSessionConfiguration()
-        configuration.httpAdditionalHeaders = ["User-Agent": URLSession.mlemUserAgent]
+        configuration.httpAdditionalHeaders = ["User-Agent": "MlemUserAgent"]
         self.base = DataLoader(configuration: configuration)
     }
 

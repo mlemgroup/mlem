@@ -8,7 +8,6 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import Nuke
-import Rest
 import SwiftUI
 import Theming
 

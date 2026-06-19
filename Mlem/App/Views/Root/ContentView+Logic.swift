@@ -8,7 +8,6 @@
 import Haptics
 import MlemMiddleware
 import Nuke
-import Rest
 import SwiftUI
 
 extension ContentView {
