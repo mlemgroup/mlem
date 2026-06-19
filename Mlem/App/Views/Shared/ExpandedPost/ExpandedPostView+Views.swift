@@ -49,7 +49,7 @@ extension ExpandedPostView {
             depthOffset: depthOffset
         )
         .onTapGesture {
-            if tapCommentsToCollapse {
+            if tapCommentsToCollapse || node.collapsed {
                 withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
                     node.collapsed.toggle()
                 }
