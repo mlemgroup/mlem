@@ -77,31 +77,22 @@ extension Post: ImagePrefetchProviding {
         }
         
         switch type {
-        case let .media(url), let .embedded(url, _):
+        case var .media(url), var .embedded(url, _):
             // media/embedded media: only load the media
-            var urlRequest: URLRequest
-            switch config.imageSize {
-            case .unlimited:
-                urlRequest = mlemUrlRequest(url: url)
-            case let .limited(size):
-                urlRequest = mlemUrlRequest(url: url.withIconSize(size))
+            if case let .limited(size) = config.imageSize {
+                url = url.withIconSize(size)
             }
-            ret.append(ImageRequest(urlRequest: urlRequest, priority: .high))
+            ret.append(ImageRequest(url: url, priority: .high))
         case let .link(link):
             // websites: load image and favicon
             if config.fetchFavicons, let url = link.favicon {
-                let urlRequest = mlemUrlRequest(url: url)
-                ret.append(ImageRequest(urlRequest: urlRequest))
+                ret.append(ImageRequest(url: url))
             }
-            if let url = link.thumbnail {
-                var urlRequest: URLRequest
-                switch config.imageSize {
-                case .unlimited:
-                    urlRequest = mlemUrlRequest(url: url)
-                case let .limited(size):
-                    urlRequest = mlemUrlRequest(url: url.withIconSize(size))
+            if var url = link.thumbnail {
+                if case let .limited(size) = config.imageSize {
+                    url = url.withIconSize(size)
                 }
-                ret.append(ImageRequest(urlRequest: urlRequest, priority: .high))
+                ret.append(ImageRequest(url: url, priority: .high))
             }
         default:
             break
@@ -110,11 +101,11 @@ extension Post: ImagePrefetchProviding {
         // so it's probably not an API crime, right?
         if let avatarSize = config.avatarSize {
             if let communityAvatarLink = community.value_?.avatar {
-                ret.append(ImageRequest(urlRequest: mlemUrlRequest(url: communityAvatarLink.withIconSize(avatarSize))))
+                ret.append(ImageRequest(url: communityAvatarLink.withIconSize(avatarSize)))
             }
             
             if let userAvatarLink = creator.value_?.avatar {
-                ret.append(ImageRequest(urlRequest: mlemUrlRequest(url: userAvatarLink.withIconSize(avatarSize))))
+                ret.append(ImageRequest(url: userAvatarLink.withIconSize(avatarSize)))
             }
         }
         
