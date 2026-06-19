@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-11-09.
 //
 
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -25,11 +26,16 @@ struct BlockListView: View {
             }
         }
     }
+
+    enum InstanceInfo {
+        case stubs([InstanceStub])
+        case summaries([InstanceSummary])
+    }
     
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
     @State var communities: [Community] = []
-    @State var instances: [InstanceStub] = []
+    @State var instances: InstanceInfo = .stubs([])
     
     var body: some View {
         FancyScrollView {
@@ -68,10 +74,15 @@ struct BlockListView: View {
 
     @ViewBuilder
     var instancesView: some View {
-        ForEach(instances.filter { $0.blocked.realizedValue }, id: \.self) { instance in
-            InstanceRow(instance: instance)
-                .padding(.horizontal, Constants.main.standardSpacing)
-                .padding(.bottom, Constants.main.halfSpacing)
+        switch instances {
+        case let .stubs(stubs):
+            ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
+                InstanceRow(instance: instance)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.bottom, Constants.main.halfSpacing)
+            }
+        case .summaries:
+            EmptyView()
         }
     }
 
@@ -80,7 +91,7 @@ struct BlockListView: View {
             let result = try await appState.firstApi.getBlocked()
             people = result.people
             communities = result.communities
-            instances = result.instances
+            instances = .stubs(result.instances)
         } catch {
             handleError(error)
         }
