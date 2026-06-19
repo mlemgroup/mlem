@@ -127,18 +127,16 @@ public extension ApiClient {
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntry] {
-        let snapshots = try await repository.getModlog(
-            page: page,
-            limit: limit,
+    ) async throws -> PagedResponse<ModlogEntry> {
+        let response = try await repository.getModlog(
+            pageInfo: pageInfo,
             communityId: communityId,
             moderatorId: moderatorId,
             subjectPersonId: subjectPersonId,
@@ -146,7 +144,8 @@ public extension ApiClient {
             commentId: commentId,
             type: type
         )
-        return await createModlogEntries(snapshots)
+        let entries = await createModlogEntries(response.items)
+        return .init(items: entries, nextLocation: response.nextLocation)
     }
     
     @MainActor

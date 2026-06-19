@@ -88,19 +88,17 @@ extension ApiRepository {
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         try await performingForConnection { connection in
             try await connection.getModlog(
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 communityId: communityId,
                 moderatorId: moderatorId,
                 subjectPersonId: subjectPersonId,

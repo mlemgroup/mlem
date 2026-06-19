@@ -46,7 +46,7 @@ struct VotesListView: View {
     let target: Target
     
     @State var votes: [PersonVote] = []
-    @State var page: Int = 1
+    @State var location: PageLocation = .start
     @State var loadingState: LoadingState = .idle
     
     var body: some View {
@@ -94,29 +94,28 @@ struct VotesListView: View {
     
     func loadNextPage() {
         Task { @MainActor in
-            guard loadingState == .idle else { return }
+            guard loadingState == .idle, let cursor = location.cursor else { return }
             loadingState = .loading
             do {
-                let newVotes: [PersonVote]
+                let response: PagedResponse<PersonVote>
                 switch target {
                 case let .post(post):
-                    newVotes = try await post.getVotes(page: page, limit: 40)
+                    response = try await post.getVotes(pageInfo: .init(cursor: cursor, limit: 40))
                 case let .comment(comment):
                     // TODO: handle this better--call refresh first?
                     guard let communityId = comment.community.value_?.id else {
                         assertionFailure("loadNextPage called without resolved community")
-                        newVotes = .init()
+                        response = .init(items: [], nextLocation: .end)
                         break
                     }
-                    newVotes = try await comment.getVotes(page: page, limit: 40, communityId: communityId)
+                    response = try await comment.getVotes(
+                        pageInfo: .init(cursor: cursor, limit: 40),
+                        communityId: communityId
+                    )
                 }
-                votes.append(contentsOf: newVotes)
-                if newVotes.count < 40 {
-                    loadingState = .done
-                } else {
-                    loadingState = .idle
-                }
-                page += 1
+                votes.append(contentsOf: response.items)
+                loadingState = response.nextLocation == .end ? .done : .idle
+                self.location = response.nextLocation
             } catch {
                 handleError(error)
                 loadingState = .idle

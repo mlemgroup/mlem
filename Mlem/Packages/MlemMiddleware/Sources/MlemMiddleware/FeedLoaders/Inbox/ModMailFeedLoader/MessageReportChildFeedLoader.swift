@@ -7,18 +7,20 @@
 
 public class MessageReportChildFeedLoader: ModMailChildFeedLoader {
     class Fetcher: ModMailFetcher {
-        override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            guard api.isAdmin else { return .init(items: [], prevCursor: nil, nextCursor: nil) }
+        override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<ModMailItem> {
+            guard api.isAdmin else { return .init(items: [], nextLocation: .end) }
             
             do {
-                let response = try await api.getMessageReports(page: page, limit: pageSize, unresolvedOnly: unreadOnly)
+                let response = try await api.getMessageReports(
+                    pageInfo: pageInfo,
+                    unresolvedOnly: unreadOnly
+                )
                 return .init(
-                    items: response.map { .report($0) },
-                    prevCursor: nil,
-                    nextCursor: nil
+                    items: response.items.map { .report($0) },
+                    nextLocation: response.nextLocation
                 )
             } catch ApiClientError.notAdmin {
-                return .init(items: .init(), prevCursor: nil, nextCursor: nil)
+                return .init(items: [], nextLocation: .end)
             }
         }
     }

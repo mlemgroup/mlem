@@ -12,33 +12,21 @@ public class CommentChildFeedLoader: ChildFeedLoader<PersonContent> {
         init(
             api: ApiClient,
             pageSize: Int,
-            page: Int = 0,
             filter: GetContentFilter
         ) {
             self.filter = filter
-            super.init(api: api, pageSize: pageSize, page: page)
+            super.init(api: api, pageSize: pageSize)
         }
         
-        override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            try await internalFetchCursor(page: page, cursor: nil)
-        }
-
-        override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
-            try await internalFetchCursor(page: nil, cursor: cursor)
-        }
-
-        private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
+        override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<PersonContent> {
             let response = try await api.getCommentHistory(
                 type: self.filter,
-                page: page,
-                cursor: cursor,
-                limit: pageSize
+                pageInfo: pageInfo
             )
 
             return .init(
-                items: response.comments.map { PersonContent(wrappedValue: .comment($0)) },
-                prevCursor: cursor,
-                nextCursor: response.cursor
+                items: response.items.map { PersonContent(wrappedValue: .comment($0)) },
+                nextLocation: response.nextLocation
             )
         }
     }

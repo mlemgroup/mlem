@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getCommunity(id: Int) async throws -> Community3Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetCommunityRequest(endpoint: endpoint, id: id, name: nil)
@@ -27,12 +27,11 @@ public extension LemmyConnection {
     
     func searchCommunities(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
         sort: CommunitySortType
-    ) async throws -> [Community2Snapshot] {
-        let communities = try await processingForEndpoint { endpoint in
+    ) async throws -> PagedResponse<Community2Snapshot> {
+         try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
                 guard let sortType = sort.v3ApiType else {
@@ -47,8 +46,8 @@ public extension LemmyConnection {
                     type_: .communities,
                     sort: sortType,
                     listingType: filter.apiType,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     postTitleOnly: false,
                     searchTerm: query,
                     creatorUsername: nil,
@@ -58,7 +57,12 @@ public extension LemmyConnection {
                     showNsfw: nil,
                     pageCursor: nil
                 )
-                return try await self.perform(request, endpoint: .v3).communities
+                let response = try await self.perform(request, endpoint: .v3)
+                return try .fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: response.communities.map { try .init(from: $0) },
+                    nextCursor: nil
+                )
             case .v4:
                 guard let sortType = sort.v4ApiType else {
                     throw ApiClientError.featureUnsupported
@@ -69,17 +73,19 @@ public extension LemmyConnection {
                     sort: .new(sortType),
                     showNsfw: nil,
                     page: nil,
-                    limit: limit,
+                    limit: pageInfo.limit,
                     timeRangeSeconds: nil,
                     multiCommunityId: nil,
                     searchTerm: query,
                     searchTitleOnly: nil,
-                    pageCursor: nil
+                    pageCursor: try pageInfo.cursor.requireCursorString
                 )
-                return try await self.perform(request, endpoint: .v4).items
+                let response = try await self.perform(request, endpoint: .v4)
+                return try .init(from: response.toPagedResponse()) {
+                    try .init(from: $0)
+                }
             }
         }
-        return try communities.map { try .init(from: $0) } 
     }
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
@@ -104,23 +110,23 @@ public extension LemmyConnection {
     }
     
     @discardableResult
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListCommunitiesRequest(
                 endpoint: endpoint,
                 type_: .subscribed,
                 sort: endpoint == .v4 ? .new(.nameAsc) : .old(.new),
                 showNsfw: true,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 timeRangeSeconds: nil,
                 multiCommunityId: nil,
                 searchTerm: nil,
                 searchTitleOnly: nil,
-                pageCursor: nil
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .init(from: response.toPagedResponse()) { try .init(from: $0) }
     }
     
     @discardableResult
