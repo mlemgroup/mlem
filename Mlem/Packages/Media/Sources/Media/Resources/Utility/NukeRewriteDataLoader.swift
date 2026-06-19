@@ -30,7 +30,6 @@ struct NukeRewriteDataLoader: DataLoading {
 
     private func rewrite(_ request: URLRequest) -> URLRequest {
         if let url = request.url, url.pathExtension.lowercased() == "gifv" {
-            print("Rewriting...")
             var request = request
             request.url = url.deletingPathExtension().appendingPathExtension("mp4")
             return request
