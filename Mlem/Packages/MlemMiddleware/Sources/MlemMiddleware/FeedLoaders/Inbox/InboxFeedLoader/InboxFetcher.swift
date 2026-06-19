@@ -16,16 +16,14 @@ public class InboxFetcher: Fetcher<InboxNotification> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    /// Updates fetching behavior to hide read items. Assumes items will NOT be cleared from the associated FeedLoader and that deduping will be handled by that FeedLoader.
-    /// - Parameter unreadCount: number of unread items still present after client-side filtering
-    func hideRead(unreadCount: Int) {
+    /// Updates fetching behavior to hide read posts. Assumes associated FeedLoader will immediately perform a refresh.
+    func hideRead() {
         guard !unreadOnly else {
             assertionFailure("Cannot hide read (unreadOnly already true)")
             return
         }
         
         unreadOnly = true
-        page = Int(floor(Double(unreadCount / pageSize)))
     }
     
     /// Updates fetching behavior to show read posts. Assumes associated FeedLoader will immediately perform a refresh.

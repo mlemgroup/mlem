@@ -13,16 +13,15 @@ public extension ApiClient {
     }
     
     func getRegistrationApplications(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [RegistrationApplication] {
-        let snapshot = try await repository.getRegistrationApplications(
-            page: page,
-            limit: limit,
+    ) async throws -> PagedResponse<RegistrationApplication> {
+        let response = try await repository.getRegistrationApplications(
+            pageInfo: pageInfo,
             unreadOnly: unreadOnly
         )
-        return await caches.registrationApplication.getModels(api: self, from: snapshot)
+        let applications = await caches.registrationApplication.getModels(api: self, from: response.items)
+        return .init(items: applications, nextLocation: response.nextLocation)
     }
     
     @discardableResult

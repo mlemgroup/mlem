@@ -26,7 +26,7 @@ extension Sharable {
             }
             if let url, let navigation {
                 navigation.model?.shareInfo = .init(url: url, actions: self.shareSheetActions())
-            } else {
+            } else if let self = self as? Sharable & ContentModel {
                 navigation?.openSheet(.shareInstancePicker(self))
             }
         })

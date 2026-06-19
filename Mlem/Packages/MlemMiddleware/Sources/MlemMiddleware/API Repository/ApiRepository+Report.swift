@@ -13,16 +13,14 @@ extension ApiRepository {
     }
     
     func getPostReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         postId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         try await performingForConnection { connection in
             try await connection.getPostReports(
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 unresolvedOnly: unresolvedOnly,
                 communityId: communityId,
                 postId: postId
@@ -31,16 +29,14 @@ extension ApiRepository {
     }
     
     func getCommentReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         commentId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         try await performingForConnection { connection in
             try await connection.getCommentReports(
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 unresolvedOnly: unresolvedOnly,
                 communityId: communityId,
                 commentId: commentId
@@ -49,14 +45,12 @@ extension ApiRepository {
     }
     
     func getMessageReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         try await performingForConnection { connection in
             try await connection.getMessageReports(
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 unresolvedOnly: unresolvedOnly
             )
         }

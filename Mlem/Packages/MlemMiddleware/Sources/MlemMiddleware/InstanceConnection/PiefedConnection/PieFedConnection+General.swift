@@ -84,27 +84,29 @@ public extension PieFedConnection {
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         let request = PieFedGetModlogRequest(
-                modPersonId: moderatorId,
-                communityId: communityId,
-                page: page,
-                limit: limit,
-                type_: type?.piefedApiType,
-                otherPersonId: subjectPersonId,
-                postId: postId,
-                commentId: commentId,
-            )
+            modPersonId: moderatorId,
+            communityId: communityId,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
+            type_: type?.piefedApiType,
+            otherPersonId: subjectPersonId,
+            postId: postId,
+            commentId: commentId
+        )
         let response = try await perform(request)
-        return try response.toSnapshots()
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.toSnapshots()
+        )
     }
     
     func getPostLink(url: URL) async throws -> PostLink {
