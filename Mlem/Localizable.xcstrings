@@ -195,12 +195,12 @@
         }
       }
     },
-    "%@ is running %@, and Mlem requires %@ or later.\n\nConsider choosing another instance, or asking your server administrators to upgrade.\n\nYou can choose to continue anyway, but some features may not work on this version." : {
+    "%@ is running %@, and Mlem requires %@ or later." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$@ is running %2$@, and Mlem requires %3$@ or later.\n\nConsider choosing another instance, or asking your server administrators to upgrade.\n\nYou can choose to continue anyway, but some features may not work on this version."
+            "value" : "%1$@ is running %2$@, and Mlem requires %3$@ or later."
           }
         }
       }
@@ -674,6 +674,9 @@
           }
         }
       }
+    },
+    "A-Z" : {
+
     },
     "About" : {
       "localizations" : {
@@ -1870,9 +1873,6 @@
         }
       }
     },
-    "Cache Usage" : {
-
-    },
     "Cake Day" : {
       "localizations" : {
         "fr" : {
@@ -2389,6 +2389,9 @@
         }
       }
     },
+    "Comment Votes" : {
+
+    },
     "Comment was deleted" : {
       "localizations" : {
         "fr" : {
@@ -2641,6 +2644,9 @@
         }
       }
     },
+    "Consider choosing another instance, or asking your server administrators to upgrade." : {
+
+    },
     "Content & Notifications" : {
       "localizations" : {
         "fr" : {
@@ -2660,6 +2666,9 @@
           }
         }
       }
+    },
+    "Context Menu" : {
+
     },
     "Continue" : {
       "localizations" : {
@@ -3262,6 +3271,9 @@
         }
       }
     },
+    "Disable Notifications" : {
+
+    },
     "Disabled" : {
       "localizations" : {
         "fr" : {
@@ -3304,7 +3316,6 @@
       }
     },
     "Disk Usage" : {
-      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3540,6 +3551,9 @@
           }
         }
       }
+    },
+    "Enable Notifications" : {
+
     },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
@@ -4037,6 +4051,9 @@
           }
         }
       }
+    },
+    "Federated" : {
+
     },
     "Federates" : {
       "localizations" : {
@@ -5102,6 +5119,9 @@
         }
       }
     },
+    "Local Subscribers" : {
+
+    },
     "local.subscriber.count.text" : {
       "comment" : "Used in the \"Details\" tab of a community page to indicate how many local subscribers use the instance. E.g. \"56 on lemmy.world\".",
       "extractionState" : "extracted_with_value",
@@ -5784,6 +5804,12 @@
         }
       }
     },
+    "Newest" : {
+
+    },
+    "Newest Federated" : {
+
+    },
     "news@example.com" : {
       "localizations" : {
         "fr" : {
@@ -5920,6 +5946,12 @@
         }
       }
     },
+    "Notifications Disabled" : {
+
+    },
+    "Notifications Enabled" : {
+
+    },
     "Notifications will be sent to %@." : {
       "localizations" : {
         "fr" : {
@@ -6019,6 +6051,12 @@
           }
         }
       }
+    },
+    "Oldest" : {
+
+    },
+    "Oldest Federated" : {
+
     },
     "OLED" : {
       "localizations" : {
@@ -6562,6 +6600,9 @@
           }
         }
       }
+    },
+    "Post Votes" : {
+
     },
     "Post was locked" : {
       "localizations" : {
@@ -7238,6 +7279,9 @@
           }
         }
       }
+    },
+    "Recent Activity" : {
+
     },
     "Recent Checks" : {
       "localizations" : {
@@ -8130,6 +8174,9 @@
           }
         }
       }
+    },
+    "Show additional debug information. Not recommended for normal use." : {
+
     },
     "Show All Actions in Feed" : {
       "localizations" : {
@@ -9480,6 +9527,9 @@
         }
       }
     },
+    "Toggle Notifications" : {
+
+    },
     "Too many items" : {
       "localizations" : {
         "fr" : {
@@ -10052,6 +10102,9 @@
         }
       }
     },
+    "Unsupported" : {
+
+    },
     "Unsupported Badge" : {
       "localizations" : {
         "fr" : {
@@ -10616,6 +10669,9 @@
         }
       }
     },
+    "You can choose to continue anyway, but some features may not work on this version." : {
+
+    },
     "You cannot change your vote." : {
       "localizations" : {
         "fr" : {
@@ -10767,6 +10823,9 @@
           }
         }
       }
+    },
+    "Z-A" : {
+
     },
     "Zoom Indicator" : {
 
