@@ -30,20 +30,13 @@ class CommunityFetcher: Fetcher<Community> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let communities = try await api.searchCommunities(
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Community> {
+        try await api.searchCommunities(
             query: query,
-            page: page,
-            limit: pageSize,
+            pageInfo: pageInfo,
             filter: listing,
             sort: sort,
             hostApi: hostApi
-        )
-        
-        return .init(
-            items: communities,
-            prevCursor: nil,
-            nextCursor: nil
         )
     }
 }
