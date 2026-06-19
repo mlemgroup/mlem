@@ -54,27 +54,36 @@ struct BlockListView: View {
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                ForEach(instances.filter { $0.blocked.realizedValue }, id: \.self) { instance in
-                    InstanceRow(instance: instance)
-                        .padding(.horizontal, Constants.main.standardSpacing)
-                        .padding(.bottom, Constants.main.halfSpacing)
-                }
+                instancesView
             }
         }
         .themedGroupedBackground()
         .onAppear {
             Task { @MainActor in
-                do {
-                    let result = try await appState.firstApi.getBlocked()
-                    people = result.people
-                    communities = result.communities
-                    instances = result.instances
-                } catch {
-                    handleError(error)
-                }
+                await refresh()
             }
         }
         .navigationTitle("Block List")
+    }
+
+    @ViewBuilder
+    var instancesView: some View {
+        ForEach(instances.filter { $0.blocked.realizedValue }, id: \.self) { instance in
+            InstanceRow(instance: instance)
+                .padding(.horizontal, Constants.main.standardSpacing)
+                .padding(.bottom, Constants.main.halfSpacing)
+        }
+    }
+
+    func refresh() async {
+        do {
+            let result = try await appState.firstApi.getBlocked()
+            people = result.people
+            communities = result.communities
+            instances = result.instances
+        } catch {
+            handleError(error)
+        }
     }
 }
 
