@@ -81,8 +81,10 @@ struct BlockListView: View {
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .padding(.bottom, Constants.main.halfSpacing)
             }
-        case .summaries:
-            EmptyView()
+        case let .summaries(summaries):
+            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { community in
+                InstanceListRow(community, showBlockStatus: false)
+            }
         }
     }
 
@@ -91,7 +93,11 @@ struct BlockListView: View {
             let result = try await appState.firstApi.getBlocked()
             people = result.people
             communities = result.communities
-            instances = .stubs(result.instances)
+            if let summaries = MlemStats.main.findInstances(stubs: result.instances) {
+                instances = .summaries(summaries)
+            } else {
+                instances = .stubs(result.instances)
+            }
         } catch {
             handleError(error)
         }
