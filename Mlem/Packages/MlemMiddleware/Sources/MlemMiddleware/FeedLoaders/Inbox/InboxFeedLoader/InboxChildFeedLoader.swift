@@ -14,12 +14,8 @@ public class InboxChildFeedLoader: ChildFeedLoader<InboxNotification> {
     
     func hideRead() async throws {
         try await loadingActor.activateFilter(.read) {
-            await setItems(loadingActor.filter.reset(with: items))
-            inboxFetcher.hideRead(unreadCount: items.count)
-            
-            if items.isEmpty {
-                try await refresh(clearBeforeRefresh: false)
-            }
+            inboxFetcher.hideRead()
+            try await refresh(clearBeforeRefresh: true)
         }
     }
     

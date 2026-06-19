@@ -233,18 +233,14 @@ public extension Community {
     
     func getPosts(
         sort: PostSortType,
-        page: Int = 1,
-        cursor: String? = nil,
-        limit: Int,
+        pageInfo: PageInfo,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post], cursor: String?) {
+    ) async throws -> PagedResponse<Post> {
         try await api.getPosts(
             communityId: id,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
-            cursor: cursor,
-            limit: limit,
             filter: filter,
             showHidden: showHidden
         )

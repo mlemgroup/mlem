@@ -342,25 +342,6 @@ public extension Person {
 
 public extension Person {
     
-    // Get Content
-    
-    func getContent(
-        community: Community? = nil,
-        sort: PostSortType = .new,
-        page: Int,
-        limit: Int,
-        savedOnly: Bool = false
-    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
-        try await api.getContent(
-            authorId: id,
-            sort: sort,
-            page: page,
-            limit: limit,
-            savedOnly: savedOnly,
-            communityId: community?.id
-        )
-    }
-    
     // MARK: Ban
     
     func ban(from community: Community, removeContent: Bool, reason: String?, expires: Date?) async throws {

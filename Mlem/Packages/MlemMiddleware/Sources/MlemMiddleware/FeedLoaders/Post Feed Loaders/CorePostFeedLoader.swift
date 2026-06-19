@@ -18,30 +18,6 @@ public class PostFetcher: Fetcher<Post> {
         
         super.init(api: api, pageSize: pageSize)
     }
-    
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let result = try await getPosts(page: page, cursor: nil)
-
-        return .init(
-            items: result.posts,
-            prevCursor: nil,
-            nextCursor: result.cursor
-        )
-    }
-    
-    override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
-        let result = try await getPosts(page: 1, cursor: cursor)
-        
-        return .init(
-            items: result.posts,
-            prevCursor: cursor,
-            nextCursor: result.cursor
-        )
-    }
-    
-    func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
-        preconditionFailure("This method must be implemented by the inheriting class")
-    }
 }
 
 /// Post tracker for use with single feeds. Can easily be extended to load any pure post feed by creating an inheriting class that overrides getPosts().

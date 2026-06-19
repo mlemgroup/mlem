@@ -8,63 +8,49 @@
 extension ApiRepository {
     func getMessages(
         creatorId: Int? = nil,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [Message2Snapshot] {
+    ) async throws -> PagedResponse<Message2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getMessages(
                 creatorId: creatorId,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
         }
     }
 
     func getReplyNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await performingForConnection { connection in
             try await connection.getReplyNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
         }
     }
     
     func getMentionNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await performingForConnection { connection in
             try await connection.getMentionNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
         }
     }
 
     func getMessageNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         try await performingForConnection { connection in
             try await connection.getMessageNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
         }
