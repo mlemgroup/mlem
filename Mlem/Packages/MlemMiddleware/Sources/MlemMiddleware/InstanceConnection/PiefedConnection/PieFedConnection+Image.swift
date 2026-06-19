@@ -15,7 +15,8 @@ public extension PieFedConnection {
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
-        var request = mlemUrlRequest(url: baseUrl.appending(path: "api/alpha/upload/image"))
+        var request = URLRequest(url: baseUrl.appending(path: "api/alpha/upload/image"))
+        request.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
         request.httpMethod = "POST"
         
         let boundary = UUID().uuidString

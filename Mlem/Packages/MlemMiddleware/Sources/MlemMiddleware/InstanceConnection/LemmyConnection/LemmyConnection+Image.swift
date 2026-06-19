@@ -15,7 +15,8 @@ public extension LemmyConnection {
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
-        var request = mlemUrlRequest(url: baseUrl.appending(path: "pictrs/image"))
+        var request = URLRequest(url: baseUrl.appending(path: "pictrs/image"))
+        request.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
         request.httpMethod = "POST"
         
         let boundary = UUID().uuidString
@@ -61,7 +62,8 @@ public extension LemmyConnection {
     
     func deleteImage(alias: String, deleteToken: String) async throws {
         guard let token else { throw ApiClientError.notLoggedIn }
-        var request = mlemUrlRequest(url: baseUrl.appending(path: "pictrs/image/delete/\(deleteToken)/\(alias)"))
+        var request = URLRequest(url: baseUrl.appending(path: "pictrs/image/delete/\(deleteToken)/\(alias)"))
+        request.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let response = try await restClient.execute(request)
         if let response = response.1 as? HTTPURLResponse {
