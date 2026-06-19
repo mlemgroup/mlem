@@ -10,84 +10,65 @@ import Foundation
 public extension ApiClient {
     func getMessages(
         creatorId: Int? = nil,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [Message2] {
-        let snapshots = try await repository.getMessages(
+    ) async throws -> PagedResponse<Message2> {
+        let response = try await repository.getMessages(
             creatorId: creatorId,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             unreadOnly: unreadOnly
         )
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModels(
+        let messages = await caches.message2.getModels(
             api: self,
-            from: snapshots,
+            from: response.items,
             myPersonId: myPersonId
         )
+        return .init(items: messages, nextLocation: response.nextLocation)
     }
 
     func getReplyNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotification], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotification> {
         try await inboxLock.withLock {
             guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
             let response = try await repository.getReplyNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
-            return await (
-                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-                cursor: response.cursor
-            )
+            let notifications = await caches.notification.getModels(api: self, from: response.items, myPersonId: myPersonId)
+            return .init(items: notifications, nextLocation: response.nextLocation)
         }
     }
-    
+
     func getMentionNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotification], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotification> {
         try await inboxLock.withLock {
             guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
             let response = try await repository.getMentionNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
-            return await (
-                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-                cursor: response.cursor
-            )
+            let notifications = await caches.notification.getModels(api: self, from: response.items, myPersonId: myPersonId)
+            return .init(items: notifications, nextLocation: response.nextLocation)
         }
     }
 
     func getMessageNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotification], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotification> {
         try await inboxLock.withLock {
             guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
             let response = try await repository.getMessageNotifications(
-                page: page,
-                cursor: cursor,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
-            return await (
-                notifications: caches.notification.getModels(api: self, from: response.notifications, myPersonId: myPersonId),
-                cursor: response.cursor
-            )
+            let notifications = await caches.notification.getModels(api: self, from: response.items, myPersonId: myPersonId)
+            return .init(items: notifications, nextLocation: response.nextLocation)
         }
     }
 

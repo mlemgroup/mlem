@@ -32,25 +32,17 @@ public class ModlogChildFetcher: Fetcher<ModlogEntry> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let items: [ModlogEntry]
-        if page == 1 {
-            items = try await sharedCache.get(type: type)
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<ModlogEntry> {
+        if pageInfo.cursor == .first {
+             try await sharedCache.get(type: type)
         } else {
-            items = try await api.getModlog(
-                page: page,
-                limit: pageSize,
+             try await api.getModlog(
+                pageInfo: pageInfo,
                 communityId: communityId,
                 moderatorId: moderatorPersonId,
                 subjectPersonId: targetPersonId,
                 type: type
             )
         }
-        
-        return .init(
-            items: items,
-            prevCursor: nil,
-            nextCursor: nil
-        )
     }
 }

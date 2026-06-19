@@ -37,79 +37,41 @@ public class Fetcher<Item: FeedLoadable> {
     
     var api: ApiClient
     var pageSize: Int
-    var page: Int
-    private var cursor: String?
+    internal var location: PageLocation = .start
     
-    init(api: ApiClient, pageSize: Int, page: Int = 0) {
+    init(api: ApiClient, pageSize: Int) {
         self.api = api
         self.pageSize = pageSize
-        self.page = page
-    }
-    
-    /// Helper struct bundling the response from a fetchPage or fetchCursor call
-    struct FetchResponse {
-        /// Items returned
-        let items: [Item]
-        
-        /// Cursor used to fetch this response, if applicable
-        let prevCursor: String?
-        
-        /// New cursor, if applicable
-        let nextCursor: String?
     }
     
     /// Fetches the next page of items
     func fetch() async throws -> LoadingResponse<Item> {
+        guard let cursor = self.location.cursor else { return .done([]) }
+        log.debug("[\(Item.self) Fetcher] loading cursor \(cursor)")
+
+        let response: PagedResponse<Item>
         do {
-            if let cursor, page > 0 {
-                log.debug("[\(Item.self) Fetcher] loading cursor \(cursor)")
-                let response = try await fetchCursor(cursor)
-                
-                // if same cursor returned, loading is finished. On Lemmy 1.0, if no cursor is returned, loading is finished.
-                if response.nextCursor == self.cursor || (self.cursor != nil && response.nextCursor == nil) {
-                    return .done(response.items)
-                }
-                
-                self.cursor = response.nextCursor
-                return .success(response.items)
-            } else {
-                page += 1
-                log.debug("[\(Item.self) Fetcher] loading page \(self.page)")
-                let response = try await fetchPage(page)
-                
-                // if nothing returned, loading is finished
-                if response.items.count < pageSize {
-                    log.debug("[\(Item.self) Fetcher] received undersized page (\(response.items.count)/\(self.pageSize))")
-                    return .done(response.items)
-                }
-                cursor = response.nextCursor
-                return .success(response.items)
-            }
+             response = try await fetchContent(.init(cursor: cursor, limit: pageSize))
         } catch is CancellationError {
             return .cancelled
         }
+
+        self.location = response.nextLocation
+
+        if response.nextLocation == .end {
+            return .done(response.items)
+        } else {
+            return .success(response.items)
+        }
     }
     
-    /// Fetches the given page of items.
-    /// - Parameters:
-    ///   - page: page number to fetch
-    /// - Returns: tuple of the requested page of items, the cursor returned by the API call (if present), and the number of items that were filtered out.
-    func fetchPage(_ page: Int) async throws -> FetchResponse {
-        preconditionFailure("This method must be implemented by the inheriting class")
-    }
-    
-    /// Fetches items from the given cursor.
-    /// - Parameters:
-    ///   - cursor: cursor to fetch
-    /// - Returns: tuple of the requested page of items, the cursor returned by the API call (if present), and the number of items that were filtered out.
-    func fetchCursor(_ cursor: String) async throws -> FetchResponse {
+    func fetchContent(_ cursor: PageInfo) async throws -> PagedResponse<Item> {
         preconditionFailure("This method must be implemented by the inheriting class")
     }
     
     /// Resets the fetcher's page and cursor tracking. This method should only be overridden to handle abnormal pagination behavior (e.g., SingleSourceMixedFetcher); it should NOT change loading parameters such as query or sort.
     func reset() async {
-        page = 0
-        cursor = nil
+        location = .start
     }
     
     func changeApi(to newApi: ApiClient, context: FilterContext) async {

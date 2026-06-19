@@ -21,18 +21,8 @@ class MessageFetcher: Fetcher<Message2> {
         self.init(api: person.api, personId: person.id, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let messages = try await api.getMessages(
-            creatorId: personId,
-            page: page,
-            limit: pageSize
-        )
-        
-        return .init(
-            items: messages,
-            prevCursor: nil,
-            nextCursor: nil
-        )
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Message2> {
+        try await api.getMessages(creatorId: personId, pageInfo: pageInfo)
     }
 }
 
