@@ -18,6 +18,10 @@ public func mlemUrlRequest(url: URL) -> URLRequest {
         }
     }
     var ret = URLRequest(url: url)
-    ret.addValue("MlemUserAgent", forHTTPHeaderField: "User-Agent")
+    ret.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
     return ret
+}
+
+public extension URLSession {
+    static let mlemUserAgent = "MlemUserAgent"
 }
