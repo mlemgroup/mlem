@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension PieFedConnection {
+internal extension PieFedConnection {
     func getComment(id: Int) async throws -> Comment2Snapshot {
         let request = PieFedGetCommentRequest(id: id)
         let response = try await perform(request)
@@ -24,12 +24,11 @@ public extension PieFedConnection {
     }
     
     func getComments(
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
@@ -37,8 +36,8 @@ public extension PieFedConnection {
             type_: .all,
             sort: sort,
             maxDepth: maxDepth,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             postId: nil,
             parentId: nil,
@@ -48,17 +47,19 @@ public extension PieFedConnection {
             depthFirst: false
         )
         let response = try await perform(request)
-        return try response.comments.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.comments.map { try .init(from: $0) }
+        )
     }
 
     func getComments(
         postId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
@@ -66,8 +67,8 @@ public extension PieFedConnection {
             type_: .all,
             sort: sort,
             maxDepth: maxDepth,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             postId: postId,
             parentId: nil,
@@ -77,17 +78,19 @@ public extension PieFedConnection {
             depthFirst: false
         )
         let response = try await perform(request)
-        return try response.comments.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.comments.map { try .init(from: $0) }
+        )
     }
     
     func getComments(
         parentId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         guard let sort = sort.piefedCommentSortType, filter != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
@@ -95,8 +98,8 @@ public extension PieFedConnection {
             type_: .all,
             sort: sort,
             maxDepth: maxDepth,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             postId: nil,
             parentId: parentId,
@@ -106,15 +109,16 @@ public extension PieFedConnection {
             depthFirst: false
         )
         let response = try await perform(request)
-        return try response.comments.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.comments.map { try .init(from: $0) }
+        )
     }
 
     func getCommentHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         guard type != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
@@ -122,8 +126,8 @@ public extension PieFedConnection {
             type_: .all,
             sort: nil,
             maxDepth: nil,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             postId: nil,
             parentId: nil,
@@ -133,22 +137,20 @@ public extension PieFedConnection {
             depthFirst: false
         )
         let response = try await perform(request)
-        return try (
-            comments: response.comments.map { try .init(from: $0) },
-            cursor: nil
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.comments.map { try .init(from: $0) }
         )
     }
     
-    // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         guard let sort = sort.piefedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
@@ -157,8 +159,8 @@ public extension PieFedConnection {
             type_: .comments,
             sort: sort,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,
@@ -168,7 +170,10 @@ public extension PieFedConnection {
         guard let comments = response.comments else {
             throw ApiClientError.featureUnsupported
         }
-        return try comments.map { try .init(from: $0) } 
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try comments.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
@@ -266,11 +271,17 @@ public extension PieFedConnection {
     @discardableResult
     func getCommentVotes(
         id: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
-        let request = PieFedListCommentLikesRequest(commentId: id, page: page, limit: limit)
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot> {
+        let request = PieFedListCommentLikesRequest(
+            commentId: id,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit
+        )
         let response = try await perform(request)
-        return try response.commentLikes.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.commentLikes.map { try .init(from: $0) }
+        )
     }
 }

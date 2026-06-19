@@ -102,7 +102,7 @@ enum NavigationPage: Hashable {
         configuration: ContextMenuSettingsPage?
     )
 
-    static func shareInstancePicker(_ sharable: any Sharable) -> NavigationPage {
+    static func shareInstancePicker(_ sharable: any Sharable & ContentModel) -> NavigationPage {
         shareInstancePicker(.init(wrappedValue: sharable))
     }
     
@@ -364,7 +364,7 @@ struct ReportableHashWrapper: Hashable {
 }
 
 struct SharableHashWrapper: Hashable {
-    var wrappedValue: any Sharable
+    var wrappedValue: any Sharable & ContentModel
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(wrappedValue.hashValue)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
         let response = try await performingForEndpoint { endpoint in
             switch endpoint {
@@ -21,56 +21,65 @@ public extension LemmyConnection {
     }
     
     func getPostReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         postId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         let response = try await performingForEndpoint { _ in
             LemmyListPostReportsRequest(
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 unresolvedOnly: unresolvedOnly,
                 communityId: communityId,
                 postId: postId
             )
         }
-        return try response.postReports.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.postReports.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
     
     func getCommentReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false,
         communityId: Int? = nil,
         commentId: Int? = nil
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         let response = try await performingForEndpoint { _ in
             LemmyListCommentReportsRequest(
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 unresolvedOnly: unresolvedOnly,
                 communityId: communityId,
                 commentId: commentId
             )
         }
-        return try response.commentReports.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.commentReports.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
     
     func getMessageReports(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool = false
-    ) async throws -> [ReportSnapshot] {
+    ) async throws -> PagedResponse<ReportSnapshot> {
         let response = try await performingForEndpoint { _ in
             LemmyListPmReportsRequest(
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 unresolvedOnly: unresolvedOnly
             )
         }
-        return try response.privateMessageReports.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: response.privateMessageReports.map { try .init(from: $0) },
+            nextCursor: nil
+        )
     }
     
     @discardableResult

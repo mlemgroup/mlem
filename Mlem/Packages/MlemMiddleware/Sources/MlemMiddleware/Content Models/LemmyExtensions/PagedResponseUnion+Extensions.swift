@@ -79,11 +79,26 @@ extension LemmyListCommunitiesResponseUnion {
         }
     }
     
+    var prevPage: String? {
+        switch self {
+        case .lemmyListCommunitiesResponse: nil
+        case let .lemmyPagedResponse(response): response.prevPage
+        }
+    }
+
     var nextPage: String? {
         switch self {
         case .lemmyListCommunitiesResponse: nil
         case let .lemmyPagedResponse(response): response.nextPage
         }
+    }
+
+    func toPagedResponse() -> LemmyPagedResponse<LemmyCommunityView> {
+        .init(
+            items: items,
+            nextPage: nextPage,
+            prevPage: prevPage
+        )
     }
 }
 
