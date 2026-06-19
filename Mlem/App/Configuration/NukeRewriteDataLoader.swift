@@ -1,0 +1,34 @@
+//
+//  NukeRewriteDataLoader.swift
+//  Mlem
+//
+//  Created by Sjmarf on 2026-06-19.
+//
+
+import Foundation
+import Nuke
+
+struct NukeRewriteDataLoader: DataLoading {
+    let base = DataLoader()
+
+    func loadData(
+        with request: URLRequest,
+        didReceiveData: @escaping (Data, URLResponse) -> Void,
+        completion: @escaping (Error?) -> Void) -> any Cancellable {
+            base.loadData(
+                with: rewrite(request),
+                didReceiveData: didReceiveData,
+                completion: completion
+            )
+    }
+
+    private func rewrite(_ request: URLRequest) -> URLRequest {
+        if let url = request.url, url.pathExtension.lowercased() == "gifv" {
+            var request = request
+            request.url = url.deletingPathExtension().appendingPathExtension("mp4")
+            return request
+        } else {
+            return request
+        }
+    }
+}
