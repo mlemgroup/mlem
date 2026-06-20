@@ -37,8 +37,6 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
-        case .editProfile, .viewVotes, .undeletePrivateMessages:
-            version >= .v1_2_0
         case .banFromCommunity, .editCommunityDescription:
             version >= .v1_3_0
         case .searchLocalPeople, .searchLocalCommunities, .blockInstances:
@@ -59,8 +57,6 @@ public extension PieFedConnection {
 }
 
 private extension SiteVersion {
-    static let v1_1_0: Self = .init("1.1.0")
-    static let v1_2_0: Self = .init("1.2.0")
     static let v1_3_0: Self = .init("1.3.0")
     static let v1_4_0: Self = .init("1.4.0")
     static let v1_6_10: Self = .init("1.6.10")

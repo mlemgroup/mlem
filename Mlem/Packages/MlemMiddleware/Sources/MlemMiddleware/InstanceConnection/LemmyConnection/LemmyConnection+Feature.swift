@@ -39,9 +39,9 @@ public extension LemmyConnection {
             version >= listingType.minimumVersion
         case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .uploadImages, .editAccountSettings, .viewReports,
-             .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
-             .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
-             .hidePosts, .editDisplayName, .editProfile, .blockInstances, .fetchLinkMetadata, .unbanWithReason,
+             .reportPrivateMessages, .purgeContent, .removeCommunity, .banFromInstance,
+             .banFromCommunity, .editModeratorList, .commentSearch, .searchLocalPeople,
+             .hidePosts, .editDisplayName, .blockInstances, .fetchLinkMetadata, .unbanWithReason,
              .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
              .searchLocalComments, .viewInstanceBlockList:
             true

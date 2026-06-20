@@ -15,8 +15,6 @@ public enum Feature: Hashable {
     case sortTimeRange(SortTimeRange)
     case listingType(ListingType)
     
-    case viewVotes
-    
     case hidePosts
     case searchLocalPeople
     case searchLocalCommunities
@@ -31,7 +29,6 @@ public enum Feature: Hashable {
     
     case viewReports
     
-    case undeletePrivateMessages
     case reportPrivateMessages
     case purgeContent
     case removeCommunity
@@ -49,7 +46,6 @@ public enum Feature: Hashable {
     case uploadImages
     case commentSearch
 
-    case editProfile
     case editAccountSettings
     case editDisplayName
     

@@ -217,7 +217,7 @@ extension Post {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction? {
-        guard canModerate && api.supports(.viewVotes, defaultValue: true) else { return nil }
+        guard canModerate else { return nil }
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
@@ -409,9 +409,7 @@ extension Post {
                 setNsfwAction
             }
             
-            if let navigation,
-               api.supports(.viewVotes, defaultValue: false),
-               let viewVotesAction = viewVotesAction(navigation: navigation) {
+            if let navigation, let viewVotesAction = viewVotesAction(navigation: navigation) {
                 viewVotesAction
             }
         }

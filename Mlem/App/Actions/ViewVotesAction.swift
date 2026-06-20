@@ -46,8 +46,7 @@ extension ViewVotesAction {
         guard let myPerson = entity.api.myPerson,
               let community = entity.community.value,
               let myPersonModerates = myPerson.moderates,
-              myPersonModerates(.id(community.id)),
-              entity.api.supports(.viewVotes, defaultValue: true) else { return .hidden }
+              myPersonModerates(.id(community.id)) else { return .hidden }
 
         return .enabled
     }

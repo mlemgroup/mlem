@@ -54,7 +54,6 @@ extension DeleteAction {
         
         guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
         guard entity.isOwnContent(myPersonId: myPersonId) else { return .hidden }
-        guard !entity.deleted || canUndelete else { return .hidden }
         
         return .enabled
     }
@@ -75,15 +74,6 @@ extension DeleteAction {
         ])
     }
     
-    var canUndelete: Bool {
-        switch entity {
-        case is any Message1Providing:
-            entity.api.supports(.undeletePrivateMessages, defaultValue: true)
-        default:
-            true
-        }
-    }
-    
     private func createToast(didDelete: Bool, requestStatus: UpdateStatus) -> ToastType {
         switch (didDelete, requestStatus) {
         case (true, .success): createConfirmationToast()
@@ -94,19 +84,11 @@ extension DeleteAction {
     }
     
     private func createConfirmationToast() -> ToastType {
-        if canUndelete {
-            .undoable(
-                "Deleted",
-                icon: .general.delete,
-                callback: { entity.updateDeleted(false, callback: nil) },
-                color: .themedNegative
-            )
-        } else {
-            .basic(
-                "Deleted",
-                icon: .general.delete,
-                color: .themedNegative
-            )
-        }
+        .undoable(
+            "Deleted",
+            icon: .general.delete,
+            callback: { entity.updateDeleted(false, callback: nil) },
+            color: .themedNegative
+        )
     }
 }
