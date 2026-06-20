@@ -29,10 +29,10 @@ public extension PieFedConnection {
             personId: nil,
             limit: pageInfo.limit,
             page: page,
+            pageCursor: page,
             likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
-            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
@@ -64,10 +64,10 @@ public extension PieFedConnection {
             personId: nil,
             limit: pageInfo.limit,
             page: page,
+            pageCursor: page,
             likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
-            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
@@ -106,10 +106,10 @@ public extension PieFedConnection {
             personId: nil,
             limit: pageInfo.limit,
             page: page,
+            pageCursor: page,
             likedOnly: type == .upvoted,
             feedId: nil,
             topicId: nil,
-            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
