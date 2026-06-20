@@ -20,9 +20,9 @@ public extension PieFedConnection {
             }
             let request = PieFedGetPrivateMessagesConversationRequest(
                 personId: creatorId,
+                conversationId: nil,
                 page: page,
-                limit: pageInfo.limit,
-                conversationId: nil
+                limit: pageInfo.limit
             )
             let response = try await perform(request)
             return try .fromPieFed(
