@@ -82,9 +82,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedListPrivateMessagesRequest(
-            unreadOnly: unreadOnly,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit
+            limit: pageInfo.limit,
+            unreadOnly: unreadOnly
         )
         let response = try await perform(request)
         return try .fromPieFed(

@@ -99,11 +99,10 @@ public extension PieFedConnection {
         }
 
         if ban {
-            let request = PieFedModerateCommunityBanRequest(
+            let request = PieFedCommunityModerationBanRequest(
                 communityId: communityId,
-                userId: personId,
                 reason: reason ?? "",
-                expiredAt: nil,
+                userId: personId,
                 expiresAt: expires,
                 permanent: expires == nil
             )

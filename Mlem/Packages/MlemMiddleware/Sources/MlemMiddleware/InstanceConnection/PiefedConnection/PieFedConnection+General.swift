@@ -76,7 +76,7 @@ public extension PieFedConnection {
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.target) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
+            instances: [] // FIXME NOW
         )
     }
     
