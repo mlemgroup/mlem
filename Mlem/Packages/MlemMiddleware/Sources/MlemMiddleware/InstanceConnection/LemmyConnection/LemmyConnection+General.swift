@@ -7,7 +7,14 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
+    func getVersionFallback() async throws -> SiteVersion {
+        let response = try await performingForEndpoint { endpoint in
+            LemmyFallbackGetVersionRequest(endpoint: endpoint)
+        }
+        return response.version
+    }
+
     func getAccountToken(
         usernameOrEmail: String,
         password: String,
@@ -27,10 +34,10 @@ public extension LemmyConnection {
         // I suspect that `registrationCreated` and `verifyEmailSent` can only be true for the `LemmyLoginResponse`
         // that is returned when signing in. Nevertheless, I've included this just in case.
         if response.registrationCreated {
-            throw ApiClientError.response(.init(error: "registration_application_is_pending"), 200)
+            throw ApiClientError.applicationPending
         }
         if response.verifyEmailSent {
-            throw ApiClientError.response(.init(error: "email_not_verified"), 200)
+            throw ApiClientError.emailNotVerified
         }
         
         guard let jwt = response.jwt else {
@@ -123,42 +130,38 @@ public extension LemmyConnection {
     }
     
     func resolve(url: URL) async throws -> ResolvedContent {
-        do {
-            // Fix for https://github.com/mlemgroup/mlem/issues/2341
-            let components = url.pathComponents
-            if url.host == baseUrl.host(), components.count > 2 {
-                switch components[1] {
-                case "c":
-                    let response = try await performingForEndpoint { endpoint in
-                        LemmyGetCommunityRequest(endpoint: endpoint, id: nil, name: components[2])
-                    }
-                    return try .community(.init(from: response.communityView))
-                case "u":
-                    let response = try await performingForEndpoint { endpoint in
-                        LemmyReadPersonRequest(
-                            endpoint: endpoint,
-                            personId: nil,
-                            username: components[2],
-                            sort: nil,
-                            page: 1,
-                            limit: 1,
-                            communityId: nil,
-                            savedOnly: nil
-                        )
-                    }
-                    return try .person(.init(from: response.personView))
-                default:
-                    break
+        // Fix for https://github.com/mlemgroup/mlem/issues/2341
+        let components = url.pathComponents
+        if url.host == baseUrl.host(), components.count > 2 {
+            switch components[1] {
+            case "c":
+                let response = try await performingForEndpoint { endpoint in
+                    LemmyGetCommunityRequest(endpoint: endpoint, id: nil, name: components[2])
                 }
+                return try .community(.init(from: response.communityView))
+            case "u":
+                let response = try await performingForEndpoint { endpoint in
+                    LemmyReadPersonRequest(
+                        endpoint: endpoint,
+                        personId: nil,
+                        username: components[2],
+                        sort: nil,
+                        page: 1,
+                        limit: 1,
+                        communityId: nil,
+                        savedOnly: nil
+                    )
+                }
+                return try .person(.init(from: response.personView))
+            default:
+                break
             }
-            
-            let response = try await performingForEndpoint { endpoint in
-                LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
-            }
-            return try .init(from: response)
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
         }
+
+        let response = try await performingForEndpoint { endpoint in
+            LemmyResolveObjectRequest(endpoint: endpoint, q: url.absoluteString)
+        }
+        return try .init(from: response)
     }
     
     func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
@@ -176,22 +179,21 @@ public extension LemmyConnection {
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetModLogRequest(
                 endpoint: endpoint,
                 modPersonId: moderatorId,
                 communityId: communityId,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 type_: type?.lemmyApiType,
                 otherPersonId: subjectPersonId,
                 postId: postId,
@@ -199,14 +201,20 @@ public extension LemmyConnection {
                 listingType: .all,
                 showBulk: nil,
                 bulkActionParentId: nil,
-                pageCursor: nil
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
         switch response {
         case let .lemmyGetModlogResponse(response):
-            return try response.toSnapshots()
+            return try .fromLemmyV3(
+                pageInfo: pageInfo,
+                items: try response.toSnapshots(),
+                nextCursor: nil
+            )
         case let .lemmyPagedResponse(response):
-            return try response.items.compactMap { try .init(from: $0) }
+            return try .compact(from: response) {
+                try .init(from: $0)
+            }
         }
     }
     

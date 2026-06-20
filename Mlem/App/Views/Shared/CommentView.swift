@@ -181,13 +181,14 @@ struct CommentView<EmbeddedContent: View>: View {
             if comment.shouldShowLoadingSymbol(for: commentInteractionBar) {
                 ProgressView()
             }
+            NotificationIndicatorView(entity: comment)
             switch moderatorActionGrouping {
             case .separateMenu:
                 if comment.canModerate {
                     EllipsisMenu(icon: .lemmy.moderation, size: 24, comment: comment, type: [.moderator])
                 }
                 EllipsisMenu(size: 24, comment: comment, type: [.basic])
-            case .divider:
+            case .combined:
                 EllipsisMenu(size: 24, comment: comment)
             }
         }

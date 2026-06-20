@@ -29,8 +29,10 @@ public extension LemmyConnection {
             version >= sort.minimumVersion
         case let .commentSortType(sort):
             version >= sort.minimumVersion
-        case let .searchSortType(sort):
+        case let .communitySortType(sort):
             version >= sort.minimumVersion
+        case let .personSortType(sort):
+            sort.supports(version: version)
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
@@ -43,7 +45,7 @@ public extension LemmyConnection {
              .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
              .searchLocalComments, .viewInstanceBlockList:
             true
-        case .moderatorSetNsfw, .userNotes:
+        case .moderatorSetNsfw, .userNotes, .toggleNotifications:
             false
         }
     }
@@ -84,11 +86,25 @@ private extension CommentSortType {
     }
 }
 
-private extension SearchSortType {
+private extension CommunitySortType {
     var minimumVersion: SiteVersion {
-        switch self {
-        case let .top(timeRange): timeRange.minimumVersion
-        default: .zero
+        if self.v4ApiType == nil {
+            .infinity
+        } else if self.v3ApiType == nil {
+            .v1_0_0
+        } else {
+            .zero
+        }
+    }
+}
+
+private extension PersonSortType {
+    func supports(version: SiteVersion) -> Bool {
+        switch (self.v3ApiType, self.v4ApiType) {
+        case (nil, nil): false
+        case (nil, _): version >= .v1_0_0
+        case (_, nil): version < .v1_0_0
+        case (_, _): true
         }
     }
 }

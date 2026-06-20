@@ -8,97 +8,82 @@
 import Foundation
 
 public extension ApiClient {
-    // swiftlint:disable:next function_parameter_count
     func getPosts(
         communityId: Int,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post], cursor: String?) {
-        let snapshots = try await repository.getPosts(
+    ) async throws -> PagedResponse<Post> {
+        let response = try await repository.getPosts(
             communityId: communityId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
-            cursor: cursor,
-            limit: limit,
             filter: filter,
             showHidden: showHidden
         )
         let posts = await caches.post.getModels(
             api: self,
-            from: snapshots.posts.map { .post2($0) }
+            from: response.items.map { .post2($0) }
         )
-        return (posts: posts, cursor: snapshots.cursor)
+        return .init(items: posts, nextLocation: response.nextLocation)
     }
-    
-    // swiftlint:disable:next function_parameter_count
+
     func getPosts(
         feed: ListingType,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post], cursor: String?) {
-        let snapshots = try await repository.getPosts(
+    ) async throws -> PagedResponse<Post> {
+        let response = try await repository.getPosts(
             feed: feed,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
-            cursor: cursor,
-            limit: limit,
             filter: filter,
             showHidden: showHidden
         )
         let posts = await caches.post.getModels(
             api: self,
-            from: snapshots.posts.map { .post2($0) }
+            from: response.items.map { .post2($0) }
         )
-        return (posts: posts, cursor: snapshots.cursor)
+        return .init(items: posts, nextLocation: response.nextLocation)
     }
-    
+
     func getPosts(
         personId: Int,
         communityId: Int? = nil,
+        pageInfo: PageInfo,
         sort: PostSortType = .new,
-        page: Int,
-        limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person, posts: [Post]) {
-        let snapshots = try await repository.getPosts(
+    ) async throws -> PagedResponse<Post> {
+        let response = try await repository.getPosts(
             personId: personId,
             communityId: communityId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
-            limit: limit,
             savedOnly: savedOnly
-        )
-        return await (
-            person: caches.person.getModel(api: self, from: .person3(snapshots.person)),
-            posts: caches.post.getModels(api: self, from: snapshots.posts.map { .post2($0) })
-        )
-    }
-    
-    func getPostHistory(
-        type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (posts: [Post], cursor: String?) {
-        let snapshots = try await repository.getPostHistory(
-            type: type,
-            page: page,
-            cursor: cursor,
-            limit: limit
         )
         let posts = await caches.post.getModels(
             api: self,
-            from: snapshots.posts.map { .post2($0) }
+            from: response.items.map { .post2($0) }
         )
-        return (posts: posts, cursor: snapshots.cursor)
+        return .init(items: posts, nextLocation: response.nextLocation)
+    }
+
+    func getPostHistory(
+        type: GetContentFilter,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Post> {
+        let response = try await repository.getPostHistory(
+            type: type,
+            pageInfo: pageInfo
+        )
+        let posts = await caches.post.getModels(
+            api: self,
+            from: response.items.map { .post2($0) }
+        )
+        return .init(items: posts, nextLocation: response.nextLocation)
     }
     
     func getPost(id: Int) async throws -> Post {
@@ -114,44 +99,22 @@ public extension ApiClient {
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: PostSortType
-    ) async throws -> [Post] {
-        let snapshots = try await repository.searchPosts(
+    ) async throws -> PagedResponse<Post> {
+        let response = try await repository.searchPosts(
             query: query,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
             sort: sort
         )
-        return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
-    }
-    
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post] {
-        let snapshots = try await repository.searchPosts(
-            query: query,
-            page: page,
-            limit: limit,
-            communityId: communityId,
-            creatorId: creatorId,
-            filter: filter,
-            sort: sort
-        )
-        return await caches.post.getModels(api: self, from: snapshots.map { .post2($0) })
+        let posts = await caches.post.getModels(api: self, from: response.items.map { .post2($0) })
+        return .init(items: posts, nextLocation: response.nextLocation)
     }
     
     /// Mark the given posts as read.
@@ -239,19 +202,15 @@ public extension ApiClient {
     func getPostVotes(
         id: Int,
         communityId: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVote] {
-        let snapshot = try await repository.getPostVotes(
-            id: id,
-            page: page,
-            limit: limit
-        )
-        return await caches.personVote.getModels(
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVote> {
+        let response = try await repository.getPostVotes(id: id, pageInfo: pageInfo)
+        let votes = await caches.personVote.getModels(
             api: self,
-            from: snapshot,
+            from: response.items,
             target: .post(id: id),
             communityId: communityId
         )
+        return .init(items: votes, nextLocation: response.nextLocation)
     }
 }

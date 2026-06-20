@@ -48,6 +48,9 @@ class UserSession: Session {
                 self.blocks = blocks
                 self.instance = instance
             } catch {
+                if let software = try? await self.api.getSoftwareFallback() {
+                    self.account.updateSoftware(software)
+                }
                 handleError(error)
             }
             

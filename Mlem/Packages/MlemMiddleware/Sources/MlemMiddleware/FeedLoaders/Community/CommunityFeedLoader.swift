@@ -11,7 +11,7 @@ import Foundation
 class CommunityFetcher: Fetcher<Community> {
     var query: String
     var listing: ListingType
-    var sort: SearchSortType
+    var sort: CommunitySortType
     var hostApi: ApiClient?
     
     init(
@@ -19,7 +19,7 @@ class CommunityFetcher: Fetcher<Community> {
         query: String,
         pageSize: Int,
         listing: ListingType,
-        sort: SearchSortType,
+        sort: CommunitySortType,
         hostApi: ApiClient?
     ) {
         self.query = query
@@ -30,20 +30,13 @@ class CommunityFetcher: Fetcher<Community> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let communities = try await api.searchCommunities(
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Community> {
+        try await api.searchCommunities(
             query: query,
-            page: page,
-            limit: pageSize,
+            pageInfo: pageInfo,
             filter: listing,
             sort: sort,
             hostApi: hostApi
-        )
-        
-        return .init(
-            items: communities,
-            prevCursor: nil,
-            nextCursor: nil
         )
     }
 }
@@ -60,7 +53,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community> {
         query: String = "",
         pageSize: Int = 20,
         listing: ListingType = .all,
-        sort: SearchSortType = .top(.allTime),
+        sort: CommunitySortType = .subscriberCount,
         hostApi: ApiClient? = nil
     ) {
         self.api = api
@@ -86,7 +79,7 @@ public class CommunityFeedLoader: StandardFeedLoader<Community> {
     public func refresh(
         query: String? = nil,
         listing: ListingType? = nil,
-        sort: SearchSortType? = nil,
+        sort: CommunitySortType? = nil,
         clearBeforeRefresh: Bool = false
     ) async throws {
         communityFetcher.query = query ?? communityFetcher.query

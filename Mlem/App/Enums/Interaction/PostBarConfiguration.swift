@@ -10,7 +10,7 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfiguration {
+struct PostBarConfiguration: InteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
@@ -141,6 +141,7 @@ struct PostBarConfiguration: InteractionBarConfiguration, SwipeActionConfigurati
                 .crosspost,
                 .hide,
                 .createImage,
+                .toggleNotifications,
                 .report,
                 .edit,
                 .delete

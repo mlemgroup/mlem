@@ -175,12 +175,12 @@ struct LoginCredentialsView: View {
                     }
                 } catch {
                     switch error {
-                    case let ApiClientError.response(response, _) where response.error == "missing_totp_token":
+                    case ApiClientError.missingTotp:
                         navigation.push(.logIn(.totp(client: client, usernameOrEmail: usernameOrEmail, password: password)))
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             authenticating = false
                         }
-                    case ApiClientError.invalidSession:
+                    case ApiClientError.notLoggedIn:
                         failureReason = .incorrectPassword
                     default:
                         handleError(error, silent: true)

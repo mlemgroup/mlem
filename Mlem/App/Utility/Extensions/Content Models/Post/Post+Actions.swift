@@ -337,7 +337,7 @@ extension Post {
         if canModerate {
             ActionGroup(
                 appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: Settings.get(\.menus_modActionGrouping) == .divider || expanded ? .section : .disclosure
+                displayMode: Settings.get(\.menus_modActionGrouping) == .combined || expanded ? .section : .disclosure
             ) {
                 moderatorMenuActions(
                     appState: appState,

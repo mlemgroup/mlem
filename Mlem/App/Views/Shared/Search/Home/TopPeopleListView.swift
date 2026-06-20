@@ -38,7 +38,11 @@ struct TopPeopleListView: View {
             .task {
                 do {
                     if personLoader == nil {
-                        personLoader = .init(api: appState.firstApi)
+                        let software = try await appState.firstApi.software
+                        personLoader = .init(
+                            api: appState.firstApi,
+                            sort: .default(software: software)
+                        )
                         try await personLoader?.refresh(listing: .all)
                     }
                 } catch {

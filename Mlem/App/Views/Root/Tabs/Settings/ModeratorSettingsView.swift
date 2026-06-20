@@ -61,13 +61,16 @@ struct ModeratorSettingsView: View {
 }
 
 enum ModeratorActionGrouping: String, Codable, CaseIterable {
-    case divider, separateMenu
+    case combined, separateMenu
     
     init?(rawValue: String) {
         switch rawValue {
-        // Decode v1 case
-        case "none", "divider", "disclosureGroup":
-            self = .divider
+        
+        case "none", // Decode v1 case
+             "disclosureGroup", // Removed in 2.5
+             "divider", // Renamed to "combined" in 2.5
+             "combined": 
+            self = .combined
         case "separateMenu":
             self = .separateMenu
         default:
@@ -77,14 +80,14 @@ enum ModeratorActionGrouping: String, Codable, CaseIterable {
     
     var label: LocalizedStringResource {
         switch self {
-        case .divider: "Divider"
-        case .separateMenu: "Separate Menu"
+        case .combined: "Combined"
+        case .separateMenu: "Separate"
         }
     }
     
     var icon: Icon {
         switch self {
-        case .divider: .general.remove
+        case .combined: .general.remove
         case .separateMenu: .lemmy.moderation
         }
     }

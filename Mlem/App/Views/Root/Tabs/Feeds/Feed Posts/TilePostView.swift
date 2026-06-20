@@ -107,6 +107,9 @@ struct TilePostView: View {
             if differentiateWithoutColor, readPostIndicator == .checkmark {
                 ReadCheck(read: post.read, tiled: true)
             }
+
+            NotificationIndicatorView(entity: post)
+                .font(.callout)
             
             score
         }

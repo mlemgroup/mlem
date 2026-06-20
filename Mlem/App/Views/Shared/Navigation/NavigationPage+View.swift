@@ -12,7 +12,7 @@ import SwiftUI
 
 extension NavigationPage {
 
-    @ViewBuilder
+    @MainActor @ViewBuilder
     func sheetView(selectedDetent: Binding<PresentationDetent>) -> some View {
         if let presentationDetentConfiguration {
             view()
@@ -23,7 +23,7 @@ extension NavigationPage {
     }
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    @ViewBuilder func view() -> some View {
+    @MainActor @ViewBuilder func view() -> some View {
         switch self {
         case .subscriptionList:
             SubscriptionListView()
@@ -246,6 +246,8 @@ extension NavigationPage {
             )
         case .unavailableContentInfo:
             UnavailableContentInfoView()
+        case let .unsupportedVersion(account):
+            UnsupportedVersionWarningView(account: account.wrappedValue)
         }
     }
 }

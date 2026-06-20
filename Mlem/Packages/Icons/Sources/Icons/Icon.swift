@@ -18,6 +18,7 @@ public struct Icon: Hashable {
     
     public enum VariantApplicationStrategy {
         case baseOnly(name: String)
+        case fillable(name: String)
         case applySquare(name: String)
         case applyCircle(name: String)
         case custom((Variant?) -> String)
@@ -26,6 +27,8 @@ public struct Icon: Hashable {
         func computeImageName(variant: Variant?) -> String {
             switch self {
             case let .baseOnly(name):
+                name
+            case let .fillable(name):
                 switch variant {
                 case .active: "\(name).fill"
                 default: name
@@ -60,11 +63,15 @@ public struct Icon: Hashable {
     }
     
     public init(_ name: String, source: Source = .system) {
-        self.init(.baseOnly(name: name), source: source)
+        self.init(.fillable(name: name), source: source)
     }
     
     public func computeImageName() -> String {
         variantApplicationStrategy.computeImageName(variant: appliedVariant)
+    }
+
+    public static func baseOnly(_ name: String) -> Self {
+        self.init(.baseOnly(name: name))
     }
     
     public static func applySquare(_ name: String) -> Self {

@@ -10,15 +10,18 @@ import SwiftUI
 
 enum LoginPage: Hashable {
     case pickInstance
+    case unsupportedVersion(LoginVersionWarningView.Content)
     case instance(_ instance: Instance)
     case reauth(_ account: UserAccount)
     case totp(client: ApiClient, usernameOrEmail: String, password: String)
     
-    @ViewBuilder
+    @MainActor @ViewBuilder
     func view() -> some View {
         switch self {
         case .pickInstance:
             LoginInstancePickerView()
+        case let .unsupportedVersion(content):
+            LoginVersionWarningView(content: content)
         case let .instance(instance):
             LoginCredentialsView(instance: instance)
         case let .reauth(account):
@@ -45,6 +48,9 @@ enum LoginPage: Hashable {
     
     func hash(into hasher: inout Hasher) {
         switch self {
+        case let .unsupportedVersion(content):
+            hasher.combine("unsupported version")
+            hasher.combine(content)
         case .pickInstance:
             hasher.combine("pickInstance")
         case .totp:

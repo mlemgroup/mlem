@@ -8,46 +8,36 @@
 import Foundation
 
 extension ApiRepository {
-    // swiftlint:disable:next function_parameter_count
     func getPosts(
         communityId: Int,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getPosts(
                 communityId: communityId,
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
-                cursor: cursor,
-                limit: limit,
                 filter: filter,
                 showHidden: showHidden
             )
         }
     }
 
-    // swiftlint:disable:next function_parameter_count
     func getPosts(
         feed: ListingType,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getPosts(
                 feed: feed,
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
-                cursor: cursor,
-                limit: limit,
                 filter: filter,
                 showHidden: showHidden
             )
@@ -57,18 +47,16 @@ extension ApiRepository {
     func getPosts(
         personId: Int,
         communityId: Int? = nil,
+        pageInfo: PageInfo,
         sort: PostSortType = .new,
-        page: Int,
-        limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot]) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getPosts(
                 personId: personId,
                 communityId: communityId,
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
-                limit: limit,
                 savedOnly: savedOnly
             )
         }
@@ -76,16 +64,12 @@ extension ApiRepository {
         
     func getPostHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getPostHistory(
                 type: type,
-                page: page,
-                cursor: cursor,
-                limit: limit
+                pageInfo: pageInfo
             )
         }
     }
@@ -105,40 +89,16 @@ extension ApiRepository {
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: PostSortType
-    ) async throws -> [Post2Snapshot] {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         try await performingForConnection { connection in
             try await connection.searchPosts(
                 query: query,
-                page: page,
-                limit: limit,
-                communityId: communityId,
-                creatorId: creatorId,
-                filter: filter,
-                sort: sort
-            )
-        }
-    }
-    
-    func searchPosts(
-        query: String,
-        page: Int = 1,
-        limit: Int = 20,
-        communityId: Int? = nil,
-        creatorId: Int? = nil,
-        filter: ListingType = .all,
-        sort: SearchSortType
-    ) async throws -> [Post2Snapshot] {
-        try await performingForConnection { connection in
-            try await connection.searchPosts(
-                query: query,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 communityId: communityId,
                 creatorId: creatorId,
                 filter: filter,
@@ -170,7 +130,13 @@ extension ApiRepository {
             try await connection.savePost(id: id, save: save)
         }
     }
-    
+
+    func setPostNotificationsEnabled(id: Int, enabled: Bool) async throws -> Post2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.setPostNotificationsEnabled(id: id, enabled: enabled)
+        }
+    }
+
     func deletePost(id: Int, delete: Bool) async throws -> Post2Snapshot {
         try await performingForConnection { connection in
             try await connection.deletePost(id: id, delete: delete)
@@ -290,15 +256,10 @@ extension ApiRepository {
     
     func getPostVotes(
         id: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot> {
         try await performingForConnection { connection in
-            try await connection.getPostVotes(
-                id: id,
-                page: page,
-                limit: limit
-            )
+            try await connection.getPostVotes(id: id, pageInfo: pageInfo)
         }
     }
 

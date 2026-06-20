@@ -40,19 +40,21 @@ public extension ApiClient {
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Person] {
-        let snapshots = try await repository.searchPeople(
+        sort sort_: PersonSortType? = nil
+    ) async throws -> PagedResponse<Person> {
+        let software = try await self.software
+        let sort = sort_ ?? .default(software: software)
+
+        let response = try await repository.searchPeople(
             query: query,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             filter: filter,
             sort: sort
         )
-        return await caches.person.getModels(api: self, from: snapshots.map { .person2($0) })
+        let people = await caches.person.getModels(api: self, from: response.items.map { .person2($0) })
+        return .init(items: people, nextLocation: response.nextLocation)
     }
     
     @discardableResult
@@ -119,23 +121,22 @@ public extension ApiClient {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
-        let snapshots = try await repository.getContent(
+    ) async throws -> (person: Person, posts: [Post], comments: [Comment], nextLocation: PageLocation) {
+        let response = try await repository.getContent(
             authorId: id,
             sort: sort,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             savedOnly: savedOnly,
             communityId: communityId
         )
         return await (
-            person: caches.person.getModel(api: self, from: .person3(snapshots.person)),
-            posts: caches.post.getModels(api: self, from: snapshots.posts.map { .post2($0) }),
-            comments: caches.comment.getModels(api: self, from: snapshots.comments.map { .comment2($0) })
+            person: caches.person.getModel(api: self, from: .person3(response.person)),
+            posts: caches.post.getModels(api: self, from: response.posts.map { .post2($0) }),
+            comments: caches.comment.getModels(api: self, from: response.comments.map { .comment2($0) }),
+            nextLocation: response.nextLocation
         )
     }
     

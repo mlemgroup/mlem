@@ -64,7 +64,7 @@ extension SignUpView {
                 let account = try await AccountsTracker.main.logIn(username: username, url: api.baseUrl, token: token)
                 navigation.dismissSheet()
                 AppState.main.changeAccount(to: account)
-            } catch let ApiClientError.response(response, _) where response.emailNotVerified || response.registrationApplicationIsPending {
+            } catch ApiClientError.emailNotVerified, ApiClientError.applicationPending {
                 // no-op
             } catch {
                 handleError(error)

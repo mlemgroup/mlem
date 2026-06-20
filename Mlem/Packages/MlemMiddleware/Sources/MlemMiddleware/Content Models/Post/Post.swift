@@ -30,7 +30,8 @@ public class Post:
     DeletableProviding,
     ReportableProviding,
     RemovableProviding,
-    PurgableProviding {    
+    PurgableProviding,
+    NotificationToggleProviding {
     public typealias Properties = PostProperties
     
     public var api: ApiClient
@@ -83,6 +84,7 @@ public class Post:
     public var creatorBlocked: ExpectedValue<Bool>
     public var votes: ExpectedValue<VotesModel>
     public var saved: ExpectedValue<Bool>
+    public var notificationsEnabled: ExpectedValue<Bool>
     public var readStatus: ExpectedValue<Bool>
     public var read: ExpectedValue<Bool> {
         .init(
@@ -132,6 +134,7 @@ public class Post:
         self.creatorBlocked = dummyExpectedValue(properties.creatorBlocked)
         self.votes = dummyExpectedValue(properties.votes)
         self.saved = dummyExpectedValue(properties.saved)
+        self.notificationsEnabled = dummyExpectedValue(properties.notificationsEnabled)
         self.readStatus = dummyExpectedValue(properties.read)
         self.hidden = dummyExpectedValue(properties.hidden)
         self.crossPosts = dummyExpectedValue(properties.crossPosts)
@@ -151,6 +154,7 @@ public class Post:
         self.creatorBlocked = expectedValue(properties.creatorBlocked)
         self.votes = expectedValue(properties.votes)
         self.saved = expectedValue(properties.saved)
+        self.notificationsEnabled = expectedValue(properties.notificationsEnabled)
         self.readStatus = expectedValue(properties.read)
         self.hidden = expectedValue(properties.hidden)
         self.crossPosts = expectedValue(properties.crossPosts)
@@ -192,6 +196,7 @@ public class Post:
         updateIfChanged(\.creatorBlocked.value_, properties.creatorBlocked ?? creatorBlocked.value_)
         updateIfChanged(\.votes.value_, properties.votes ?? votes.value_)
         updateIfChanged(\.saved.value_, properties.saved ?? saved.value_)
+        updateIfChanged(\.notificationsEnabled.value_, properties.notificationsEnabled ?? notificationsEnabled.value_)
         updateIfChanged(\.readStatus.value_, properties.read ?? readStatus.value_)
         updateIfChanged(\.hidden.value_, properties.hidden ?? hidden.value_)
         updateIfChanged(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
@@ -209,6 +214,7 @@ public class Post:
         setIfNil(\.creatorBlocked.value_, properties.creatorBlocked)
         setIfNil(\.votes.value_, properties.votes)
         setIfNil(\.saved.value_, properties.saved)
+        setIfNil(\.notificationsEnabled.value_, properties.notificationsEnabled)
         setIfNil(\.readStatus.value_, properties.read)
         setIfNil(\.hidden.value_, properties.hidden)
         setIfNil(\.crossPosts.value_, properties.crossPosts ?? crossPosts.value_)
@@ -289,8 +295,22 @@ public extension Post {
         }
     }
     
+    // Notifications
+
+    func updateNotificationsEnabled(_ newValue: Bool) {
+        notificationsEnabled.value_ = newValue
+
+        Task {
+            await updateQueue.addItem {
+                try await .init(
+                    api: self.api,
+                    snapshot: .post2(self.api.repository.setPostNotificationsEnabled(id: self.id, enabled: newValue)))
+            }
+        }
+    }
+
     // Reply
-    
+
     func reply(content: String, languageId: Int?) async throws -> Comment {
         try await self.api.replyToPost(id: id, content: content, languageId: languageId)
     }
@@ -438,17 +458,15 @@ public extension Post {
     
     func getComments(
         sort: CommentSortType = .hot,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
+    ) async throws -> PagedResponse<Comment> {
         try await api.getComments(
             postId: id,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
     }
@@ -490,8 +508,8 @@ public extension Post {
     
     // Get Votes
     
-    func getVotes(page: Int, limit: Int) async throws -> [PersonVote] {
-        try await api.getPostVotes(id: id, communityId: communityId, page: page, limit: limit)
+    func getVotes(pageInfo: PageInfo) async throws -> PagedResponse<PersonVote> {
+        try await api.getPostVotes(id: id, communityId: communityId, pageInfo: pageInfo)
     }
     
     // Deleted

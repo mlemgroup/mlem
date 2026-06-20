@@ -23,13 +23,8 @@ extension SiteSoftware {
     var label: String {
         "\(String(localized: type.label)) \(version)"
     }
-}
 
-extension SiteSoftwareType {
-    var label: LocalizedStringResource {
-        switch self {
-        case .lemmy: "Lemmy"
-        case .pieFed: "PieFed"
-        }
+    var isSupported: Bool {
+        version >= type.minimumSupportedVersion
     }
 }

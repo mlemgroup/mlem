@@ -53,7 +53,7 @@ struct SettingsView: View {
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
-                    destination: .settings(.links)
+                    destination: .settings(.mediaAndLinks)
                 )
                 .gradientTint(.themedColorfulAccent(4))
                 NavigationLink(
@@ -90,6 +90,10 @@ struct SettingsView: View {
                     .gradientTint(.themedInbox)
                 NavigationLink("Communities", icon: .lemmy.community, destination: .settings(.community))
                     .gradientTint(.themedCommunityAccent)
+                NavigationLink("Users", icon: .lemmy.person, destination: .settings(.person))
+                    .gradientTint(.themedPersonAccent)
+                NavigationLink("Instances", icon: .lemmy.instance, destination: .settings(.instance))
+                    .gradientTint(.themedInstanceAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
                     .gradientTint(.themedColorfulAccent(5))
             }
@@ -99,6 +103,10 @@ struct SettingsView: View {
                     .gradientTint(.themedColorfulAccent(2))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
                     .gradientTint(.themedNeutralAccent)
+                #if DEBUG
+                NavigationLink("Developer", icon: .settings.developerMode, destination: .settings(.developer))
+                    .gradientTint(.themedColorfulAccent(2))
+                #endif
             }
         }
         .labelStyle(.squircle)

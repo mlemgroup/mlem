@@ -10,78 +10,87 @@ import Foundation
 public extension PieFedConnection {
     func getMessages(
         creatorId: Int? = nil,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [Message2Snapshot] {
+    ) async throws -> PagedResponse<Message2Snapshot> {
+        let page = try pageInfo.cursor.requirePageNumber
         if let creatorId {
             if unreadOnly {
                 throw ApiClientError.featureUnsupported
             }
             let request = PieFedGetPrivateMessagesConversationRequest(
                 page: page,
-                limit: limit,
+                limit: pageInfo.limit,
                 personId: creatorId,
                 conversationId: nil
             )
             let response = try await perform(request)
-            return try response.privateMessages.map { try .init(from: $0) }
+            return try .fromPieFed(
+                pageInfo: pageInfo,
+                items: try response.privateMessages.map { try .init(from: $0) }
+            )
         } else {
             let request = PieFedListPrivateMessagesRequest(
                 unreadOnly: unreadOnly,
                 page: page,
-                limit: limit
+                limit: pageInfo.limit
             )
             let response = try await perform(request)
-            return try response.privateMessages.map { try .init(from: $0) }
+            return try .fromPieFed(
+                pageInfo: pageInfo,
+                items: try response.privateMessages.map { try .init(from: $0) }
+            )
         }
     }
     
     func getReplyNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetRepliesRequest(
             sort: .new,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try (notifications: response.replies.map { try .init(from: $0, isMention: false) }, cursor: nil)
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.replies.map { try .init(from: $0, isMention: false) }
+        )
     }
 
     func getMentionNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetMentionsRequest(
             sort: .new,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
-        return try (notifications: response.replies.map { try .init(from: $0, isMention: true) }, cursor: nil)
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.replies.map { try .init(from: $0, isMention: true) }
+        )
     }
 
     func getMessageNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?) {
+    ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedListPrivateMessagesRequest(
             unreadOnly: unreadOnly,
-            page: page,
-            limit: limit
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit
         )
         let response = try await perform(request)
-        return try (notifications: response.privateMessages.map { try .init(from: $0) }, cursor: nil)
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.privateMessages.map { try .init(from: $0) }
+        )
     }
     
     func markNotificationAsRead(

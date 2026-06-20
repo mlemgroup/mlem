@@ -90,10 +90,7 @@ public final class UnreadCount {
         (verifiedCount[type] ?? 0) + (unverifiedCount[type] ?? 0)
     }
     
-    // If `alwaysMakeCalls` is `false`, `UnreadCount` will avoid making calls it doesn't need to (e.g. checking for
-    // moderation notifications if the user does not moderate any communities). You might want to set this to
-    // `true` if you are using this function to measure the response time of the server.
-    public func refresh(alwaysMakeCalls: Bool = false) async throws {
+    public func refresh() async throws {
         let values: [InboxItemType: Int] = try await withThrowingTaskGroup(
             of: [InboxItemType: Int].self,
             returning: [InboxItemType: Int].self
@@ -101,28 +98,28 @@ public final class UnreadCount {
             taskGroup.addTask {
                 try await self.api.repository.getPersonalUnreadCount().unreadCountDictionary
             }
-            if !alwaysMakeCalls, self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
+            if  self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
                 // The theoretical solution to this is to store the moderated
                 // community IDs in `ApiClient.Context` and `await` them here.
                 log.warning("ApiClient.myPerson or ApiClient.myInstance is nil at UnreadCount refresh - this may lead to unneeded API calls")
             }
             
             if try await self.api.supports(.viewReports) {
-                if alwaysMakeCalls || !(self.api.myPerson?.moderatedCommunities.value_?.isEmpty ?? false) || self.api.isAdmin {
+                if !(self.api.myPerson?.moderatedCommunities.value_?.isEmpty ?? false) || self.api.isAdmin {
                     taskGroup.addTask {
                         do {
                             return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
-                        } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
+                        } catch ApiClientError.notModOrAdmin {
                             return [:]
                         }
                     }
                 }
                 // Don't use `api.isAdmin` here; it falls back to `false` and we need to fallback to `true`
-                if alwaysMakeCalls || api.myInstance?.administrators.value?.contains(where: { $0.id == api.myPerson?.id }) ?? true {
+                if api.myInstance?.administrators.value?.contains(where: { $0.id == api.myPerson?.id }) ?? true {
                     taskGroup.addTask {
                         do {
                             return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
-                        } catch let ApiClientError.response(response, _) where response.notAdmin {
+                        } catch ApiClientError.notAdmin {
                             return [:]
                         }
                     }

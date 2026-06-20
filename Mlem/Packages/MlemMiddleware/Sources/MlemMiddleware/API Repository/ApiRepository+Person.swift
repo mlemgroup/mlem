@@ -29,16 +29,14 @@ extension ApiRepository {
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Person2Snapshot] {
+        sort: PersonSortType
+    ) async throws -> PagedResponse<Person2Snapshot> {
         try await performingForConnection { connection in
             try await connection.searchPeople(
                 query: query,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 filter: filter,
                 sort: sort
             )
@@ -98,17 +96,15 @@ extension ApiRepository {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         try await performingForConnection { connection in
             try await connection.getContent(
                 authorId: id,
                 sort: sort,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 savedOnly: savedOnly,
                 communityId: communityId
             )

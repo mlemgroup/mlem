@@ -41,6 +41,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
     var creatorBlocked: Bool?
     var votes: VotesModel?
     var saved: Bool?
+    var notificationsEnabled: Bool?
     var read: Bool?
     var hidden: Bool?
     
@@ -86,6 +87,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
             creatorBlocked = snapshot2.creatorBlocked
             votes = snapshot2.votes
             saved = snapshot2.saved
+            notificationsEnabled = snapshot2.notificationsEnabled
             read = snapshot2.read
             hidden = snapshot2.hidden
         }
@@ -141,6 +143,7 @@ public struct PostProperties: UnifiedPropertiesProviding {
         self.creatorBlocked = other.creatorBlocked ?? self.creatorBlocked
         self.votes = other.votes ?? self.votes
         self.saved = other.saved ?? self.saved
+        self.notificationsEnabled = other.notificationsEnabled ?? self.notificationsEnabled
         self.read = other.read ?? self.read
         self.hidden = other.hidden ?? self.hidden
         

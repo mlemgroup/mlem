@@ -34,30 +34,22 @@ public extension ApiClient {
     
     func searchCommunities(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort sort_: SearchSortType? = nil,
+        sort sort_: CommunitySortType? = nil,
         hostApi: ApiClient? = nil
-    ) async throws -> [Community] {
-        let sort: SearchSortType
-        if let sort_ {
-            sort = sort_
-        } else if try await software.supports(.searchSortType(.top(.allTime))) {
-            sort = .top(.allTime)
-        } else {
-            sort = .top(.limited(.month))
-        }
-        
-        let snapshots = try await repository.searchCommunities(
+    ) async throws -> PagedResponse<Community> {
+        let software = try await self.software
+        let sort = sort_ ?? .default(software: software)
+
+        let response = try await repository.searchCommunities(
             query: query,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             filter: filter,
             sort: sort
         )
-        
-        let ret = await caches.community.getModels(api: self, from: snapshots.map { .community2($0) })
+
+        let ret = await caches.community.getModels(api: self, from: response.items.map { .community2($0) })
         if let subscriptionInfo = hostApi?.subscriptions {
             for community in ret {
                 if let subscribedCommunity = subscriptionInfo.communities.first(where: { $0.actorId == community.actorId }) {
@@ -66,7 +58,7 @@ public extension ApiClient {
                 // TODO: favorites
             }
         }
-        
+
         // if on a foreign host, resolve communities to populate subscription status.
         if let hostApi, hostApi !== self {
             do {
@@ -82,7 +74,7 @@ public extension ApiClient {
                 log.error("Failed to resolve community URLs: \(error)")
             }
         }
-        return ret
+        return .init(items: ret, nextLocation: response.nextLocation)
     }
     
     func setupSubscriptionList(
@@ -102,17 +94,14 @@ public extension ApiClient {
     func getSubscriptionList() async throws -> SubscriptionList {
         let subscriptionList = setupSubscriptionList()
         
-        let limit = 50
-        var page = 1
-        var hasMorePages = true
+        var location: PageLocation = .start
         var communities = [Community2Snapshot]()
         
-        repeat {
-            let snapshots = try await repository.getSubscriptionList(page: page, limit: limit)
-            communities.append(contentsOf: snapshots)
-            hasMorePages = snapshots.count >= limit
-            page += 1
-        } while hasMorePages
+        while let cursor = location.cursor {
+            let response = try await repository.getSubscriptionList(pageInfo: .init(cursor: cursor, limit: 50))
+            communities.append(contentsOf: response.items)
+            location = response.nextLocation
+        }
             
         let models: Set<Community> = await Set(caches.community.getModels(api: self, from: communities.map { .community2($0) }))
         await subscriptionList.updateCommunities(with: models)

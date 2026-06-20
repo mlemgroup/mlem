@@ -116,7 +116,7 @@ struct ChangePasswordView: View {
                 } catch ApiClientError.invalidSession {
                     ToastModel.main.add(.failure("Current password is incorrect"))
                     viewState = .initial
-                } catch let ApiClientError.response(response, _) where response.error == "invalid_password" {
+                } catch ApiClientError.newPasswordInvalid { 
                     ToastModel.main.add(.failure("New password is invalid"))
                     viewState = .initial
                 } catch {

@@ -15,7 +15,7 @@ enum SettingsPage: Hashable {
     }
 
     enum SwipeActionSettingType: Hashable {
-        case post, comment, inboxNotification, postReport, commentReport, community
+        case post, comment, inboxNotification, postReport, commentReport, community, person, instance
     }
 
     case root
@@ -26,18 +26,18 @@ enum SettingsPage: Hashable {
     case defaultFeed, haptics, accountAgeVisibility
     case privacyBypassImageProxy
     case safetyBlurNsfw, safetyWarnings
-    case links, embedding
+    case mediaAndLinks, embedding
     case imageViewer, imageViewerControls, imageViewerDismissSensitivity
-    case animatedAvatars
-    case externalLinks, sharingLinks, tappableLinks
+    case avatars, animatedAvatars
+    case externalLinks, sharingLinks, tapFriendlyLinks
     case importExportSettings
     case theme, icon
-    case post, comment, inbox, community, subscriptionList
+    case post, comment, inbox, community, person, instance, subscriptionList
     case tabBar, longPressAction
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
-    case about, advanced, developer, errorLog
+    case about, advanced, errorLog, errorToastTimeout
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
@@ -50,6 +50,10 @@ enum SettingsPage: Hashable {
     case modMailInteractionBar
     case separateModeratorActions
     case licences, document(Document)
+    case cache
+    #if DEBUG
+    case developer
+    #endif
 
     static func contextMenu(_ keyPath: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>) -> Self {
         .contextMenu(.init(keyPath))
@@ -111,8 +115,6 @@ enum SettingsPage: Hashable {
             ImportExportSettingsView()
         case .advanced:
             AdvancedSettingsView()
-        case .developer:
-            DeveloperSettingsView()
         case .errorLog:
             ErrorLogView()
         case .about:
@@ -125,6 +127,10 @@ enum SettingsPage: Hashable {
             PostSettingsView()
         case .community:
             CommunitySettingsView()
+        case .person:
+            PersonSettingsView()
+        case .instance:
+            InstanceSettingsView()
         case .postThumbnail:
             PostThumbnailSettingsView()
         case .postSubscriptionIndicator:
@@ -139,16 +145,18 @@ enum SettingsPage: Hashable {
             CommentJumpButtonSettingsView()
         case .inbox:
             InboxSettingsView()
-        case .links:
-            LinkSettingsView()
+        case .mediaAndLinks:
+            MediaAndLinksSettingsView()
         case .externalLinks:
             ExternalLinkSettingsView()
         case .sharingLinks:
             SharingLinksSettingsView()
-        case .tappableLinks:
-            TappableLinksSettingsView()
+        case .tapFriendlyLinks:
+            TapFriendlyLinksSettingsView()
         case .embedding:
             EmbeddingSettingsView()
+        case .avatars:
+            AvatarSettingsView()
         case .animatedAvatars:
             AnimatedAvatarSettingsView()
         case .sorting:
@@ -217,7 +225,32 @@ enum SettingsPage: Hashable {
                     }
                 })
             case .community:
-                SwipeActionEditorView(\.interactionBar_community)
+                SwipeActionEditorView(\.interactionBar_community, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_instance) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
+            case .person:
+                SwipeActionEditorView(\.interactionBar_person, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_instance) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
+            case .instance:
+                SwipeActionEditorView(\.interactionBar_instance, onApplyToAll: { configuration in
+                    Settings.mutate(\.interactionBar_person) {
+                        $0.applySwipes(other: configuration)
+                    }
+                    Settings.mutate(\.interactionBar_community) {
+                        $0.applySwipes(other: configuration)
+                    }
+                })
             }
         case let .contextMenu(page):
             page.view
@@ -252,6 +285,14 @@ enum SettingsPage: Hashable {
                     NavigationLink(doc.title, destination: .settings(.document(doc)))
                 }
             }
+        case .cache:
+            CacheSettingsView()
+        case .errorToastTimeout:
+            ErrorToastTimeoutSettingsView()
+        #if DEBUG
+        case .developer:
+            DeveloperSettingsView()
+        #endif
         }
     }
     

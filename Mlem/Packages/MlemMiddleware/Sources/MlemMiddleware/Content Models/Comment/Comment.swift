@@ -20,7 +20,8 @@ public class Comment:
     PurgableProviding,
     CommentResolvable,
     Sharable,
-    PersonContentProviding {
+    PersonContentProviding,
+    NotificationToggleProviding {
     public typealias Properties = CommentProperties
     
     public var api: ApiClient
@@ -58,6 +59,7 @@ public class Comment:
     public var creatorBannedFromCommunity: ExpectedValue<Bool>
     public var votes: ExpectedValue<VotesModel>
     public var saved: ExpectedValue<Bool>
+    public var notificationsEnabled: ExpectedValue<Bool>
     
     public init(api: ApiClient, properties: CommentProperties) {
         self.api = api
@@ -88,7 +90,8 @@ public class Comment:
         self.creatorBannedFromCommunity = dummyExpectedValue(properties.creatorBannedFromCommunity)
         self.votes = dummyExpectedValue(properties.votes)
         self.saved = dummyExpectedValue(properties.saved)
-        
+        self.notificationsEnabled = dummyExpectedValue(properties.notificationsEnabled)
+
         func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
             .init(
                 value: value,
@@ -103,6 +106,7 @@ public class Comment:
         self.creatorBannedFromCommunity = expectedValue(properties.creatorBannedFromCommunity)
         self.votes = expectedValue(properties.votes)
         self.saved = expectedValue(properties.saved)
+        self.notificationsEnabled = expectedValue(properties.notificationsEnabled)
     }
     
     @MainActor
@@ -202,6 +206,18 @@ public extension Comment {
             }
         }
     }
+
+    // Watch
+    
+    func updateNotificationsEnabled(_ newValue: Bool) {
+        notificationsEnabled.value_ = newValue
+
+        Task {
+            await updateQueue.addItem {
+                try await .init(api: self.api, snapshot: .comment2(self.api.repository.setCommentNotificationsEnabled(id: self.id, enabled: newValue)))
+            }
+        }
+    }
     
     // Remove
     
@@ -283,11 +299,10 @@ public extension Comment {
         guard let first = parentCommentIds.first else { return [] }
         let comments = try await api.getComments(
             parentId: first,
+            pageInfo: .init(cursor: .first, limit: 1000),
             sort: .new,
-            page: 1,
-            maxDepth: parentCommentIds.count,
-            limit: 1000
-        )
+            maxDepth: parentCommentIds.count
+        ).items
         var i = 0
         return comments.filter { comment in
             if comment.id == parentCommentIds[i] {
@@ -301,34 +316,35 @@ public extension Comment {
     func getChildren(
         sort: CommentSortType = .hot,
         includedParentCount: Int = 0,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
+    ) async throws -> PagedResponse<Comment> {
         let parentId: Int
         if includedParentCount <= 0 {
             parentId = id
         } else {
             parentId = parentCommentIds.dropLast(includedParentCount - 1).last ?? parentCommentIds.first ?? id
         }
-        let comments = try await api.getComments(
+        let response = try await api.getComments(
             parentId: parentId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
         if includedParentCount <= 0 {
-            return comments
+            return response
         }
         
-        return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
+        return .init(
+            items: response.items.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id },
+            nextLocation: response.nextLocation
+        )
     }
     
-    func getVotes(page: Int, limit: Int, communityId: Int) async throws -> [PersonVote] {
-        try await api.getCommentVotes(id: id, communityId: communityId, page: page, limit: limit)
+    func getVotes(pageInfo: PageInfo, communityId: Int) async throws -> PagedResponse<PersonVote> {
+        try await api.getCommentVotes(id: id, communityId: communityId, pageInfo: pageInfo)
     }
 }
 
@@ -350,52 +366,58 @@ public extension Comment {
               let creatorIsAdmin = creatorIsAdmin.value_,
               let creatorBannedFromCommunity = creatorBannedFromCommunity.value_,
               let votes = votes.value_,
-              let saved = saved.value_ else {
+              let saved = saved.value_,
+            let notificationsEnabled = notificationsEnabled.value_ else {
             assertionFailure("takeSnapshot2() called without high-tier fields available")
             return nil
         }
         
-        return .init(comment:
-                .init(actorId: actorId,
-                      id: id,
-                      creatorId: creatorId,
-                      postId: postId,
-                      parentCommentIds: parentCommentIds,
-                      created: created,
-                      content: content,
-                      updated: updated,
-                      distinguished: distinguished,
-                      languageId: languageId,
-                      deleted: deleted,
-                      removed: removed),
-                     creator: creator.takeSnapshot1(),
-                     post: .init(
-                        actorId: post.actorId,
-                        id: post.id,
-                        creatorId: post.creatorId,
-                        communityId: post.communityId,
-                        created: post.created,
-                        title: post.title,
-                        content: post.content,
-                        linkUrl: post.linkUrl,
-                        embed: post.embed,
-                        poll: post.poll,
-                        nsfw: post.nsfw,
-                        thumbnailUrl: post.thumbnailUrl,
-                        updated: post.updated,
-                        languageId: post.languageId,
-                        altText: post.altText,
-                        deleted: post.deleted,
-                        removed: post.removed,
-                        pinnedCommunity: post.pinnedCommunity,
-                        pinnedInstance: post.pinnedInstance,
-                        locked: post.locked),
-                     community: community.takeSnapshot1(),
-                     commentCount: commentCount,
-                     creatorIsModerator: creatorIsModerator,
-                     creatorIsAdmin: creatorIsAdmin,
-                     creatorBannedFromCommunity: creatorBannedFromCommunity,
-                     votes: votes,
-                     saved: saved)
+        return .init(
+            comment:
+                .init(
+                    actorId: actorId,
+                    id: id,
+                    creatorId: creatorId,
+                    postId: postId,
+                    parentCommentIds: parentCommentIds,
+                    created: created,
+                    content: content,
+                    updated: updated,
+                    distinguished: distinguished,
+                    languageId: languageId,
+                    deleted: deleted,
+                    removed: removed),
+            creator: creator.takeSnapshot1(),
+            post: .init(
+                actorId: post.actorId,
+                id: post.id,
+                creatorId: post.creatorId,
+                communityId: post.communityId,
+                created: post.created,
+                title: post.title,
+                content: post.content,
+                linkUrl: post.linkUrl,
+                embed: post.embed,
+                poll: post.poll,
+                nsfw: post.nsfw,
+                thumbnailUrl: post.thumbnailUrl,
+                updated: post.updated,
+                languageId: post.languageId,
+                altText: post.altText,
+                deleted: post.deleted,
+                removed: post.removed,
+                pinnedCommunity: post.pinnedCommunity,
+                pinnedInstance: post.pinnedInstance,
+                locked: post.locked
+            ),
+            community: community.takeSnapshot1(),
+            commentCount: commentCount,
+            creatorIsModerator: creatorIsModerator,
+            creatorIsAdmin: creatorIsAdmin,
+            creatorBannedFromCommunity: creatorBannedFromCommunity,
+            votes: votes,
+            saved: saved,
+            notificationsEnabled: notificationsEnabled
+        )
     }
 }

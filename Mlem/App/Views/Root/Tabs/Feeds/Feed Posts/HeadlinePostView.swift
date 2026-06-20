@@ -67,6 +67,8 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
                     if differentiateWithoutColor, readPostIndicator == .checkmark {
                         ReadCheck(read: post.read)
                     }
+
+                    NotificationIndicatorView(entity: post)
                     
                     if post.nsfw {
                         Image(icon: .lemmy.nsfwTag)

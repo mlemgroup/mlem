@@ -7,16 +7,15 @@
 
 public class CommentReportChildFeedLoader: ModMailChildFeedLoader {
     class Fetcher: ModMailFetcher {
-        override func fetchPage(_ page: Int) async throws -> FetchResponse {
+        override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<ModMailItem> {
             do {
-                let response = try await api.getCommentReports(page: page, limit: pageSize, unresolvedOnly: unreadOnly)
+                let response = try await api.getCommentReports(pageInfo: pageInfo, unresolvedOnly: unreadOnly)
                 return .init(
-                    items: response.map { .report($0) },
-                    prevCursor: nil,
-                    nextCursor: nil
+                    items: response.items.map { .report($0) },
+                    nextLocation: response.nextLocation
                 )
-            } catch let ApiClientError.response(response, _) where response.notModOrAdmin {
-                return .init(items: .init(), prevCursor: nil, nextCursor: nil)
+            } catch ApiClientError.notModOrAdmin {
+                return .init(items: [], nextLocation: .end)
             }
         }
     }

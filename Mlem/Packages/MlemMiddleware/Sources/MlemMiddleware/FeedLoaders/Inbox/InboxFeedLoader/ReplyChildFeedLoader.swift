@@ -7,32 +7,8 @@
 
 public class ReplyChildFeedLoader: InboxChildFeedLoader {
     class Fetcher: InboxFetcher {
-        override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            let response = try await api.getReplyNotifications(
-                page: page,
-                cursor: nil,
-                limit: pageSize,
-                unreadOnly: unreadOnly
-            )
-            return .init(
-                items: response.notifications,
-                prevCursor: nil,
-                nextCursor: response.cursor
-            )
-        }
-
-        override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
-            let response = try await api.getReplyNotifications(
-                page: nil,
-                cursor: cursor,
-                limit: pageSize,
-                unreadOnly: unreadOnly
-            )
-            return .init(
-                items: response.notifications,
-                prevCursor: nil,
-                nextCursor: response.cursor
-            )
+        override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<InboxNotification> {
+            try await api.getReplyNotifications(pageInfo: pageInfo, unreadOnly: unreadOnly)
         }
     }
 

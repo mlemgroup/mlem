@@ -28,6 +28,9 @@ struct ReplyView: View {
                         Text(verbatim: .personPlaceholder).redacted(reason: .placeholder)
                     }
                     Spacer()
+
+                    NotificationIndicatorView(entity: comment)
+
                     Image(icon: (notification.content.type == .mention) ? .lemmy.mention : .lemmy.reply)
                         .symbolVariant(notification.read ? .none : .fill)
                         .foregroundStyle(.themedAccent)

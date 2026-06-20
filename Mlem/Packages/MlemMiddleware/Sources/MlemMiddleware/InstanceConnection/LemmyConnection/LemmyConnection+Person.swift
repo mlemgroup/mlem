@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyReadPersonRequest(
@@ -25,70 +25,89 @@ public extension LemmyConnection {
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        do {
-            let result = try await resolve(url: url)
-            switch result {
-            case let .person(person):
-                return person
-            default:
-                throw ApiClientError.noEntityFound
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
+        let result = try await resolve(url: url)
+        switch result {
+        case let .person(person):
+            return person
+        default:
             throw ApiClientError.noEntityFound
         }
     }
     
     func getPerson(username: String) async throws -> Person3Snapshot {
-        do {
-            let response = try await performingForEndpoint { endpoint in
-                LemmyReadPersonRequest(
-                    endpoint: endpoint,
-                    personId: nil,
-                    username: username,
-                    sort: nil,
-                    page: nil,
-                    limit: nil,
-                    communityId: nil,
-                    savedOnly: nil
-                )
-            }
-            return try .init(from: response)
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let response = try await performingForEndpoint { endpoint in
+            LemmyReadPersonRequest(
+                endpoint: endpoint,
+                personId: nil,
+                username: username,
+                sort: nil,
+                page: nil,
+                limit: nil,
+                communityId: nil,
+                savedOnly: nil
+            )
         }
+        return try .init(from: response)
     }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Person2Snapshot] {
-        let response = try await performingForEndpoint { endpoint in
-            LemmySearchRequest(
-                endpoint: endpoint,
-                q: query,
-                communityId: nil,
-                communityName: nil,
-                creatorId: nil,
-                type_: .users,
-                sort: sort.v3ApiType,
-                listingType: filter.apiType,
-                page: page,
-                limit: limit,
-                postTitleOnly: false,
-                searchTerm: query,
-                creatorUsername: nil,
-                timeRangeSeconds: nil,
-                titleOnly: false,
-                postUrlOnly: nil,
-                showNsfw: nil,
-                pageCursor: nil
-            )
+        sort: PersonSortType
+    ) async throws -> PagedResponse<Person2Snapshot> {
+        try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                guard let sortType = sort.v3ApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                let request = LemmySearchRequest(
+                    endpoint: .v3,
+                    q: query,
+                    communityId: nil,
+                    communityName: nil,
+                    creatorId: nil,
+                    type_: .users,
+                    sort: sortType,
+                    listingType: filter.apiType,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
+                    postTitleOnly: false,
+                    searchTerm: query,
+                    creatorUsername: nil,
+                    timeRangeSeconds: nil,
+                    titleOnly: false,
+                    postUrlOnly: nil,
+                    showNsfw: nil,
+                    pageCursor: nil
+                )
+                let response = try await self.perform(request, endpoint: .v3)
+                return try PagedResponse.fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: try response.persons?.map { try .init(from: $0) } ?? [],
+                    nextCursor: nil
+                )
+            case .v4:
+                guard let sortType = sort.v4ApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                guard let listingType = filter.personApiType else {
+                    throw ApiClientError.featureUnsupported
+                }
+                let request = LemmyListPersonsRequest(
+                    type_: listingType,
+                    sort: sortType,
+                    searchTerm: query,
+                    searchTitleOnly: nil,
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
+                )
+                let response = try await self.perform(request, endpoint: .v4)
+                return try .init(from: response) { try .init(from: $0) }
+            }
         }
-        return try response.users?.map { try .init(from: $0) } ?? []
     }
     
     @discardableResult
@@ -180,11 +199,10 @@ public extension LemmyConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let response = try await performingForEndpoint { endpoint in
             if endpoint == .v4 {
                 // TODO: Use LemmyListPersonContentRequest here
@@ -195,16 +213,29 @@ public extension LemmyConnection {
                 personId: id,
                 username: nil,
                 sort: sort.v3ApiType,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 savedOnly: savedOnly
             )
         }
+
+        let posts: [Post2Snapshot] = try response.posts?.map { try .init(from: $0) } ?? []
+        let comments: [Comment2Snapshot] = try response.comments?.map { try .init(from: $0) } ?? []
+
+        let nextLocation: PageLocation
+
+        if posts.count < pageInfo.limit && comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
-            posts: response.posts?.map { try .init(from: $0) } ?? [],
-            comments: response.comments?.map { try .init(from: $0) } ?? []
+            posts: posts,
+            comments: comments,
+            nextLocation: nextLocation
         )
     }
     

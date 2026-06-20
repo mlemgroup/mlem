@@ -195,6 +195,19 @@
         }
       }
     },
+    "%@ is running %@, and Mlem requires %@ or later." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is running %2$@, and Mlem requires %3$@ or later."
+          }
+        }
+      }
+    },
+    "%@ is unsupported" : {
+
+    },
     "%@ locked a post" : {
       "localizations" : {
         "fr" : {
@@ -491,6 +504,9 @@
         }
       }
     },
+    "%lld Errors" : {
+
+    },
     "%lld more links..." : {
       "localizations" : {
         "en" : {
@@ -658,6 +674,9 @@
           }
         }
       }
+    },
+    "A-Z" : {
+
     },
     "About" : {
       "localizations" : {
@@ -1431,6 +1450,9 @@
         }
       }
     },
+    "Avatars" : {
+
+    },
     "Average: %@" : {
       "localizations" : {
         "fr" : {
@@ -1450,6 +1472,9 @@
           }
         }
       }
+    },
+    "Backend Status" : {
+
     },
     "Ban" : {
       "localizations" : {
@@ -2094,6 +2119,12 @@
     "Choose when the image viewer controls should appear." : {
 
     },
+    "Choose whether avatars should be shown, and whether they should animate." : {
+
+    },
+    "Choose whether moderator actions appear in a separate menu." : {
+
+    },
     "Choose whether to show a user's account age next to their username." : {
       "localizations" : {
         "fr" : {
@@ -2108,6 +2139,9 @@
 
     },
     "Choose whether to show community avatars on posts." : {
+
+    },
+    "Choose whether to show user avatars on posts." : {
 
     },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
@@ -2299,6 +2333,9 @@
         }
       }
     },
+    "Combined" : {
+
+    },
     "Comment" : {
       "localizations" : {
         "fr" : {
@@ -2351,6 +2388,9 @@
           }
         }
       }
+    },
+    "Comment Votes" : {
+
     },
     "Comment was deleted" : {
       "localizations" : {
@@ -2411,6 +2451,9 @@
           }
         }
       }
+    },
+    "Communities Only" : {
+
     },
     "Community" : {
       "localizations" : {
@@ -2601,6 +2644,9 @@
         }
       }
     },
+    "Consider choosing another instance, or asking your server administrators to upgrade." : {
+
+    },
     "Content & Notifications" : {
       "localizations" : {
         "fr" : {
@@ -2621,6 +2667,9 @@
         }
       }
     },
+    "Context Menu" : {
+
+    },
     "Continue" : {
       "localizations" : {
         "fr" : {
@@ -2630,6 +2679,9 @@
           }
         }
       }
+    },
+    "Continue Anyway" : {
+
     },
     "Contrast" : {
       "localizations" : {
@@ -2874,7 +2926,18 @@
         }
       }
     },
+    "Customize how long error notifications remain on-screen." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise how long error notifications remain on-screen."
+          }
+        }
+      }
+    },
     "Customize how moderator actions are separated from regular actions in context menus." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -2930,12 +2993,32 @@
         }
       }
     },
+    "Customize the appearance of instances." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of instances."
+          }
+        }
+      }
+    },
     "Customize the appearance of the tab bar." : {
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise the appearance of the tab bar."
+          }
+        }
+      }
+    },
+    "Customize the appearance of users." : {
+      "localizations" : {
+        "en-GB" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customise the appearance of users."
           }
         }
       }
@@ -3019,6 +3102,9 @@
           }
         }
       }
+    },
+    "Default: %@" : {
+
     },
     "Delete" : {
       "localizations" : {
@@ -3162,6 +3248,9 @@
         }
       }
     },
+    "Developer Mode" : {
+
+    },
     "Diagnosing..." : {
       "localizations" : {
         "fr" : {
@@ -3270,6 +3359,7 @@
       }
     },
     "Divider" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3562,6 +3652,12 @@
           }
         }
       }
+    },
+    "Error Log" : {
+
+    },
+    "Error Notification Timeout" : {
+
     },
     "EULA" : {
       "localizations" : {
@@ -3859,6 +3955,9 @@
         }
       }
     },
+    "Failed to share error log" : {
+
+    },
     "Failed to unblock!" : {
       "localizations" : {
         "fr" : {
@@ -3946,6 +4045,9 @@
           }
         }
       }
+    },
+    "Federated" : {
+
     },
     "Federates" : {
       "localizations" : {
@@ -5011,6 +5113,9 @@
         }
       }
     },
+    "Local Subscribers" : {
+
+    },
     "local.subscriber.count.text" : {
       "comment" : "Used in the \"Details\" tab of a community page to indicate how many local subscribers use the instance. E.g. \"56 on lemmy.world\".",
       "extractionState" : "extracted_with_value",
@@ -5693,6 +5798,12 @@
         }
       }
     },
+    "Newest" : {
+
+    },
+    "Newest Federated" : {
+
+    },
     "news@example.com" : {
       "localizations" : {
         "fr" : {
@@ -5742,6 +5853,12 @@
           }
         }
       }
+    },
+    "No errors" : {
+
+    },
+    "No Errors" : {
+
     },
     "No image" : {
       "localizations" : {
@@ -5922,6 +6039,12 @@
           }
         }
       }
+    },
+    "Oldest" : {
+
+    },
+    "Oldest Federated" : {
+
     },
     "OLED" : {
       "localizations" : {
@@ -6465,6 +6588,9 @@
           }
         }
       }
+    },
+    "Post Votes" : {
+
     },
     "Post was locked" : {
       "localizations" : {
@@ -7142,6 +7268,9 @@
         }
       }
     },
+    "Recent Activity" : {
+
+    },
     "Recent Checks" : {
       "localizations" : {
         "fr" : {
@@ -7201,6 +7330,12 @@
           }
         }
       }
+    },
+    "Refreshed at %@" : {
+
+    },
+    "Refreshing..." : {
+
     },
     "Registration" : {
       "localizations" : {
@@ -7513,6 +7648,9 @@
           }
         }
       }
+    },
+    "Requires Invitation" : {
+
     },
     "Reset" : {
       "localizations" : {
@@ -7891,6 +8029,9 @@
         }
       }
     },
+    "Separate" : {
+
+    },
     "Separate Actions Using" : {
       "localizations" : {
         "fr" : {
@@ -7902,6 +8043,7 @@
       }
     },
     "Separate Menu" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8021,6 +8163,9 @@
         }
       }
     },
+    "Show additional debug information. Not recommended for normal use." : {
+
+    },
     "Show All Actions in Feed" : {
       "localizations" : {
         "fr" : {
@@ -8040,6 +8185,9 @@
           }
         }
       }
+    },
+    "Show avatars for..." : {
+
     },
     "Show Bot Accounts" : {
       "localizations" : {
@@ -8723,6 +8871,9 @@
         }
       }
     },
+    "Taller Collapsed Comments" : {
+
+    },
     "Tap and hold items to add, remove, or rearrange them." : {
       "localizations" : {
         "fr" : {
@@ -8753,6 +8904,12 @@
         }
       }
     },
+    "Tap to expand" : {
+
+    },
+    "Tap to refresh" : {
+
+    },
     "Tap to show slur filter regex." : {
       "localizations" : {
         "fr" : {
@@ -8773,7 +8930,11 @@
         }
       }
     },
+    "Tap-Friendly Links" : {
+
+    },
     "Tappable Links" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9300,6 +9461,9 @@
           }
         }
       }
+    },
+    "Timeout" : {
+
     },
     "Title" : {
       "localizations" : {
@@ -9923,6 +10087,9 @@
         }
       }
     },
+    "Unsupported" : {
+
+    },
     "Unsupported Badge" : {
       "localizations" : {
         "fr" : {
@@ -10198,6 +10365,9 @@
           }
         }
       }
+    },
+    "Users Only" : {
+
     },
     "Version" : {
       "localizations" : {
@@ -10484,6 +10654,9 @@
         }
       }
     },
+    "You can choose to continue anyway, but some features may not work on this version." : {
+
+    },
     "You cannot change your vote." : {
       "localizations" : {
         "fr" : {
@@ -10635,6 +10808,9 @@
           }
         }
       }
+    },
+    "Z-A" : {
+
     },
     "Zoom Indicator" : {
 

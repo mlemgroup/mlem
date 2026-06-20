@@ -24,14 +24,10 @@ public extension PieFedConnection {
     }
     
     func getPerson(url: URL) async throws -> Person2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let person = response.person {
-                return try .init(from: person)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let person = response.person {
+            return try .init(from: person)
         }
         throw ApiClientError.noEntityFound
     }
@@ -54,12 +50,11 @@ public extension PieFedConnection {
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Person2Snapshot] {
-        guard let sort = sort.pieFedSortType else {
+        sort: PersonSortType
+    ) async throws -> PagedResponse<Person2Snapshot> {
+        guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedSearchRequest(
@@ -67,15 +62,18 @@ public extension PieFedConnection {
             type_: .users,
             sort: sort,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        return try response.users.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.users.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
@@ -139,26 +137,34 @@ public extension PieFedConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let request = PieFedGetPersonDetailsRequest(
             personId: id,
             username: nil,
             sort: .new,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             savedOnly: nil,
             includeContent: true
         )
         let response = try await perform(request)
+
+        let nextLocation: PageLocation
+        if response.posts.count < pageInfo.limit && response.comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
             posts: response.posts.map { try .init(from: $0) },
-            comments: response.comments.map { try .init(from: $0) }
+            comments: response.comments.map { try .init(from: $0) },
+            nextLocation: nextLocation
         )
     }
     

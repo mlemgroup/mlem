@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension PieFedConnection {
+internal extension PieFedConnection {
     func getCommunity(id: Int) async throws -> Community3Snapshot {
         let request = PieFedGetCommunityRequest(id: id, name: nil)
         let response = try await perform(request)
@@ -15,26 +15,21 @@ public extension PieFedConnection {
     }
     
     func getCommunity(url: URL) async throws -> Community2Snapshot {
-        do {
-            let request = PieFedResolveObjectRequest(q: url.absoluteString)
-            let response = try await perform(request)
-            if let community = response.community {
-                return try .init(from: community)
-            }
-        } catch let ApiClientError.response(response, _) where response.couldntFindObject {
-            throw ApiClientError.noEntityFound
+        let request = PieFedResolveObjectRequest(q: url.absoluteString)
+        let response = try await perform(request)
+        if let community = response.community {
+            return try .init(from: community)
         }
         throw ApiClientError.noEntityFound
     }
     
     func searchCommunities(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType = .top(.allTime)
-    ) async throws -> [Community2Snapshot] {
-        guard let sort = sort.pieFedSortType else {
+        sort: CommunitySortType
+    ) async throws -> PagedResponse<Community2Snapshot> {
+        guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedSearchRequest(
@@ -42,15 +37,18 @@ public extension PieFedConnection {
             type_: .communities,
             sort: sort,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        return try response.communities.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.communities.map { try .init(from: $0) }
+        )
     }
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
@@ -73,16 +71,19 @@ public extension PieFedConnection {
     }
     
     @discardableResult
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         let request = PieFedListCommunitiesRequest(
             type_: .subscribed,
             sort: nil,
             showNsfw: true,
-            page: page,
-            limit: limit
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit
         )
         let response = try await perform(request)
-        return try response.communities.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: response.communities.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult

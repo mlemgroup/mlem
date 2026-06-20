@@ -22,17 +22,14 @@ extension ApiRepository {
     
     func searchCommunities(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
-        sort: SearchSortType,
-        hostApi: ApiClient? = nil
-    ) async throws -> [Community2Snapshot] {
+        sort: CommunitySortType
+    ) async throws -> PagedResponse<Community2Snapshot> {
         try await performingForConnection { connection in
             try await connection.searchCommunities(
                 query: query,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 filter: filter,
                 sort: sort
             )
@@ -45,9 +42,9 @@ extension ApiRepository {
         }
     }
     
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot] {
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         try await performingForConnection { connection in
-            try await connection.getSubscriptionList(page: page, limit: limit)
+            try await connection.getSubscriptionList(pageInfo: pageInfo)
         }
     }
     

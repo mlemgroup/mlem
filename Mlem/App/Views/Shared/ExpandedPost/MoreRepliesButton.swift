@@ -57,10 +57,9 @@ struct MoreRepliesButton: View {
         let comments = try await commentTreeNode.comment.getChildren(
             sort: tracker.sort,
             includedParentCount: 0,
-            page: 1,
-            maxDepth: Settings.get(\.comment_maxDepth),
-            limit: 999
-        )
+            pageInfo: .init(cursor: .first, limit: 999),
+            maxDepth: Settings.get(\.comment_maxDepth)
+        ).items
         
         guard let maxDepth = comments.last?.depth else { return }
         
