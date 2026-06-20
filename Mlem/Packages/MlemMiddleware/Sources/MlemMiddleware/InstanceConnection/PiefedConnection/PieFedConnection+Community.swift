@@ -119,7 +119,7 @@ internal extension PieFedConnection {
         personId: Int,
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
-        let request = PieFedAddModToCommunityRequest(communityId: communityId, personId: personId, added: added)
+        let request = PieFedModCommunityRequest(added: added, communityId: communityId, personId: personId)
         let response = try await perform(request)
         let moderators: [Person1Snapshot] = try response.moderators.map { try .init(from: $0.moderator) }
         

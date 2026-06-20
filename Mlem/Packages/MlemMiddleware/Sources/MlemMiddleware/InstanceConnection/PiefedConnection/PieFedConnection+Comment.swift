@@ -243,7 +243,7 @@ internal extension PieFedConnection {
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreateCommentReportRequest(
+        let request = PieFedReportCommentRequest(
             commentId: id,
             reason: reason,
             description: nil,

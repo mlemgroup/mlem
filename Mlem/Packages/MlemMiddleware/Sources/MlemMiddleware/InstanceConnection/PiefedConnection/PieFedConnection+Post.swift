@@ -293,7 +293,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreatePostReportRequest(
+        let request = PieFedReportPostRequest(
             postId: id,
             reason: reason,
             description: nil,
@@ -342,7 +342,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
-        let request = PieFedModerateCommunityPostNsfwRequest(postId: id, nsfwStatus: nsfw)
+        let request = PieFedCommunityModerationNsfwRequest(postId: id, nsfwStatus: nsfw)
         let response = try await perform(request)
         return try .init(from: response.post)
     }

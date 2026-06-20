@@ -78,7 +78,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
-        let request = PieFedBlockPersonRequest(personId: id, block: block)
+        let request = PieFedUserBlockRequest(block: block, personId: id)
         let response = try await perform(request)
         return try .init(from: response.personView)
     }
@@ -110,7 +110,7 @@ public extension PieFedConnection {
             let response = try await perform(request)
             return try .init(from: response.bannedUser)
         } else {
-            let request = PieFedModerateCommunityUnBanRequest(
+            let request = PieFedCommunityModerationUnbanRequest(
                 communityId: communityId,
                 userId: personId
             )
@@ -214,15 +214,15 @@ public extension PieFedConnection {
     }
     
     func editProfile(details: ProfileDetails) async throws {
-        let request = PieFedSaveUserSettingsRequest(
-            showNsfw: nil,
-            showReadPosts: nil,
-            bio: details.description,
+        let request = PieFedUserSaveSettingsRequest(
             avatar: details.avatar?.absoluteString ?? "",
+            bio: details.description,
             cover: details.banner?.absoluteString ?? "",
             defaultCommentSortType: nil,
             defaultSortType: nil,
+            showNsfw: nil,
             showNsfl: nil,
+            showReadPosts: nil,
             extraFields: nil,
             acceptPrivateMessages: nil,
             bot: nil,
