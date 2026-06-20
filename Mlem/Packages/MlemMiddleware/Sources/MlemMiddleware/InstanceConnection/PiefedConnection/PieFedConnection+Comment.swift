@@ -167,12 +167,9 @@ internal extension PieFedConnection {
             nsfw: nil
         )
         let response = try await perform(request)
-        guard let comments = response.comments else {
-            throw ApiClientError.featureUnsupported
-        }
         return try .fromPieFed(
             pageInfo: pageInfo,
-            items: try comments.map { try .init(from: $0) }
+            items: try response.comments.map { try .init(from: $0) }
         )
     }
     
