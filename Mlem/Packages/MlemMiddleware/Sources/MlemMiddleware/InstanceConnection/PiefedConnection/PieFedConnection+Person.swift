@@ -92,12 +92,6 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person1Snapshot {
-        // Explicit check because the endpoint exists before 1.3, but the date
-        // formats are different. Don't want to send a broken ban request.
-        if try await !supports(.banFromCommunity) {
-            throw ApiClientError.featureUnsupported
-        }
-
         if ban {
             let request = PieFedCommunityModerationBanRequest(
                 communityId: communityId,

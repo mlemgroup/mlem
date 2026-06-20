@@ -37,15 +37,6 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
-        case .banFromCommunity, .editCommunityDescription:
-            version >= .v1_3_0
-        case .searchLocalPeople, .searchLocalCommunities, .blockInstances:
-            // These features were not necessarily added in 1.3.
-            // Rather, we have only tested them on 1.3 and so are
-            // restricting them to that version.
-            version >= .v1_3_0
-        case .commentSearch:
-            version >= .v1_3_0
         case .userNotes, .searchLocalComments, .fetchLinkMetadata:
             version >= .v1_4_0
         case .moderatorSetNsfw, .toggleNotifications: true
@@ -69,7 +60,7 @@ private extension PostSortType {
         case .active: .infinity
         case .hot: .zero
         case .new: .zero
-        case .old: .v1_3_0
+        case .old: .zero
         case .mostComments: .infinity
         case .newComments: .zero
         case .controversial: .infinity

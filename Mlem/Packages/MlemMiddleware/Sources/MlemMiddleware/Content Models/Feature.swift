@@ -16,8 +16,6 @@ public enum Feature: Hashable {
     case listingType(ListingType)
     
     case hidePosts
-    case searchLocalPeople
-    case searchLocalCommunities
     case searchLocalComments
 
     case modlog
@@ -34,22 +32,18 @@ public enum Feature: Hashable {
     case removeCommunity
     case banFromInstance
     
-    case banFromCommunity
     case banFromNonLocalCommunity
     
     case unbanWithReason
     
     /// Add/remove moderators from a community
     case editModeratorList
-    case editCommunityDescription
     
     case uploadImages
-    case commentSearch
 
     case editAccountSettings
     case editDisplayName
     
-    case blockInstances
     case viewInstanceBlockList
     case moderatorSetNsfw
     
