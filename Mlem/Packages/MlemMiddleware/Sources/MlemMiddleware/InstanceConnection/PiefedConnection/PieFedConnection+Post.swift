@@ -121,7 +121,7 @@ public extension PieFedConnection {
     }
 
     func getPost(id: Int) async throws -> Post3Snapshot {
-        let request = PieFedGetPostRequest(id: id, commentId: nil)
+        let request = PieFedGetPostRequest(id: id)
         let response = try await perform(request)
         return try .init(from: response)
     }
@@ -153,10 +153,10 @@ public extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .posts,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,

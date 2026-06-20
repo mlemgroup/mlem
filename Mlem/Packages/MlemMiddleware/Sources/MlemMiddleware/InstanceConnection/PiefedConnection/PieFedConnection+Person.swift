@@ -60,10 +60,10 @@ public extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .users,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,

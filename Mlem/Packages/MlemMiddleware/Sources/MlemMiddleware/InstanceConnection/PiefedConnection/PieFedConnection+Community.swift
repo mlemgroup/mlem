@@ -35,10 +35,10 @@ internal extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .communities,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
@@ -53,17 +53,16 @@ internal extension PieFedConnection {
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
         let request = PieFedEditCommunityRequest(
-            id: id,
+            communityId: id,
             title: nil,
-            description: newValue,
-            rules: nil,
-            iconUrl: nil,
             bannerUrl: nil,
+            description: newValue,
+            discussionLanguages: nil,
+            iconUrl: nil,
+            localOnly: nil,
             nsfw: nil,
             restrictedToMods: nil,
-            localOnly: nil,
-            discussionLanguages: nil,
-            communityId: id,
+            rules: nil,
             questionAnswer: nil
         )
         let response = try await perform(request)

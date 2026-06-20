@@ -157,10 +157,10 @@ internal extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .comments,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,
@@ -216,8 +216,8 @@ internal extension PieFedConnection {
         languageId: Int?
     ) async throws -> Comment2Snapshot {
         let request = PieFedEditCommentRequest(
-            commentId: id,
             body: content,
+            commentId: id,
             languageId: languageId,
             distinguished: false
         )
