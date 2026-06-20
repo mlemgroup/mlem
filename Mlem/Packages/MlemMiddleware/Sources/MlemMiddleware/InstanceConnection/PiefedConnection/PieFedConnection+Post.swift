@@ -20,19 +20,19 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: nil,
-            sort: sort.pieFedSortType,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: communityId,
-            personId: nil,
-            communityName: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
             q: nil,
+            sort: sort.pieFedSortType,
+            type_: nil,
+            communityName: nil,
+            communityId: communityId,
+            savedOnly: filter == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
+            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
@@ -55,19 +55,19 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: feed.pieFedListingType,
-            sort: sort.pieFedSortType,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: nil,
-            personId: nil,
-            communityName: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
             q: nil,
+            sort: sort.pieFedSortType,
+            type_: feed.pieFedListingType,
+            communityName: nil,
+            communityId: nil,
+            savedOnly: filter == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
+            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
@@ -97,19 +97,19 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: nil,
-            sort: .new,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: nil,
-            personId: nil,
-            communityName: nil,
-            likedOnly: type == .upvoted,
-            savedOnly: type == .saved,
             q: nil,
+            sort: .new,
+            type_: nil,
+            communityName: nil,
+            communityId: nil,
+            savedOnly: type == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: type == .upvoted,
             feedId: nil,
             topicId: nil,
+            pageCursor: page,
             ignoreSticky: nil,
             nsfw: nil
         )
@@ -170,12 +170,12 @@ public extension PieFedConnection {
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
-        let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: read)
+        let request = PieFedMarkPostAsReadRequest(read: read, postId: nil, postIds: Array(ids))
         try await perform(request)
     }
     
     func markPostAsRead(id: Int, read: Bool) async throws {
-        let request = PieFedMarkPostAsReadRequest(postIds: nil, postId: id, read: read)
+        let request = PieFedMarkPostAsReadRequest(read: read, postId: id, postIds: nil)
         try await perform(request)
     }
     
@@ -232,8 +232,8 @@ public extension PieFedConnection {
         let request = PieFedCreatePostRequest(
             title: title,
             communityId: communityId,
-            url: linkUrl,
             body: content,
+            url: linkUrl,
             nsfw: nsfw,
             languageId: languageId,
             altText: altText,
@@ -262,8 +262,8 @@ public extension PieFedConnection {
         let request = PieFedEditPostRequest(
             postId: id,
             title: title,
-            url: linkUrl,
             body: content,
+            url: linkUrl,
             nsfw: nsfw,
             languageId: languageId,
             altText: altText,

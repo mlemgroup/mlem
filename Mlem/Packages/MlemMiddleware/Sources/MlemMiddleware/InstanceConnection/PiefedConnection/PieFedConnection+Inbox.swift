@@ -19,9 +19,9 @@ public extension PieFedConnection {
                 throw ApiClientError.featureUnsupported
             }
             let request = PieFedGetPrivateMessagesConversationRequest(
+                personId: creatorId,
                 page: page,
                 limit: pageInfo.limit,
-                personId: creatorId,
                 conversationId: nil
             )
             let response = try await perform(request)
@@ -31,9 +31,9 @@ public extension PieFedConnection {
             )
         } else {
             let request = PieFedListPrivateMessagesRequest(
-                unreadOnly: unreadOnly,
                 page: page,
-                limit: pageInfo.limit
+                limit: pageInfo.limit,
+                unreadOnly: unreadOnly
             )
             let response = try await perform(request)
             return try .fromPieFed(
@@ -48,9 +48,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetRepliesRequest(
-            sort: .new,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: .new,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
@@ -65,9 +65,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetMentionsRequest(
-            sort: .new,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: .new,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
