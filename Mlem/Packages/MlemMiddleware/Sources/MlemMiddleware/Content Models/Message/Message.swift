@@ -75,24 +75,19 @@ public class Message: UnifiedModelProviding {
     
     public func resolve(with api: ApiClient) async throws -> Self {
         // doesn't make sense to reload a message with a different account
-        assertionFailure("Not a resolvable entity")
+        assertionFailure("Message is not resolvable")
         throw ModelError.notResolvable
     }
     
     // MARK: Upgrades
     
     public func upgrade() async throws {
-        try await updateQueue.upgrade()
+        assertionFailure("Message is not upgradable")
+        throw ModelError.notUpgradable
     }
     
     public func fetchUpgraded() async throws -> MessageProperties {
-        assertionFailure("Why was this called?")
-        // The API has no way to directly fetch a message, so we have to do this.
-        guard !deleted else {
-            assertionFailure("Tried to upgrade a deleted message")
-            throw ModelError.messageDeleted
-        }
-        let snapshot = try await api.repository.deleteMessage(id: id, delete: false)
-        return properties
+        assertionFailure("Message is not upgradable")
+        throw ModelError.notUpgradable
     }
 }

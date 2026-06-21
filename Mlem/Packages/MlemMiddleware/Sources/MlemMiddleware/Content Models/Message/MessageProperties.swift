@@ -24,7 +24,7 @@ public struct MessageProperties: UnifiedPropertiesProviding {
     var recipient: Person?
 
     @MainActor
-    public init(api: ApiClient, snapshot: AnyMessageSnapshot, myPersonId: Int) {
+    public init(api: ApiClient, snapshot: AnyMessageSnapshot) {
         let snapshot1: Message1Snapshot
         let snapshot2: Message2Snapshot?
         switch snapshot {
