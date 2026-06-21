@@ -95,4 +95,20 @@ extension Date {
 
         return dateFormatter.string(from: self)
     }
+
+    var isLeapYear: Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.gmt
+        let date = calendar.dateComponents([.year], from: self)
+        guard let year = date.year else { return false }
+
+        let isDivisible400 = year % 400 == 0
+        let isDivisible100 = year % 100 == 0
+
+        if isDivisible100 {
+            return isDivisible400
+        } else {
+            return year % 4 == 0
+        }
+    }
 }

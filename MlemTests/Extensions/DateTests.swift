@@ -73,8 +73,36 @@ struct DateTests {
         let anniversaryDate = calendar.date(from: DateComponents(year: 2024, month: 2, day: 29))!
         let testDate = calendar.date(from: DateComponents(year: 2023, month: 3, day: 1))!
 
-        withKnownIssue("Which day should Feb 29 anniversaries fall?") {
-            #expect(anniversaryDate.isAnniversaryDate(testDate))
-        }
+        #expect(anniversaryDate.isAnniversaryDate(testDate))
+    }
+
+    @Test func is1900LeapYearIsFalse() {
+        let calendar = Calendar.current
+        let testDate = calendar.date(from: DateComponents(year: 1900, month: 3, day: 1))!
+
+        #expect(!testDate.isLeapYear)
+
+    }
+
+    @Test func is1997LeapYearIsFalse() {
+        let calendar = Calendar.current
+        let testDate = calendar.date(from: DateComponents(year: 1997, month: 3, day: 1))!
+
+        #expect(!testDate.isLeapYear)
+
+    }
+
+    @Test func is2000LeapYearIsTrue() {
+        let calendar = Calendar.current
+        let testDate = calendar.date(from: DateComponents(year: 2000, month: 3, day: 1))!
+
+        #expect(testDate.isLeapYear)
+    }
+
+    @Test func is2004LeapYearIsTrue() {
+        let calendar = Calendar.current
+        let testDate = calendar.date(from: DateComponents(year: 2004, month: 3, day: 1))!
+
+        #expect(testDate.isLeapYear)
     }
 }
