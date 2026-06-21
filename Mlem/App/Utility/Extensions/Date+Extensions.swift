@@ -68,8 +68,19 @@ extension Date {
         // Year component must be explicitly unwrapped for less than comparison
         guard let dateYear = date.year, let currentYear = current.year else { return false }
 
+        // If our target day occurred in a leap year, adjust to Feb 28 if it
+        // is being compared to a non leap year
+        let targetDay: Int?
+        if date.month == 2,
+           date.day == 29,
+           !otherDate.isLeapYear {
+            targetDay = 28
+        } else {
+            targetDay = date.day
+        }
+
         return date.month == current.month &&
-        date.day == current.day &&
+        targetDay == current.day &&
         dateYear < currentYear
     }
 

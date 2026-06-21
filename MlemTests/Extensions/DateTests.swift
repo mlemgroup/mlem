@@ -58,22 +58,36 @@ struct DateTests {
         #expect(anniversaryDate.isAnniversaryDate(testDate))
     }
 
-    @Test func isLeapYearDateAnniversaryInFebIsTrue() {
+    @Test func isLeapYearDateAnniversaryInNonLeapYearIsFeb28() {
         let calendar = Calendar.current
         let anniversaryDate = calendar.date(from: DateComponents(year: 2024, month: 2, day: 29))!
-        let testDate = calendar.date(from: DateComponents(year: 2023, month: 2, day: 28))!
+        let testDate = calendar.date(from: DateComponents(year: 2025, month: 2, day: 28))!
 
-        withKnownIssue("Which day should Feb 29 anniversaries fall?") {
-            #expect(anniversaryDate.isAnniversaryDate(testDate))
-        }
+        #expect(anniversaryDate.isAnniversaryDate(testDate))
+    }
+
+    @Test func isLeapYearDateAnniversaryInLeapYearIsNotFeb28() {
+        let calendar = Calendar.current
+        let anniversaryDate = calendar.date(from: DateComponents(year: 2024, month: 2, day: 29))!
+        let testDate = calendar.date(from: DateComponents(year: 2028, month: 2, day: 28))!
+
+        #expect(!anniversaryDate.isAnniversaryDate(testDate))
+    }
+
+    @Test func isLeapYearDateAnniversaryInLeapYearIsFeb29() {
+        let calendar = Calendar.current
+        let anniversaryDate = calendar.date(from: DateComponents(year: 2024, month: 2, day: 29))!
+        let testDate = calendar.date(from: DateComponents(year: 2028, month: 2, day: 29))!
+
+        #expect(anniversaryDate.isAnniversaryDate(testDate))
     }
 
     @Test func isLeapYearDateAnniversaryInMarIsFalse() {
         let calendar = Calendar.current
         let anniversaryDate = calendar.date(from: DateComponents(year: 2024, month: 2, day: 29))!
-        let testDate = calendar.date(from: DateComponents(year: 2023, month: 3, day: 1))!
+        let testDate = calendar.date(from: DateComponents(year: 2025, month: 3, day: 1))!
 
-        #expect(anniversaryDate.isAnniversaryDate(testDate))
+        #expect(!anniversaryDate.isAnniversaryDate(testDate))
     }
 
     @Test func is1900LeapYearIsFalse() {
