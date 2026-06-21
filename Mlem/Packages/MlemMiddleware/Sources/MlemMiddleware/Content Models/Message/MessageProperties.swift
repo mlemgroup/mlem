@@ -14,6 +14,7 @@ public struct MessageProperties: UnifiedPropertiesProviding {
     let creatorId: Int
     let recipientId: Int
     let created: Date
+    let isOwnMessage: Bool
     var content: String
     var updated: Date?
     var read: Bool
@@ -41,6 +42,7 @@ public struct MessageProperties: UnifiedPropertiesProviding {
         creatorId = snapshot1.creatorId
         recipientId = snapshot1.recipientId
         created = snapshot1.created
+        isOwnMessage = snapshot1.isOwnMessage
         content = snapshot1.content
         updated = snapshot1.updated
         read = snapshot1.read

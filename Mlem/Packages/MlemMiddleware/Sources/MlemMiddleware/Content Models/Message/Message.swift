@@ -8,13 +8,15 @@
 import Observation
 import Foundation
 
-public class Message: UnifiedModelProviding {
+public class Message:
+    UnifiedModelProviding,
+    OwnershipProviding {
     public typealias Properties = MessageProperties
     
     public var api: ApiClient
     private let properties: Properties
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Message> = .init(parent: self, properties: properties)
-    
+
     // MARK: API Properties
     // Properties that are provided by the API
     
@@ -23,6 +25,7 @@ public class Message: UnifiedModelProviding {
     public let creatorId: Int
     public let recipientId: Int
     public let created: Date
+    public let isOwnMessage: Bool
     public var content: String
     public var updated: Date?
     public var read: Bool
@@ -40,6 +43,7 @@ public class Message: UnifiedModelProviding {
         self.creatorId = properties.creatorId
         self.recipientId = properties.recipientId
         self.created = properties.created
+        self.isOwnMessage = properties.isOwnMessage
         self.content = properties.content
         self.updated = properties.updated
         self.read = properties.read

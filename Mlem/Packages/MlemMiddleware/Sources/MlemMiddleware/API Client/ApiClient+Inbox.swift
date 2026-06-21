@@ -13,7 +13,7 @@ public extension ApiClient {
         page: Int,
         limit: Int,
         unreadOnly: Bool = false
-    ) async throws -> [Message2] {
+    ) async throws -> [Message] {
         let snapshots = try await repository.getMessages(
             creatorId: creatorId,
             page: page,
@@ -21,7 +21,7 @@ public extension ApiClient {
             unreadOnly: unreadOnly
         )
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModels(
+        return await caches.message.getModels(
             api: self,
             from: snapshots,
             myPersonId: myPersonId

@@ -19,7 +19,7 @@ extension View {
         }
     }
 
-    func contextMenu(notification: InboxNotification?, message: any DeprecatedMessage, report: Report?) -> some View {
+    func contextMenu(notification: InboxNotification?, message: Message, report: Report?) -> some View {
         contextMenu {
             CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
                 if let notification {
@@ -82,7 +82,7 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        message: any DeprecatedMessage,
+        message: Message,
         report: Report,
         type: Set<EllipsisMenuType> = [.basic, .moderator]
     ) where Content == CustomizableActionMenu<ReplyBarConfiguration> {

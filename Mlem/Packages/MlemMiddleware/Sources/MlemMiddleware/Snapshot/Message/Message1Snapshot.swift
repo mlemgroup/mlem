@@ -15,6 +15,11 @@ public struct Message1Snapshot: CacheIdentifiable {
     public let recipientId: Int
     public let created: Date
     
+    // This isn't technically an API field, but is included here because this information is implicit
+    // in the API response (assuming the API is authenticated; otherwise no message should ever be created)
+    // and awkward to either populate or synthesize downstream
+    public let isOwnMessage: Bool
+    
     // May change. If you add/remove items from this list,
     // remember to also amend the `update` method of Message1!
     public let content: String
@@ -30,6 +35,7 @@ public struct Message1Snapshot: CacheIdentifiable {
         creatorId: Int,
         recipientId: Int,
         created: Date,
+        isOwnMessage: Bool,
         content: String,
         updated: Date?,
         read: Bool,
@@ -40,6 +46,7 @@ public struct Message1Snapshot: CacheIdentifiable {
         self.creatorId = creatorId
         self.recipientId = recipientId
         self.created = created
+        self.isOwnMessage = isOwnMessage
         self.content = content
         self.updated = updated
         self.read = read

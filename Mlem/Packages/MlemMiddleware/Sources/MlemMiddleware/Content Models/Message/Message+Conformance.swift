@@ -10,3 +10,15 @@
 public extension Message {
     var cacheId: Int { id }
 }
+
+// MARK: ContentIdentifiable
+
+public extension Message {
+    static var modelTypeId: ContentType { .message }
+}
+
+// MARK: OwnershipProviding
+
+public extension Message {
+    func isOwnContent(myPersonId: Int) -> Bool { isOwnMessage }
+}

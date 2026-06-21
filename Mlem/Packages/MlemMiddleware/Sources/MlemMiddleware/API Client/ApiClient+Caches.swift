@@ -27,6 +27,7 @@ extension ApiClient {
         var person: PersonCache = .init()
         var post: PostCache = .init()
         var comment: CommentCache = .init()
+        var message: MessageCache = .init()
         
         var message1: Message1Cache = .init()
         var message2: Message2Cache = .init()
