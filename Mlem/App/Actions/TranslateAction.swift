@@ -90,9 +90,9 @@ extension TranslateAction {
                     withAnimation {
                         entity.content.translated = .translating
                     }
-                    let translated = try await translate(entity.content.string)    
+                    let (translated, language) = try await translate(entity.content.string)    
                     withAnimation(.easeInOut(duration: 1.0)) {
-                        entity.content.translated = .translated(.init(translated))
+                        entity.content.translated = .translated(.init(translated), language)
                     }
                 } else {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -117,7 +117,7 @@ extension TranslateAction {
         }
     }
 
-    private func translate(_ text: String) async throws -> String {
+    private func translate(_ text: String) async throws -> (String, Locale.Language) {
         let sourceLanguage = try await determineLanguage(of: text)
         let targetLanguage = Locale.current.language
         let availability = LanguageAvailability()
@@ -129,7 +129,7 @@ extension TranslateAction {
 
         let session = TranslationSession.init(installedSource: sourceLanguage, target: targetLanguage)
         let result = try await session.translate(entity.content.string)
-        return result.targetText
+        return (result.targetText, sourceLanguage)
     }
 
     private func determineLanguage(of text: String) async throws -> Locale.Language {

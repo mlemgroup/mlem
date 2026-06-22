@@ -72,7 +72,7 @@ private struct Timer {
 struct RewriteEdge: ViewModifier, Animatable {
     @Environment(\.palette) var palette
     private var timer: Timer
-    var bounceAmplitude: CGFloat = 3
+    var bounceAmplitude: CGFloat = 0 // Configurable
     var seamHeight: CGFloat = 48
     var softEdgeHeight: CGFloat = 24
 

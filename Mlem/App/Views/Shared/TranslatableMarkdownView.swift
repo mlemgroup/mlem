@@ -11,6 +11,8 @@ import Theming
 import MlemMiddleware
 
 struct TranslatableMarkdownView: View {
+    @Environment(\.locale) var locale
+
     let markdown: TranslatableMarkdown
     var configuration: MarkdownConfigurationType = .default
     var showLinkCaptions: Bool = true
@@ -19,9 +21,15 @@ struct TranslatableMarkdownView: View {
     var body: some View {
         VStack {
             switch markdown.translated {
-            case let .translated(translated):
-                MarkdownWithLinkList(translated, showLinkCaptions: showLinkCaptions)
-                    .transition(.asymmetric(insertion: .glowReveal, removal: .opacity))
+            case let .translated(translated, language):
+                let sourceLabel = locale.localizedString(forLanguageCode: language.languageCode?.identifier ?? "") ?? ""
+                VStack(alignment: .leading, spacing: 5) {
+                    MarkdownWithLinkList(translated, showLinkCaptions: showLinkCaptions)
+                    Text("Translated from \(sourceLabel)")
+                        .font(.caption)
+                        .foregroundStyle(.themedSecondary)
+                }
+                .transition(.asymmetric(insertion: .glowReveal, removal: .opacity))
             case .translating:
                 MarkdownWithLinkList(markdown.markdown, showLinkCaptions: showLinkCaptions)
                     .transition(.asymmetric(insertion: .opacity, removal: .glowReveal))

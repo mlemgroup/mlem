@@ -14,7 +14,7 @@ public class TranslatableMarkdown {
     public enum TranslationState: Hashable {
         case untranslated
         case translating
-        case translated([BlockNode])
+        case translated([BlockNode], Locale.Language)
     }
 
     private var string_: String
