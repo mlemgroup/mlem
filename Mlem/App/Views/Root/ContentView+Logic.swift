@@ -11,6 +11,14 @@ import Nuke
 import SwiftUI
 
 extension ContentView {
+    func handleIncomingDeeplink(url: URL) {
+        guard url.scheme == "mlem" else { return }
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.scheme = "https"
+        guard let targetURL = components?.url else { return }
+        navigationModel.pendingOpenURL = targetURL
+    }
+
     var shouldDisplayToasts: Bool {
         navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
