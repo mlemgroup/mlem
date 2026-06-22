@@ -46,12 +46,7 @@ extension ShareAction {
         case .askEveryTime: nil
         }
         if let url, let navigation = environment.navigation {
-            if case .actionSheet = navigation.root {
-                navigation.dismissSheet()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
-                }
-            } else {
+            navigation.dismissingActionSheet {
                 navigation.model?.shareInfo = .init(url: url, actions: entity.shareSheetActions())
             }
         } else {
