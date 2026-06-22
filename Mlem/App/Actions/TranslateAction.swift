@@ -106,6 +106,8 @@ extension TranslateAction {
             } catch let TranslationError.languageUnavailable(from: source, to: target, status: .supported) {
                 if let navigation = environment.navigation {
                     openDownloadSheet(navigation: navigation, source: source, target: target)
+                } else {
+                    assertionFailure()
                 }
                 entity.content.translated = .untranslated
             } catch {
@@ -165,10 +167,10 @@ extension TranslateAction {
         source: Locale.Language,
         target: Locale.Language
     ) {
-        guard let model = navigation.model else { return }
         let newConfig = TranslationSession.Configuration(source: source, target: target)
 
         navigation.dismissingActionSheet {
+            let model = NavigationModel.main // Can't use navigation.model; it's nil
             if newConfig == model.translationConfiguration.sessionConfig {
                 model.translationConfiguration.sessionConfig?.invalidate()
             } else {

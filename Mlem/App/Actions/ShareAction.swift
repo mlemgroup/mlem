@@ -47,7 +47,7 @@ extension ShareAction {
         }
         if let url, let navigation = environment.navigation {
             navigation.dismissingActionSheet {
-                navigation.model?.shareInfo = .init(url: url, actions: entity.shareSheetActions())
+                NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
             }
         } else {
             environment.navigation?.openSheet(.shareInstancePicker(entity))
