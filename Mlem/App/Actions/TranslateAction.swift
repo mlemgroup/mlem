@@ -104,7 +104,7 @@ extension TranslateAction {
                 showUnsupportedToast(environment: environment, source: source, target: target)
                 entity.content.translated = .untranslated
             } catch let TranslationError.languageUnavailable(from: source, to: target, status: .supported) {
-                if let navigation = environment.navigation?.model {
+                if let navigation = environment.navigation {
                     openDownloadSheet(navigation: navigation, source: source, target: target)
                 }
                 entity.content.translated = .untranslated
@@ -159,18 +159,23 @@ extension TranslateAction {
 
     }
 
+    @MainActor
     private func openDownloadSheet(
-        navigation: NavigationModel,
+        navigation: NavigationLayer,
         source: Locale.Language,
         target: Locale.Language
     ) {
+        guard let model = navigation.model else { return }
         let newConfig = TranslationSession.Configuration(source: source, target: target)
-        if newConfig == navigation.translationConfiguration.sessionConfig {
-            navigation.translationConfiguration.sessionConfig?.invalidate()
-        } else {
-            navigation.translationConfiguration.sessionConfig = newConfig
+
+        navigation.dismissingActionSheet {
+            if newConfig == model.translationConfiguration.sessionConfig {
+                model.translationConfiguration.sessionConfig?.invalidate()
+            } else {
+                model.translationConfiguration.sessionConfig = newConfig
+            }
+            model.translationConfiguration.presentationNeeded = true
         }
-        navigation.translationConfiguration.presentationNeeded = true
     }
 
     private func detectLanguage(of text: String) async -> Locale.Language? {
