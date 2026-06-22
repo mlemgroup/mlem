@@ -13,10 +13,22 @@ import SwiftUI
 extension ContentView {
     func handleIncomingDeeplink(url: URL) {
         guard url.scheme == "mlem" else { return }
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components?.scheme = "https"
-        guard let targetURL = components?.url else { return }
-        navigationModel.pendingOpenURL = targetURL
+        if url.absoluteString.hasPrefix("mlem://fediverse-auth/handoff") {
+            handleHandoffDeeplink(url: url)
+        } else {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.scheme = "https"
+            guard let targetURL = components?.url else { return }
+            navigationModel.pendingOpenURL = targetURL
+        }
+    }
+
+    private func handleHandoffDeeplink(url: URL) {
+        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else { return }
+        let session = queryItems.first { $0.name == "session" }?.value
+        let userHandle = queryItems.first { $0.name == "actor" }?.value
+        guard let session, let userHandle else { return }
+        navigationModel.openSheet(.authHandoff(session: session, userHandle: userHandle))
     }
 
     var shouldDisplayToasts: Bool {
