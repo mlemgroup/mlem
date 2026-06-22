@@ -177,11 +177,14 @@ struct CommentView<EmbeddedContent: View>: View {
                         case .translated:
                             Image(icon: .general.translate)
                                 .foregroundStyle(.themedTranslationAccent)
+                                .imageScale(.small)
                         case .untranslated:
                             EmptyView()
                         }
                     }
                     .animation(.easeOut(duration: 0.1), value: comment.content.translated)
+                    .frame(height: 0)
+
                     ellipsisMenus
                         .frame(height: 10)
                 }
