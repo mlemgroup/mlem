@@ -12,6 +12,33 @@ struct AuthHandoffView: View {
     let userHandle: String
 
     var body: some View {
-        Text(userHandle)
+        VStack {
+            Text("Sign In to Canvas")
+                .font(.title)
+                .fontWeight(.bold)
+                .frame(maxHeight: .infinity)
+            Button {
+
+            } label: {
+                Text("Approve")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.themedContrastingLabel)
+                    .padding(.vertical, 20)
+                    .frame(maxWidth: .infinity)
+                    .background(.themedAccent, in: .capsule)
+            }
+                
+            Button {
+                
+            } label: {
+                Text("Deny")
+                    .fontWeight(.semibold)
+                    .padding(.vertical, 20)
+                    .frame(maxWidth: .infinity)
+                    .background(.themedPrimary.opacity(0.1), in: .capsule)
+            }
+        }
+        .padding(.horizontal, 16)
+        .buttonStyle(.plain)
     }
 }

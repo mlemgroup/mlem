@@ -310,7 +310,7 @@ enum NavigationPage: Hashable {
     var hasNavigationStack: Bool {
         switch self {
         case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment,
-             .editComment, .createPost, .editPost, .denyApplication, .actionSheet:
+             .editComment, .createPost, .editPost, .denyApplication, .actionSheet, .authHandoff:
             false
         default:
             true
