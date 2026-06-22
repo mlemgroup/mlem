@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AuthHandoffView: View {
+    @Environment(AppState.self) var appState
+
     let session: String
     let userHandle: String
     let openedFromInAppBrowser: Bool
@@ -18,6 +20,11 @@ struct AuthHandoffView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .frame(maxHeight: .infinity)
+
+            if let account = appState.firstAccount as? UserAccount {
+                accountView(account)
+            }
+
             Button {
 
             } label: {
@@ -41,5 +48,20 @@ struct AuthHandoffView: View {
         }
         .padding(.horizontal, 16)
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    func accountView(_ account: UserAccount) -> some View {
+        HStack(alignment: .center, spacing: 10) {
+            CircleCroppedImageView(account, frame: 40, showProgress: false)
+            VStack(alignment: .leading) {
+                Text(account.nickname)
+                Text("@\(account.host)")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.vertical, -2)
+        }
+        .contentShape(.rect)
     }
 }

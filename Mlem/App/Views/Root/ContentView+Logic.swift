@@ -33,11 +33,14 @@ extension ContentView {
         // This logic is needed to present the sheet over the top of the SFSafariViewController.
         let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
         if topVC is SFSafariViewController {
-            let hostingController = UIHostingController(rootView: AuthHandoffView(
+            let view = AuthHandoffView(
                 session: session,
                 userHandle: userHandle,
                 openedFromInAppBrowser: true
-            ))
+            )
+            .environment(appState)
+            .environment(mediaTracker)
+            let hostingController = UIHostingController(rootView: view)
             hostingController.sheetPresentationController?.detents = [.medium()]
             topVC?.present(hostingController, animated: true)
         } else {
