@@ -8,6 +8,7 @@
 import Haptics
 import MlemMiddleware
 import Nuke
+import SafariServices
 import SwiftUI
 
 extension ContentView {
@@ -28,7 +29,16 @@ extension ContentView {
         let session = queryItems.first { $0.name == "session" }?.value
         let userHandle = queryItems.first { $0.name == "actor" }?.value
         guard let session, let userHandle else { return }
-        navigationModel.openSheet(.authHandoff(session: session, userHandle: userHandle))
+
+        // This logic is needed to present the sheet over the top of the SFSafariViewController.
+        let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
+        if topVC is SFSafariViewController {
+            let hostingController = UIHostingController(rootView: AuthHandoffView(session: session, userHandle: userHandle))
+            hostingController.sheetPresentationController?.detents = [.medium()]
+            topVC?.present(hostingController, animated: true)
+        } else {
+            navigationModel.openSheet(.authHandoff(session: session, userHandle: userHandle))
+        }
     }
 
     var shouldDisplayToasts: Bool {
