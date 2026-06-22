@@ -9,7 +9,11 @@ import Foundation
 
 extension ModlogChildFetcher {
     class SharedCache {
-        typealias TaskResponse = [ModlogEntryType: [ModlogEntry]]
+        struct TaskResponse {
+            var entries: [ModlogEntryType: [ModlogEntry]]
+            var nextLocation: PageLocation
+        } 
+
         var api: ApiClient
         let pageSize: Int
         var communityId: Int?
@@ -25,17 +29,19 @@ extension ModlogChildFetcher {
         
         private func fetchItems() async throws -> TaskResponse {
             let response = try await api.getModlog(
-                page: 1,
-                limit: pageSize,
+                pageInfo: .init(cursor: .first, limit: pageSize),
                 communityId: communityId,
                 moderatorId: moderatorPersonId,
                 subjectPersonId: targetPersonId
             )
-            return .init(grouping: response, by: { $0.type.type })
+            return .init(
+                entries: .init(grouping: response.items, by: { $0.type.type }),
+                nextLocation: response.nextLocation
+            )
         }
         
         @MainActor
-        func get(type: ModlogEntryType) async throws -> [ModlogEntry] {
+        func get(type: ModlogEntryType) async throws -> PagedResponse<ModlogEntry> {
             let task: Task<TaskResponse, Error>
             if let ongoingTask {
                 task = ongoingTask
@@ -44,7 +50,10 @@ extension ModlogChildFetcher {
                 ongoingTask = task
             }
             let response = try await task.result.get()
-            return response[type] ?? []
+            return .init(
+                items: response.entries[type] ?? [],
+                nextLocation: response.nextLocation
+            )
         }
         
         @MainActor

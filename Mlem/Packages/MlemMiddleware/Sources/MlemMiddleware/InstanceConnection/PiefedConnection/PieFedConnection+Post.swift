@@ -10,21 +10,20 @@ import Foundation
 public extension PieFedConnection {
     func getPosts(
         communityId: Int,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         if filter == .downvoted {
             throw ApiClientError.featureUnsupported
         }
+        let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
             type_: nil,
             sort: sort.pieFedSortType,
             pageCursor: page,
-            limit: limit,
+            limit: pageInfo.limit,
             communityId: communityId,
             personId: nil,
             communityName: nil,
@@ -38,27 +37,28 @@ public extension PieFedConnection {
             nsfw: nil
         )
         let response = try await perform(request)
-        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
-        return (posts: posts, cursor: nil)
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.posts.map { try .init(from: $0) }
+        )
     }
-    
+
     func getPosts(
         feed: ListingType,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         if filter == .downvoted || showHidden {
             throw ApiClientError.featureUnsupported
         }
+        let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
             type_: feed.pieFedListingType,
             sort: sort.pieFedSortType,
             pageCursor: page,
-            limit: limit,
+            limit: pageInfo.limit,
             communityId: nil,
             personId: nil,
             communityName: nil,
@@ -72,55 +72,52 @@ public extension PieFedConnection {
             nsfw: nil
         )
         let response = try await perform(request)
-        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
-        return (posts: posts, cursor: nil)
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.posts.map { try .init(from: $0) }
+        )
     }
 
     func getPosts(
         personId: Int,
         communityId: Int? = nil,
+        pageInfo: PageInfo,
         sort: PostSortType = .new,
-        page: Int,
-        limit: Int,
         savedOnly: Bool = false
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot]) {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         throw ApiClientError.featureUnsupported
     }
 
     func getPostHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int 
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Post2Snapshot> {
         guard type != .downvoted else {
             throw ApiClientError.featureUnsupported
         }
-        // PieFed doesn't support cursors so we need to fake it here
-
-        let pageNumber = (cursor.map(Int.init) ?? nil) ?? 1
-
+        let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
             type_: nil,
             sort: .new,
-            pageCursor: pageNumber,
-            limit: limit,
+            pageCursor: page,
+            limit: pageInfo.limit,
             communityId: nil,
             personId: nil,
             communityName: nil,
             likedOnly: type == .upvoted,
             savedOnly: type == .saved,
             q: nil,
-            page: pageNumber,
+            page: page,
             feedId: nil,
             topicId: nil,
             ignoreSticky: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        let posts: [Post2Snapshot] = try response.posts.map { try .init(from: $0) }
-
-        return (posts: posts, cursor: String(pageNumber+1))
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.posts.map { try .init(from: $0) }
+        )
     }
 
     func getPost(id: Int) async throws -> Post3Snapshot {
@@ -137,17 +134,16 @@ public extension PieFedConnection {
         }
         throw ApiClientError.noEntityFound
     }
-    
+
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: PostSortType
-    ) async throws -> [Post2Snapshot] {
+    ) async throws -> PagedResponse<Post2Snapshot> {
         guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
@@ -159,15 +155,18 @@ public extension PieFedConnection {
             type_: .posts,
             sort: sort,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        return try response.posts.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.posts.map { try .init(from: $0) }
+        )
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
@@ -359,12 +358,14 @@ public extension PieFedConnection {
     @discardableResult
     func getPostVotes(
         id: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
-        let request = PieFedListPostLikesRequest(postId: id, page: page, limit: limit)
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot> {
+        let request = PieFedListPostLikesRequest(postId: id, page: try pageInfo.cursor.requirePageNumber, limit: pageInfo.limit)
         let response = try await perform(request)
-        return try response.postLikes.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.postLikes.map { try .init(from: $0) }
+        )
     }
 
     @discardableResult

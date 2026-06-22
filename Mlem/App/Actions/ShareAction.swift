@@ -39,18 +39,23 @@ extension ShareAction {
 extension ShareAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        let url: URL? = switch Settings.get(\.links_shareMode) {
+        guard let navigation = environment.navigation else { return }
+
+        let shareMode = Settings.get(\.links_shareMode)
+
+        if shareMode == .askEveryTime, let entity = entity as? any Sharable & ContentIdentifiable {
+            navigation.openSheet(.shareInstancePicker(entity))
+            return
+        }
+
+        let url: URL = switch shareMode {
         case .myInstance: entity.url()
         case .originalInstance: entity.actorId.url
-        case .lemmyverse: entity.lemmyverseUrl
-        case .askEveryTime: nil
+        case .lemmyverse: entity.lemmyverseUrl ?? entity.url()
+        case .askEveryTime: entity.url()
         }
-        if let url, let navigation = environment.navigation {
-            navigation.dismissingActionSheet {
-                NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
-            }
-        } else {
-            environment.navigation?.openSheet(.shareInstancePicker(entity))
+        environment.navigation?.dismissingActionSheet {
+            NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
         }
     }
 }

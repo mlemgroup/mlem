@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getVersionFallback() async throws -> SiteVersion {
         let response = try await performingForEndpoint { endpoint in
             LemmyFallbackGetVersionRequest(endpoint: endpoint)
@@ -179,22 +179,21 @@ public extension LemmyConnection {
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetModLogRequest(
                 endpoint: endpoint,
                 modPersonId: moderatorId,
                 communityId: communityId,
-                page: page,
-                limit: limit,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
                 type_: type?.lemmyApiType,
                 otherPersonId: subjectPersonId,
                 postId: postId,
@@ -202,14 +201,20 @@ public extension LemmyConnection {
                 listingType: .all,
                 showBulk: nil,
                 bulkActionParentId: nil,
-                pageCursor: nil
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
         switch response {
         case let .lemmyGetModlogResponse(response):
-            return try response.toSnapshots()
+            return try .fromLemmyV3(
+                pageInfo: pageInfo,
+                items: try response.toSnapshots(),
+                nextCursor: nil
+            )
         case let .lemmyPagedResponse(response):
-            return try response.items.compactMap { try .init(from: $0) }
+            return try .compact(from: response) {
+                try .init(from: $0)
+            }
         }
     }
     
