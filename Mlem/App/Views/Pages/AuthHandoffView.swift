@@ -10,6 +10,7 @@ import SwiftUI
 struct AuthHandoffView: View {
     let session: String
     let userHandle: String
+    let openedFromInAppBrowser: Bool
 
     var body: some View {
         VStack {
@@ -31,7 +32,7 @@ struct AuthHandoffView: View {
             Button {
                 
             } label: {
-                Text("Deny")
+                Text("Cancel")
                     .fontWeight(.semibold)
                     .padding(.vertical, 20)
                     .frame(maxWidth: .infinity)
