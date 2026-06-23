@@ -43,8 +43,6 @@ public enum Feature: Hashable {
 
     case editAccountSettings
     case editDisplayName
-    
-    case viewInstanceBlockList
     case moderatorSetNsfw
     
     case fetchLinkMetadata

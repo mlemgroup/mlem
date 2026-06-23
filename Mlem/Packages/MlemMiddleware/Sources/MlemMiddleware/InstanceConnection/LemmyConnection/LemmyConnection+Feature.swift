@@ -43,7 +43,7 @@ public extension LemmyConnection {
              .editModeratorList,
              .hidePosts, .editDisplayName, .fetchLinkMetadata, .unbanWithReason,
              .customPostThumbnail, .banFromNonLocalCommunity,
-             .searchLocalComments, .viewInstanceBlockList:
+             .searchLocalComments:
             true
         case .moderatorSetNsfw, .userNotes, .toggleNotifications:
             false

@@ -164,17 +164,35 @@ internal extension LemmyConnection {
         return try .init(from: response)
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyGetSiteRequest(endpoint: endpoint)
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
+        let myUser = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                let request = LemmyGetSiteRequest(endpoint: .v3)
+                let response = try await self.perform(request, endpoint: .v3)
+                return response.myUser
+            case .v4:
+                let request = LemmyGetMyUserRequest()
+                let response = try await self.perform(request, endpoint: .v4)
+                return response
+            }
         }
         
-        guard let myUser = response.myUser else { return ([], [], []) }
+        guard let myUser else { return ([], [], []) }
+
+        let instances: [String]
+        if let blocks = myUser.instanceCommunitiesBlocks {
+            instances = blocks.map(\.domain)
+        } else if let blocks = myUser.instanceBlocks {
+            instances = blocks.map(\.instance.domain)
+        } else {
+            throw ApiClientError.responseMissingRequiredData("Lemmy getBlocked instances")
+        }
         
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.person) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? [] // TODO: Lemmy 1.0
+            instances: instances
         )
     }
     

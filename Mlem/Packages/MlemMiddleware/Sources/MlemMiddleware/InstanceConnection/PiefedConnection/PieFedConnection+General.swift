@@ -68,7 +68,7 @@ public extension PieFedConnection {
         return try .init(from: response)
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
         let request = PieFedGetSiteRequest()
         let response = try await perform(request)
         guard let myUser = response.myUser else { return ([], [], []) }
@@ -76,7 +76,7 @@ public extension PieFedConnection {
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.target) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: [] // FIXME NOW
+            instances: myUser.instanceBlocks.map(\.instance.domain)
         )
     }
     
