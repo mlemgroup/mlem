@@ -24,6 +24,29 @@ internal extension LemmyConnection {
             throw ApiClientError.noEntityFound
         }
     }
+
+    func getCommunity(handle: CommunityHandle) async throws -> Community2Snapshot {
+        if handle.host == self.baseUrl.host() {
+            // Required to fix https://github.com/mlemgroup/mlem/issues/2341
+            let response = try await performingForEndpoint { endpoint in
+                LemmyGetCommunityRequest(
+                    endpoint: endpoint,
+                    id: nil,
+                    name: handle.username
+                )
+            }
+            return try .init(from: response.communityView)
+        }
+        let response = try await performingForEndpoint { endpoint in
+            LemmyResolveObjectRequest(endpoint: endpoint, q: handle.description(withPrefix: true))
+        }
+        switch try ResolvedContent(from: response) {
+        case let .community(community):
+            return community
+        default:
+            throw ApiClientError.noEntityFound
+        }
+    }
     
     func searchCommunities(
         query: String,

@@ -229,6 +229,7 @@ internal protocol InstanceConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot
     func getPerson(url: URL) async throws -> Person2Snapshot
     func getPerson(username: String) async throws -> Person3Snapshot
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot
     
     func searchPeople(
         query: String,
@@ -311,6 +312,7 @@ internal protocol InstanceConnection {
 
     func getCommunity(id: Int) async throws -> Community3Snapshot
     func getCommunity(url: URL) async throws -> Community2Snapshot
+    func getCommunity(handle: CommunityHandle) async throws -> Community2Snapshot
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot 
     
