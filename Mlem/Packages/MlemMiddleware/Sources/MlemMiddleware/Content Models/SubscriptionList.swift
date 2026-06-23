@@ -93,7 +93,7 @@ public class SubscriptionList {
         }
         self.instanceSections = instanceSections
         
-        favorites = communities.filter { favoriteIDs.contains($0.id) }
+        favorites = communities.filter { favoriteIDs.contains($0.id) }.sorted(by: self.sortPredicate)
     }
     
     func updateCommunitySubscription(community: Community) {
