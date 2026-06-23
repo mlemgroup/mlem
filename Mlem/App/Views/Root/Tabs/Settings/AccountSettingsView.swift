@@ -33,14 +33,12 @@ struct AccountSettingsView: View {
             
             if appState.firstSession is UserSession {
                 Section {
-                    if appState.firstAccount.siteSoftware?.supports(.editProfile) ?? false {
-                        NavigationLink(
-                            "My Profile",
-                            icon: .lemmy.person,
-                            destination: .settings(.profile)
-                        )
-                        .gradientTint(.themedColorfulAccent(5))
-                    }
+                    NavigationLink(
+                        "My Profile",
+                        icon: .lemmy.person,
+                        destination: .settings(.profile)
+                    )
+                    .gradientTint(.themedColorfulAccent(5))
                     if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
                         NavigationLink(
                             "Sign-In & Security",

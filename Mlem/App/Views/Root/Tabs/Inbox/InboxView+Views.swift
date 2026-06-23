@@ -34,16 +34,10 @@ extension InboxView {
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: {
-                if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
-                    sectionHeader
-                }
+                sectionHeader
             }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
-        .padding(
-            .top,
-            appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) ? 0 : Constants.main.standardSpacing
-        )
     }
     
     @ViewBuilder

@@ -43,8 +43,7 @@ extension SearchView {
             ))
             .buttonStyle(.feedFilter(isOn: !communityFilters.isDefault))
             InstancePicker(
-                filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 }),
-                requiredFeature: .searchLocalCommunities
+                filter: Binding(get: { communityFilters.instance }, set: { self.communityFilters?.instance = $0 })
             )
             .buttonStyle(.feedFilter(isOn: communityFilters.instance != .any))
         }
@@ -67,8 +66,7 @@ extension SearchView {
             }
             .buttonStyle(.feedFilter(isOn: !personFilters.isDefault))
             InstancePicker(
-                filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 }),
-                requiredFeature: .searchLocalPeople
+                filter: Binding(get: { personFilters.instance }, set: { self.personFilters?.instance = $0 })
             )
             .buttonStyle(.feedFilter(isOn: personFilters.instance != .any))
         }

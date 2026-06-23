@@ -86,7 +86,7 @@ extension Comment {
     }
     
     func viewVotesAction() -> BasicAction {
-        let callback: (@MainActor () -> Void)? = canModerate && api.supports(.viewVotes, defaultValue: true)
+        let callback: (@MainActor () -> Void)? = canModerate
         ? { @MainActor in NavigationModel.main.openSheet(.votesList(.comment(self))) }
         : nil
         return .init(
@@ -271,9 +271,7 @@ extension Comment {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
-        
-        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
+        if showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
         }
         if !isOwnComment {

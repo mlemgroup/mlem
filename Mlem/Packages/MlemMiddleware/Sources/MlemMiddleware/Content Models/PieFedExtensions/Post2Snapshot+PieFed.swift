@@ -34,7 +34,9 @@ public extension Post2Snapshot {
     }
     
     init(from report: PieFedPostReportView) throws(ApiClientError) {
-        let votes = VotesModel(from: report.counts, myVote: .guaranteedInit(from: report.myVote))
+        // Not possible to retrieve the vote
+        // https://codeberg.org/rimu/pyfedi/issues/1832
+        let votes = VotesModel(from: report.counts, myVote: ScoringOperation.none)
 
         try self.init(
             post: .init(from: report.post),

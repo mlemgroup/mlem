@@ -24,10 +24,7 @@ public extension PieFedConnection {
         }
         let request = PieFedUserLoginRequest(username: usernameOrEmail, password: password)
         let response = try await perform(request)
-        guard let jwt = response.jwt else {
-            throw ApiClientError.notLoggedIn
-        }
-        return jwt
+        return response.jwt
     }
     
     func getUsernameFromToken(token: String) async throws -> String {

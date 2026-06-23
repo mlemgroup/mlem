@@ -35,10 +35,10 @@ internal extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .communities,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
@@ -53,17 +53,16 @@ internal extension PieFedConnection {
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
         let request = PieFedEditCommunityRequest(
-            id: id,
+            communityId: id,
             title: nil,
-            description: newValue,
-            rules: nil,
-            iconUrl: nil,
             bannerUrl: nil,
+            description: newValue,
+            discussionLanguages: nil,
+            iconUrl: nil,
+            localOnly: nil,
             nsfw: nil,
             restrictedToMods: nil,
-            localOnly: nil,
-            discussionLanguages: nil,
-            communityId: id,
+            rules: nil,
             questionAnswer: nil
         )
         let response = try await perform(request)
@@ -73,11 +72,11 @@ internal extension PieFedConnection {
     @discardableResult
     func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot> {
         let request = PieFedListCommunitiesRequest(
-            type_: .subscribed,
-            sort: nil,
-            showNsfw: true,
+            limit: pageInfo.limit,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit
+            showNsfw: true,
+            sort: nil,
+            type_: .subscribed
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -95,7 +94,7 @@ internal extension PieFedConnection {
     
     @discardableResult
     func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
-        let request = PieFedBlockCommunityRequest(communityId: id, block: block)
+        let request = PieFedBlockCommunityRequest(block: block, communityId: id)
         let response = try await perform(request)
         return try .init(from: response.communityView)
     }
@@ -119,7 +118,7 @@ internal extension PieFedConnection {
         personId: Int,
         added: Bool
     ) async throws -> (moderators: [Person1Snapshot], community: Community1Snapshot) {
-        let request = PieFedAddModToCommunityRequest(communityId: communityId, personId: personId, added: added)
+        let request = PieFedModCommunityRequest(added: added, communityId: communityId, personId: personId)
         let response = try await perform(request)
         let moderators: [Person1Snapshot] = try response.moderators.map { try .init(from: $0.moderator) }
         

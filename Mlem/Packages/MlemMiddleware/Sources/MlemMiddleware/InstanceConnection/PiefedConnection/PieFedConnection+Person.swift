@@ -60,10 +60,10 @@ public extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .users,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
@@ -78,7 +78,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
-        let request = PieFedBlockPersonRequest(personId: id, block: block)
+        let request = PieFedUserBlockRequest(block: block, personId: id)
         let response = try await perform(request)
         return try .init(from: response.personView)
     }
@@ -92,25 +92,18 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person1Snapshot {
-        // Explicit check because the endpoint exists before 1.3, but the date
-        // formats are different. Don't want to send a broken ban request.
-        if try await !supports(.banFromCommunity) {
-            throw ApiClientError.featureUnsupported
-        }
-
         if ban {
-            let request = PieFedModerateCommunityBanRequest(
+            let request = PieFedCommunityModerationBanRequest(
                 communityId: communityId,
-                userId: personId,
                 reason: reason ?? "",
-                expiredAt: nil,
+                userId: personId,
                 expiresAt: expires,
                 permanent: expires == nil
             )
             let response = try await perform(request)
             return try .init(from: response.bannedUser)
         } else {
-            let request = PieFedModerateCommunityUnBanRequest(
+            let request = PieFedCommunityModerationUnbanRequest(
                 communityId: communityId,
                 userId: personId
             )
@@ -214,16 +207,16 @@ public extension PieFedConnection {
     }
     
     func editProfile(details: ProfileDetails) async throws {
-        let request = PieFedSaveUserSettingsRequest(
-            showNsfw: nil,
-            showReadPosts: nil,
-            bio: details.description,
+        let request = PieFedUserSaveSettingsRequest(
             avatar: details.avatar?.absoluteString ?? "",
+            bio: details.description,
             cover: details.banner?.absoluteString ?? "",
             defaultCommentSortType: nil,
             defaultSortType: nil,
-            showNsfl: nil,
             extraFields: nil,
+            showNsfw: nil,
+            showNsfl: nil,
+            showReadPosts: nil,
             acceptPrivateMessages: nil,
             bot: nil,
             botVisibility: nil,
