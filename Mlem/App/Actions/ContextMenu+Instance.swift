@@ -71,6 +71,19 @@ extension InstanceSummary: @retroactive Blockable {}
 extension InstanceSummary: InstanceActionProviding {
     public var actorId: ActorIdentifier { instanceStub.actorId }
     public func url() -> URL { actorId.url }
-    public var blocked: any RealizedValueProviding<Bool> { RealizedValue(false) }
+    public var blocked: any RealizedValueProviding<Bool> {
+        let value = AppState.main.firstSession.api.blocks?.contains(instanceActorId: actorId) ?? false
+        return RealizedValue(value)
+    }
+    public var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { nil }
+}
+
+extension InstanceStub: @retroactive Blockable {}
+extension InstanceStub: InstanceActionProviding {
+    public var instanceStub: InstanceStub { self }
+    public var blocked: any RealizedValueProviding<Bool> {
+        let value = AppState.main.firstSession.api.blocks?.contains(instanceActorId: actorId) ?? false
+        return RealizedValue(value)
+    }
     public var updateBlocked: ((Bool, ((Bool) -> Void)?) -> Void)? { nil }
 }
