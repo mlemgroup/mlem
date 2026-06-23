@@ -168,23 +168,6 @@ struct CommentView<EmbeddedContent: View>: View {
                         .frame(height: 10)
                         .imageScale(.small)
                 } else {
-                    VStack {
-                        switch comment.content.translated {
-                        case .translating:
-                            ProgressView()
-                                .foregroundStyle(.themedSecondary)
-                                .controlSize(.small)
-                        case .translated:
-                            Image(icon: .general.translate)
-                                .foregroundStyle(.themedTranslationAccent)
-                                .imageScale(.small)
-                        case .untranslated:
-                            EmptyView()
-                        }
-                    }
-                    .animation(.easeOut(duration: 0.1), value: comment.content.translated)
-                    .frame(height: 0)
-
                     ellipsisMenus
                         .frame(height: 10)
                 }
