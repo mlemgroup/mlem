@@ -8,19 +8,13 @@
 import Foundation
 
 public struct CommunityHandle: Handle {
+    public static let prefix: String = "!"
+
     public let username: String
     public let host: String
 
     public init(username: String, host: String) {
         self.username = username
         self.host = host
-    }
-
-    public func description(withPrefix: Bool) -> String {
-        if withPrefix {
-            "!\(username)@\(host)"
-        } else {
-            "\(username)@\(host)"
-        }
     }
 }
