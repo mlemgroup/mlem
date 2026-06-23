@@ -20,6 +20,12 @@ extension ApiRepository {
         }
     }
     
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot {
+        try await performingForConnection { connection in
+            try await connection.getPerson(handle: handle)
+        }
+    }
+    
     func getPerson(username: String) async throws -> Person3Snapshot {
         try await performingForConnection { connection in
             try await connection.getPerson(username: username)

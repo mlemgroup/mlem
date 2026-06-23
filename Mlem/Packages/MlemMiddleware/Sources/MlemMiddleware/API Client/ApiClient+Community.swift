@@ -32,6 +32,11 @@ public extension ApiClient {
         return await caches.community.getModel(api: self, from: .community2(snapshot))
     }
     
+    func getCommunity(handle: CommunityHandle) async throws -> Community {
+        let snapshot: Community2Snapshot = try await repository.getCommunity(handle: handle)
+        return await caches.community.getModel(api: self, from: .community2(snapshot))
+    }
+    
     func searchCommunities(
         query: String,
         pageInfo: PageInfo,
