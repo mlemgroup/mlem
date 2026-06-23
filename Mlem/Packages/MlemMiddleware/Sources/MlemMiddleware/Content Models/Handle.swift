@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Handle {
+public protocol Handle: Hashable {
     static var prefix: Character { get }
 
     var username: String { get }
