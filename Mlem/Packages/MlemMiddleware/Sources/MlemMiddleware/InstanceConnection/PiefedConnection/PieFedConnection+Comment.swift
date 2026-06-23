@@ -33,18 +33,18 @@ internal extension PieFedConnection {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
-            type_: .all,
-            sort: sort,
-            maxDepth: maxDepth,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: sort,
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved,
+            personId: nil,
             communityId: nil,
             postId: nil,
             parentId: nil,
-            personId: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
-            depthFirst: false
+            maxDepth: maxDepth,
+            depthFirst: false,
+            type_: .all
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -64,18 +64,18 @@ internal extension PieFedConnection {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
-            type_: .all,
-            sort: sort,
-            maxDepth: maxDepth,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: sort,
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved,
+            personId: nil,
             communityId: nil,
             postId: postId,
             parentId: nil,
-            personId: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
-            depthFirst: false
+            maxDepth: maxDepth,
+            depthFirst: false,
+            type_: .all
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -95,18 +95,18 @@ internal extension PieFedConnection {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
-            type_: .all,
-            sort: sort,
-            maxDepth: maxDepth,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: sort,
+            likedOnly: filter == .upvoted,
+            savedOnly: filter == .saved,
+            personId: nil,
             communityId: nil,
             postId: nil,
             parentId: parentId,
-            personId: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
-            depthFirst: false
+            maxDepth: maxDepth,
+            depthFirst: false,
+            type_: .all
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -123,18 +123,18 @@ internal extension PieFedConnection {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedGetCommentsRequest(
-            type_: .all,
-            sort: nil,
-            maxDepth: nil,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: nil,
+            likedOnly: type == .upvoted,
+            savedOnly: type == .saved,
+            personId: nil,
             communityId: nil,
             postId: nil,
             parentId: nil,
-            personId: nil,
-            likedOnly: type == .upvoted,
-            savedOnly: type == .saved,
-            depthFirst: false
+            maxDepth: nil,
+            depthFirst: false,
+            type_: .all
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -157,22 +157,19 @@ internal extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .comments,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        guard let comments = response.comments else {
-            throw ApiClientError.featureUnsupported
-        }
         return try .fromPieFed(
             pageInfo: pageInfo,
-            items: try comments.map { try .init(from: $0) }
+            items: try response.comments.map { try .init(from: $0) }
         )
     }
     
@@ -216,8 +213,8 @@ internal extension PieFedConnection {
         languageId: Int?
     ) async throws -> Comment2Snapshot {
         let request = PieFedEditCommentRequest(
-            commentId: id,
             body: content,
+            commentId: id,
             languageId: languageId,
             distinguished: false
         )
@@ -243,7 +240,7 @@ internal extension PieFedConnection {
     
     @discardableResult
     func reportComment(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreateCommentReportRequest(
+        let request = PieFedReportCommentRequest(
             commentId: id,
             reason: reason,
             description: nil,

@@ -37,19 +37,6 @@ public extension PieFedConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
-        case .viewCommunityActiveUsers, .viewMentionsAndPrivateMessages, .editAndDeletePrivateMessages, .autoMarkPostReadOnInteract:
-            version >= .v1_1_0
-        case .editProfile, .viewVotes, .undeletePrivateMessages:
-            version >= .v1_2_0
-        case .banFromCommunity, .editCommunityDescription:
-            version >= .v1_3_0
-        case .searchLocalPeople, .searchLocalCommunities, .blockInstances:
-            // These features were not necessarily added in 1.3.
-            // Rather, we have only tested them on 1.3 and so are
-            // restricting them to that version.
-            version >= .v1_3_0
-        case .commentSearch:
-            version >= .v1_3_0
         case .userNotes, .searchLocalComments, .fetchLinkMetadata:
             version >= .v1_4_0
         case .moderatorSetNsfw, .toggleNotifications: true
@@ -61,9 +48,6 @@ public extension PieFedConnection {
 }
 
 private extension SiteVersion {
-    static let v1_0_0: Self = .init("1.0.0")
-    static let v1_1_0: Self = .init("1.1.0")
-    static let v1_2_0: Self = .init("1.2.0")
     static let v1_3_0: Self = .init("1.3.0")
     static let v1_4_0: Self = .init("1.4.0")
     static let v1_6_10: Self = .init("1.6.10")
@@ -76,7 +60,7 @@ private extension PostSortType {
         case .active: .infinity
         case .hot: .zero
         case .new: .zero
-        case .old: .v1_3_0
+        case .old: .zero
         case .mostComments: .infinity
         case .newComments: .zero
         case .controversial: .infinity
@@ -119,7 +103,7 @@ private extension PersonSortType {
 private extension SortTimeRange {
     var minimumVersion: SiteVersion {
         switch self {
-        case .allTime: .v1_1_0
+        case .allTime: .zero
         case let .limited(timeInterval): LegacySortTimeRangeLimit(timeInterval)?.minimumVersion ?? .infinity
         }
     }
@@ -128,7 +112,7 @@ private extension SortTimeRange {
 private extension LegacySortTimeRangeLimit {
     var minimumVersion: SiteVersion {
         switch self {
-        case .threeMonth, .sixMonth, .nineMonth, .year: .v1_1_0
+        case .threeMonth, .sixMonth, .nineMonth, .year: .zero
         default: .zero
         }
     }

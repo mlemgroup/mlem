@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-11-09.
 //
 
+import MlemBackend
 import MlemMiddleware
 import SwiftUI
 import Theming
@@ -25,15 +26,20 @@ struct BlockListView: View {
             }
         }
     }
+
+    enum InstanceInfo {
+        case stubs([InstanceStub])
+        case summaries([InstanceSummary])
+    }
     
     @State var selectedTab: Tab = .people
     @State var people: [Person] = []
     @State var communities: [Community] = []
-    @State var instances: [Instance] = []
+    @State var instances: InstanceInfo = .stubs([])
     
     var body: some View {
         FancyScrollView {
-            BubblePicker(availableTabs, selected: $selectedTab, label: \.label, value: { tab in
+            BubblePicker(Tab.allCases, selected: $selectedTab, label: \.label, value: { tab in
                 guard let blockList = (appState.firstSession as? UserSession)?.blocks else { return 0 }
                 switch tab {
                 case .people:
@@ -54,32 +60,64 @@ struct BlockListView: View {
                     CommunityListRow(community, showBlockStatus: false)
                 }
             case .instances:
-                SearchResultsView(results: instances.filter(\.blocked_.realizedValue)) { instance in
-                    InstanceListRow(instance, showBlockStatus: false)
-                }
+                instancesView
             }
         }
         .themedGroupedBackground()
         .onAppear {
             Task { @MainActor in
-                do {
-                    let result = try await appState.firstApi.getBlocked()
-                    people = result.people
-                    communities = result.communities
-                    instances = result.instances
-                } catch {
-                    handleError(error)
-                }
+                await refresh()
             }
         }
         .navigationTitle("Block List")
     }
-    
-    var availableTabs: [Tab] {
-        var output: [Tab] = [.people, .communities]
-        if appState.firstApi.supports(.viewInstanceBlockList, defaultValue: false) {
-            output.append(.instances)
+
+    @ViewBuilder
+    var instancesView: some View {
+        switch instances {
+        case let .stubs(stubs):
+            ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
+                InstanceRow(instance: instance)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.bottom, Constants.main.halfSpacing)
+            }
+        case let .summaries(summaries):
+            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { community in
+                InstanceListRow(community, showBlockStatus: false)
+            }
         }
-        return output
+    }
+
+    func refresh() async {
+        do {
+            let result = try await appState.firstApi.getBlocked()
+            people = result.people
+            communities = result.communities
+            if let summaries = MlemStats.main.findInstances(stubs: result.instances) {
+                instances = .summaries(summaries)
+            } else {
+                instances = .stubs(result.instances)
+            }
+        } catch {
+            handleError(error)
+        }
     }
 }
+
+private struct InstanceRow: View {
+    @Environment(NavigationLayer.self) var navigation
+
+    let instance: InstanceStub
+
+    var body: some View {
+        Text(instance.actorId.host)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+            .contextMenu(instance: instance)
+            .onTapGesture {
+                navigation.push(.instanceStub(instance))
+            }
+    }
+} 

@@ -68,19 +68,15 @@ struct InboxView: View {
     }
     
     var feedLoader: StandardFeedLoader<InboxNotification> {
-        if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
-            switch selectedTab {
-            case .all:
-                inboxFeedLoader
-            case .replies:
-                replyFeedLoader
-            case .mentions:
-                mentionFeedLoader
-            case .messages:
-                messageFeedLoader
-            }
-        } else {
+        switch selectedTab {
+        case .all:
+            inboxFeedLoader
+        case .replies:
             replyFeedLoader
+        case .mentions:
+            mentionFeedLoader
+        case .messages:
+            messageFeedLoader
         }
     }
     

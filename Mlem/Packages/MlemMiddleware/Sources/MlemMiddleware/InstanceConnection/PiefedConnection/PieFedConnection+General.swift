@@ -24,10 +24,7 @@ public extension PieFedConnection {
         }
         let request = PieFedUserLoginRequest(username: usernameOrEmail, password: password)
         let response = try await perform(request)
-        guard let jwt = response.jwt else {
-            throw ApiClientError.notLoggedIn
-        }
-        return jwt
+        return response.jwt
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
@@ -71,7 +68,7 @@ public extension PieFedConnection {
         return try .init(from: response)
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
         let request = PieFedGetSiteRequest()
         let response = try await perform(request)
         guard let myUser = response.myUser else { return ([], [], []) }
@@ -79,7 +76,7 @@ public extension PieFedConnection {
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.target) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
+            instances: myUser.instanceBlocks.map(\.instance.domain)
         )
     }
     

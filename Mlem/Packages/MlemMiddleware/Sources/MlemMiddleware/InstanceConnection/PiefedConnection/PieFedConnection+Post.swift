@@ -20,17 +20,16 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: nil,
-            sort: sort.pieFedSortType,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: communityId,
-            personId: nil,
-            communityName: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
             q: nil,
+            sort: sort.pieFedSortType,
+            type_: nil,
+            communityName: nil,
+            communityId: communityId,
+            savedOnly: filter == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
             ignoreSticky: nil,
@@ -55,17 +54,16 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: feed.pieFedListingType,
-            sort: sort.pieFedSortType,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: nil,
-            personId: nil,
-            communityName: nil,
-            likedOnly: filter == .upvoted,
-            savedOnly: filter == .saved,
             q: nil,
+            sort: sort.pieFedSortType,
+            type_: feed.pieFedListingType,
+            communityName: nil,
+            communityId: nil,
+            savedOnly: filter == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: filter == .upvoted,
             feedId: nil,
             topicId: nil,
             ignoreSticky: nil,
@@ -97,17 +95,16 @@ public extension PieFedConnection {
         }
         let page = try pageInfo.cursor.requirePageNumber
         let request = PieFedListPostsRequest(
-            type_: nil,
-            sort: .new,
-            pageCursor: page,
-            limit: pageInfo.limit,
-            communityId: nil,
-            personId: nil,
-            communityName: nil,
-            likedOnly: type == .upvoted,
-            savedOnly: type == .saved,
             q: nil,
+            sort: .new,
+            type_: nil,
+            communityName: nil,
+            communityId: nil,
+            savedOnly: type == .saved,
+            personId: nil,
+            limit: pageInfo.limit,
             page: page,
+            likedOnly: type == .upvoted,
             feedId: nil,
             topicId: nil,
             ignoreSticky: nil,
@@ -121,7 +118,7 @@ public extension PieFedConnection {
     }
 
     func getPost(id: Int) async throws -> Post3Snapshot {
-        let request = PieFedGetPostRequest(id: id, commentId: nil)
+        let request = PieFedGetPostRequest(id: id)
         let response = try await perform(request)
         return try .init(from: response)
     }
@@ -153,10 +150,10 @@ public extension PieFedConnection {
         let request = PieFedSearchRequest(
             q: query,
             type_: .posts,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
             page: try pageInfo.cursor.requirePageNumber,
-            limit: pageInfo.limit,
+            sort: sort,
             communityName: nil,
             communityId: communityId,
             minimumUpvotes: nil,
@@ -170,12 +167,12 @@ public extension PieFedConnection {
     }
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws {
-        let request = PieFedMarkPostAsReadRequest(postIds: Array(ids), postId: nil, read: read)
+        let request = PieFedMarkPostAsReadRequest(read: read, postId: nil, postIds: Array(ids))
         try await perform(request)
     }
     
     func markPostAsRead(id: Int, read: Bool) async throws {
-        let request = PieFedMarkPostAsReadRequest(postIds: nil, postId: id, read: read)
+        let request = PieFedMarkPostAsReadRequest(read: read, postId: id, postIds: nil)
         try await perform(request)
     }
     
@@ -188,10 +185,6 @@ public extension PieFedConnection {
             emoji: nil
         )
         async let response = perform(request)
-        if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
-            try await markPostAsRead(id: id, read: true)
-            return try await .init(from: response.postView, overrideRead: true)
-        }
         return try await .init(from: response.postView)
     }
     
@@ -199,10 +192,6 @@ public extension PieFedConnection {
     func savePost(id: Int, save: Bool) async throws -> Post2Snapshot {
         let request = PieFedSavePostRequest(postId: id, save: save)
         async let response = try await perform(request)
-        if !supports(.autoMarkPostReadOnInteract, defaultValue: false) {
-            try await markPostAsRead(id: id, read: true)
-            return try await .init(from: response.postView, overrideRead: true)
-        }
         return try await .init(from: response.postView)
     }
     
@@ -240,8 +229,8 @@ public extension PieFedConnection {
         let request = PieFedCreatePostRequest(
             title: title,
             communityId: communityId,
-            url: linkUrl,
             body: content,
+            url: linkUrl,
             nsfw: nsfw,
             languageId: languageId,
             altText: altText,
@@ -270,8 +259,8 @@ public extension PieFedConnection {
         let request = PieFedEditPostRequest(
             postId: id,
             title: title,
-            url: linkUrl,
             body: content,
+            url: linkUrl,
             nsfw: nsfw,
             languageId: languageId,
             altText: altText,
@@ -301,7 +290,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportPost(id: Int, reason: String) async throws -> ReportSnapshot {
-        let request = PieFedCreatePostReportRequest(
+        let request = PieFedReportPostRequest(
             postId: id,
             reason: reason,
             description: nil,
@@ -350,7 +339,7 @@ public extension PieFedConnection {
     
     @discardableResult
     func setPostNsfw(id: Int, nsfw: Bool) async throws -> Post1Snapshot {
-        let request = PieFedModerateCommunityPostNsfwRequest(postId: id, nsfwStatus: nsfw)
+        let request = PieFedCommunityModerationNsfwRequest(postId: id, nsfwStatus: nsfw)
         let response = try await perform(request)
         return try .init(from: response.post)
     }

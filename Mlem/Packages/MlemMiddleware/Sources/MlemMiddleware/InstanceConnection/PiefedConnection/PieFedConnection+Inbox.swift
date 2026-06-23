@@ -19,10 +19,10 @@ public extension PieFedConnection {
                 throw ApiClientError.featureUnsupported
             }
             let request = PieFedGetPrivateMessagesConversationRequest(
-                page: page,
-                limit: pageInfo.limit,
                 personId: creatorId,
-                conversationId: nil
+                conversationId: nil,
+                page: page,
+                limit: pageInfo.limit
             )
             let response = try await perform(request)
             return try .fromPieFed(
@@ -31,10 +31,9 @@ public extension PieFedConnection {
             )
         } else {
             let request = PieFedListPrivateMessagesRequest(
-                unreadOnly: unreadOnly,
                 page: page,
                 limit: pageInfo.limit,
-                creatorId: nil
+                unreadOnly: unreadOnly
             )
             let response = try await perform(request)
             return try .fromPieFed(
@@ -49,9 +48,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetRepliesRequest(
-            sort: .new,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: .new,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
@@ -66,9 +65,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedGetMentionsRequest(
-            sort: .new,
-            page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: .new,
             unreadOnly: unreadOnly
         )
         let response = try await perform(request)
@@ -83,10 +82,9 @@ public extension PieFedConnection {
         unreadOnly: Bool
     ) async throws -> PagedResponse<InboxNotificationSnapshot> {
         let request = PieFedListPrivateMessagesRequest(
-            unreadOnly: unreadOnly,
             page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
-            creatorId: nil
+            unreadOnly: unreadOnly
         )
         let response = try await perform(request)
         return try .fromPieFed(
@@ -112,12 +110,12 @@ public extension PieFedConnection {
     }
 
     private func markReplyAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        let request = PieFedMarkCommentAsReadRequest(commentReplyId: id, read: read)
         try await perform(request)
     }
     
     private func markMentionAsRead(id: Int, read: Bool = true) async throws {
-        let request = PieFedMarkReplyAsReadRequest(commentReplyId: id, read: read)
+        let request = PieFedMarkCommentAsReadRequest(commentReplyId: id, read: read)
         try await perform(request)
     }
     
@@ -158,9 +156,8 @@ public extension PieFedConnection {
     @discardableResult
     func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
         let request = PieFedDeletePrivateMessageRequest(
-            messageId: id,
-            deleted: delete,
-            privateMessageId: id
+            privateMessageId: id,
+            deleted: delete
         )
         let response = try await perform(request)
         return try .init(from: response.privateMessageView)

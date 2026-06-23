@@ -211,7 +211,6 @@
 		0377BE3B2DE8E70D00E38593 /* HapticLevel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE3A2DE8E70D00E38593 /* HapticLevel+Extensions.swift */; };
 		0377BE9B2DEA328900E38593 /* OnboardingEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9A2DEA328900E38593 /* OnboardingEmailView.swift */; };
 		0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0377BE9E2DEA361600E38593 /* OnboardingModel.swift */; };
-		0377BF9B2DF0E0E000E38593 /* Rest in Frameworks */ = {isa = PBXBuildFile; productRef = 0377BF9A2DF0E0E000E38593 /* Rest */; };
 		037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0742CE023E3007F7B92 /* BlockListView.swift */; };
 		037DE07A2CE108D9007F7B92 /* FooterLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037DE0792CE108D9007F7B92 /* FooterLinkView.swift */; };
 		037F77ED2D3B064B00D4E180 /* SettingsDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037F77EC2D3B064B00D4E180 /* SettingsDeviceView.swift */; };
@@ -1222,6 +1221,7 @@
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
+		05A1C36E2FE41BC3007B5890 /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		CD2276D42F369C5F0024AEB1 /* Person */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Person; sourceTree = "<group>"; };
 		CD6CD11A2F25BF1300566122 /* Interactable */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Interactable; sourceTree = "<group>"; };
 		CD6CD1212F25C36800566122 /* Post */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Post; sourceTree = "<group>"; };
@@ -1235,7 +1235,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0377BF9B2DF0E0E000E38593 /* Rest in Frameworks */,
 				03A9FD162D7CEC09007A734D /* Theming in Frameworks */,
 				038100512F6AE867008A7731 /* MlemBackend in Frameworks */,
 				03FA318C2C6FECAE00D47FA3 /* Flow in Frameworks */,
@@ -1888,6 +1887,7 @@
 		6363D5D927EE196A00E34822 /* MlemTests */ = {
 			isa = PBXGroup;
 			children = (
+				05A1C36E2FE41BC3007B5890 /* Extensions */,
 				CD4D583E2B86855F00B82964 /* MlemTests.swift */,
 			);
 			path = MlemTests;
@@ -2603,7 +2603,6 @@
 				036879992DA1320000E796EF /* ComponentViews */,
 				CDA711FA2DB5CAC3008BC3ED /* Media */,
 				03D8BF422DA55B6900506687 /* Icons */,
-				0377BF9A2DF0E0E000E38593 /* Rest */,
 				0377BE282DE7A2DE00E38593 /* Haptics */,
 				031CA5762E5900E900CF0C0F /* QuickSwipes */,
 				03EC83ED2E958A44004698BB /* OpenGraph */,
@@ -2627,6 +2626,9 @@
 			);
 			dependencies = (
 				6363D5D827EE196A00E34822 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				05A1C36E2FE41BC3007B5890 /* Extensions */,
 			);
 			name = MlemTests;
 			productName = MlemTests;
@@ -3626,7 +3628,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3648,7 +3650,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3668,7 +3670,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3689,7 +3691,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3934,10 +3936,6 @@
 		0377BE282DE7A2DE00E38593 /* Haptics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Haptics;
-		};
-		0377BF9A2DF0E0E000E38593 /* Rest */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Rest;
 		};
 		038100502F6AE867008A7731 /* MlemBackend */ = {
 			isa = XCSwiftPackageProductDependency;
