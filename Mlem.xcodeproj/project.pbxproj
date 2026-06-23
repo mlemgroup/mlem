@@ -1220,6 +1220,7 @@
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
+		05A1C36E2FE41BC3007B5890 /* Extensions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extensions; sourceTree = "<group>"; };
 		CD2276D42F369C5F0024AEB1 /* Person */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Person; sourceTree = "<group>"; };
 		CD6CD11A2F25BF1300566122 /* Interactable */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Interactable; sourceTree = "<group>"; };
 		CD6CD1212F25C36800566122 /* Post */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Post; sourceTree = "<group>"; };
@@ -1886,6 +1887,7 @@
 		6363D5D927EE196A00E34822 /* MlemTests */ = {
 			isa = PBXGroup;
 			children = (
+				05A1C36E2FE41BC3007B5890 /* Extensions */,
 				CD4D583E2B86855F00B82964 /* MlemTests.swift */,
 			);
 			path = MlemTests;
@@ -2624,6 +2626,9 @@
 			);
 			dependencies = (
 				6363D5D827EE196A00E34822 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				05A1C36E2FE41BC3007B5890 /* Extensions */,
 			);
 			name = MlemTests;
 			productName = MlemTests;
@@ -3622,7 +3627,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3644,7 +3649,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3664,7 +3669,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3685,7 +3690,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76ULHQGAPN;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.MlemUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
