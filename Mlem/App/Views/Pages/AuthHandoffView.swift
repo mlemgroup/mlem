@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AuthHandoffView: View {
     @Environment(AppState.self) var appState
+    @Environment(\.dismiss) var dismiss
 
     let session: String
     let userHandle: String
@@ -44,7 +45,7 @@ struct AuthHandoffView: View {
             }
                 
             Button {
-                
+                dismiss()
             } label: {
                 Text("Cancel")
                     .fontWeight(.semibold)
