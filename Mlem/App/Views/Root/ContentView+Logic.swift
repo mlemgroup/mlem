@@ -30,13 +30,18 @@ extension ContentView {
         let userHandle = queryItems.first { $0.name == "actor" }?.value
         guard let session, let userHandle else { return }
 
+        guard let defaultAccount = (appState.firstAccount as? UserAccount) ?? AccountsTracker.main.userAccounts.first else {
+            return
+        }
+
         // This logic is needed to present the sheet over the top of the SFSafariViewController.
         let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
         if topVC is SFSafariViewController {
             let view = AuthHandoffView(
                 session: session,
                 userHandle: userHandle,
-                openedFromInAppBrowser: true
+                openedFromInAppBrowser: true,
+                defaultAccount: defaultAccount
             )
             .environment(appState)
             .environment(mediaTracker)
@@ -44,7 +49,11 @@ extension ContentView {
             hostingController.sheetPresentationController?.detents = [.medium()]
             topVC?.present(hostingController, animated: true)
         } else {
-            navigationModel.openSheet(.authHandoff(session: session, userHandle: userHandle))
+            navigationModel.openSheet(.authHandoff(
+                session: session,
+                userHandle: userHandle,
+                defaultAccount: defaultAccount
+            ))
         }
     }
 

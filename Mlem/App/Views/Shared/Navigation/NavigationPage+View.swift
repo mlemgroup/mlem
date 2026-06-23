@@ -248,11 +248,12 @@ extension NavigationPage {
             UnavailableContentInfoView()
         case let .unsupportedVersion(account):
             UnsupportedVersionWarningView(account: account.wrappedValue)
-        case let .authHandoff(session: session, userHandle: userHandle):
+        case let .authHandoff(session: session, userHandle: userHandle, defaultAccount: defaultAccount):
             AuthHandoffView(
                 session: session,
                 userHandle: userHandle,
-                openedFromInAppBrowser: false
+                openedFromInAppBrowser: false,
+                defaultAccount: defaultAccount
             )
         }
     }
