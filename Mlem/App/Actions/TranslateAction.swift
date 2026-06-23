@@ -133,7 +133,9 @@ extension TranslateAction {
     }
 
     private func determineLanguage(of text: String) async throws -> Locale.Language {
-        if let myInstance = entity.api.myInstance, let language = myInstance.language(withId: entity.languageId) {
+        if let myInstance = entity.api.myInstance,
+            let language = myInstance.language(withId: entity.languageId),
+            language != Locale.current.language {
             return language
         }
 
