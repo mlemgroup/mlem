@@ -6,38 +6,57 @@
 //
 
 import Foundation
-import Observation
 
 public struct PersonStub: Hashable {
     public var api: ApiClient
-    public let url: URL
-    
-    public init(api: ApiClient, url: URL) {
-        self.api = api
-        self.url = url
+
+    private enum Content: Hashable {
+        case url(URL)
+        case handle(PersonHandle)
+
+        var baseUrl: URL {
+            switch self {
+            case let .url(url): url.removingPathComponents()
+            case let .handle(handle): handle.baseUrl()
+            }
+        }
     }
-    
+
+    private let content: Content
+
     public func asLocal() -> Self {
-        .init(api: .getApiClient(url: url, username: nil), url: url)
+        .init(
+            api: .getApiClient(url: content.baseUrl, username: nil),
+            content: content
+        )
     }
-    
+
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(url)
+        hasher.combine(content)
     }
-    
+
     public static func == (lhs: PersonStub, rhs: PersonStub) -> Bool {
-        lhs.url == rhs.url
+        lhs.content == rhs.content
     }
-    
+
     public func getPerson() async throws -> Person {
-        try await api.getPerson(url: url)
+        switch content {
+        case let .url(url):
+            try await api.getPerson(url: url)
+        case let .handle(handle):
+            try await api.getPerson(handle: handle)
+        }
     }
 }
 
-// Resolvable conformance
 public extension PersonStub {
-    var resolvableUrl: URL { url }
-    
-    @inlinable
-    var allResolvableUrls: [URL] { [resolvableUrl] }
+    init(api: ApiClient, url: URL) {
+        self.api = api
+        self.content = .url(url)
+    }
+
+    init(api: ApiClient, handle: PersonHandle) {
+        self.api = api
+        self.content = .handle(handle)
+    }
 }
