@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PersonHandle {
+public struct PersonHandle: Handle {
     public let username: String
     public let host: String
 

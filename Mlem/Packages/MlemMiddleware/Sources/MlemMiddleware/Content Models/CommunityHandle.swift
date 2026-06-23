@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CommunityHandle {
+public struct CommunityHandle: Handle {
     public let username: String
     public let host: String
 
