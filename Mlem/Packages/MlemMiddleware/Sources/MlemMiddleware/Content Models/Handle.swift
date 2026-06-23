@@ -19,7 +19,7 @@ public protocol Handle: Hashable {
 }
 
 public extension Handle {
-    init(_ string: String) throws(HandleError) {
+    init(string: String) throws(HandleError) {
         guard string.first == Self.prefix else { throw .invalidFormat }
         let parts = string.dropFirst().split(separator: "@", maxSplits: 1)
         try self.init(
