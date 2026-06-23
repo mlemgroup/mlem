@@ -9,12 +9,11 @@ import Foundation
 import MlemMiddleware
 import Nuke
 import Photos
-import Rest
 import SwiftUI
 
 func saveMedia(url: URL) async {
     do {
-        let (data, _) = try await ImagePipeline.shared.data(for: .init(urlRequest: mlemUrlRequest(url: url)))
+        let (data, _) = try await ImagePipeline.shared.data(url: url)
         let imageSaver = ImageSaver()
         if url.pathExtension.isMovieExtension {
             try await imageSaver.writeVideoToPhotoAlbum(url: url)
@@ -64,7 +63,7 @@ func fullSizeUrl(url: URL?) -> URL? {
 /// Downloads the image at the given URL to the file system, returning the path to the downloaded image
 func downloadImageToFileSystem(url: URL) async -> URL? {
     do {
-        let (data, _) = try await ImagePipeline.shared.data(for: .init(urlRequest: mlemUrlRequest(url: url)))
+        let (data, _) = try await ImagePipeline.shared.data(url: url)
         var fileName: String
         
         // image proxies that use url query param don't have pathExtension so we extract it from the embedded url

@@ -8,7 +8,6 @@
 import Haptics
 import MlemMiddleware
 import Nuke
-import Rest
 import SwiftUI
 
 extension ContentView {
@@ -28,8 +27,7 @@ extension ContentView {
     func loadAvatar(url: URL) async {
         do {
             if tabProfileShowAvatar {
-                let urlRequest = mlemUrlRequest(url: url.withIconSize(128))
-                let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
+                let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
                 let avatarImage = try await imageTask.image
                     .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
                     .circleMasked

@@ -125,7 +125,7 @@ public class MediaLoader {
         // otherwise actually load the image
         do {
             let imageTask = ImagePipeline.shared.imageTask(with: .init(
-                urlRequest: mlemUrlRequest(url: url),
+                url: url,
                 processors: processors
             ))
             imageTask.priority = .veryHigh
@@ -156,7 +156,7 @@ public class MediaLoader {
 func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> MediaType? {
     if let url,
        let container = ImagePipeline.shared.cache.cachedImage(for: .init(
-           urlRequest: mlemUrlRequest(url: url),
+           url: url,
            processors: processors
        )) {
         return container.animatedMediaType
