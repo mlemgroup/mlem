@@ -788,6 +788,9 @@
         }
       }
     },
+    "Actor ID" : {
+
+    },
     "Add" : {
       "localizations" : {
         "fr" : {
@@ -5099,6 +5102,9 @@
         }
       }
     },
+    "Local ID" : {
+
+    },
     "Local Only" : {
       "localizations" : {
         "fr" : {
@@ -6547,6 +6553,9 @@
           }
         }
       }
+    },
+    "Post Info" : {
+
     },
     "Post Read Indicator" : {
       "localizations" : {

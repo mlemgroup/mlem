@@ -141,6 +141,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
                 .crosspost,
                 .hide,
                 .createImage,
+                .postInfo,
                 .toggleNotifications,
                 .report,
                 .edit,

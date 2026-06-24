@@ -20,6 +20,7 @@ extension PostBarConfiguration {
         case reply
         case share
         case selectText
+        case postInfo
         case hide
         case block
         case report
@@ -55,6 +56,7 @@ extension PostBarConfiguration {
             case .reply: .reply()
             case .share: .share()
             case .selectText: .selectText()
+            case .postInfo: .postInfo()
             case .hide: .hide(isOn: false)
             case .block: .block(isOn: false)
             case .report: .report()
@@ -72,7 +74,7 @@ extension PostBarConfiguration {
             case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
             case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .save: [.saved]
-            case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
+            case .reply, .share, .selectText, .postInfo, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
             }
         }
         
@@ -81,7 +83,7 @@ extension PostBarConfiguration {
             case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
             case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
             case .save: [.saved]
-            case .reply, .share, .selectText, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
+            case .reply, .share, .selectText, .postInfo, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
             }
         }
         
@@ -93,6 +95,7 @@ extension PostBarConfiguration {
             case .reply: .reply
             case .share: .share
             case .selectText: .selectText
+            case .postInfo: .postInfo
             case .hide: .hide
             case .block: .blockCreator
             case .report: .report
