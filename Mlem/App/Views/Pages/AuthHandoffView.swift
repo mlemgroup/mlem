@@ -52,7 +52,8 @@ struct AuthHandoffView: View {
             }
         }
         .padding(.horizontal, 16)
-        .interactiveDismissDisabled(page != .askToAuthenticate)
+        .interactiveDismissDisabled(![.askToAuthenticate, .done].contains(page))
+        .animation(.easeOut(duration: 0.2), value: page)
     }
 
     @ViewBuilder
@@ -94,15 +95,36 @@ struct AuthHandoffView: View {
     @ViewBuilder
     var doneView: some View {
         if openedFromInAppBrowser {
-            Image(icon: .general.success)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            doneCheckmark
                 .frame(maxHeight: 200)
-                .symbolVariant(.circle.fill)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(.themedPositive)
                 .transition(.opacity.combined(with: .scale))
+        } else {
+            VStack {
+                doneCheckmark
+                    .frame(maxHeight: 50)
+                    .transition(.opacity.combined(with: .scale))
+                    .padding()
+                Text("Signed In")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Text("Please return to Canvas.")
+            }
+            .frame(maxHeight: .infinity)
+            Button("Dismiss") {
+                dismiss()
+            }
+            .buttonStyle(CapsuleButtonStyle(isProminent: false))
         }
+    }
+
+    @ViewBuilder
+    var doneCheckmark: some View {
+        Image(icon: .general.success)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .symbolVariant(.circle.fill)
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(.themedPositive)
     }
 
     @ViewBuilder
@@ -139,14 +161,16 @@ struct AuthHandoffView: View {
                 personId: person.id,
                 content: "\(session) \(String(localized: "Sent by Mlem to sign in to Canvas"))"
             )
-            withAnimation(.bouncy(duration: 0.5, extraBounce: 0.1)) {
-                self.page = .done
-            }
             hapticManager.play(haptic: .success, tier: .low)
             if openedFromInAppBrowser {
+                withAnimation(.bouncy(duration: 0.5, extraBounce: 0.1)) {
+                    self.page = .done
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     dismiss()
                 }
+            } else {
+                self.page = .done
             }
         } catch {
             self.page = .error(.init(error: error))
