@@ -12,6 +12,13 @@ struct AuthHandoffView: View {
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss
 
+    enum Page {
+        case askToAuthenticate
+        case authenticating
+        case error(ErrorDetails)
+        case done
+    }
+
     let session: String
     let personHandle: PersonHandle
     let openedFromInAppBrowser: Bool
@@ -19,20 +26,34 @@ struct AuthHandoffView: View {
 
     @State var chosenAccount: UserAccount?
 
+    @State var page: Page = .askToAuthenticate
+
     var account: UserAccount {
         chosenAccount ?? defaultAccount
     }
     
     var body: some View {
         VStack {
-            content
+            switch page {
+            case .askToAuthenticate:
+                askToAuthenticateView
+            case .authenticating:
+                VStack {
+                    Text("Authenticating...")
+                    ProgressView()
+                }
+            case let .error(details):
+                ErrorView(details)
+            case .done:
+                Text("Done")
+            }
         }
         .padding(.horizontal, 16)
         .buttonStyle(.plain)
     }
 
     @ViewBuilder
-    var content: some View {
+    var askToAuthenticateView: some View {
         VStack {
             Text("Sign In to Canvas")
                 .font(.title)
@@ -43,7 +64,9 @@ struct AuthHandoffView: View {
         .frame(maxHeight: .infinity)
 
         Button {
-
+            Task {
+                await signIn()
+            }
         } label: {
             Text("Approve")
                 .fontWeight(.semibold)
@@ -87,6 +110,20 @@ struct AuthHandoffView: View {
             .frame(maxWidth: .infinity)
             .padding(16)
             .background(.themedPrimary.opacity(0.1), in: .capsule)
+        }
+    }
+
+    func signIn() async {
+        self.page = .authenticating
+        do {
+            let person = try await account.api.getPerson(handle: personHandle)
+            try await account.api.createMessage(
+                personId: person.id,
+                content: "\(session) \(String(localized: "Sent by Mlem to sign in to Canvas"))"
+            )
+            self.page = .done
+        } catch {
+            self.page = .error(.init(error: error))
         }
     }
 }
