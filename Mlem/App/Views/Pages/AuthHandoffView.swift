@@ -5,14 +5,17 @@
 //  Created by Sjmarf on 2026-06-22.
 //
 
+import Haptics
 import MlemMiddleware
 import SwiftUI
 
 struct AuthHandoffView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
+
     @Environment(\.dismiss) var dismiss
 
-    enum Page {
+    enum Page: Equatable {
         case askToAuthenticate
         case authenticating
         case error(ErrorDetails)
@@ -45,11 +48,11 @@ struct AuthHandoffView: View {
             case let .error(details):
                 errorView(details)
             case .done:
-                Text("Done")
+                doneView
             }
         }
         .padding(.horizontal, 16)
-        .interactiveDismissDisabled()
+        .interactiveDismissDisabled(page != .askToAuthenticate)
     }
 
     @ViewBuilder
@@ -89,6 +92,20 @@ struct AuthHandoffView: View {
     }
 
     @ViewBuilder
+    var doneView: some View {
+        if openedFromInAppBrowser {
+            Image(icon: .general.success)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxHeight: 200)
+                .symbolVariant(.circle.fill)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(.themedPositive)
+                .transition(.opacity.combined(with: .scale))
+        }
+    }
+
+    @ViewBuilder
     var accountView: some View {
         AccountPickerMenu(account: .init(get: { account }, set: { chosenAccount = $0 })) {
             HStack(alignment: .center, spacing: 10) {
@@ -122,7 +139,15 @@ struct AuthHandoffView: View {
                 personId: person.id,
                 content: "\(session) \(String(localized: "Sent by Mlem to sign in to Canvas"))"
             )
-            self.page = .done
+            withAnimation(.bouncy(duration: 0.5, extraBounce: 0.1)) {
+                self.page = .done
+            }
+            hapticManager.play(haptic: .success, tier: .low)
+            if openedFromInAppBrowser {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    dismiss()
+                }
+            }
         } catch {
             self.page = .error(.init(error: error))
         }

@@ -45,6 +45,7 @@ extension ContentView {
             )
             .environment(appState)
             .environment(mediaTracker)
+            .environment(hapticManager)
             let hostingController = UIHostingController(rootView: view)
             hostingController.sheetPresentationController?.detents = [.medium()]
             topVC?.present(hostingController, animated: true)
