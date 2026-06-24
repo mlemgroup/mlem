@@ -64,7 +64,7 @@ struct CommentEditorView: View {
         }
         self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
-        textView.text = commentToEdit?.content ?? ""
+        textView.text = commentToEdit?.content.string ?? ""
     }
         
     var minTextEditorHeight: CGFloat {

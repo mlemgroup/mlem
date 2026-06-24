@@ -29,7 +29,7 @@ public extension Palette {
         contrastingLabel: .white,
         accent: .blue,
         neutralAccent: .gray,
-        colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint, .teal, .yellow],
+        colorfulAccents: [.orange, .pink, .blue, .green, .purple, .indigo, .mint, .teal, .yellow, .cyan],
         commentIndentColors: [.red, .orange, .yellow, .green, .blue, .purple],
         accountAgeColors: [
             .green,

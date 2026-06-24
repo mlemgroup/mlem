@@ -54,14 +54,8 @@ extension ShareAction {
         case .lemmyverse: entity.lemmyverseUrl ?? entity.url()
         case .askEveryTime: entity.url()
         }
-
-        if case .actionSheet = navigation.root {
-            navigation.dismissSheet()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
-            }
-        } else {
-            navigation.model?.shareInfo = .init(url: url, actions: entity.shareSheetActions())
+        environment.navigation?.dismissingActionSheet {
+            NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
         }
     }
 }
