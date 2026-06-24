@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    ": " : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -48,6 +51,9 @@
           }
         }
       }
+    },
+    "%@ " : {
+
     },
     "%@ Administrator" : {
       "localizations" : {
@@ -931,6 +937,9 @@
         }
       }
     },
+    "Admin" : {
+
+    },
     "Administration" : {
       "localizations" : {
         "fr" : {
@@ -1050,6 +1059,9 @@
           }
         }
       }
+    },
+    "Alt Text" : {
+
     },
     "Always" : {
       "localizations" : {
@@ -1568,6 +1580,9 @@
           }
         }
       }
+    },
+    "Banned from community" : {
+
     },
     "Banned from Community" : {
       "localizations" : {
@@ -2650,6 +2665,9 @@
     "Consider choosing another instance, or asking your server administrators to upgrade." : {
 
     },
+    "Content" : {
+
+    },
     "Content & Notifications" : {
       "localizations" : {
         "fr" : {
@@ -2818,6 +2836,9 @@
           }
         }
       }
+    },
+    "Created" : {
+
     },
     "Creator" : {
       "localizations" : {
@@ -3545,6 +3566,9 @@
         }
       }
     },
+    "Empty" : {
+
+    },
     "Enable" : {
       "localizations" : {
         "fr" : {
@@ -3556,6 +3580,9 @@
       }
     },
     "Enable Notifications" : {
+
+    },
+    "End date" : {
 
     },
     "end.of.feed.icon.1" : {
@@ -4539,6 +4566,9 @@
         }
       }
     },
+    "ID" : {
+
+    },
     "If an instance is \"guaranteed\", it is known as definitely not spam. Unguaranteed instances are not necessarily spam; rather, it is unknown whether a non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If an instance's guarantee is revoked, it returns to a \"not guaranteed\" state along with any instances it guarantees.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures." : {
       "localizations" : {
         "fr" : {
@@ -4942,6 +4972,9 @@
         }
       }
     },
+    "Language" : {
+
+    },
     "Large" : {
       "localizations" : {
         "fr" : {
@@ -4961,6 +4994,12 @@
           }
         }
       }
+    },
+    "Last Updated" : {
+
+    },
+    "Latest vote" : {
+
     },
     "Learn more..." : {
       "localizations" : {
@@ -5031,6 +5070,9 @@
           }
         }
       }
+    },
+    "Link URL" : {
+
     },
     "Literals" : {
       "localizations" : {
@@ -5105,6 +5147,9 @@
     "Local ID" : {
 
     },
+    "Local only" : {
+
+    },
     "Local Only" : {
       "localizations" : {
         "fr" : {
@@ -5175,6 +5220,9 @@
           }
         }
       }
+    },
+    "Locked" : {
+
     },
     "Log In" : {
       "localizations" : {
@@ -6494,6 +6542,12 @@
         }
       }
     },
+    "Pinned to Community" : {
+
+    },
+    "Pinned to Instance" : {
+
+    },
     "Play" : {
       "localizations" : {
         "fr" : {
@@ -6503,6 +6557,9 @@
           }
         }
       }
+    },
+    "Poll" : {
+
     },
     "Poll has ended" : {
       "localizations" : {
@@ -7507,6 +7564,9 @@
           }
         }
       }
+    },
+    "Removed" : {
+
     },
     "Removed: %@" : {
       "localizations" : {
@@ -9462,6 +9522,9 @@
         }
       }
     },
+    "Thumbnail URL" : {
+
+    },
     "Tiled" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -10412,6 +10475,9 @@
           }
         }
       }
+    },
+    "Video URL" : {
+
     },
     "View All" : {
       "localizations" : {
