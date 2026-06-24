@@ -43,13 +43,13 @@ struct AuthHandoffView: View {
                     ProgressView()
                 }
             case let .error(details):
-                ErrorView(details)
+                errorView(details)
             case .done:
                 Text("Done")
             }
         }
         .padding(.horizontal, 16)
-        .buttonStyle(.plain)
+        .interactiveDismissDisabled()
     }
 
     @ViewBuilder
@@ -63,27 +63,28 @@ struct AuthHandoffView: View {
         }
         .frame(maxHeight: .infinity)
 
-        Button {
+        Button("Approve") {
             Task {
                 await signIn()
             }
-        } label: {
-            Text("Approve")
-                .fontWeight(.semibold)
-                .foregroundStyle(.themedContrastingLabel)
-                .padding(.vertical, 20)
-                .frame(maxWidth: .infinity)
-                .background(.themedAccent, in: .capsule)
         }
+        .buttonStyle(CapsuleButtonStyle(isProminent: true))
                 
-        Button {
+        Button("Cancel") {
             dismiss()
-        } label: {
-            Text("Cancel")
-                .fontWeight(.semibold)
-                .padding(.vertical, 20)
-                .frame(maxWidth: .infinity)
-                .background(.themedPrimary.opacity(0.1), in: .capsule)
+        }
+        .buttonStyle(CapsuleButtonStyle(isProminent: false))
+    }
+
+    @ViewBuilder
+    func errorView(_ details: ErrorDetails) -> some View {
+        VStack {
+            ErrorView(details)
+                .frame(maxHeight: .infinity)
+            Button("Cancel") {
+                dismiss()
+            }
+            .buttonStyle(CapsuleButtonStyle(isProminent: false))
         }
     }
 
@@ -125,5 +126,18 @@ struct AuthHandoffView: View {
         } catch {
             self.page = .error(.init(error: error))
         }
+    }
+}
+
+private struct CapsuleButtonStyle: ButtonStyle {
+    let isProminent: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .fontWeight(.semibold)
+            .foregroundStyle(isProminent ? .themedContrastingLabel : .themedPrimary)
+            .padding(.vertical, 20)
+            .frame(maxWidth: .infinity)
+            .background(isProminent ? .themedAccent : .themedPrimary.opacity(0.1), in: .capsule)
     }
 }
