@@ -25,38 +25,43 @@ struct AuthHandoffView: View {
     
     var body: some View {
         VStack {
-            VStack {
-                Text("Sign In to Canvas")
-                    .font(.title)
-                    .fontWeight(.bold)
-                accountView
-                    .padding(.horizontal, 32)
-            }
-            .frame(maxHeight: .infinity)
-
-            Button {
-
-            } label: {
-                Text("Approve")
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.themedContrastingLabel)
-                    .padding(.vertical, 20)
-                    .frame(maxWidth: .infinity)
-                    .background(.themedAccent, in: .capsule)
-            }
-                
-            Button {
-                dismiss()
-            } label: {
-                Text("Cancel")
-                    .fontWeight(.semibold)
-                    .padding(.vertical, 20)
-                    .frame(maxWidth: .infinity)
-                    .background(.themedPrimary.opacity(0.1), in: .capsule)
-            }
+            content
         }
         .padding(.horizontal, 16)
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    var content: some View {
+        VStack {
+            Text("Sign In to Canvas")
+                .font(.title)
+                .fontWeight(.bold)
+            accountView
+                .padding(.horizontal, 32)
+        }
+        .frame(maxHeight: .infinity)
+
+        Button {
+
+        } label: {
+            Text("Approve")
+                .fontWeight(.semibold)
+                .foregroundStyle(.themedContrastingLabel)
+                .padding(.vertical, 20)
+                .frame(maxWidth: .infinity)
+                .background(.themedAccent, in: .capsule)
+        }
+                
+        Button {
+            dismiss()
+        } label: {
+            Text("Cancel")
+                .fontWeight(.semibold)
+                .padding(.vertical, 20)
+                .frame(maxWidth: .infinity)
+                .background(.themedPrimary.opacity(0.1), in: .capsule)
+        }
     }
 
     @ViewBuilder
