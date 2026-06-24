@@ -42,7 +42,7 @@ struct ReplyView: View {
                     FooterLinkView(title: post.title, subtitle: nil)
                 }
                 
-                MarkdownWithLinkList(comment.content)
+                TranslatableMarkdownView(markdown: comment.content)
             }
             .padding([.top, .horizontal], Constants.main.standardSpacing)
             

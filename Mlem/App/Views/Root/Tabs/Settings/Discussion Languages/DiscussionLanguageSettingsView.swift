@@ -33,30 +33,28 @@ struct DiscussionLanguageSettingsView: View {
                 icon: .settings.language
             )
             
-            if let person, let instance {
-                ExpectedView(person.discussionLanguageIds) { languageIds in
-                    Section {
-                        let selectedLanguages = instance.languages(withIds: languageIds)
-                        ForEach(selectedLanguages, id: \.languageCode) { language in
-                            LanguageListRowBody(language: language)
-                                .contextMenu {
-                                    Button("Remove", icon: .general.signOut, role: .destructive) {
-                                        Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
-                                    }
+            if let person, let instance, let languageIds = person.discussionLanguageIds.value {
+                Section {
+                    let selectedLanguages = instance.languages(withIds: languageIds)
+                    ForEach(selectedLanguages, id: \.languageCode) { language in
+                        LanguageListRowBody(language: language)
+                            .contextMenu {
+                                Button("Remove", icon: .general.signOut, role: .destructive) {
+                                    Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
                                 }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button("Remove", role: .destructive) {
-                                        Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
-                                    }
-                                    .buttonStyle(.automatic)
-                                    .tint(.red)
+                            }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button("Remove", role: .destructive) {
+                                    Task { await updateDiscussionLanguages(with: language, languages: languageIds) }
                                 }
-                        }
-                        Button("Add Language...") {
-                            navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
-                                Task { await updateDiscussionLanguages(with: newLanguage, languages: languageIds) }
-                            })
-                        }
+                                .buttonStyle(.automatic)
+                                .tint(.red)
+                            }
+                    }
+                    Button("Add Language...") {
+                        navigation.openSheet(.languagePicker(selectedLanguages: Set(selectedLanguages)) { newLanguage in
+                            Task { await updateDiscussionLanguages(with: newLanguage, languages: languageIds) }
+                        })
                     }
                 }
             }
