@@ -14,6 +14,7 @@ struct AuthHandoffView: View {
     @Environment(HapticManager.self) var hapticManager
 
     @Environment(\.dismiss) var dismiss
+    @Environment(\.scenePhase) var scenePhase
 
     enum Page: Equatable {
         case askToAuthenticate
@@ -54,6 +55,11 @@ struct AuthHandoffView: View {
         .padding(.horizontal, 16)
         .interactiveDismissDisabled(![.askToAuthenticate, .done].contains(page))
         .animation(.easeOut(duration: 0.2), value: page)
+        .onChange(of: scenePhase) {
+            if scenePhase != .active, page == .done {
+                dismiss()
+            }
+        }
     }
 
     @ViewBuilder
