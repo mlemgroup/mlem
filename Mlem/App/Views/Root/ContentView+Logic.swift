@@ -27,8 +27,8 @@ extension ContentView {
     private func handleHandoffDeeplink(url: URL) {
         guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else { return }
         let session = queryItems.first { $0.name == "session" }?.value
-        let userHandle = queryItems.first { $0.name == "actor" }?.value
-        guard let session, let userHandle else { return }
+        let handle = queryItems.first { $0.name == "actor" }?.value
+        guard let session, let handle, let personHandle = try? PersonHandle(string: handle) else { return }
 
         guard let defaultAccount = (appState.firstAccount as? UserAccount) ?? AccountsTracker.main.userAccounts.first else {
             return
@@ -39,7 +39,7 @@ extension ContentView {
         if topVC is SFSafariViewController {
             let view = AuthHandoffView(
                 session: session,
-                userHandle: userHandle,
+                personHandle: personHandle,
                 openedFromInAppBrowser: true,
                 defaultAccount: defaultAccount
             )
@@ -51,7 +51,7 @@ extension ContentView {
         } else {
             navigationModel.openSheet(.authHandoff(
                 session: session,
-                userHandle: userHandle,
+                personHandle: personHandle,
                 defaultAccount: defaultAccount
             ))
         }

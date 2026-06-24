@@ -93,7 +93,7 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case unavailableContentInfo
     case unsupportedVersion(_ account: AccountHashWrapper)
-    case authHandoff(session: String, userHandle: String, defaultAccount: UserAccount)
+    case authHandoff(session: String, personHandle: PersonHandle, defaultAccount: UserAccount)
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.

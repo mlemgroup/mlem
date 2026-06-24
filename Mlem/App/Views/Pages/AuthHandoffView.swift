@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2026-06-22.
 //
 
+import MlemMiddleware
 import SwiftUI
 
 struct AuthHandoffView: View {
@@ -12,7 +13,7 @@ struct AuthHandoffView: View {
     @Environment(\.dismiss) var dismiss
 
     let session: String
-    let userHandle: String
+    let personHandle: PersonHandle
     let openedFromInAppBrowser: Bool
     let defaultAccount: UserAccount
 
