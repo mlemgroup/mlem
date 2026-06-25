@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    ": " : {
-
-    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -2870,6 +2867,9 @@
         }
       }
     },
+    "Crossposts" : {
+
+    },
     "Current Password" : {
       "localizations" : {
         "fr" : {
@@ -3455,6 +3455,9 @@
           }
         }
       }
+    },
+    "Downvotes" : {
+
     },
     "Dracula" : {
       "localizations" : {
@@ -5752,6 +5755,9 @@
         }
       }
     },
+    "My vote" : {
+
+    },
     "Name" : {
       "localizations" : {
         "fr" : {
@@ -7008,6 +7014,9 @@
           }
         }
       }
+    },
+    "Read" : {
+
     },
     "Read %lld posts" : {
       "localizations" : {
@@ -10134,6 +10143,9 @@
         }
       }
     },
+    "Unread Comments" : {
+
+    },
     "Unresolve" : {
       "localizations" : {
         "fr" : {
@@ -10276,6 +10288,9 @@
           }
         }
       }
+    },
+    "Upvotes" : {
+
     },
     "Use Alternate Layouts" : {
       "localizations" : {
