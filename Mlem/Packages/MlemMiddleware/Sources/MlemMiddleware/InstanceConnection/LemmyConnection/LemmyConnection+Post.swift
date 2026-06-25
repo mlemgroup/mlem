@@ -36,12 +36,13 @@ internal extension LemmyConnection {
                 creatorUsername: nil,
                 multiCommunityId: nil,
                 multiCommunityName: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
                 searchTerm: nil,
                 searchTitleOnly: nil,
-                searchUrlOnly: nil
+                searchUrlOnly: nil,
+                tagId: nil
             )
         }
         return try .fromLemmyV3(
@@ -79,12 +80,13 @@ internal extension LemmyConnection {
                 creatorUsername: nil,
                 multiCommunityId: nil,
                 multiCommunityName: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 markAsRead: nil,
                 noCommentsOnly: nil,
                 searchTerm: nil,
                 searchTitleOnly: nil,
-                searchUrlOnly: nil
+                searchUrlOnly: nil,
+                tagId: nil
             )
         }
         return try .fromLemmyV3(
@@ -155,12 +157,13 @@ internal extension LemmyConnection {
                     creatorUsername: nil,
                     multiCommunityId: nil,
                     multiCommunityName: nil,
-                    hideMedia: nil,
+                    hidePostsWithMedia: nil,
                     markAsRead: nil,
                     noCommentsOnly: nil,
                     searchTerm: nil,
                     searchTitleOnly: nil,
-                    searchUrlOnly: nil
+                    searchUrlOnly: nil,
+                    tagId: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)        
                 return try .fromLemmyV3(
