@@ -10,7 +10,7 @@ import Foundation
 public struct PersonStub: Hashable {
     public var api: ApiClient
 
-    private enum Content: Hashable {
+    private enum Reference: Hashable {
         case url(URL)
         case handle(PersonHandle)
 
@@ -22,25 +22,25 @@ public struct PersonStub: Hashable {
         }
     }
 
-    private let content: Content
+    private let reference: Reference
 
     public func asLocal() -> Self {
         .init(
-            api: .getApiClient(url: content.baseUrl, username: nil),
-            content: content
+            api: .getApiClient(url: reference.baseUrl, username: nil),
+            reference: reference
         )
     }
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(content)
+        hasher.combine(reference)
     }
 
     public static func == (lhs: PersonStub, rhs: PersonStub) -> Bool {
-        lhs.content == rhs.content
+        lhs.reference == rhs.reference
     }
 
     public func getPerson() async throws -> Person {
-        switch content {
+        switch reference {
         case let .url(url):
             try await api.getPerson(url: url)
         case let .handle(handle):
@@ -52,11 +52,11 @@ public struct PersonStub: Hashable {
 public extension PersonStub {
     init(api: ApiClient, url: URL) {
         self.api = api
-        self.content = .url(url)
+        self.reference = .url(url)
     }
 
     init(api: ApiClient, handle: PersonHandle) {
         self.api = api
-        self.content = .handle(handle)
+        self.reference = .handle(handle)
     }
 }
