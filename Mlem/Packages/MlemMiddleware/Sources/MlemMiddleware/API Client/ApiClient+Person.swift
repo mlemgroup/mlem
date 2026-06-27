@@ -32,6 +32,11 @@ public extension ApiClient {
         return await caches.person.getModel(api: self, from: .person2(snapshot))
     }
     
+    func getPerson(handle: PersonHandle) async throws -> Person {
+        let snapshot: Person2Snapshot = try await repository.getPerson(handle: handle)
+        return await caches.person.getModel(api: self, from: .person2(snapshot))
+    }
+    
     func getPerson(username: String) async throws -> Person {
         let snapshot: Person3Snapshot = try await repository.getPerson(username: username)
         return await caches.person.getModel(api: self, from: .person3(snapshot))

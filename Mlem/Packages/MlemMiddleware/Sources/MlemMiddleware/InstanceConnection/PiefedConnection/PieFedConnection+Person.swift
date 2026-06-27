@@ -46,6 +46,15 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try .init(from: response)
     }
+
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot {
+        let request = PieFedResolveObjectRequest(q: handle.description(withPrefix: true))
+        let response = try await perform(request)
+        if let person = response.person {
+            return try .init(from: person)
+        }
+        throw ApiClientError.noEntityFound
+    }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
