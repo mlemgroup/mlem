@@ -337,12 +337,13 @@ internal extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }
@@ -417,12 +418,13 @@ internal extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }
