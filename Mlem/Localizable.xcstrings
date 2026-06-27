@@ -439,6 +439,9 @@
     "%@ unpinned a post from a community" : {
 
     },
+    "%lld" : {
+
+    },
     "%lld Active" : {
       "localizations" : {
         "fr" : {
@@ -2011,6 +2014,9 @@
           }
         }
       }
+    },
+    "Choices" : {
+
     },
     "Choose a community..." : {
       "localizations" : {
@@ -4568,9 +4574,6 @@
           }
         }
       }
-    },
-    "ID" : {
-
     },
     "If an instance is \"guaranteed\", it is known as definitely not spam. Unguaranteed instances are not necessarily spam; rather, it is unknown whether a non-guaranteed instance is spam or not.\n\nAn instance can be guaranteed by any other guaranteed instance. This forms a chain of guaranteed instances known as the \"Chain of Trust\". The Chain of Trust starts at the Fediseer itself, which guarantees several of the largest instances.\n\nA guarantee can be revoked by the guarantor at any time. If an instance's guarantee is revoked, it returns to a \"not guaranteed\" state along with any instances it guarantees.\n\nOnce an instance has been guaranteed, it is able to express its approval or disapproval of other instances using endorsements, hesitations and censures." : {
       "localizations" : {
@@ -9671,6 +9674,9 @@
         }
       }
     },
+    "Total" : {
+
+    },
     "Trailing" : {
       "localizations" : {
         "fr" : {
@@ -9783,6 +9789,9 @@
           }
         }
       }
+    },
+    "Type" : {
+
     },
     "Unavailable" : {
       "localizations" : {
