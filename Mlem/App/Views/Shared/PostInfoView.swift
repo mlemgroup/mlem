@@ -203,14 +203,6 @@ struct PostInfoView: View {
     }
     
     @ViewBuilder
-    private func subEntry(_ text: Text) -> some View {
-        HStack(alignment: .top, spacing: 2) {
-            Text("\(Image(systemName: "arrow.turn.down.right")) ").foregroundStyle(.themedSecondary)
-            text
-        }
-    }
-    
-    @ViewBuilder
     private func embed(_ embed: PostEmbed?) -> some View {
         if let embed {
             entry(.init("Embedded Content", value: embed.title ?? "Untitled", copyable: embed.title != nil), subEntries: [

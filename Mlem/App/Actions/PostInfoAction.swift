@@ -28,11 +28,12 @@ extension ActionSeed {
 
 extension PostInfoAction {
     static var label: Actions.ActionLabel {
-        .init("Post Info",
-              icon: .general.info,
-              color: .themedAccent,
-              isDestructive: false,
-              visibility: .enabled
+        .init(
+            "Post Info",
+            icon: .general.info,
+            color: .themedAccent,
+            isDestructive: false,
+            visibility: .enabled
         )
     }
 }
