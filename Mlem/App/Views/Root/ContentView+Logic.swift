@@ -14,7 +14,11 @@ import SwiftUI
 extension ContentView {
     func handleIncomingDeeplink(url: URL) {
         guard url.scheme == "mlem" else { return }
-        if url.absoluteString.hasPrefix("mlem://fediverse-auth/login") {
+
+        // mlem://fediverse-auth/login is used in reality,
+        // but the docs say it should be mlem://fediverse-auth/handoff,
+        // so I'm supporting both in case it gets changed.
+        if url.absoluteString.hasPrefix("mlem://fediverse-auth") { 
             handleHandoffDeeplink(url: url)
         } else {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
