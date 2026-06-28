@@ -436,9 +436,6 @@
     "%@ unpinned a post from a community" : {
 
     },
-    "%lld" : {
-
-    },
     "%lld Active" : {
       "localizations" : {
         "fr" : {

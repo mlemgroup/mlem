@@ -11,7 +11,7 @@ import ComponentViews
 
 private struct InfoEntry {
     /// Name of the entry
-    let title: LocalizedStringResource
+    let title: String
     
     /// Values, if present, associated with the entry
     let values: [CustomStringConvertible]?
@@ -23,13 +23,27 @@ private struct InfoEntry {
     let valueExpected: Bool
     
     init(_ title: LocalizedStringResource, value: CustomStringConvertible?, copyable: Bool = false, valueExpected: Bool = true) {
-        self.title = title
+        self.title = .init(localized: title)
         self.values = value.map { [$0] }
         self.copyable = copyable
         self.valueExpected = valueExpected
     }
     
     init(_ title: LocalizedStringResource, values: [CustomStringConvertible]?, copyable: Bool = false, valueExpected: Bool = true) {
+        self.title = .init(localized: title)
+        self.values = values
+        self.copyable = copyable
+        self.valueExpected = valueExpected
+    }
+    
+    init(verbatim title: String, value: CustomStringConvertible?, copyable: Bool = false, valueExpected: Bool = true) {
+        self.title = title
+        self.values = value.map { [$0] }
+        self.copyable = copyable
+        self.valueExpected = valueExpected
+    }
+    
+    init(verbatim title: String, values: [CustomStringConvertible]?, copyable: Bool = false, valueExpected: Bool = true) {
         self.title = title
         self.values = values
         self.copyable = copyable
@@ -165,7 +179,7 @@ struct PostDetailsView: View {
     
     private func entry(_ entry: InfoEntry, subEntries: [InfoEntry]? = nil) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(entry.title).fontWeight(.semibold)
+            Text(verbatim: entry.title).fontWeight(.semibold)
             values(for: entry)
             if let subEntries {
                 entryGrid(subEntries)
@@ -206,7 +220,7 @@ struct PostDetailsView: View {
         Grid(alignment: .top, verticalSpacing: 2) {
             ForEach(Array(zip(entries.indices, entries)), id: \.0) { _, entry in
                 GridRow {
-                    Text(entry.title)
+                    Text(verbatim: entry.title)
                     values(for: entry)
                 }
                 .gridColumnAlignment(.leading)
@@ -240,7 +254,7 @@ struct PostDetailsView: View {
                     .init("Local Only", value: poll.localOnly),
                     .init("Choices", value: nil, valueExpected: false)
                 ], isSubEntry: false)
-                entryGrid(poll.choices.map { .init("\($0.voteCount ?? 0)", value: $0.label) })
+                entryGrid(poll.choices.map { .init(verbatim: "\($0.voteCount ?? 0)", value: $0.label) })
             }
             .font(.subheadline)
         } else {
