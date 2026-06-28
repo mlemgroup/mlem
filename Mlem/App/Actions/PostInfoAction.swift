@@ -1,5 +1,5 @@
 //
-//  PostInfoAction.swift
+//  PostDetailsAction.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-06-23.
@@ -9,16 +9,20 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct PostInfoAction: SimpleLabelAction {
-    let entity: Post
+struct DetailsAction: SimpleLabelAction {
+    enum Content {
+        case post(Post)
+    }
+    
+    let content: Content
 }
 
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let postInfo = ActionSeed("postInfo") { entity in
+    static let details = ActionSeed("details") { entity in
         switch entity {
-        case let entity as Post: PostInfoAction(entity: entity)
+        case let entity as Post: DetailsAction(content: .post(entity))
         default: nil
         }
     }
@@ -26,10 +30,10 @@ extension ActionSeed {
 
 // MARK: - Appearance
 
-extension PostInfoAction {
+extension DetailsAction {
     static var label: Actions.ActionLabel {
         .init(
-            "Post Info",
+            "Details",
             icon: .general.info,
             color: .themedAccent,
             isDestructive: false,
@@ -40,9 +44,11 @@ extension PostInfoAction {
 
 // MARK: - Behavior
 
-extension PostInfoAction {
+extension DetailsAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        environment.navigation?.openSheet(.postInfo(entity))
+        switch content {
+        case let .post(post): environment.navigation?.openSheet(.postDetails(post))
+        }
     }
 }

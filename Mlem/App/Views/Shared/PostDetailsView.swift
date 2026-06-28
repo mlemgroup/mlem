@@ -1,5 +1,5 @@
 //
-//  PostInfoView.swift
+//  PostDetailsView.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-06-23.
@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MlemMiddleware
+import ComponentViews
 
 private struct InfoEntry {
     /// Name of the entry
@@ -18,7 +19,7 @@ private struct InfoEntry {
     /// Whether entries should copy to clipboard on tap
     let copyable: Bool
     
-    /// Whether `nil` indicates a contentful absence of value
+    /// Whether `nil` indicates a contentful absence for `values` (i.e., "None" should be displayed if `values` is nil)
     let valueExpected: Bool
     
     init(_ title: LocalizedStringResource, value: CustomStringConvertible?, copyable: Bool = false, valueExpected: Bool = true) {
@@ -36,7 +37,7 @@ private struct InfoEntry {
     }
 }
 
-struct PostInfoView: View {
+struct PostDetailsView: View {
     @Environment(\.locale) var locale
     @Environment(ToastModel.self) var toastModel
     
@@ -102,8 +103,15 @@ struct PostInfoView: View {
                     ExpectedView(post.commentCount) { commentCount in
                         entry(.init("Comments", value: commentCount))
                     }
-                    ExpectedView(post.unreadCommentCount) { unreadCommentCount in
-                        entry(.init("Unread Comments", value: unreadCommentCount))
+                    if let commentCount = post.commentCount.value,
+                       let unreadCommentCount = post.unreadCommentCount.value {
+                        VStack(alignment: .leading, spacing: 2) {
+                            entry(.init("Comments", value: nil, valueExpected: false))
+                            entryGrid([
+                                .init("Total", value: commentCount),
+                                .init("Unread", value: unreadCommentCount)
+                            ], isSubEntry: false)
+                        }
                     }
                     ExpectedView(post.votes) { votes in
                         VStack(alignment: .leading, spacing: 2) {
@@ -138,6 +146,11 @@ struct PostInfoView: View {
         .presentationBackground(.themedGroupedBackground)
         .presentationDragIndicator(.hidden)
         .presentationBackgroundInteraction(.enabled)
+        .navigationTitle("Post Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            CloseButtonToolbarItem()
+        }
     }
     
     private func section(@ViewBuilder content: () -> some View) -> some View {

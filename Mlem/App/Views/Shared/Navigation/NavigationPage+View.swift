@@ -89,8 +89,8 @@ extension NavigationPage {
             .environment(\.communityContext, communityContext)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post)
-        case let .postInfo(post):
-            PostInfoView(post: post)
+        case let .postDetails(post):
+            PostDetailsView(post: post)
         case let .comment(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
                 comment: comment,

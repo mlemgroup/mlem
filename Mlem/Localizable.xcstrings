@@ -1578,9 +1578,6 @@
         }
       }
     },
-    "Banned from community" : {
-
-    },
     "Banned from Community" : {
       "localizations" : {
         "fr" : {
@@ -3588,7 +3585,7 @@
     "Enable Notifications" : {
 
     },
-    "End date" : {
+    "End Date" : {
 
     },
     "end.of.feed.icon.1" : {
@@ -5001,7 +4998,7 @@
     "Last Updated" : {
 
     },
-    "Latest vote" : {
+    "Latest Vote" : {
 
     },
     "Learn more..." : {
@@ -5148,9 +5145,6 @@
       }
     },
     "Local ID" : {
-
-    },
-    "Local only" : {
 
     },
     "Local Only" : {
@@ -6597,6 +6591,9 @@
         }
       }
     },
+    "Post Details" : {
+
+    },
     "Post Downvotes" : {
       "localizations" : {
         "fr" : {
@@ -6616,9 +6613,6 @@
           }
         }
       }
-    },
-    "Post Info" : {
-
     },
     "Post Read Indicator" : {
       "localizations" : {
@@ -10149,7 +10143,7 @@
         }
       }
     },
-    "Unread Comments" : {
+    "Unread" : {
 
     },
     "Unresolve" : {

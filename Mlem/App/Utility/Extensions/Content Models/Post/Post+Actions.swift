@@ -179,11 +179,11 @@ extension Post {
             }
     }
     
-    func postInfoAction(navigation: NavigationLayer) -> BasicAction {
+    func postDetailsAction(navigation: NavigationLayer) -> BasicAction {
         .init(
-            id: "postInfo\(uid)",
-            appearance: .postInfo()) {
-                navigation.openSheet(.postInfo(self))
+            id: "postDetails\(uid)",
+            appearance: .postDetails()) {
+                navigation.openSheet(.postDetails(self))
             }
     }
     
@@ -250,7 +250,7 @@ extension Post {
         case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .share: return shareAction(navigation: navigation)
         case .selectText: return selectTextAction()
-        case .postInfo: return postInfoAction(navigation: navigation)
+        case .postDetails: return postDetailsAction(navigation: navigation)
         case .hide: return hideAction(appState: appState, feedback: feedback)
         case .block: return blockAction(appState: appState, feedback: feedback)
         case .report: return reportAction(appState: appState, communityContext: communityContext)

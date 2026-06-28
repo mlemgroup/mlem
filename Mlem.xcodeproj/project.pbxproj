@@ -503,7 +503,7 @@
 		CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */; };
 		CD4ED84A2BF1113800EFA0A2 /* View+TabReselectConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */; };
 		CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */; };
-		CD5634E82FEB790D002F4B7B /* PostInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5634E72FEB7909002F4B7B /* PostInfoView.swift */; };
+		CD5634E82FEB790D002F4B7B /* PostDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5634E72FEB7909002F4B7B /* PostDetailsView.swift */; };
 		CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */; };
 		CD5C197D2D97096F0089614C /* ZoomCurves.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5C197C2D97096D0089614C /* ZoomCurves.swift */; };
 		CD5C197F2D970E5F0089614C /* MomentumStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5C197E2D970E570089614C /* MomentumStatus.swift */; };
@@ -1120,7 +1120,7 @@
 		CD4ED8462BF110FA00EFA0A2 /* TabReselectTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReselectTracker.swift; sourceTree = "<group>"; };
 		CD4ED8492BF1113800EFA0A2 /* View+TabReselectConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabReselectConsumer.swift"; sourceTree = "<group>"; };
 		CD5581DD2C7B8B820043FAC3 /* ImageFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFunctions.swift; sourceTree = "<group>"; };
-		CD5634E72FEB7909002F4B7B /* PostInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoView.swift; sourceTree = "<group>"; };
+		CD5634E72FEB7909002F4B7B /* PostDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailsView.swift; sourceTree = "<group>"; };
 		CD57AFA42D0377E400AB3956 /* AnimationControlLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationControlLayer.swift; sourceTree = "<group>"; };
 		CD5C197C2D97096D0089614C /* ZoomCurves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomCurves.swift; sourceTree = "<group>"; };
 		CD5C197E2D970E570089614C /* MomentumStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentumStatus.swift; sourceTree = "<group>"; };
@@ -2065,7 +2065,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CD5634E72FEB7909002F4B7B /* PostInfoView.swift */,
+				CD5634E72FEB7909002F4B7B /* PostDetailsView.swift */,
 				0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */,
 				0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */,
 				03B431C32C45BA45001A1EB5 /* AccountPickerMenu.swift */,
@@ -3106,7 +3106,7 @@
 				033F84782D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift in Sources */,
 				CD4ED8472BF110FA00EFA0A2 /* TabReselectTracker.swift in Sources */,
 				CDCC7FF32D9B283A00CE18DA /* ZoomRecognizerCoordinator+Logic.swift in Sources */,
-				CD5634E82FEB790D002F4B7B /* PostInfoView.swift in Sources */,
+				CD5634E82FEB790D002F4B7B /* PostDetailsView.swift in Sources */,
 				033FCAEE2C57DD14007B7CD1 /* CaptchaDifficulty+Extensions.swift in Sources */,
 				035BE0912BDEA01E00F77D73 /* View+NavigationSheetModifiers.swift in Sources */,
 				CDAA02DB2C810DB200D75633 /* Calendar+Extensions.swift in Sources */,

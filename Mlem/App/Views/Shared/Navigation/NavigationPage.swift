@@ -93,7 +93,7 @@ enum NavigationPage: Hashable {
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case unavailableContentInfo
     case unsupportedVersion(_ account: AccountHashWrapper)
-    case postInfo(_ post: Post)
+    case postDetails(_ post: Post)
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.

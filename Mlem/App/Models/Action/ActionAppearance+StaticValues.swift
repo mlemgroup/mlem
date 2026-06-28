@@ -130,9 +130,9 @@ extension ActionAppearance {
         )
     }
     
-    static func postInfo() -> Self {
+    static func postDetails() -> Self {
         .init(
-            label: "Post Info",
+            label: "Post Details",
             isOn: false,
             color: .themedAccent,
             icon: Icons.infoCircle
