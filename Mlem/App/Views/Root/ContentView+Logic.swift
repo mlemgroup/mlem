@@ -14,7 +14,7 @@ import SwiftUI
 extension ContentView {
     func handleIncomingDeeplink(url: URL) {
         guard url.scheme == "mlem" else { return }
-        if url.absoluteString.hasPrefix("mlem://fediverse-auth/handoff") {
+        if url.absoluteString.hasPrefix("mlem://fediverse-auth/login") {
             handleHandoffDeeplink(url: url)
         } else {
             var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
@@ -28,7 +28,9 @@ extension ContentView {
         guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else { return }
         let session = queryItems.first { $0.name == "session" }?.value
         let handle = queryItems.first { $0.name == "actor" }?.value
-        guard let session, let handle, let personHandle = try? PersonHandle(string: handle) else { return }
+        guard let session,
+            let handle,
+            let personHandle = try? PersonHandle(string: handle, allowMissingPrefix: true) else { return }
 
         guard let defaultAccount = (appState.firstAccount as? UserAccount) ?? AccountsTracker.main.userAccounts.first else {
             return
