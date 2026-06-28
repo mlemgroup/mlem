@@ -195,29 +195,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
-        
-        if let tab_inbox_badgeIncludedTypes = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
-            self.tab_inbox_badgeIncludedTypes = tab_inbox_badgeIncludedTypes
-        } else {
-            let inbox_badge_includeApplications: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeApplications)
-            let inbox_badge_includeMessageReports: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMessageReports)
-            let inbox_badge_includeMod: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMod)
-            let inbox_badge_includePersonal: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includePersonal)
-            var includedTypes: Set<InboxItemType> = []
-            if inbox_badge_includePersonal ?? true {
-                includedTypes.formUnion([.reply, .mention, .message])
-            }
-            if inbox_badge_includeMod ?? true {
-                includedTypes.formUnion([.postReport, .commentReport])
-            }
-            if inbox_badge_includeMessageReports ?? true {
-                includedTypes.formUnion([.messageReport])
-            }
-            if inbox_badge_includeApplications ?? true {
-                includedTypes.insert(.registrationApplication)
-            }
-            self.tab_inbox_badgeIncludedTypes = includedTypes
-        }
+        self.tab_inbox_badgeIncludedTypes = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) ?? .all
+
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
         self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
