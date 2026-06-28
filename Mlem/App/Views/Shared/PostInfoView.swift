@@ -38,6 +38,7 @@ private struct InfoEntry {
 
 struct PostInfoView: View {
     @Environment(\.locale) var locale
+    @Environment(ToastModel.self) var toastModel
     
     let post: Post
     
@@ -171,7 +172,7 @@ struct PostInfoView: View {
                         Button {
                             if entry.copyable {
                                 UIPasteboard.general.string = "\(value)"
-                                ToastModel.main.add(.success("Copied"))
+                                toastModel.add(.success("Copied"))
                             }
                         } label: {
                             Text(verbatim: "\(value)")
