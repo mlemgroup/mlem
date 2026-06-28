@@ -212,7 +212,7 @@ internal extension LemmyConnection {
                 communityId: communityId,
                 page: pageInfo.cursor.pageNumber,
                 limit: pageInfo.limit,
-                type_: type?.lemmyApiType,
+                type_: type?.lemmyApiType(endpoint: endpoint),
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,
