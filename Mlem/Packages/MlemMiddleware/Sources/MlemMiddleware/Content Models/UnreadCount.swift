@@ -90,7 +90,7 @@ public final class UnreadCount {
     public func refresh() async throws {
         let values: Count = try await withThrowingTaskGroup(of: Count.self, returning: Count.self) { taskGroup in
             taskGroup.addTask {
-                let total = try await self.api.repository.getPersonalUnreadCount().total
+                let total = try await self.api.repository.getPersonalUnreadCount()
                 return .init(personal: total, moderation: 0)
             }
             if  self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
@@ -103,7 +103,7 @@ public final class UnreadCount {
                 if !(self.api.myPerson?.moderatedCommunities.value_?.isEmpty ?? false) || self.api.isAdmin {
                     taskGroup.addTask {
                         do {
-                            let total = try await self.api.repository.getReportCount(communityId: nil).total
+                            let total = try await self.api.repository.getReportCount(communityId: nil)
                             return .init(personal: 0, moderation: total)
                         } catch ApiClientError.notModOrAdmin {
                             return .init()

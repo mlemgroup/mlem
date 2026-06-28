@@ -129,10 +129,10 @@ public extension PieFedConnection {
         try await perform(request)
     }
     
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
+    func getPersonalUnreadCount() async throws -> Int {
         let request = PieFedGetUnreadCountRequest()
         let response = try await perform(request)
-        return try .init(from: response)
+        return response.replies + response.mentions + response.privateMessages + response.other
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {

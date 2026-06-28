@@ -171,11 +171,11 @@ internal extension LemmyConnection {
         }
     }
     
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
+    func getPersonalUnreadCount() async throws -> Int {
         let response = try await performingForEndpoint { endpoint in
             LemmyUnreadCountRequest()
         }
-        return try .init(from: response)
+        return response.replies + response.mentions + response.privateMessages
     }
     
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot {
