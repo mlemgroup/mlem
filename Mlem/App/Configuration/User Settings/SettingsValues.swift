@@ -195,7 +195,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
-        self.tab_inbox_badgeIncludedTypes = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) ?? .all
+        
+        if let types = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
+            self.tab_inbox_badgeIncludedTypes = types
+        } else if let types = try? container.decodeIfPresent(Set<LegacyInboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
+            self._tab_inbox_badgeIncludedTypes = .init(legacyTypes: types)
+        } else {
+            self._tab_inbox_badgeIncludedTypes = .all
+        }
 
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
         self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
@@ -312,7 +319,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_default = .subscribed
         self.feed_markReadOnScroll = false
         self.feed_showRead = true
-        self.tab_inbox_badgeIncludedTypes = [.reply, .mention, .message, .postReport, .commentReport, .messageReport, .registrationApplication]
+        self.tab_inbox_badgeIncludedTypes = [.personal, .moderation]
         self.inbox_showRead = true
         self.links_displayMode = .contextual
         self.links_openInBrowser = false

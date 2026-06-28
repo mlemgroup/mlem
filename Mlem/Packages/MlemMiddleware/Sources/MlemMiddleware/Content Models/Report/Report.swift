@@ -50,11 +50,11 @@ public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
         self.resolvedManager = .init(wrappedValue: resolved)
         resolvedManager.onSet = { newValue, type, _ in
             if type == .begin || type == .rollback {
-                api.unreadCount?.updateUnverifiedItem(itemType: target.type.inboxItemType, isRead: newValue)
+                api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue)
             }
         }
         resolvedManager.onVerify = { newValue, _ in
-            api.unreadCount?.verifyItem(itemType: target.type.inboxItemType, isRead: newValue)
+            api.unreadCount?.verifyItem(itemType: .moderation, isRead: newValue)
         }
     }
     

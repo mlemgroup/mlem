@@ -12,11 +12,7 @@ public struct PersonalUnreadCountSnapshot {
     let mentions: Int
     let messages: Int
     
-    var unreadCountDictionary: [InboxItemType: Int] {
-        [
-            .reply: replies,
-            .mention: mentions,
-            .message: messages
-        ]
+    var total: Int {
+        replies + mentions + messages
     }
 }

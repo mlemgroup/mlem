@@ -18,11 +18,7 @@ public struct ReportUnreadCountSnapshot {
         self.messages = response.privateMessageReports ?? 0
     }
     
-    var unreadCountDictionary: [InboxItemType: Int] {
-        [
-            .postReport: posts,
-            .commentReport: comments,
-            .messageReport: messages
-        ]
+    var total: Int {
+        comments + posts + messages
     }
 }

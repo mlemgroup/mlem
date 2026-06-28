@@ -40,13 +40,8 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     
     public func updateRead(_ newValue: Bool) {
         read = newValue
-        let type: InboxItemType = switch content.type {
-        case .mention: .mention
-        case .reply: .reply
-        case .message: .message
-        }
 
-        api.unreadCount?.updateUnverifiedItem(itemType: type, isRead: newValue)
+        api.unreadCount?.updateUnverifiedItem(itemType: .personal, isRead: newValue)
         Task {
             await updateQueue.addItem {
                 try await self.api.repository.markNotificationAsRead(
@@ -61,7 +56,7 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
                     throw ApiClientError.invalidInput
                 }
                 snapshot.read = newValue
-                self.api.unreadCount?.verifyItem(itemType: type, isRead: snapshot.read)
+                self.api.unreadCount?.verifyItem(itemType: .personal, isRead: snapshot.read)
                 return snapshot
             }
         }
