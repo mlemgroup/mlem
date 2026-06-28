@@ -46,18 +46,24 @@ extension ModlogEntryType {
         switch (self, endpoint) {
         case (.removePost, _): .modRemovePost
         case (.lockPost, _): .modLockPost
-        case (.pinPost, _): .modFeaturePost
+        case (.pinPost, .v3): .modFeaturePost
+        case (.pinPost, .v4): .modFeaturePostCommunity // TODO support site
         case (.purgePost, _): .adminPurgePost
         case (.removeComment, _): .modRemoveComment
         case (.purgeComment, _): .adminPurgeComment
-        case (.removeCommunity, _): .modRemoveCommunity
+        case (.removeCommunity, .v3): .modRemoveCommunity
+        case (.removeCommunity, .v4): .adminRemoveCommunity
         case (.purgeCommunity, _): .adminPurgeCommunity
-        case (.hideCommunity, _): .modHideCommunity
+        case (.hideCommunity, .v3): .modHideCommunity
+        case (.hideCommunity, .v4): .modChangeCommunityVisibility // TODO
         case (.transferCommunityOwnership, _): .modTransferCommunity
-        case (.updatePersonModeratorStatus, _): .modAddCommunity
-        case (.updatePersonAdminStatus, _): .modAdd
+        case (.updatePersonModeratorStatus, .v3): .modAddCommunity
+        case (.updatePersonModeratorStatus, .v4): .modAddToCommunity
+        case (.updatePersonAdminStatus, .v3): .modAdd
+        case (.updatePersonAdminStatus, .v4): .adminAdd
         case (.banPersonFromCommunity, _): .modBanFromCommunity
-        case (.banPersonFromInstance, _): .modBan
+        case (.banPersonFromInstance, .v3): .modBan
+        case (.banPersonFromInstance, .v4): .adminBan
         case (.purgePerson, _): .adminPurgePerson
         }
     }
