@@ -6,6 +6,7 @@
 //
 
 import LemmyMarkdownUI
+import MlemMiddleware
 import SwiftUI
 
 struct MarkdownWithLinkList: View {

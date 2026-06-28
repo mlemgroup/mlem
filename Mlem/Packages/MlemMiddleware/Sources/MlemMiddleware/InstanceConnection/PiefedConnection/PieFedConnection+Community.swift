@@ -23,6 +23,15 @@ internal extension PieFedConnection {
         throw ApiClientError.noEntityFound
     }
     
+    func getCommunity(handle: CommunityHandle) async throws -> Community2Snapshot {
+        let request = PieFedResolveObjectRequest(q: handle.description(withPrefix: true))
+        let response = try await perform(request)
+        if let community = response.community {
+            return try .init(from: community)
+        }
+        throw ApiClientError.noEntityFound
+    }
+    
     func searchCommunities(
         query: String,
         pageInfo: PageInfo,

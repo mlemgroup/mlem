@@ -259,6 +259,18 @@ class NavigationLayer: Identifiable {
             }
         }
     }
+
+    @MainActor
+    func dismissingActionSheet(_ callback: @escaping () -> Void) {
+        if case .actionSheet = root {
+            dismissSheet()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                callback()
+            }
+        } else {
+            callback()
+        }
+    }
     
     var isInsideSheet: Bool { index != -1 }
     

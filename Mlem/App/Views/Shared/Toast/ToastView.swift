@@ -90,7 +90,7 @@ struct ToastView: View {
         .clipShape(.rect(cornerRadius: 25))
         .shadow(color: .black.opacity(0.1), radius: 5)
         .shadow(color: .black.opacity(0.1), radius: 1)
-        .padding(.horizontal)
+        .padding(.horizontal, isExpanded ? 10 : 50)
     }
     
     @ViewBuilder
@@ -121,6 +121,7 @@ struct ToastView: View {
                             .contentTransition(.opacity)
                     }
                     .frame(minWidth: 80)
+                    .padding(.vertical, 5)
                 } else {
                     Text(title)
                         .lineLimit(1)

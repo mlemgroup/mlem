@@ -49,6 +49,34 @@ internal extension LemmyConnection {
         }
         return try .init(from: response)
     }
+
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot {
+        if handle.host == self.baseUrl.host() {
+            // Required to fix https://github.com/mlemgroup/mlem/issues/2341
+            let response = try await performingForEndpoint { endpoint in
+                LemmyReadPersonRequest(
+                    endpoint: endpoint,
+                    personId: nil,
+                    username: handle.username,
+                    sort: nil,
+                    page: 1,
+                    limit: 1,
+                    communityId: nil,
+                    savedOnly: nil
+                )
+            }
+            return try .init(from: response.personView)
+        }
+        let response = try await performingForEndpoint { endpoint in
+            LemmyResolveObjectRequest(endpoint: endpoint, q: handle.description(withPrefix: true))
+        }
+        switch try ResolvedContent(from: response) {
+        case let .person(person):
+            return person
+        default:
+            throw ApiClientError.noEntityFound
+        }
+    }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
@@ -309,12 +337,13 @@ internal extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }
@@ -389,12 +418,13 @@ internal extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }

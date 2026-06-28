@@ -400,6 +400,7 @@
 		03E46AD42D130728002589DB /* ScoringOperation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */; };
 		03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB2EC7A2BFADA8B00DBC0EF /* PostSize.swift */; };
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
+		03E70DAE2FE1BA5500EEA369 /* TranslatableMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E70DAD2FE1BA5500EEA369 /* TranslatableMarkdownView.swift */; };
 		03EC83252E916C51004698BB /* View+SafeAreaBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83242E916C51004698BB /* View+SafeAreaBar.swift */; };
 		03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC83ED2E958A44004698BB /* OpenGraph */; };
 		03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83EF2E9590D3004698BB /* LinkHostView.swift */; };
@@ -1020,6 +1021,7 @@
 		03E46AD12D130681002589DB /* VotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListView.swift; sourceTree = "<group>"; };
 		03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoringOperation+Extensions.swift"; sourceTree = "<group>"; };
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
+		03E70DAD2FE1BA5500EEA369 /* TranslatableMarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslatableMarkdownView.swift; sourceTree = "<group>"; };
 		03EC83242E916C51004698BB /* View+SafeAreaBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+SafeAreaBar.swift"; sourceTree = "<group>"; };
 		03EC83EF2E9590D3004698BB /* LinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkHostView.swift; sourceTree = "<group>"; };
 		03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorWebsitePreviewView.swift; sourceTree = "<group>"; };
@@ -2093,6 +2095,7 @@
 				03B431C12C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift */,
 				03B431B32C4481C3001A1EB5 /* MarkdownTextEditor.swift */,
 				03AB484E2CBAE33500567FF9 /* MarkdownWithLinkList.swift */,
+				03E70DAD2FE1BA5500EEA369 /* TranslatableMarkdownView.swift */,
 				03D3A1EE2BB9CA1D009DE55E /* MenuButton.swift */,
 				0316CD632C382A6A009EA8EA /* MessageView.swift */,
 				033F84652D1C780900D87A9E /* ModlogButtonView.swift */,
@@ -2802,6 +2805,7 @@
 				039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */,
 				CD332D792CA7175500A53988 /* PlayButton.swift in Sources */,
 				03A9FD1E2D7CFF0D007A734D /* Palette+Dracula.swift in Sources */,
+				03E70DAE2FE1BA5500EEA369 /* TranslatableMarkdownView.swift in Sources */,
 				03531EEC2C2D81DC004A3464 /* MediaAndLinksSettingsView.swift in Sources */,
 				038E5C132F6D617C00C54DEB /* ImageViewerSettingsView.swift in Sources */,
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
