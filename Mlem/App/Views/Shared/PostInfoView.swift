@@ -81,7 +81,7 @@ struct PostInfoView: View {
                             .init("Local ID", value: post.creatorId, copyable: true),
                             .init("Moderator", value: creatorIsModerator),
                             .init("Admin", value: creatorIsAdmin),
-                            .init("Banned from community", value: creatorBannedFromCommunity),
+                            .init("Banned from Community", value: creatorBannedFromCommunity),
                             .init("Blocked", value: creatorBlocked)
                         ])
                     }
@@ -176,8 +176,8 @@ struct PostInfoView: View {
                             }
                         } label: {
                             Text(verbatim: "\(value)")
+                                .contentShape(.rect)
                         }
-                        .contentShape(.rect)
                         .buttonStyle(.plain)
                     }
                 }
@@ -222,9 +222,9 @@ struct PostInfoView: View {
                 entry(.init("Poll", value: nil, valueExpected: false))
                 entryGrid([
                     .init("Type", value: poll.type.description, copyable: true),
-                    .init("Latest vote", value: poll.latestVote, copyable: true),
-                    .init("End date", value: poll.endDate, copyable: true),
-                    .init("Local only", value: poll.localOnly),
+                    .init("Latest Vote", value: poll.latestVote, copyable: true),
+                    .init("End Date", value: poll.endDate, copyable: true),
+                    .init("Local Only", value: poll.localOnly),
                     .init("Choices", value: nil, valueExpected: false)
                 ], isSubEntry: false)
                 entryGrid(poll.choices.map { .init("\($0.voteCount ?? 0)", value: $0.label) })
