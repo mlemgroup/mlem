@@ -137,7 +137,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         let constant: CGFloat = 15
         let calculatedHeight = constant + round((textView.contentSize.height - constant) / lineHeight) * lineHeight
           
-        // The "+ 1" fixes a bug in which there wouldn't be enough room to render a second line when using
+        // `sizingOffset` fixes a bug in which there wouldn't be enough room to render a second line when using
         // certain fonts (specifically, `.title2`). This would cause lines to sometimes not render. This
         // is probably a result of floating point error or something like that. This bug isn't a result
         // of the rounding logic above; it still happens when simply using `contentSize`.
