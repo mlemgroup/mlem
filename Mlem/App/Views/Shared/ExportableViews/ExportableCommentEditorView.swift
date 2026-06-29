@@ -15,6 +15,7 @@ struct ExportableCommentEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(\.colorScheme) var colorScheme
     
+    @Environment(\.self) var environment
     @Setting(\.appearance_palette) var palette
     @Setting(\.comment_createImage_showPost) var showPost: Bool
     @Setting(\.comment_createImage_showCreator) var showCreator: Bool
@@ -71,7 +72,12 @@ struct ExportableCommentEditorView: View {
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay { createImageFromView(exportableComment(data: data)) }
+            ExportableViewControlOverlay {
+                createImageFromView(
+                    exportableComment(data: data),
+                    environment: environment
+                )
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
