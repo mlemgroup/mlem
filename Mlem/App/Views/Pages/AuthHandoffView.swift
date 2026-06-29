@@ -165,7 +165,7 @@ struct AuthHandoffView: View {
             let person = try await account.api.getPerson(handle: personHandle)
             try await account.api.createMessage(
                 personId: person.id,
-                content: "\(session) \(String(localized: "Sent by Mlem to sign in to Canvas"))"
+                content: "\(String(localized: "Sent by Mlem to sign in to Canvas."))\n\n\(session)"
             )
             hapticManager.play(haptic: .success, tier: .low)
             if openedFromInAppBrowser {
