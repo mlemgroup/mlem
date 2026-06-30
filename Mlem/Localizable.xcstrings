@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "@%@" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -1898,6 +1901,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "Cannot translate from %@ to %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cannot translate from %1$@ to %2$@."
           }
         }
       }
@@ -6555,6 +6568,9 @@
         }
       }
     },
+    "Please return to Canvas." : {
+
+    },
     "Poll" : {
 
     },
@@ -8110,6 +8126,9 @@
         }
       }
     },
+    "Sent by Mlem to sign in to Canvas." : {
+
+    },
     "Separate" : {
 
     },
@@ -8356,6 +8375,9 @@
         }
       }
     },
+    "Show Original" : {
+
+    },
     "Show Parent" : {
       "localizations" : {
         "fr" : {
@@ -8456,6 +8478,9 @@
         }
       }
     },
+    "Sign In to Canvas" : {
+
+    },
     "Sign In to Lemmy" : {
       "localizations" : {
         "fr" : {
@@ -8502,6 +8527,9 @@
           }
         }
       }
+    },
+    "Signed In" : {
+
     },
     "Silver" : {
       "localizations" : {
@@ -9695,6 +9723,12 @@
         }
       }
     },
+    "Translate" : {
+
+    },
+    "Translated from %@" : {
+
+    },
     "Trending Communities" : {
       "localizations" : {
         "fr" : {
@@ -10195,6 +10229,9 @@
           }
         }
       }
+    },
+    "Unsupported Language" : {
+
     },
     "Upload" : {
       "localizations" : {
