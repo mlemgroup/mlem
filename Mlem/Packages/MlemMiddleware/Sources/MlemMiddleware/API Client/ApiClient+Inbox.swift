@@ -94,6 +94,7 @@ public extension ApiClient {
         }
     }
 
+    @discardableResult
     func createMessage(personId: Int, content: String) async throws -> Message2 {
         let snapshot = try await repository.createMessage(personId: personId, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
