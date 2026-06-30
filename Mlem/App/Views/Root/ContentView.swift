@@ -40,6 +40,7 @@ struct ContentView: View {
     var filtersTracker: FiltersTracker { .main }
     var errorsTracker: ErrorsTracker { .main }
     var backendClient: BackendClient { .main }
+    var hapticManager: HapticManager { .main }
     
     @State var avatarImage: UIImage?
     @State var selectedAvatarImage: UIImage?
@@ -125,13 +126,7 @@ struct ContentView: View {
                 }
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
-                .onOpenURL { url in
-                    guard url.scheme == "mlem" else { return }
-                    var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-                    components?.scheme = "https"
-                    guard let targetURL = components?.url else { return }
-                    navigationModel.pendingOpenURL = targetURL
-                }
+                .onOpenURL(perform: self.handleIncomingDeeplink)
         }
     }
     
@@ -160,7 +155,7 @@ struct ContentView: View {
                 imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
                 selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
                 onLongPress: {
-                    HapticManager.main.play(haptic: .rigidInfo, tier: .high)
+                    hapticManager.play(haptic: .rigidInfo, tier: .high)
                     
                     switch tabLongPressAction {
                     case .openAccountSwitcher:

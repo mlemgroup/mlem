@@ -94,6 +94,7 @@ enum NavigationPage: Hashable {
     case unavailableContentInfo
     case unsupportedVersion(_ account: AccountHashWrapper)
     case postDetails(_ post: Post)
+    case authHandoff(session: String, personHandle: PersonHandle, defaultAccount: UserAccount)
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
@@ -310,7 +311,7 @@ enum NavigationPage: Hashable {
     var hasNavigationStack: Bool {
         switch self {
         case .quickSwitcher, .report, .externalApiInfo, .selectText, .createComment,
-             .editComment, .createPost, .editPost, .denyApplication, .actionSheet:
+             .editComment, .createPost, .editPost, .denyApplication, .actionSheet, .authHandoff:
             false
         default:
             true
