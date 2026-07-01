@@ -1241,6 +1241,7 @@
       }
     },
     "Applications Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2382,6 +2383,7 @@
       }
     },
     "Comment Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2392,6 +2394,7 @@
       }
     },
     "Comment Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3742,6 +3745,7 @@
       }
     },
     "Except Applications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3752,6 +3756,7 @@
       }
     },
     "Except Comment Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3762,6 +3767,7 @@
       }
     },
     "Except Mentions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3772,6 +3778,7 @@
       }
     },
     "Except Message Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3782,6 +3789,7 @@
       }
     },
     "Except Messages" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3792,6 +3800,7 @@
       }
     },
     "Except Post Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3802,6 +3811,7 @@
       }
     },
     "Except Replies" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5397,6 +5407,7 @@
       }
     },
     "Mentions Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5407,6 +5418,7 @@
       }
     },
     "Message Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5417,6 +5429,7 @@
       }
     },
     "Message Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5447,6 +5460,7 @@
       }
     },
     "Messages Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6422,6 +6436,9 @@
         }
       }
     },
+    "Personal" : {
+
+    },
     "Personal Only" : {
       "localizations" : {
         "fr" : {
@@ -6638,6 +6655,7 @@
       }
     },
     "Post Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6648,6 +6666,7 @@
       }
     },
     "Post Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7442,6 +7461,7 @@
       }
     },
     "Registration Applications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7621,6 +7641,7 @@
       }
     },
     "Replies Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7727,6 +7748,7 @@
       }
     },
     "Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8625,6 +8647,7 @@
       }
     },
     "Some" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

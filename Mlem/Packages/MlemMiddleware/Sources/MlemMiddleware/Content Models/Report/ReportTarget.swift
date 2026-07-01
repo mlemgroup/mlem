@@ -80,12 +80,4 @@ public enum ReportTarget {
 
 public enum ReportType: Hashable {
     case post, comment, message
-    
-    var inboxItemType: InboxItemType {
-        switch self {
-        case .post: .postReport
-        case .comment: .commentReport
-        case .message: .messageReport
-        }
-    }
 }

@@ -420,7 +420,7 @@ internal protocol InstanceConnection {
     ) async throws
         
     func markAllAsRead() async throws
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot
+    func getPersonalUnreadCount() async throws -> Int
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot
@@ -453,7 +453,7 @@ internal protocol InstanceConnection {
     
     // MARK: - Report
     
-    func getReportCount(communityId: Int?) async throws -> ReportUnreadCountSnapshot
+    func getReportCount(communityId: Int?) async throws -> Int
     
     func getPostReports(
         pageInfo: PageInfo,
