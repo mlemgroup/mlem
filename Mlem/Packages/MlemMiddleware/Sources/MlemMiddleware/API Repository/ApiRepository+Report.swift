@@ -6,7 +6,7 @@
 //
 
 extension ApiRepository {
-    func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
+    func getReportCount(communityId: Int? = nil) async throws -> Int {
         try await performingForConnection { connection in
             try await connection.getReportCount(communityId: communityId)
         }

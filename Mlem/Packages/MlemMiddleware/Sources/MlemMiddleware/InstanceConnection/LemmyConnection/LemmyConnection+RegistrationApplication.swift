@@ -9,15 +9,16 @@ import Foundation
 
 internal extension LemmyConnection {
     func getRegistrationApplicationCount() async throws -> Int {
-        let response = try await performingForEndpoint { endpoint in
+        try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-            LemmyGetUnreadRegistrationApplicationCountRequest()
+                let response = try await self.perform(LemmyGetUnreadRegistrationApplicationCountRequest(), endpoint: .v3)
+                return response.registrationApplications
             case .v4:
-                throw ApiClientError.featureUnsupported
+                let response = try await self.perform(LemmyGetUnreadCountsRequest(), endpoint: .v4)
+                return response.registrationApplicationCount ?? 0
             }
         }
-        return response.registrationApplications
     }
     
     func getRegistrationApplications(
