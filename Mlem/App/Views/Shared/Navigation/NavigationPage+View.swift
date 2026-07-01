@@ -89,6 +89,8 @@ extension NavigationPage {
             .environment(\.communityContext, communityContext)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post)
+        case let .postDetails(post):
+            PostDetailsView(post: post)
         case let .comment(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
                 comment: comment,
@@ -248,6 +250,13 @@ extension NavigationPage {
             UnavailableContentInfoView()
         case let .unsupportedVersion(account):
             UnsupportedVersionWarningView(account: account.wrappedValue)
+        case let .authHandoff(session: session, personHandle: personHandle, defaultAccount: defaultAccount):
+            AuthHandoffView(
+                session: session,
+                personHandle: personHandle,
+                openedFromInAppBrowser: false,
+                defaultAccount: defaultAccount
+            )
         }
     }
 }
