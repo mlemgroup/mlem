@@ -38,7 +38,7 @@ public class DualSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
     ) -> (
         postFeedLoader: PostChildFeedLoader,
         commentFeedLoader: CommentChildFeedLoader,
-        savedFeedLoader: DualSourceMixedFeedLoader
+        parentFeedLoader: DualSourceMixedFeedLoader
     ) {
         let postFeedLoader: PostChildFeedLoader = .init(
             api: api,
@@ -54,13 +54,13 @@ public class DualSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
             filter: filter
         )
         
-        let savedFeedLoader: DualSourceMixedFeedLoader = .init(
+        let parentFeedLoader: DualSourceMixedFeedLoader = .init(
             api: api,
             pageSize: pageSize,
             sources: [postFeedLoader, commentFeedLoader],
             sortType: sortType
         )
         
-        return (postFeedLoader, commentFeedLoader, savedFeedLoader)
+        return (postFeedLoader, commentFeedLoader, parentFeedLoader)
     }
 }

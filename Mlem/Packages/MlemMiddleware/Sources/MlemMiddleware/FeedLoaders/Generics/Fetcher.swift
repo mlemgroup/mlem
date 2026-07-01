@@ -51,7 +51,7 @@ public class Fetcher<Item: FeedLoadable> {
 
         let response: PagedResponse<Item>
         do {
-             response = try await fetchContent(.init(cursor: cursor, limit: pageSize))
+            response = try await fetchContent(.init(cursor: cursor, limit: pageSize))
         } catch is CancellationError {
             return .cancelled
         }
