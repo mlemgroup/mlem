@@ -8,16 +8,18 @@
 import Foundation
 
 internal extension LemmyConnection {
-    func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
-        let response = try await performingForEndpoint { endpoint in
+    func getReportCount(communityId: Int? = nil) async throws -> Int {
+        try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-                LemmyReportCountRequest(communityId: communityId)
+                let response = try await self.perform(LemmyReportCountRequest(communityId: communityId), endpoint: .v3)
+                return response.postReports + response.commentReports
             case .v4:
-                throw ApiClientError.featureUnsupported
+                guard communityId == nil else { throw ApiClientError.featureUnsupported }
+                let response = try await self.perform(LemmyGetUnreadCountsRequest(), endpoint: .v4)
+                return response.notificationCount
             }
         }
-        return try .init(from: response)
     }
     
     func getPostReports(

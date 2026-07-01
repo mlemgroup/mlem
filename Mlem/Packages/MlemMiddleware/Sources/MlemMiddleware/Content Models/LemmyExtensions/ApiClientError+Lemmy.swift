@@ -21,6 +21,7 @@ extension ApiClientError {
             .missingTotp
         case "couldnt_find_person",
              "couldnt_find_object",
+             "resolve_object_failed",
              "No object found.":
             .noEntityFound
         case "instance_is_private":
