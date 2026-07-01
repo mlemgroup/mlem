@@ -20,6 +20,6 @@ extension URLRequest {
         "Body:"
         \(String(data: httpBody ?? Data(), encoding: .utf8)!)
         """
-        print("\(statement)")
+        Logger.universal.debug("\(statement)")
     }
 }
