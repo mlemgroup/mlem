@@ -78,7 +78,7 @@ extension ApiRepository {
         }
     }
     
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot {
+    func getPersonalUnreadCount() async throws -> Int {
         try await performingForConnection { connection in
             try await connection.getPersonalUnreadCount()
         }

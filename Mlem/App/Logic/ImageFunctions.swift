@@ -34,8 +34,12 @@ func saveMedia(url: URL) async {
 }
 
 @MainActor
-func createImageFromView(_ view: some View, dimensions: CGSize? = nil) -> UIImage? {
-    let renderer = ImageRenderer(content: view)
+func createImageFromView(
+    _ view: some View,
+    environment: EnvironmentValues,
+    dimensions: CGSize? = nil
+) -> UIImage? {
+    let renderer = ImageRenderer(content: view.environment(\.self, environment))
     renderer.scale = 3 // boost resolution to look better on larger devices
     if let dimensions {
         renderer.proposedSize = .init(dimensions)

@@ -54,11 +54,11 @@ public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
         self.resolutionManager = .init(wrappedValue: resolution)
         resolutionManager.onSet = { newValue, type, _ in
             if type == .begin || type == .rollback {
-                api.unreadCount?.updateUnverifiedItem(itemType: .registrationApplication, isRead: newValue != .unresolved)
+                api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue != .unresolved)
             }
         }
         resolutionManager.onVerify = { newValue, _ in
-            api.unreadCount?.verifyItem(itemType: .registrationApplication, isRead: newValue != .unresolved)
+            api.unreadCount?.verifyItem(itemType: .moderation, isRead: newValue != .unresolved)
         }
     }
     

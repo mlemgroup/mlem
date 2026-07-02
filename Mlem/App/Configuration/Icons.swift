@@ -229,6 +229,7 @@ enum Icons {
     static let undoCircleFill: String = "arrow.uturn.backward.circle.fill"
     static let errorCircleFill: String = "exclamationmark.circle.fill"
     static let proxy: String = "firewall"
+    static let infoCircle: String = "info.circle"
     
     // uptime
     static let uptimeOffline: String = "xmark.circle.fill"
