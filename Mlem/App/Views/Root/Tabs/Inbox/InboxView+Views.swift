@@ -47,18 +47,7 @@ extension InboxView {
                 BubblePicker(
                     ModTab.allCases,
                     selected: $selectedModTab,
-                    label: \.label,
-                    value: { tab in
-                        if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
-                            switch tab {
-                            case .reports:
-                                return unreadCount.reportTotal
-                            case .applications:
-                                return unreadCount.registrationApplications
-                            }
-                        }
-                        return 0
-                    }
+                    label: \.label
                 )
             }
             ForEach(currentModFeedLoader.items, id: \.inboxId) { item in
@@ -90,22 +79,7 @@ extension InboxView {
         BubblePicker(
             Tab.allCases,
             selected: $selectedTab,
-            label: \.label,
-            value: { tab in
-                if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
-                    switch tab {
-                    case .all:
-                        return unreadCount.personalTotal
-                    case .replies:
-                        return unreadCount.replies
-                    case .mentions:
-                        return unreadCount.mentions
-                    case .messages:
-                        return unreadCount.messages
-                    }
-                }
-                return 0
-            }
+            label: \.label
         )
         .background(.themedGroupedBackground.opacity(headerPinned ? 1 : 0))
         .background(.bar)
@@ -215,8 +189,8 @@ extension InboxView {
     var showBadge: Bool {
         guard let unreadCount = (appState.firstSession as? UserSession)?.unreadCount else { return false }
         switch selectedFeed {
-        case .inbox: return unreadCount.moderationTotal > 0
-        case .modMail: return unreadCount.personalTotal > 0
+        case .inbox: return unreadCount.moderation > 0
+        case .modMail: return unreadCount.personal > 0
         }
     }
 }

@@ -19,9 +19,14 @@ public protocol Handle: Hashable {
 }
 
 public extension Handle {
-    init(string: String) throws(HandleError) {
-        guard string.first == Self.prefix else { throw .invalidFormat }
-        let parts = string.dropFirst().split(separator: "@", maxSplits: 1)
+    init(string: String, allowMissingPrefix: Bool = false) throws(HandleError) {
+        var string = string[...]
+        if string.first == Self.prefix {
+            string = string.dropFirst()
+        } else if !allowMissingPrefix {
+            throw .invalidFormat
+        }
+        let parts = string.split(separator: "@", maxSplits: 1)
         try self.init(
             username: String(parts[0]),
             host: String(parts[1])

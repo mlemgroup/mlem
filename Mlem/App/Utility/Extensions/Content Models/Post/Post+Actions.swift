@@ -179,6 +179,14 @@ extension Post {
             }
     }
     
+    func postDetailsAction(navigation: NavigationLayer) -> BasicAction {
+        .init(
+            id: "postDetails\(uid)",
+            appearance: .postDetails()) {
+                navigation.openSheet(.postDetails(self))
+            }
+    }
+    
     func editAction(appState: AppState, navigation: NavigationLayer) -> BasicAction? {
         guard api.canInteract(appState: appState) else { return nil }
         return .init(
@@ -242,6 +250,7 @@ extension Post {
         case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
         case .share: return shareAction(navigation: navigation)
         case .selectText: return selectTextAction()
+        case .postDetails: return postDetailsAction(navigation: navigation)
         case .hide: return hideAction(appState: appState, feedback: feedback)
         case .block: return blockAction(appState: appState, feedback: feedback)
         case .report: return reportAction(appState: appState, communityContext: communityContext)

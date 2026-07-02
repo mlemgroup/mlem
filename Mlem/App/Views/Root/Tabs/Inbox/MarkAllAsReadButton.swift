@@ -49,7 +49,7 @@ struct MarkAllAsReadButton: ToolbarContent {
     }
     
     var newMessagesExist: Bool {
-        !animationPlaying && ((appState.firstSession as? UserSession)?.unreadCount?.personalTotal ?? 0) != 0
+        !animationPlaying && ((appState.firstSession as? UserSession)?.unreadCount?.personal ?? 0) != 0
     }
     
     @ViewBuilder

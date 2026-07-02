@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "@%@" : {
+
+    },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
         "en" : {
@@ -788,6 +791,9 @@
         }
       }
     },
+    "Actor ID" : {
+
+    },
     "Add" : {
       "localizations" : {
         "fr" : {
@@ -928,6 +934,9 @@
         }
       }
     },
+    "Admin" : {
+
+    },
     "Administration" : {
       "localizations" : {
         "fr" : {
@@ -1047,6 +1056,9 @@
           }
         }
       }
+    },
+    "Alt Text" : {
+
     },
     "Always" : {
       "localizations" : {
@@ -1229,6 +1241,7 @@
       }
     },
     "Applications Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1893,6 +1906,16 @@
         }
       }
     },
+    "Cannot translate from %@ to %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cannot translate from %1$@ to %2$@."
+          }
+        }
+      }
+    },
     "Captcha" : {
       "localizations" : {
         "fr" : {
@@ -1996,6 +2019,9 @@
           }
         }
       }
+    },
+    "Choices" : {
+
     },
     "Choose a community..." : {
       "localizations" : {
@@ -2357,6 +2383,7 @@
       }
     },
     "Comment Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2367,6 +2394,7 @@
       }
     },
     "Comment Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2647,6 +2675,9 @@
     "Consider choosing another instance, or asking your server administrators to upgrade." : {
 
     },
+    "Content" : {
+
+    },
     "Content & Notifications" : {
       "localizations" : {
         "fr" : {
@@ -2816,6 +2847,9 @@
         }
       }
     },
+    "Created" : {
+
+    },
     "Creator" : {
       "localizations" : {
         "fr" : {
@@ -2845,6 +2879,9 @@
           }
         }
       }
+    },
+    "Crossposts" : {
+
     },
     "Current Password" : {
       "localizations" : {
@@ -3432,6 +3469,9 @@
         }
       }
     },
+    "Downvotes" : {
+
+    },
     "Dracula" : {
       "localizations" : {
         "fr" : {
@@ -3542,6 +3582,9 @@
         }
       }
     },
+    "Empty" : {
+
+    },
     "Enable" : {
       "localizations" : {
         "fr" : {
@@ -3553,6 +3596,9 @@
       }
     },
     "Enable Notifications" : {
+
+    },
+    "End Date" : {
 
     },
     "end.of.feed.icon.1" : {
@@ -3699,6 +3745,7 @@
       }
     },
     "Except Applications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3709,6 +3756,7 @@
       }
     },
     "Except Comment Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3719,6 +3767,7 @@
       }
     },
     "Except Mentions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3729,6 +3778,7 @@
       }
     },
     "Except Message Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3739,6 +3789,7 @@
       }
     },
     "Except Messages" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3749,6 +3800,7 @@
       }
     },
     "Except Post Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3759,6 +3811,7 @@
       }
     },
     "Except Replies" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4939,6 +4992,9 @@
         }
       }
     },
+    "Language" : {
+
+    },
     "Large" : {
       "localizations" : {
         "fr" : {
@@ -4958,6 +5014,12 @@
           }
         }
       }
+    },
+    "Last Updated" : {
+
+    },
+    "Latest Vote" : {
+
     },
     "Learn more..." : {
       "localizations" : {
@@ -5029,6 +5091,9 @@
         }
       }
     },
+    "Link URL" : {
+
+    },
     "Literals" : {
       "localizations" : {
         "fr" : {
@@ -5098,6 +5163,9 @@
           }
         }
       }
+    },
+    "Local ID" : {
+
     },
     "Local Only" : {
       "localizations" : {
@@ -5169,6 +5237,9 @@
           }
         }
       }
+    },
+    "Locked" : {
+
     },
     "Log In" : {
       "localizations" : {
@@ -5336,6 +5407,7 @@
       }
     },
     "Mentions Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5346,6 +5418,7 @@
       }
     },
     "Message Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5356,6 +5429,7 @@
       }
     },
     "Message Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5386,6 +5460,7 @@
       }
     },
     "Messages Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5697,6 +5772,9 @@
           }
         }
       }
+    },
+    "My vote" : {
+
     },
     "Name" : {
       "localizations" : {
@@ -6358,6 +6436,9 @@
         }
       }
     },
+    "Personal" : {
+
+    },
     "Personal Only" : {
       "localizations" : {
         "fr" : {
@@ -6488,6 +6569,12 @@
         }
       }
     },
+    "Pinned to Community" : {
+
+    },
+    "Pinned to Instance" : {
+
+    },
     "Play" : {
       "localizations" : {
         "fr" : {
@@ -6497,6 +6584,12 @@
           }
         }
       }
+    },
+    "Please return to Canvas." : {
+
+    },
+    "Poll" : {
+
     },
     "Poll has ended" : {
       "localizations" : {
@@ -6527,6 +6620,9 @@
           }
         }
       }
+    },
+    "Post Details" : {
+
     },
     "Post Downvotes" : {
       "localizations" : {
@@ -6559,6 +6655,7 @@
       }
     },
     "Post Reports" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6569,6 +6666,7 @@
       }
     },
     "Post Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6942,6 +7040,9 @@
           }
         }
       }
+    },
+    "Read" : {
+
     },
     "Read %lld posts" : {
       "localizations" : {
@@ -7360,6 +7461,7 @@
       }
     },
     "Registration Applications" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7499,6 +7601,9 @@
         }
       }
     },
+    "Removed" : {
+
+    },
     "Removed: %@" : {
       "localizations" : {
         "fr" : {
@@ -7536,6 +7641,7 @@
       }
     },
     "Replies Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7642,6 +7748,7 @@
       }
     },
     "Reports Only" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8041,6 +8148,9 @@
         }
       }
     },
+    "Sent by Mlem to sign in to Canvas." : {
+
+    },
     "Separate" : {
 
     },
@@ -8287,6 +8397,9 @@
         }
       }
     },
+    "Show Original" : {
+
+    },
     "Show Parent" : {
       "localizations" : {
         "fr" : {
@@ -8387,6 +8500,9 @@
         }
       }
     },
+    "Sign In to Canvas" : {
+
+    },
     "Sign In to Lemmy" : {
       "localizations" : {
         "fr" : {
@@ -8433,6 +8549,9 @@
           }
         }
       }
+    },
+    "Signed In" : {
+
     },
     "Silver" : {
       "localizations" : {
@@ -8528,6 +8647,7 @@
       }
     },
     "Some" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -9453,6 +9573,9 @@
         }
       }
     },
+    "Thumbnail URL" : {
+
+    },
     "Tiled" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -9590,6 +9713,9 @@
         }
       }
     },
+    "Total" : {
+
+    },
     "Trailing" : {
       "localizations" : {
         "fr" : {
@@ -9619,6 +9745,12 @@
           }
         }
       }
+    },
+    "Translate" : {
+
+    },
+    "Translated from %@" : {
+
     },
     "Trending Communities" : {
       "localizations" : {
@@ -9702,6 +9834,9 @@
           }
         }
       }
+    },
+    "Type" : {
+
     },
     "Unavailable" : {
       "localizations" : {
@@ -10062,6 +10197,9 @@
         }
       }
     },
+    "Unread" : {
+
+    },
     "Unresolve" : {
       "localizations" : {
         "fr" : {
@@ -10114,6 +10252,9 @@
           }
         }
       }
+    },
+    "Unsupported Language" : {
+
     },
     "Upload" : {
       "localizations" : {
@@ -10204,6 +10345,9 @@
           }
         }
       }
+    },
+    "Upvotes" : {
+
     },
     "Use Alternate Layouts" : {
       "localizations" : {
@@ -10403,6 +10547,9 @@
           }
         }
       }
+    },
+    "Video URL" : {
+
     },
     "View All" : {
       "localizations" : {

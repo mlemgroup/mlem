@@ -18,6 +18,7 @@ struct ExportablePostEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
     
+    @Environment(\.self) var environment
     @Environment(\.colorScheme) var colorScheme
     @Setting(\.appearance_palette) var palette
     @Setting(\.post_createImage_showCommunity) var showCommunity
@@ -43,7 +44,9 @@ struct ExportablePostEditorView: View {
         }
         .presentationBackground(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
-            ExportableViewControlOverlay { createImageFromView(exportablePost) }
+            ExportableViewControlOverlay {
+                createImageFromView(exportablePost, environment: environment)
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

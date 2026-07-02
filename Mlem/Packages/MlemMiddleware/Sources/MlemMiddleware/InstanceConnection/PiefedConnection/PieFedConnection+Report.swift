@@ -8,7 +8,7 @@
 import Foundation
 
 public extension PieFedConnection {
-    func getReportCount(communityId: Int? = nil) async throws -> ReportUnreadCountSnapshot {
+    func getReportCount(communityId: Int? = nil) async throws -> Int {
         throw ApiClientError.featureUnsupported
     }
     

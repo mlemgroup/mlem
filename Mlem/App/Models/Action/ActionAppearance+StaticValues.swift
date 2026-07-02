@@ -130,6 +130,15 @@ extension ActionAppearance {
         )
     }
     
+    static func postDetails() -> Self {
+        .init(
+            label: "Post Details",
+            isOn: false,
+            color: .themedAccent,
+            icon: Icons.infoCircle
+        )
+    }
+    
     static func share() -> Self {
         .init(
             label: "Share...",
