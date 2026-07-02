@@ -14,14 +14,10 @@ extension ApiRepository {
         fileExtension: String,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
-        try await performingForConnection { connection in
-            try await connection.uploadImage(imageData, fileExtension: fileExtension, onProgress: progressCallback)
-        }
+        try await self.getConnection().uploadImage(imageData, fileExtension: fileExtension, onProgress: progressCallback)
     }
     
     func deleteImage(alias: String, deleteToken: String) async throws {
-        try await performingForConnection { connection in
-            try await connection.deleteImage(alias: alias, deleteToken: deleteToken)
-        }
+        try await self.getConnection().deleteImage(alias: alias, deleteToken: deleteToken)
     }
 }
