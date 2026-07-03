@@ -64,7 +64,7 @@ extension CrosspostAction {
             content: crossPostContent,
             type: entity.type,
             nsfw: entity.nsfw,
-            feedLoader: .init(wrappedValue: nil)
+            feedLoader: nil
         ))
     }
 }
