@@ -60,4 +60,18 @@ extension View {
             leadingBuffer: leadingBuffer
         ))
     }
+
+    @ViewBuilder
+    func quickSwipes(
+        entity: Any,
+        leading: [ActionSeed] = [],
+        trailing: [ActionSeed] = [],
+        leadingBuffer: SwipeBuffer
+    ) -> some View {
+        quickSwipes(
+            leading: leading.compactMap { $0.createAction(entity) },
+            trailing: trailing.compactMap { $0.createAction(entity) },
+            leadingBuffer: leadingBuffer
+        )
+    }
 }

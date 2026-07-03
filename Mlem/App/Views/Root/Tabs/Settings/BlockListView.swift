@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2024-11-09.
 //
 
+import Actions
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
@@ -54,10 +55,20 @@ struct BlockListView: View {
             case .people:
                 SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
                     PersonListRow(person, showBlockStatus: false)
+                        .quickSwipes(
+                            entity: person,
+                            trailing: [ActionSeed.block],
+                            leadingBuffer: .standard
+                        )
                 }
             case .communities:
                 SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
                     CommunityListRow(community, showBlockStatus: false)
+                        .quickSwipes(
+                            entity: community,
+                            trailing: [ActionSeed.block],
+                            leadingBuffer: .standard
+                        )
                 }
             case .instances:
                 instancesView
@@ -78,12 +89,22 @@ struct BlockListView: View {
         case let .stubs(stubs):
             ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
                 InstanceRow(instance: instance)
+                    .quickSwipes(
+                        entity: instance,
+                        trailing: [ActionSeed.block],
+                        leadingBuffer: .standard
+                    )
                     .padding(.horizontal, Constants.main.standardSpacing)
                     .padding(.bottom, Constants.main.halfSpacing)
             }
         case let .summaries(summaries):
-            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { community in
-                InstanceListRow(community, showBlockStatus: false)
+            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { instance in
+                InstanceListRow(instance, showBlockStatus: false)
+                    .quickSwipes(
+                        entity: instance,
+                        trailing: [ActionSeed.block],
+                        leadingBuffer: .standard
+                    )
             }
         }
     }

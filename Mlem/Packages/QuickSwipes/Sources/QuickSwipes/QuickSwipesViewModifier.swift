@@ -68,6 +68,7 @@ struct QuickSwipeViewModifier: ViewModifier {
                     }
                     Button("Cancel", role: .cancel) {}
                 }
+                .environment(\.quickSwipesEnabled, false)
         } else {
             content
                 .clipShape(.rect(cornerRadius: cornerRadius)) // clip entire view
