@@ -25,8 +25,8 @@ struct NavigationLayerView: View {
                 NavigationStack(path: $layer.path) {
                     rootView()
                         .environment(\.isRootView, true)
-                        .navigationDestination(for: NavigationPage.self) {
-                            $0.view()
+                        .navigationDestination(for: NavigationFrame.self) {
+                            NavigationFrameView(frame: $0)
                                 .environment(\.isRootView, false)
                         }
                 }
@@ -84,9 +84,9 @@ struct NavigationLayerView: View {
     @ViewBuilder
     private func innerRootView() -> some View {
         if let selectedDetent {
-            layer.root.sheetView(selectedDetent: selectedDetent)
+            layer.root.page.sheetView(selectedDetent: selectedDetent)
         } else {
-            layer.root.view()
+            layer.root.page.view()
         }
     }
     

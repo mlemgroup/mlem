@@ -83,7 +83,7 @@ private func _handleError(
 @MainActor
 private func showReauthSheet() {
     if let user = AppState.main.firstSession.account as? UserAccount,
-       !NavigationModel.main.layers.contains(where: { $0.root == .logIn(.reauth(user)) }) {
+       !NavigationModel.main.layers.contains(where: { $0.root.page == .logIn(.reauth(user)) }) {
         NavigationModel.main.openSheet(.logIn(.reauth(user)))
     }
 }
