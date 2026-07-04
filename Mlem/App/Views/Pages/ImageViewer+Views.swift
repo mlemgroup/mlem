@@ -36,7 +36,7 @@ extension ImageViewer {
         }
         .font(.title2)
         .fontWeight(.light)
-        .foregroundStyle(.white)
+        .buttonStyle(.plain)
         .labelStyle(.iconOnly)
         .opacity(controlOpacity)
     }
@@ -363,7 +363,6 @@ extension ImageViewer {
         }
         .padding(Constants.main.standardSpacing)
         .contentShape(.rect)
-        .foregroundStyle(.white)
         .font(.footnote)
     }
     
@@ -407,7 +406,6 @@ extension ImageViewer {
     @ViewBuilder
     var scaleDisplayContent: some View {
         Text(String(format: "%.1fx", scaleDisplayValue))
-            .foregroundStyle(.white)
             .padding(Constants.main.standardSpacing)
             .padding(.horizontal, Constants.main.halfSpacing)
     }
