@@ -196,7 +196,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
         
-        if let types = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
+        if let types = try? container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
             self.tab_inbox_badgeIncludedTypes = types
         } else if let types = try? container.decodeIfPresent(Set<LegacyInboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
             self._tab_inbox_badgeIncludedTypes = .init(legacyTypes: types)

@@ -129,22 +129,20 @@ struct ExpandedPostView<Content: View>: View {
                             ErrorView(errorDetails)
                                 .frame(maxWidth: .infinity)
                         } else if hasNoComments {
-                            noCommentsView
-                                .padding(.top, Constants.main.doubleSpacing)
-                        } else {
-                            switch tracker.loadingState {
-                            case .done:
-                                LazyVStack(spacing: 0) {
-                                    commentTree(tracker: tracker, scrollProxy: proxy)
-                                }
-                                .geometryGroup()
-                            default:
+                            if tracker.loadingState == .loading {
                                 ProgressView()
                                     .tint(.themedSecondary)
                                     .padding(.top, 50)
                                     // This prevents the tab bar going transparent whilst the comments are loading
                                     .padding(.bottom, 500)
                                     .frame(maxWidth: .infinity)
+                            } else {
+                                noCommentsView
+                                    .padding(.top, Constants.main.doubleSpacing)
+                            }
+                        } else {
+                            LazyVStack(spacing: 0) {
+                                commentTree(tracker: tracker, scrollProxy: proxy)
                             }
                         }
                     }
