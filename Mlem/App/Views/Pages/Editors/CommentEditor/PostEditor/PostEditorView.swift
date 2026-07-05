@@ -229,12 +229,14 @@ struct PostEditorView: View {
                     
                     VStack {
                         MarkdownTextEditor(
-                            onChange: {
+                            onChange: { newValue in
                                 // Avoid unnecessary view update
-                                if contentIsEmpty != $0.isEmpty {
-                                    contentIsEmpty = $0.isEmpty
+                                if contentIsEmpty != newValue.isEmpty {
+                                    contentIsEmpty = newValue.isEmpty
                                 }
-                                checkSlurFilter(text: $0, slurMatches: $bodySlurMatches)
+                                Task.detached {
+                                    await checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches)
+                                }
                             },
                             prompt: "Optional Description",
                             textView: contentTextView,

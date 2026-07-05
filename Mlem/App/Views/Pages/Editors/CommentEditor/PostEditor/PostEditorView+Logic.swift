@@ -160,8 +160,10 @@ extension PostEditorView {
     func checkSlurFilter(text: String, slurMatches: Binding<[String: String]>) {
         Task {
             let matches = await findSlurFilterMatches(text: text)
-            Task { @MainActor in
-                slurMatches.wrappedValue = matches
+            if slurMatches.wrappedValue != matches {
+                Task { @MainActor in
+                    slurMatches.wrappedValue = matches
+                }
             }
         }
     }
