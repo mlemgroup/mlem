@@ -16,8 +16,8 @@ class NavigationLayer: Identifiable {
     weak var model: NavigationModel?
     var index: Int
     
-    var root: NavigationPage
-    var path: [NavigationPage]
+    var root: NavigationFrame
+    var path: [NavigationFrame]
     var hasNavigationStack: Bool
     var isFullScreenCover: Bool
     var canDisplayToasts: Bool
@@ -38,8 +38,8 @@ class NavigationLayer: Identifiable {
     ) {
         self.model = model
         self.index = index
-        self.root = root
-        self.path = path
+        self.root = .init(page: root)
+        self.path = path.map { .init(page: $0) }
         self.hasNavigationStack = hasNavigationStack
         self.isFullScreenCover = isFullScreenCover
         self.canDisplayToasts = canDisplayToasts
@@ -51,7 +51,7 @@ class NavigationLayer: Identifiable {
         if hasNavigationStack {
             // This prevents keyboard animation glitches when navigating whilst the keyboard is open
             UIApplication.shared.firstKeyWindow?.endEditing(true)
-            path.append(page)
+            path.append(.init(page: page))
         } else {
             openSheet(page)
         }
@@ -65,9 +65,9 @@ class NavigationLayer: Identifiable {
             // This prevents keyboard animation glitches when navigating whilst the keyboard is open
             UIApplication.shared.firstKeyWindow?.endEditing(true)
             if path.isEmpty {
-                root = page
+                root.page = page
             } else {
-                path[path.count - 1] = page
+                path[path.count - 1].page = page
             }
         } else {
             openSheet(page)
@@ -115,7 +115,7 @@ class NavigationLayer: Identifiable {
             return
         }
         rootChangePending = true
-        if case .actionSheet = root {
+        if case .actionSheet = root.page {
             withAnimation {
                 if let detentsConfiguration = page.presentationDetentConfiguration {
                     if detentsConfiguration.detents.contains(.large), self.rootViewPresentationDetent != .large {
@@ -128,7 +128,7 @@ class NavigationLayer: Identifiable {
                 }
             } completion: {
                 withAnimation(.easeOut(duration: 0.3)) {
-                    self.root = page
+                    self.root = .init(page: page)
                     self.hasNavigationStack = page.hasNavigationStack
                 }
             }
@@ -262,7 +262,7 @@ class NavigationLayer: Identifiable {
 
     @MainActor
     func dismissingActionSheet(_ callback: @escaping () -> Void) {
-        if case .actionSheet = root {
+        if case .actionSheet = root.page {
             dismissSheet()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                 callback()
@@ -278,7 +278,7 @@ class NavigationLayer: Identifiable {
     var isAlive: Bool { model != nil }
     
     var isImageViewer: Bool {
-        switch root {
+        switch root.page {
         case .imageViewer: true
         default: false
         }

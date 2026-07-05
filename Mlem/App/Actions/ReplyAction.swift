@@ -53,7 +53,7 @@ extension ReplyAction {
         guard content.value.api.canInteract(appState: environment.appState) else { return .hidden }
 
         // Don't show the reply action for messages in the message feed
-        if case .message = self.content, case .messageFeed = environment.navigation?.path.last {
+        if case .message = self.content, case .messageFeed = environment.navigation?.path.last?.page {
             return .hidden
         }
 

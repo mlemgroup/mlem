@@ -10,11 +10,11 @@ import SwiftUI
 
 extension NavigationLink where Destination == Never {
     init(_ value: NavigationPage, @ViewBuilder label: () -> Label) {
-        self.init(value: value, label: label)
+        self.init(value: NavigationFrame(page: value), label: label)
     }
     
     init(_ titleKey: LocalizedStringResource, destination: NavigationPage) where Label == Text {
-        self.init(value: destination) { Text(titleKey) }
+        self.init(value: NavigationFrame(page: destination)) { Text(titleKey) }
     }
     
     init(
@@ -36,7 +36,7 @@ extension NavigationLink where Destination == Never {
     
     @_disfavoredOverload
     init(_ title: String, destination: NavigationPage) where Label == Text {
-        self.init(value: destination) { Text(title) }
+        self.init(value: NavigationFrame(page: destination)) { Text(title) }
     }
     
     init(
@@ -44,7 +44,9 @@ extension NavigationLink where Destination == Never {
         icon: Icon,
         destination: NavigationPage
     ) where Label == SwiftUI.Label<Text, Image> {
-        self.init(value: destination) { Label(String(localized: titleKey), icon: icon) }
+        self.init(value: NavigationFrame(page: destination)) {
+            Label(String(localized: titleKey), icon: icon)
+        }
     }
 }
 

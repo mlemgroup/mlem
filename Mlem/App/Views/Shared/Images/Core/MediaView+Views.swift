@@ -91,7 +91,7 @@ extension MediaView {
                         Button("Load directly from \(proxyBypass.host() ?? "unknown host")") {
                             if !bypassImageProxyShown {
                                 bypassImageProxyShown = true
-                                navigation.openSheet(.bypassImageProxyWarning {
+                                navigation.openSheet(.bypassImageProxy {
                                     Task {
                                         await loader.load(proxyBypass)
                                     }
