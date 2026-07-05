@@ -83,7 +83,7 @@ extension Post {
                     content: crossPostContent,
                     type: self.type,
                     nsfw: self.nsfw,
-                    feedLoader: .init(wrappedValue: nil)
+                    feedLoader: nil
                 ))
             }
         )

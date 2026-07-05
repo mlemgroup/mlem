@@ -10,9 +10,7 @@ import MlemBackend
 import MlemMiddleware
 import SwiftUI
 
-// swiftlint:disable file_length
-// swiftlint:disable:next type_body_length
-enum NavigationPage: Hashable {
+enum NavigationPage {
     case settings(_ page: SettingsPage = .root)
     case logIn(_ page: LoginPage = .pickInstance)
     case signUp(_ instance: Instance)
@@ -49,65 +47,76 @@ enum NavigationPage: Hashable {
     case person(_ person: Person, visitContext: VisitHistory.VisitContext = .other)
     case personStub(_ personStub: PersonStub, visitContext: VisitHistory.VisitContext = .other)
     case instance(_ instance: Instance, visitContext: VisitHistory.VisitContext = .other)
-    case instanceStub(_ instanceStub: InstanceStub, targetPage: HashWrapper<(Instance) -> NavigationPage>)
+    case instanceStub(_ instanceStub: InstanceStub, targetPage: (Instance) -> NavigationPage)
     case instanceOpinionList(instance: Instance, opinionType: FediseerOpinionType, data: FediseerData)
-    case messageFeed(_ person: Person, messageContent: String, focusTextField: Bool, editing: MessageHashWrapper?)
+    case messageFeed(
+        _ person: Person,
+        messageContent: String = "",
+        focusTextField: Bool = false,
+        editing: (any Message1Providing)? = nil
+    )
     case fediseerInfo
     case instanceUptime(_ instance: Instance, uptimeData: UptimeData)
     case externalApiInfo(api: ApiClient, actorId: ActorIdentifier)
     case imageViewer(_ url: URL)
-    case communityPicker(api: ApiClient?, callback: HashWrapper<(Community, NavigationLayer) -> Void>)
-    case personPicker(api: ApiClient?, filter: ListingType, callback: HashWrapper<(Person, NavigationLayer) -> Void>)
-    case instancePicker(callback: HashWrapper<(InstanceSummary, NavigationLayer) -> Void>, requiredFeature: Feature? = nil)
-    case languagePicker(selectedLanguages: Set<Locale.Language>, callback: HashWrapper<(Locale.Language) -> Void>)
+    case communityPicker(
+        api: ApiClient? = nil,
+        callback: (Community, NavigationLayer) -> Void
+    )
+    case personPicker(
+        api: ApiClient? = nil,
+        filter: ListingType = .all,
+        callback: (Person, NavigationLayer) -> Void
+    )
+    case instancePicker(
+        callback: (InstanceSummary, NavigationLayer) -> Void,
+        requiredFeature: Feature? = nil
+    )
+    case languagePicker(selectedLanguages: Set<Locale.Language>, callback: (Locale.Language) -> Void)
     case selectText(_ string: String)
-    case shareInstancePicker(_ sharable: SharableHashWrapper)
+    case shareInstancePicker(_ sharable: any Sharable & ContentModel)
     case subscriptionList
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community)
     case editNote(_ person: Person)
-    case report(_ interactable: ReportableHashWrapper, community: Community? = nil)
-    case remove(_ removable: RemovableHashWrapper)
-    case purge(_ purgable: PurgableHashWrapper)
+    case report(_ interactable: any ReportableProviding, community: Community? = nil)
+    case remove(_ removable: any RemovableProviding)
+    case purge(_ purgable: any PurgableProviding)
     case ban(_ person: Person, isBannedFromCommunity: Bool, shouldBan: Bool, community: Community?)
     case createPost(
-        community: Community?,
-        title: String,
-        content: String?,
-        type: PostType?,
-        nsfw: Bool,
-        feedLoader: HashWrapper<(any FeedLoading)?>
+        community: Community? = nil,
+        title: String = "",
+        content: String? = nil,
+        type: PostType? = nil,
+        nsfw: Bool = false,
+        feedLoader: (any FeedLoading)? = nil
     )
     case editPost(_ post: Post)
     case deleteAccount(_ account: UserAccount)
-    case bypassImageProxy(callback: HashWrapper<() -> Void>)
+    case bypassImageProxy(callback: () -> Void)
     case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
-    case rulesList(_ model: Profile2HashWrapper, callback: HashWrapper<(String) -> Void>)
+    case rulesList(_ model: any ProfileProviding, callback: (String) -> Void)
     case blockList
-    case advancedSorting(_ sort: HashWrapper<Binding<PostSortType>>)
+    case advancedSorting(_ sort: Binding<PostSortType>)
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget, targetPerson: Person?, moderatorPerson: Person?)
     case denyApplication(RegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case unavailableContentInfo
-    case unsupportedVersion(_ account: AccountHashWrapper)
+    case unsupportedVersion(_ account: any Account)
     case postDetails(_ post: Post)
     case authHandoff(session: String, personHandle: PersonHandle, defaultAccount: UserAccount)
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
     case actionSheet(
-        _ actions: HashWrapper<[ActionSheetSection]>,
-        environment: HashWrapper<EnvironmentValues>,
+        _ actions: [ActionSheetSection],
+        environment: EnvironmentValues,
         configuration: ContextMenuSettingsPage?
     )
 
-    static func shareInstancePicker(_ sharable: any Sharable & ContentModel) -> NavigationPage {
-        shareInstancePicker(.init(wrappedValue: sharable))
-    }
-    
     static func modlog(
         community: Community,
         targetPerson: Person? = nil,
@@ -131,32 +140,10 @@ enum NavigationPage: Hashable {
         modlog(.currentInstance, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
     }
     
-    static func messageFeed(
-        _ person: Person,
-        messageContent: String = "",
-        focusTextField: Bool = false,
-        editing: (any Message1Providing)? = nil
-    ) -> NavigationPage {
-        var editingWrapper: MessageHashWrapper?
-        if let editing {
-            editingWrapper = .init(wrappedValue: editing)
-        }
-        return messageFeed(
-            person,
-            messageContent: messageContent,
-            focusTextField: focusTextField,
-            editing: editingWrapper
-        )
-    }
-    
     static func instanceStub(_ stub: InstanceStub, visitContext: VisitHistory.VisitContext = .other) -> NavigationPage {
-        .instanceStub(stub, targetPage: .init(wrappedValue: { .instance($0, visitContext: visitContext) }))
+        .instanceStub(stub, targetPage: { .instance($0, visitContext: visitContext) })
     }
-    
-    static func instanceStub(_ stub: InstanceStub, targetPage: @escaping (Instance) -> NavigationPage) -> NavigationPage {
-        .instanceStub(stub, targetPage: .init(wrappedValue: targetPage))
-    }
-    
+
     static func hostInstance(
         of entity: any ActorIdentifiable,
         visitContext: VisitHistory.VisitContext = .other
@@ -172,35 +159,6 @@ enum NavigationPage: Hashable {
         return .instanceStub(.init(api: AppState.main.firstApi, actorId: .instance(host: entity.actorId.host)))
     }
     
-    static func communityPicker(
-        api: ApiClient? = nil,
-        callback: @escaping (Community, NavigationLayer) -> Void
-    ) -> NavigationPage {
-        communityPicker(api: api, callback: .init(wrappedValue: callback))
-    }
-    
-    static func personPicker(
-        api: ApiClient? = nil,
-        filter: ListingType = .all,
-        callback: @escaping (Person, NavigationLayer) -> Void
-    ) -> NavigationPage {
-        personPicker(api: api, filter: filter, callback: .init(wrappedValue: callback))
-    }
-    
-    static func instancePicker(
-        callback: @escaping (InstanceSummary, NavigationLayer) -> Void,
-        requiredFeature: Feature? = nil
-    ) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: callback), requiredFeature: requiredFeature)
-    }
-    
-    static func languagePicker(
-        selectedLanguages: Set<Locale.Language>,
-        callback: @escaping (Locale.Language) -> Void
-    ) -> NavigationPage {
-        languagePicker(selectedLanguages: selectedLanguages, callback: .init(wrappedValue: callback))
-    }
-    
     static func signUp() -> NavigationPage {
         .instancePicker(callback: { instance, navigation in
             Task { @MainActor in
@@ -210,19 +168,19 @@ enum NavigationPage: Hashable {
     }
     
     static func signUp(_ stub: InstanceStub) -> NavigationPage {
-        .instanceStub(stub, targetPage: .init(wrappedValue: { .signUp($0) }))
+        .instanceStub(stub, targetPage: { .signUp($0) })
     }
     
     static func communityPicker(
         api: ApiClient? = nil,
         callback: @escaping (Community) -> Void
     ) -> NavigationPage {
-        communityPicker(api: api, callback: .init(wrappedValue: { value, navigation in
+        communityPicker(api: api, callback: { value, navigation in
             Task { @MainActor in
                 navigation.dismissSheet()
                 callback(value)
             }
-        }))
+        })
     }
     
     static func personPicker(
@@ -230,80 +188,37 @@ enum NavigationPage: Hashable {
         filter: ListingType = .all,
         callback: @escaping (Person) -> Void
     ) -> NavigationPage {
-        personPicker(api: api, filter: filter, callback: .init(wrappedValue: { value, navigation in
+        personPicker(api: api, filter: filter, callback: { value, navigation in
             Task { @MainActor in
                 navigation.dismissSheet()
                 callback(value)
             }
-        }))
+        })
     }
     
     static func instancePicker(
         callback: @escaping (InstanceSummary) -> Void,
         requiredFeature: Feature? = nil
     ) -> NavigationPage {
-        instancePicker(callback: .init(wrappedValue: { value, navigation in
-            Task { @MainActor in
-                navigation.dismissSheet()
-                callback(value)
-            }
-        }), requiredFeature: requiredFeature)
-    }
-    
-    static func createPost(
-        community: Community?,
-        title: String = "",
-        content: String? = nil,
-        type: PostType?,
-        nsfw: Bool = false,
-        feedLoader: (any FeedLoading)?
-    ) -> NavigationPage {
-        return createPost(
-            community: community,
-            title: title,
-            content: content,
-            type: type,
-            nsfw: nsfw,
-            feedLoader: .init(wrappedValue: feedLoader)
+        instancePicker(
+            callback: { value, navigation in
+                Task { @MainActor in
+                    navigation.dismissSheet()
+                    callback(value)
+                }
+            },
+            requiredFeature: requiredFeature
         )
     }
-
-    static func report(_ interactable: any ReportableProviding, community: Community?) -> NavigationPage {
-        return report(.init(wrappedValue: interactable), community: community)
-    }
     
-    static func remove(_ interactable: any RemovableProviding) -> NavigationPage {
-        remove(.init(wrappedValue: interactable))
-    }
-    
-    static func purge(_ purgable: any PurgableProviding) -> NavigationPage {
-        purge(.init(wrappedValue: purgable))
-    }
-    
-    static func bypassImageProxyWarning(callback: @escaping () -> Void) -> NavigationPage {
-        bypassImageProxy(callback: .init(wrappedValue: callback))
-    }
-    
-    static func rulesList(_ model: any ProfileProviding, callback: @escaping (String) -> Void) -> NavigationPage {
-        rulesList(.init(wrappedValue: model), callback: .init(wrappedValue: callback))
-    }
-    
-    static func advancedSorting(_ sort: Binding<PostSortType>) -> NavigationPage {
-        advancedSorting(.init(wrappedValue: sort))
-    }
-
-    static func unsupportedVersion(_ account: any Account) -> NavigationPage {
-        unsupportedVersion(.init(wrappedValue: account))
-    }
-
     static func actionSheet(
         _ actions: [ActionSheetSection],
         environment: EnvironmentValues,
         configuration: ReferenceWritableKeyPath<SettingsValues, some ContextMenuConfiguration>? = nil
     ) -> NavigationPage {
         actionSheet(
-            .init(wrappedValue: actions),
-            environment: .init(wrappedValue: environment),
+            actions,
+            environment: environment,
             configuration: configuration.map(ContextMenuSettingsPage.init)
         )
     }
@@ -327,102 +242,3 @@ enum NavigationPage: Hashable {
         }
     }
 }
-
-struct HashWrapper<Value>: Hashable, Identifiable {
-    let wrappedValue: Value
-    let id = UUID()
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    static func == (lhs: HashWrapper, rhs: HashWrapper) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-struct AccountHashWrapper: Hashable {
-    var wrappedValue: any Account
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: AccountHashWrapper, rhs: AccountHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct ReportableHashWrapper: Hashable {
-    var wrappedValue: any ReportableProviding
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: ReportableHashWrapper, rhs: ReportableHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct SharableHashWrapper: Hashable {
-    var wrappedValue: any Sharable & ContentModel
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: SharableHashWrapper, rhs: SharableHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct RemovableHashWrapper: Hashable {
-    var wrappedValue: any RemovableProviding
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: RemovableHashWrapper, rhs: RemovableHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct PurgableHashWrapper: Hashable {
-    var wrappedValue: any PurgableProviding
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.hashValue)
-    }
-    
-    static func == (lhs: PurgableHashWrapper, rhs: PurgableHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct Profile2HashWrapper: Hashable {
-    var wrappedValue: any ProfileProviding
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.actorId)
-    }
-    
-    static func == (lhs: Profile2HashWrapper, rhs: Profile2HashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-struct MessageHashWrapper: Hashable {
-    var wrappedValue: any Message1Providing
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(wrappedValue.actorId)
-    }
-    
-    static func == (lhs: MessageHashWrapper, rhs: MessageHashWrapper) -> Bool {
-        lhs.hashValue == rhs.hashValue
-    }
-}
-
-// swiftlint:enable file_length

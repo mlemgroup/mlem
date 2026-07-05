@@ -77,7 +77,7 @@ class CommentTreeTracker: Hashable {
             if let ensuredComment {
                 let comment = try await ensuredComment.asComment()
                 let api = root.wrappedValue.api
-                if !nodesKeyedByActorId.keys.contains(comment.actorId) {
+                if !nodesKeyedByActorId.keys.contains(comment.actorId), !newComments.contains(where: { $0.actorId == comment.actorId }) {
                     // Find the first parent of the ensured comment that isn't in `newComments`.
                     // This will be the starting point for the second page of comments to load.
                     let idsToSearch = comment.parentCommentIds + [comment.id]

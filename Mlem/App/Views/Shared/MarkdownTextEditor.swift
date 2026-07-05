@@ -116,6 +116,16 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
                 height: CGFloat.greatestFiniteMagnitude
             )
         )
+
+        // Make the text view width equal to the current width before calling `sizeToFit`.
+        // Fixes #2779.
+        //
+        // `sizeToFit` measures against the text view's current bounds width, which on the
+        // first layout pass is infinite. This caused the text editor to calculate the
+        // incorrect height on the first pass.
+        if dimensions.width > 0 {
+            textView.frame.size.width = dimensions.width
+        }
         textView.sizeToFit()
 
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
@@ -127,7 +137,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         let constant: CGFloat = 15
         let calculatedHeight = constant + round((textView.contentSize.height - constant) / lineHeight) * lineHeight
           
-        // The "+ 1" fixes a bug in which there wouldn't be enough room to render a second line when using
+        // `sizingOffset` fixes a bug in which there wouldn't be enough room to render a second line when using
         // certain fonts (specifically, `.title2`). This would cause lines to sometimes not render. This
         // is probably a result of floating point error or something like that. This bug isn't a result
         // of the rounding logic above; it still happens when simply using `contentSize`.

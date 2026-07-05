@@ -9,12 +9,12 @@ import LemmyMarkdownUI
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-enum SettingsPage: Hashable {
-    enum ContentActionType: Hashable {
+enum SettingsPage {
+    enum ContentActionType {
         case post, comment, inboxNotification, postReport, commentReport
     }
 
-    enum SwipeActionSettingType: Hashable {
+    enum SwipeActionSettingType {
         case post, comment, inboxNotification, postReport, commentReport, community, person, instance
     }
 
@@ -41,11 +41,11 @@ enum SettingsPage: Hashable {
     case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
-    case postBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
-    case commentBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
-    case replyBarWidgetPicker(HashWrapper<Binding<ReplyBarConfiguration>>)
-    case postReportBarWidgetPicker(HashWrapper<Binding<PostBarConfiguration>>)
-    case commentReportBarWidgetPicker(HashWrapper<Binding<CommentBarConfiguration>>)
+    case postBarWidgetPicker(Binding<PostBarConfiguration>)
+    case commentBarWidgetPicker(Binding<CommentBarConfiguration>)
+    case replyBarWidgetPicker(Binding<ReplyBarConfiguration>)
+    case postReportBarWidgetPicker(Binding<PostBarConfiguration>)
+    case commentReportBarWidgetPicker(Binding<CommentBarConfiguration>)
     case moderation
     case modMailInteractionBar
     case separateModeratorActions
@@ -268,15 +268,15 @@ enum SettingsPage: Hashable {
                 InteractionBarEditorView(setting: \.interactionBar_commentReport, isReport: true)
             }
         case let .postBarWidgetPicker(configuration):
-            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentBarWidgetPicker(configuration):
-            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
         case let .replyBarWidgetPicker(configuration):
-            InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration.wrappedValue)
+            InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration)
         case let .postReportBarWidgetPicker(configuration):
-            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration.wrappedValue)
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentReportBarWidgetPicker(configuration):
-            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration.wrappedValue)
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:
@@ -295,28 +295,8 @@ enum SettingsPage: Hashable {
         #endif
         }
     }
-    
-    static func postBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
-        .postBarWidgetPicker(.init(wrappedValue: configuration))
-    }
-    
-    static func commentBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
-        .commentBarWidgetPicker(.init(wrappedValue: configuration))
-    }
-    
-    static func replyBarWidgetPicker(_ configuration: Binding<ReplyBarConfiguration>) -> SettingsPage {
-        .replyBarWidgetPicker(.init(wrappedValue: configuration))
-    }
-    
-    static func postReportBarWidgetPicker(_ configuration: Binding<PostBarConfiguration>) -> SettingsPage {
-        .postReportBarWidgetPicker(.init(wrappedValue: configuration))
-    }
-    
-    static func commentReportBarWidgetPicker(_ configuration: Binding<CommentBarConfiguration>) -> SettingsPage {
-        .commentReportBarWidgetPicker(.init(wrappedValue: configuration))
-    }
 }
-
+    
 private struct SimpleMarkdownPage: View {
     @Environment(\.palette) var palette
     
