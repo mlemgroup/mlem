@@ -157,20 +157,21 @@ extension PostEditorView {
         }
     }
     
-    func checkSlurFilter(text: String, slurMatches: Binding<[String: String]>) {
-        Task {
+    func checkSlurFilter(text: String, slurMatches: Binding<[String: String]>, pendingTask: Binding<Task<Void, Never>?>) {
+        pendingTask.wrappedValue?.cancel()
+        pendingTask.wrappedValue = Task {
+            try? await Task.sleep(for: .milliseconds(400))
+            guard !Task.isCancelled else { return }
             let matches = await findSlurFilterMatches(text: text)
             if slurMatches.wrappedValue != matches {
-                Task { @MainActor in
-                    slurMatches.wrappedValue = matches
-                }
+                slurMatches.wrappedValue = matches
             }
         }
     }
-    
+
     func checkSlurFilters() {
-        checkSlurFilter(text: contentTextView.text, slurMatches: $bodySlurMatches)
-        checkSlurFilter(text: titleTextView.text, slurMatches: $titleSlurMatches)
+        checkSlurFilter(text: contentTextView.text, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
+        checkSlurFilter(text: titleTextView.text, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
     }
     
     /// Checks if the given text fails `slurRegex` and updates the given `String?` binding to the current

@@ -50,6 +50,8 @@ struct PostEditorView: View {
     
     @State var titleSlurMatches: [String: String] = .init()
     @State var bodySlurMatches: [String: String] = .init()
+    @State var titleSlurTask: Task<Void, Never>?
+    @State var bodySlurTask: Task<Void, Never>?
     
     var feedLoader: (any FeedLoading)?
     
@@ -190,7 +192,7 @@ struct PostEditorView: View {
                                 if titleIsEmpty != $0.isEmpty {
                                     titleIsEmpty = $0.isEmpty
                                 }
-                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches)
+                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
                             },
                             prompt: "Title",
                             textView: titleTextView,
@@ -234,9 +236,7 @@ struct PostEditorView: View {
                                 if contentIsEmpty != newValue.isEmpty {
                                     contentIsEmpty = newValue.isEmpty
                                 }
-                                Task.detached {
-                                    await checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches)
-                                }
+                                checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
                             },
                             prompt: "Optional Description",
                             textView: contentTextView,
