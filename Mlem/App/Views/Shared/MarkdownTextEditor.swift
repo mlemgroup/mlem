@@ -162,12 +162,12 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
         func textViewDidChange(_ textView: UITextView) {
             parent.onChange(textView.text)
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             textView.sizeToFit()
         }
-        
+
         func textViewDidBeginEditing(_ textView: UITextView) {
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             parent.onBeginEditing()
         }
     }
