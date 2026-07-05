@@ -6,6 +6,7 @@
 //
 
 import Actions
+import Haptics
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
@@ -13,6 +14,7 @@ import Theming
 
 struct BlockListView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     
     enum Tab: CaseIterable, Identifiable {
         case people, communities, instances
@@ -37,6 +39,8 @@ struct BlockListView: View {
     @State var people: [Person] = []
     @State var communities: [Community] = []
     @State var instances: InstanceInfo = .stubs([])
+
+    @State var isEditing: Bool = false
     
     var body: some View {
         FancyScrollView {
@@ -54,27 +58,26 @@ struct BlockListView: View {
             switch selectedTab {
             case .people:
                 SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
-                    PersonListRow(person, showBlockStatus: false)
-                        .quickSwipes(
-                            entity: person,
-                            trailing: [ActionSeed.block],
-                            leadingBuffer: .standard
-                        )
+                    deleteButton(entity: person) {
+                        PersonListRow(person, showBlockStatus: false)
+                    }
                 }
             case .communities:
                 SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
-                    CommunityListRow(community, showBlockStatus: false)
-                        .quickSwipes(
-                            entity: community,
-                            trailing: [ActionSeed.block],
-                            leadingBuffer: .standard
-                        )
+                    deleteButton(entity: community) {
+                        CommunityListRow(community, showBlockStatus: false)
+                    }
                 }
             case .instances:
                 instancesView
             }
         }
         .themedGroupedBackground()
+        .toolbar {
+            Button(isEditing ? "Done" : "Edit") {
+                isEditing.toggle()
+            }
+        }
         .onAppear {
             Task { @MainActor in
                 await refresh()
@@ -88,25 +91,41 @@ struct BlockListView: View {
         switch instances {
         case let .stubs(stubs):
             ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
-                InstanceRow(instance: instance)
-                    .quickSwipes(
-                        entity: instance,
-                        trailing: [ActionSeed.block],
-                        leadingBuffer: .standard
-                    )
-                    .padding(.horizontal, Constants.main.standardSpacing)
-                    .padding(.bottom, Constants.main.halfSpacing)
+                deleteButton(entity: instance) {
+                    InstanceRow(instance: instance)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                }
+                .padding(.bottom, Constants.main.halfSpacing)
             }
         case let .summaries(summaries):
             SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { instance in
-                InstanceListRow(instance, showBlockStatus: false)
-                    .quickSwipes(
-                        entity: instance,
-                        trailing: [ActionSeed.block],
-                        leadingBuffer: .standard
-                    )
+                deleteButton(entity: instance) {
+                    InstanceListRow(instance, showBlockStatus: false)
+                }
             }
         }
+    }
+
+    @ViewBuilder
+    func deleteButton(
+        entity: any Blockable,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        HStack {
+            content()
+            if isEditing {
+                Button("Unblock", icon: .lemmy.unblock) {
+                    withAnimation {
+                        entity.updateBlocked?(false, nil)
+                        hapticManager.play(haptic: .lightSuccess, tier: .low)
+                    }
+                }
+                .labelStyle(.iconOnly)
+                .foregroundStyle(.themedNegative)
+                .padding(.horizontal, Constants.main.halfSpacing)
+            }
+        }
+        .animation(.default, value: isEditing)
     }
 
     func refresh() async {
