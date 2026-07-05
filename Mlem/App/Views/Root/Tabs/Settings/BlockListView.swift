@@ -93,8 +93,8 @@ struct BlockListView: View {
             ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
                 deleteButton(entity: instance) {
                     InstanceRow(instance: instance)
-                        .padding(.horizontal, Constants.main.standardSpacing)
                 }
+                .padding(.horizontal, Constants.main.standardSpacing)
                 .padding(.bottom, Constants.main.halfSpacing)
             }
         case let .summaries(summaries):
@@ -116,7 +116,11 @@ struct BlockListView: View {
             if isEditing {
                 Button("Unblock", icon: .lemmy.unblock) {
                     withAnimation {
-                        entity.updateBlocked?(false, nil)
+                        if entity is any InstanceActionProviding, let session = (appState.firstSession as? UserSession) {
+                            session.updateInstanceBlock(actorId: entity.actorId, shouldBlock: false) 
+                        } else {
+                            entity.updateBlocked?(false, nil)
+                        }
                         hapticManager.play(haptic: .lightSuccess, tier: .low)
                     }
                 }
