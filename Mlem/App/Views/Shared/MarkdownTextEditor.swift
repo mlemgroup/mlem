@@ -126,7 +126,12 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         if dimensions.width > 0 {
             textView.frame.size.width = dimensions.width
         }
-        textView.sizeToFit()
+        // Skip sizeToFit() when the available width hasn't changed — textViewDidChange
+        // already called it. This avoids unnecessary state updates when typing.
+        if dimensions.width != context.coordinator.lastProposedWidth {
+            textView.sizeToFit()
+            context.coordinator.lastProposedWidth = dimensions.width
+        }
 
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
         // To avoid this we get the line height from the font and round `contentSize` to the nearest line.
@@ -149,7 +154,8 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: MarkdownTextEditor
- 
+        var lastProposedWidth: CGFloat = -1
+
         init(_ textView: MarkdownTextEditor) {
             self.parent = textView
         }
