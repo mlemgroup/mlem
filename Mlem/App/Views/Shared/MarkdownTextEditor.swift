@@ -106,9 +106,9 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     }
  
     func updateUIView(_ textView: UITextView, context: Context) {
-        textView.sizeToFit()
+        // no-op
     }
-    
+
     func sizeThatFits(_ proposal: ProposedViewSize, uiView textView: UITextView, context: Context) -> CGSize? {
         let dimensions = proposal.replacingUnspecifiedDimensions(
             by: .init(
