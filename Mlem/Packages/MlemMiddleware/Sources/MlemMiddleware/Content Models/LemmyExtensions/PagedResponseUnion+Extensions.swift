@@ -78,27 +78,20 @@ extension LemmyListCommunitiesResponseUnion {
         case let .lemmyPagedResponse(response): response.items
         }
     }
-    
-    var prevPage: String? {
-        switch self {
-        case .lemmyListCommunitiesResponse: nil
-        case let .lemmyPagedResponse(response): response.prevPage
-        }
-    }
 
-    var nextPage: String? {
+    func toPagedResponse(pageInfo: PageInfo) throws -> PagedResponse<Community2Snapshot> {
         switch self {
-        case .lemmyListCommunitiesResponse: nil
-        case let .lemmyPagedResponse(response): response.nextPage
+        case let .lemmyListCommunitiesResponse(response):
+            return try .fromLemmyV3(
+                pageInfo: pageInfo,
+                items: response.communities.map { try .init(from: $0) },
+                nextCursor: nil
+            )
+        case let .lemmyPagedResponse(response):
+            return try .init(from: response) {
+                try .init(from: $0)
+            }
         }
-    }
-
-    func toPagedResponse() -> LemmyPagedResponse<LemmyCommunityView> {
-        .init(
-            items: items,
-            nextPage: nextPage,
-            prevPage: prevPage
-        )
     }
 }
 
