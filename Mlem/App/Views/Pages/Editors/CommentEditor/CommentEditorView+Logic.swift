@@ -99,14 +99,19 @@ extension CommentEditorView {
     }
     
     func checkSlurFilter(text: String) {
-        do {
-            if let output = try slurRegex?.firstMatch(in: text.lowercased()) {
-                slurMatch = String(text[output.range])
-            } else {
-                slurMatch = nil
+        slurTask?.cancel()
+        slurTask = Task {
+            try? await Task.sleep(for: .milliseconds(400))
+            guard !Task.isCancelled else { return }
+            do {
+                if let output = try slurRegex?.firstMatch(in: text.lowercased()) {
+                    slurMatch = String(text[output.range])
+                } else {
+                    slurMatch = nil
+                }
+            } catch {
+                handleError(error, silent: true)
             }
-        } catch {
-            handleError(error, silent: true)
         }
     }
 }
