@@ -106,9 +106,9 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     }
  
     func updateUIView(_ textView: UITextView, context: Context) {
-        textView.sizeToFit()
+        // no-op
     }
-    
+
     func sizeThatFits(_ proposal: ProposedViewSize, uiView textView: UITextView, context: Context) -> CGSize? {
         let dimensions = proposal.replacingUnspecifiedDimensions(
             by: .init(
@@ -126,7 +126,12 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         if dimensions.width > 0 {
             textView.frame.size.width = dimensions.width
         }
-        textView.sizeToFit()
+        // Skip sizeToFit() when the available width hasn't changed — textViewDidChange
+        // already called it. This avoids unnecessary state updates when typing.
+        if dimensions.width != context.coordinator.lastProposedWidth {
+            textView.sizeToFit()
+            context.coordinator.lastProposedWidth = dimensions.width
+        }
 
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
         // To avoid this we get the line height from the font and round `contentSize` to the nearest line.
@@ -149,19 +154,20 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: MarkdownTextEditor
- 
+        var lastProposedWidth: CGFloat = -1
+
         init(_ textView: MarkdownTextEditor) {
             self.parent = textView
         }
  
         func textViewDidChange(_ textView: UITextView) {
             parent.onChange(textView.text)
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             textView.sizeToFit()
         }
-        
+
         func textViewDidBeginEditing(_ textView: UITextView) {
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             parent.onBeginEditing()
         }
     }

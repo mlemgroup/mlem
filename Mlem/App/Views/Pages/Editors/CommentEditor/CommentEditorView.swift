@@ -45,7 +45,8 @@ struct CommentEditorView: View {
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var slurMatch: String?
-    
+    @State var slurTask: Task<Void, Never>?
+
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
