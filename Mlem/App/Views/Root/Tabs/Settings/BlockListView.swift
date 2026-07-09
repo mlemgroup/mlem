@@ -5,6 +5,8 @@
 //  Created by Sjmarf on 2024-11-09.
 //
 
+import Actions
+import Haptics
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
@@ -12,6 +14,7 @@ import Theming
 
 struct BlockListView: View {
     @Environment(AppState.self) var appState
+    @Environment(HapticManager.self) var hapticManager
     
     enum Tab: CaseIterable, Identifiable {
         case people, communities, instances
@@ -36,6 +39,8 @@ struct BlockListView: View {
     @State var people: [Person] = []
     @State var communities: [Community] = []
     @State var instances: InstanceInfo = .stubs([])
+
+    @State var isEditing: Bool = false
     
     var body: some View {
         FancyScrollView {
@@ -53,17 +58,26 @@ struct BlockListView: View {
             switch selectedTab {
             case .people:
                 SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
-                    PersonListRow(person, showBlockStatus: false)
+                    deleteButton(entity: person) {
+                        PersonListRow(person, showBlockStatus: false)
+                    }
                 }
             case .communities:
                 SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
-                    CommunityListRow(community, showBlockStatus: false)
+                    deleteButton(entity: community) {
+                        CommunityListRow(community, showBlockStatus: false)
+                    }
                 }
             case .instances:
                 instancesView
             }
         }
         .themedGroupedBackground()
+        .toolbar {
+            Button(isEditing ? "Done" : "Edit") {
+                isEditing.toggle()
+            }
+        }
         .onAppear {
             Task { @MainActor in
                 await refresh()
@@ -77,15 +91,45 @@ struct BlockListView: View {
         switch instances {
         case let .stubs(stubs):
             ForEach(stubs.filter { $0.blocked.realizedValue }, id: \.self) { instance in
-                InstanceRow(instance: instance)
-                    .padding(.horizontal, Constants.main.standardSpacing)
-                    .padding(.bottom, Constants.main.halfSpacing)
+                deleteButton(entity: instance) {
+                    InstanceRow(instance: instance)
+                }
+                .padding(.horizontal, Constants.main.standardSpacing)
+                .padding(.bottom, Constants.main.halfSpacing)
             }
         case let .summaries(summaries):
-            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { community in
-                InstanceListRow(community, showBlockStatus: false)
+            SearchResultsView(results: summaries.filter { $0.blocked.realizedValue }) { instance in
+                deleteButton(entity: instance) {
+                    InstanceListRow(instance, showBlockStatus: false)
+                }
             }
         }
+    }
+
+    @ViewBuilder
+    func deleteButton(
+        entity: any Blockable,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        HStack {
+            content()
+            if isEditing {
+                Button("Unblock", icon: .lemmy.unblock) {
+                    withAnimation {
+                        if entity is any InstanceActionProviding, let session = (appState.firstSession as? UserSession) {
+                            session.updateInstanceBlock(actorId: entity.actorId, shouldBlock: false) 
+                        } else {
+                            entity.updateBlocked?(false, nil)
+                        }
+                        hapticManager.play(haptic: .lightSuccess, tier: .low)
+                    }
+                }
+                .labelStyle(.iconOnly)
+                .foregroundStyle(.themedNegative)
+                .padding(.horizontal, Constants.main.halfSpacing)
+            }
+        }
+        .animation(.default, value: isEditing)
     }
 
     func refresh() async {
