@@ -333,7 +333,7 @@ extension SearchView {
                 }
             }
             .labelStyle(.iconOnly)
-            .foregroundStyle(palette.negative)
+            .foregroundStyle(.themedNegative)
             .padding(.horizontal, Constants.main.halfSpacing)
         }
     }
