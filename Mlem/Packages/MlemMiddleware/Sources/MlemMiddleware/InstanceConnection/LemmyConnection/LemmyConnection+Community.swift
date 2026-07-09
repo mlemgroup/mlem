@@ -104,15 +104,13 @@ internal extension LemmyConnection {
                     pageCursor: try pageInfo.cursor.requireCursorString
                 )
                 let response = try await self.perform(request, endpoint: .v4)
-                return try .init(from: response.toPagedResponse()) {
-                    try .init(from: $0)
-                }
+                return try response.toPagedResponse(pageInfo: pageInfo)
             }
-        }
+         }
     }
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot {
-         let response = try await performingForEndpoint { endpoint in
+        let response = try await performingForEndpoint { endpoint in
             LemmyEditCommunityRequest(
                 endpoint: endpoint,
                 communityId: id,
@@ -149,7 +147,7 @@ internal extension LemmyConnection {
                 pageCursor: pageInfo.cursor.cursorString
             )
         }
-        return try .init(from: response.toPagedResponse()) { try .init(from: $0) }
+        return try response.toPagedResponse(pageInfo: pageInfo)
     }
     
     @discardableResult
