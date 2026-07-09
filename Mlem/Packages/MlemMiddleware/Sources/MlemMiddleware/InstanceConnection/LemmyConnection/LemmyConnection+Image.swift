@@ -32,17 +32,24 @@ public extension LemmyConnection {
             auth: token
         )
         
-        let (data, response) = try await restClient.urlSession.upload(
+        let (data, httpResponse) = try await restClient.urlSession.upload(
             for: request,
             from: encodedData,
             delegate: ImageUploadDelegate(callback: progressCallback)
         )
 
+        let statusCode = (httpResponse as? HTTPURLResponse)?.statusCode ?? -1
+
         let decoder = JSONDecoder.defaultDecoder
 
         do {
             let response = try decoder.decode(LemmyPictrsUploadResponse.self, from: data)
-            guard let file = response.files?.first else { throw ApiClientError.noEntityFound }
+            guard let file = response.files?.first else {
+                throw ApiClientError.response(
+                    response.msg ?? "Unknown error: Missing \"files\" field in response",
+                    statusCode
+                )
+            }
             return .init(from: file, baseUrl: baseUrl)
         } catch DecodingError.dataCorrupted {
             let text = String(decoding: data, as: UTF8.self)
@@ -52,8 +59,7 @@ public extension LemmyConnection {
             throw ApiClientError.decoding(data, nil)
         } catch {
             if let error = try? decoder.decode(LemmyErrorResponse.self, from: data) {
-                let statusCode = (response as? HTTPURLResponse)?.statusCode
-                throw ApiClientError.response(error.error, statusCode ?? -1)
+                throw ApiClientError.response(error.error, statusCode)
             } else {
                 throw error
             }
