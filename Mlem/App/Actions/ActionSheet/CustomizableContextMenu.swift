@@ -38,6 +38,7 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
         if customizable {
             Section {
                 Button("More...", icon: .general.menu) {
+                    UIApplication.shared.firstKeyWindow?.endEditing(true)
                     navigation.openSheet(.actionSheet(
                         sheetSections,
                         environment: environment,
