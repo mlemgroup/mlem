@@ -183,7 +183,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
                 return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
                 return .postStub(PostStub(api: appState.firstApi, url: url))
-            } else if components.count == 3 {
+            } else if components.count == 3 || (components.count == 4 && components[2] == "comment") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
                 return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else {

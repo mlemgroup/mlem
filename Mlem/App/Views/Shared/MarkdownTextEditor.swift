@@ -123,7 +123,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         // `sizeToFit` measures against the text view's current bounds width, which on the
         // first layout pass is infinite. This caused the text editor to calculate the
         // incorrect height on the first pass.
-        if dimensions.width > 0 {
+        if dimensions.width > 0, dimensions.width.isFinite {
             textView.frame.size.width = dimensions.width
         }
         // Skip sizeToFit() when the available width hasn't changed — textViewDidChange
