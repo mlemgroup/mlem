@@ -73,6 +73,7 @@ struct CommentView<EmbeddedContent: View>: View {
         VStack(spacing: Constants.main.standardSpacing) {
             if inFeed {
                 feedHeader
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.trailing, Constants.main.standardSpacing)
             }
             
