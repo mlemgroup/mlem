@@ -112,9 +112,10 @@ internal extension LemmyConnection {
                     pageCursor: nil
                 )
                 let response = try await self.perform(request, endpoint: .v3)
+                let persons = (response.persons ?? response.users) ?? []
                 return try PagedResponse.fromLemmyV3(
                     pageInfo: pageInfo,
-                    items: try response.persons?.map { try .init(from: $0) } ?? [],
+                    items: try persons.map { try .init(from: $0) },
                     nextCursor: nil
                 )
             case .v4:

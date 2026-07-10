@@ -281,7 +281,7 @@ struct MessageFeedView: View {
                 )
             }
         )
-        .onChange(of: appState.firstApi) {
+        .onChange(of: appState.firstApi, initial: true) {
             markdownToolbarEditorModel.imageUploadApi = appState.firstApi
         }
         .frame(
