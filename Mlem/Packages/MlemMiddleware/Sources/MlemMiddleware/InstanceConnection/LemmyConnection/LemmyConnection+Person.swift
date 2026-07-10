@@ -315,7 +315,7 @@ internal extension LemmyConnection {
                 interfaceLanguage: nil,
                 avatar: details.avatar?.absoluteString ?? "",
                 banner: details.banner?.absoluteString ?? "",
-                displayName: details.displayName,
+                displayName: details.displayName ?? "",
                 email: nil,
                 bio: details.description,
                 matrixUserId: details.matrixUserId,
