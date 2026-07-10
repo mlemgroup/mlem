@@ -42,6 +42,9 @@ public extension PieFedConnection {
         case .moderatorSetNsfw, .toggleNotifications: true
         case .modlog:
             version >= .v1_6_10
+        case .editDisplayName:
+            // Support may have been added earlier, but I only tested this on 1.6.27
+            version >= .v1_6_27
         default: false
         }
     }

@@ -41,8 +41,10 @@ struct ProfileSettingsView: View {
         .init(get: {
             profileDetails.displayName ?? ""
         }, set: { newValue in
-            if newValue == person.displayName || newValue.isEmpty {
+            if newValue.isEmpty {
                 profileDetails.displayName = nil
+            } else {
+                profileDetails.displayName = newValue
             }
         })
     }
