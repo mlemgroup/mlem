@@ -133,6 +133,7 @@ struct InboxView: View {
                     }
                 }
                 .refreshable {
+                    showRefreshPopup = false
                     _ = await Task {
                         await refresh()
                     }.result
