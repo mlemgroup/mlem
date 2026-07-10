@@ -243,7 +243,7 @@ public extension PieFedConnection {
             replyCollapseThreshold: nil,
             replyHideThreshold: nil,
             searchable: nil,
-            displayName: nil
+            displayName: details.displayName ?? ""
         )
         try await perform(request)
     }
