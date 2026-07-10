@@ -35,7 +35,7 @@ class EventsTracker {
                 do {
                     try await refresh()
                 } catch {
-                    handleError(error)
+                    handleError(error, silent: true)
                 }
             }
         }
