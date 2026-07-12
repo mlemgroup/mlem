@@ -473,6 +473,8 @@
 		CD1DF63E2D387E8500F7851E /* MediaView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */; };
 		CD24CAFC2D5568FE0032B5E8 /* DiscussionLanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD24CAFB2D5568F90032B5E8 /* DiscussionLanguageSettingsView.swift */; };
 		CD27839A2D9B366000DD4C69 /* ZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2783992D9B365D00DD4C69 /* ZoomableImageView.swift */; };
+		CD2BBE0B300439E000865794 /* NSLocale+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BBE0A300439DB00865794 /* NSLocale+Extensions.swift */; };
+		CD2BBE0D30043C0500865794 /* LayoutDirection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2BBE0C30043C0000865794 /* LayoutDirection+Extensions.swift */; };
 		CD2C86542D5556C00034CD8A /* MlemError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2C86532D5556BE0034CD8A /* MlemError.swift */; };
 		CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */; };
 		CD332D792CA7175500A53988 /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD332D782CA7175200A53988 /* PlayButton.swift */; };
@@ -1095,6 +1097,8 @@
 		CD1DF63D2D387E8300F7851E /* MediaView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaView+Views.swift"; sourceTree = "<group>"; };
 		CD24CAFB2D5568F90032B5E8 /* DiscussionLanguageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionLanguageSettingsView.swift; sourceTree = "<group>"; };
 		CD2783992D9B365D00DD4C69 /* ZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableImageView.swift; sourceTree = "<group>"; };
+		CD2BBE0A300439DB00865794 /* NSLocale+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLocale+Extensions.swift"; sourceTree = "<group>"; };
+		CD2BBE0C30043C0000865794 /* LayoutDirection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LayoutDirection+Extensions.swift"; sourceTree = "<group>"; };
 		CD2C86532D5556BE0034CD8A /* MlemError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlemError.swift; sourceTree = "<group>"; };
 		CD3153062C38421B00BC5FBE /* View+LoadFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+LoadFeed.swift"; sourceTree = "<group>"; };
 		CD332D782CA7175200A53988 /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
@@ -2163,6 +2167,8 @@
 		CD4D58C22B86DC5800B82964 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CD2BBE0C30043C0000865794 /* LayoutDirection+Extensions.swift */,
+				CD2BBE0A300439DB00865794 /* NSLocale+Extensions.swift */,
 				031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */,
 				CD737FB92F771BF100E46411 /* InstanceSummarySoftware+Extensions.swift */,
 				CD03B5BD2F3BA16100AEF786 /* Blockable+Extensions.swift */,
@@ -3082,6 +3088,7 @@
 				CD4B66DA2DCE809D00D28EB4 /* InstanceUptimeView+Views.swift in Sources */,
 				03631B572FE94BAE0060CA5A /* AuthHandoffView.swift in Sources */,
 				0311ADBF2E4F68D000EC3120 /* TopPeopleListView.swift in Sources */,
+				CD2BBE0D30043C0500865794 /* LayoutDirection+Extensions.swift in Sources */,
 				CD3153072C38421B00BC5FBE /* View+LoadFeed.swift in Sources */,
 				0302A8802F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift in Sources */,
 				039F588F2C7B599800C61658 /* ThemeLabel.swift in Sources */,
@@ -3220,6 +3227,7 @@
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
 				CD5CAA0C2D41AE57008E20F2 /* EmbeddingSettingsView.swift in Sources */,
 				03B25B372CC4478600EB6DF5 /* FediseerInfoView.swift in Sources */,
+				CD2BBE0B300439E000865794 /* NSLocale+Extensions.swift in Sources */,
 				032A22012EB2A4D100E8B346 /* PersonContentFeedLoader+Extensions.swift in Sources */,
 				03B62B772CE295530077E9C8 /* RulesListView.swift in Sources */,
 				03500C2B2BF7F1B100CAA076 /* ToastOverlayView.swift in Sources */,

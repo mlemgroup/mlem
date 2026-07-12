@@ -4848,6 +4848,9 @@
         }
       }
     },
+    "Invert Layout Direction" : {
+
+    },
     "It's turtles all the way down" : {
       "localizations" : {
         "fr" : {
@@ -7870,6 +7873,9 @@
           }
         }
       }
+    },
+    "Reverses the horizontal layout of Mlem. This may cause some unexpected element arrangements." : {
+
     },
     "Right" : {
       "localizations" : {

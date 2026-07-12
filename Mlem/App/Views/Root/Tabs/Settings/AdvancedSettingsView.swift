@@ -13,8 +13,8 @@ struct AdvancedSettingsView: View {
     @Environment(ErrorsTracker.self) var errorsTracker
 
     @Setting(\.dev_errorTimeout) var errorToastTimeout
-
     @Setting(\.dev_developerMode) var developerMode
+    @Setting(\.layout_invertDirection) var invertLayoutDirection
     
     @State var backendStatus: BackendHealthCheck?
     @State var lastBackendStatusCheck: Date?
@@ -57,6 +57,12 @@ struct AdvancedSettingsView: View {
                     fallbackValue: "",
                     destination: .settings(.errorToastTimeout)
                 )
+            }
+            
+            Section {
+                Toggle("Invert Layout Direction", isOn: $invertLayoutDirection)
+            } footer: {
+                Text("Reverses the horizontal layout of Mlem. This may cause some unexpected element arrangements.")
             }
 
             backendStatusSection
