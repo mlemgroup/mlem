@@ -12,9 +12,7 @@ struct NukeRewriteDataLoader: DataLoading {
     let base: any DataLoading
 
     init() {
-        let configuration = URLSessionConfiguration.background(withIdentifier: "mlemNuke")
-        configuration.httpAdditionalHeaders = ["User-Agent": "MlemUserAgent"]
-        self.base = DataLoader(configuration: configuration)
+        self.base = DataLoader(configuration: .default)
     }
 
     func loadData(
@@ -29,12 +27,11 @@ struct NukeRewriteDataLoader: DataLoading {
     }
 
     private func rewrite(_ request: URLRequest) -> URLRequest {
+        var request = request
+        request.setValue("MlemUserAgent", forHTTPHeaderField: "User-Agent")
         if let url = request.url, url.pathExtension.lowercased() == "gifv" {
-            var request = request
             request.url = url.deletingPathExtension().appendingPathExtension("mp4")
-            return request
-        } else {
-            return request
         }
+        return request
     }
 }
