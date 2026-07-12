@@ -127,6 +127,7 @@ struct ContentView: View {
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
                 .onOpenURL(perform: self.handleIncomingDeeplink)
+                .environment(\.layoutDirection, .rightToLeft)
         }
     }
     
