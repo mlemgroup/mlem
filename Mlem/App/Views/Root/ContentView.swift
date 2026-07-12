@@ -27,6 +27,7 @@ struct ContentView: View {
     @Setting(\.dev_developerMode) var developerMode
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
+    @Setting(\.layout_invertDirection) var invertLayoutDirection
 
     let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -47,6 +48,10 @@ struct ContentView: View {
     
     @State var expandedPostHistoryTracker: ExpandedPostHistoryTracker = .init()
     @State var eventsTracker: EventsTracker = .init()
+    
+    var localizedLayoutDirection: LayoutDirection {
+        Locale.current.language.characterDirection.layoutDirection
+    }
     
     var body: some View {
         if appState.appRefreshToggle {
@@ -127,6 +132,7 @@ struct ContentView: View {
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
                 .onOpenURL(perform: self.handleIncomingDeeplink)
+                .environment(\.layoutDirection, invertLayoutDirection ? localizedLayoutDirection.inverted : localizedLayoutDirection)
         }
     }
     
