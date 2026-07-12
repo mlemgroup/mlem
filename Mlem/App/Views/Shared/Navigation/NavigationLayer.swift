@@ -65,9 +65,9 @@ class NavigationLayer: Identifiable {
             // This prevents keyboard animation glitches when navigating whilst the keyboard is open
             UIApplication.shared.firstKeyWindow?.endEditing(true)
             if path.isEmpty {
-                root.page = page
+                root.replacePage(with: page)
             } else {
-                path[path.count - 1].page = page
+                path[path.count - 1].replacePage(with: page)
             }
         } else {
             openSheet(page)
