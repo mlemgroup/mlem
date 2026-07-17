@@ -12,11 +12,12 @@ struct NavigationSplitRootView: View {
     let sidebar: NavigationPage
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
+
+    @State private var preferredColumn = NavigationSplitViewColumn.detail
     
     init(sidebar: NavigationPage, root: NavigationPage) {
         self._layer = .init(wrappedValue: .init(
-            root: UIDevice.isPad ? root : sidebar,
-            path: UIDevice.isPad ? [] : [root],
+            root: root,
             model: .main
         ))
         self.sidebar = sidebar
@@ -24,24 +25,20 @@ struct NavigationSplitRootView: View {
     }
     
     var body: some View {
-        MultiplatformView(
-            phone: {
-                NavigationLayerView(layer: layer, hasSheetModifiers: false)
+        NavigationSplitView(
+            columnVisibility: $columnVisibility,
+            preferredCompactColumn: $preferredColumn,
+            sidebar: {
+                sidebar.view()
             },
-            pad: {
-                NavigationSplitView(
-                    columnVisibility: $columnVisibility,
-                    sidebar: {
-                        sidebar.view()
-                    },
-                    detail: {
-                        NavigationLayerView(layer: layer, hasSheetModifiers: false)
-                            .id(layer.root.updateCountHash)
-                    }
-                )
-                .modifier(HandleThreadiverseLinksModifier())
+            detail: {
+                NavigationLayerView(layer: layer, hasSheetModifiers: false)
             }
         )
+        .modifier(HandleThreadiverseLinksModifier())
         .environment(layer)
+        .onChange(of: layer.root.updateCountHash) {
+            preferredColumn = .detail
+        }
     }
 }
