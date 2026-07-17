@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SubscriptionListNavigationButton<Content: View>: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.sidebarPresentationMode) var sidebarPresentationMode
 
     let destination: NavigationPage
     @ViewBuilder var label: () -> Content
@@ -24,7 +25,7 @@ struct SubscriptionListNavigationButton<Content: View>: View {
             navigation.popToRoot()
             navigation.replace(destination)
         } label: {
-            if horizontalSizeClass == .compact {
+            if sidebarPresentationMode == .single {
                 FormChevron { label() }
             } else {
                 label()

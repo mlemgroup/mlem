@@ -30,6 +30,7 @@ struct NavigationSplitRootView: View {
             preferredCompactColumn: $preferredColumn,
             sidebar: {
                 sidebar.view()
+                    .environment(\.sidebarPresentationMode, preferredColumn == .sidebar ? .single : .double)
             },
             detail: {
                 NavigationLayerView(layer: layer, hasSheetModifiers: false)
@@ -41,4 +42,12 @@ struct NavigationSplitRootView: View {
             preferredColumn = .detail
         }
     }
+}
+
+extension EnvironmentValues {
+    @Entry var sidebarPresentationMode: SidebarPresentationMode = .single
+}
+
+enum SidebarPresentationMode {
+    case single, double
 }
