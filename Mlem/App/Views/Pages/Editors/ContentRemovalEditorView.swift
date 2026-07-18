@@ -58,13 +58,13 @@ struct ContentRemovalEditorView: View {
                 .navigationTitle(mode == .restore ? "Restore" : "Remove")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        CloseButtonView(ios18Label: .cancel)
+                        CloseButtonView()
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
                             send()
                         }
-                        .glassProminentButtonStyle()
+                        .buttonStyle(.glassProminent)
                     }
                 }
             }

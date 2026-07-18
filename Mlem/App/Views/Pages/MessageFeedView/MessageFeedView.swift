@@ -100,21 +100,11 @@ struct MessageFeedView: View {
                 }
             }
             .safeAreaBar_(edge: .bottom) {
-                if #available(iOS 26.0, *) {
-                    textInput(scrollProxy)
-                        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 24))
-                        .padding(.horizontal, textView.isFirstResponder ? Constants.main.standardSpacing : Constants.main.doubleSpacing)
-                        .padding(.bottom, 25)
-                        .padding(.top, Constants.main.standardSpacing)
-                } else {
-                    textInput(scrollProxy)
-                        .background(
-                            RoundedRectangle(cornerRadius: Constants.main.doubleSpacing)
-                                .strokeBorder(.themedTertiary.opacity(0.5), lineWidth: 1)
-                        )
-                        .padding(Constants.main.standardSpacing)
-                        .background(.bar)
-                }
+                textInput(scrollProxy)
+                    .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 24))
+                    .padding(.horizontal, textView.isFirstResponder ? Constants.main.standardSpacing : Constants.main.doubleSpacing)
+                    .padding(.bottom, 25)
+                    .padding(.top, Constants.main.standardSpacing)
             }
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
@@ -198,7 +188,7 @@ struct MessageFeedView: View {
                 .fontWeight(.semibold)
             }
             .frame(minHeight: minTextEditorHeight, maxHeight: 200)
-            .padding(UIDevice.isIos26 ? 2 : 0)
+            .padding(2)
         }
     }
     
@@ -235,22 +225,13 @@ struct MessageFeedView: View {
     
     @ViewBuilder
     func textInputButtonLabel(icon: Icon) -> some View {
-        if UIDevice.isIos26 {
-            Image(icon: icon)
-                .foregroundStyle(.themedContrastingLabel)
-                .frame(height: sendButtonHeight)
-                .padding(.horizontal, 12)
-                .background(.tint, in: .capsule)
-                .frame(height: minTextEditorHeight - 12)
-                .padding(.bottom, 1)
-        } else {
-            Image(icon: icon)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: .infinity)
-                .foregroundStyle(.themedContrastingLabel, .tint)
-                .symbolVariant(.circle.fill)
-        }
+        Image(icon: icon)
+            .foregroundStyle(.themedContrastingLabel)
+            .frame(height: sendButtonHeight)
+            .padding(.horizontal, 12)
+            .background(.tint, in: .capsule)
+            .frame(height: minTextEditorHeight - 12)
+            .padding(.bottom, 1)
     }
     
     @ViewBuilder

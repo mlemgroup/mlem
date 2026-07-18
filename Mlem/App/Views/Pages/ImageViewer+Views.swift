@@ -8,8 +8,6 @@
 import SwiftUI
 import Icons
 
-// swiftlint:disable file_length
-
 extension ImageViewer {
     struct ControlTranslationEffect: GeometryEffect {
         var offset: CGFloat
@@ -62,13 +60,7 @@ extension ImageViewer {
         Button {
             fadeDismiss()
         } label: {
-            if #available(iOS 26, *) {
-                closeButtonContent
-                    .glassEffect(.regular.interactive())
-            } else {
-                closeButtonContent
-                    .background(.ultraThinMaterial, in: .circle)
-            }
+            buttonLabel(text: "Close", icon: .general.close, frameSize: 18, padding: Constants.main.standardSpacing + 6)
         }
         .contentShape(.rect)
         .environment(\.colorScheme, .dark)
@@ -83,26 +75,40 @@ extension ImageViewer {
                         devToolsShown = true
                     }
                 } label: {
-                    if #available(iOS 26, *) {
-                        devToolsButtonContent
-                            .glassEffect(.regular.interactive())
-                    } else {
-                        devToolsButtonContent
-                            .background(.ultraThinMaterial, in: .circle)
-                    }
+                    buttonLabel(
+                        text: "Toggle Developer Tools",
+                        icon: .settings.developerMode,
+                        frameSize: 22,
+                        padding: Constants.main.standardSpacing + 4
+                    )
                 }
                 .contentShape(.rect)
                 .environment(\.colorScheme, .dark)
             } else {
-                Group {
-                    if #available(iOS 26, *) {
-                        devToolsContent
-                            .glassEffect(.regular.interactive(), in: .rect(cornerRadius: Constants.main.standardSpacing))
+                VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
+                    let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
+                    Text(verbatim: "Media Type: \(imageType) ")
+                    if let duration = controlState.duration {
+                        Text(verbatim: "Duration: \(String(format: "%.4fs", duration))")
+                            .monospacedDigit()
                     } else {
-                        devToolsContent
-                            .background(.ultraThinMaterial, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        Text(verbatim: "Duration: None")
                     }
+                    Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
+                        .monospacedDigit()
+                    if let target = controlState.scrubTarget {
+                        Text(verbatim: "Scrub Target: \(String(format: "%.4f", target))")
+                            .monospacedDigit()
+                    } else {
+                        Text(verbatim: "Scrub Target: None")
+                    }
+                    Text(verbatim: "Scrub Rate: \(String(format: "%.4f", scrubRate))")
+                        .monospacedDigit()
                 }
+                .padding(Constants.main.standardSpacing)
+                .contentShape(.rect)
+                .font(.footnote)
+                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .onTapGesture {
                     withAnimation {
                         devToolsShown = false
@@ -128,17 +134,13 @@ extension ImageViewer {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                Group {
-                    if #available(iOS 26, *) {
-                        bottomControlBarContent
-                            .glassEffect(.regular.interactive())
-                    } else {
-                        bottomControlBarContent
-                            .background {
-                                Capsule().fill(.ultraThinMaterial)
-                            }
-                    }
+                HStack {
+                    saveButton
+                    shareButton
+                    quickLookButton
                 }
+                .padding(.horizontal, Constants.main.halfSpacing)
+                .glassEffect(.regular.interactive())
                 .frame(maxWidth: .infinity, alignment: .center)
                 
                 if controlState.audioAvailable {
@@ -164,7 +166,8 @@ extension ImageViewer {
                 .shadow(radius: 2)
             }
             
-            playbackBarBaseCapsule
+            Color.clear.contentShape(.rect)
+                .glassEffect()
                 .frame(maxWidth: .infinity)
                 .frame(height: 10)
                 .overlay {
@@ -198,15 +201,10 @@ extension ImageViewer {
         Button {
             controlState.animating.toggle()
         } label: {
-            Group {
-                if #available(iOS 26, *) {
-                    playButtonContent
-                        .glassEffect(.regular.interactive())
-                } else {
-                    playButtonContent
-                        .background(.ultraThinMaterial, in: .circle)
-                }
-            }
+            videoStateButtonLabel(
+                isOn: controlState.animating,
+                text: (on: "Pause", off: "Play"),
+                icons: (on: .general.pause, off: .general.play))
             .padding(.leading, Constants.main.standardSpacing)
             .padding([.top, .trailing], Constants.main.doubleSpacing)
             .contentShape(.rect)
@@ -254,15 +252,10 @@ extension ImageViewer {
         Button {
             controlState.muted.toggle()
         } label: {
-            Group {
-                if #available(iOS 26, *) {
-                    muteButtonContent
-                        .glassEffect(.regular.interactive())
-                } else {
-                    muteButtonContent
-                        .background(.ultraThinMaterial, in: .circle)
-                }
-            }
+            videoStateButtonLabel(
+                isOn: controlState.muted,
+                text: (on: "Mute", off: "Unmute"),
+                icons: (on: .general.mute, off: .general.unmute))
             .padding(.trailing, Constants.main.standardSpacing)
             .padding([.top, .leading], Constants.main.doubleSpacing)
             .contentShape(.rect)
@@ -273,20 +266,13 @@ extension ImageViewer {
     
     @ViewBuilder
     var scaleDisplay: some View {
-        Group {
-            if #available(iOS 26, *) {
-                scaleDisplayContent
-                    .glassEffect()
-            } else {
-                scaleDisplayContent
-                    .background {
-                        Capsule().fill(.ultraThinMaterial)
-                    }
-            }
-        }
-        .environment(\.colorScheme, .dark)
-        .padding(.leading, Constants.main.standardSpacing)
-        .opacity(scaleDisplayShown ? 1 : 0)
+        Text(String(format: "%.1fx", scaleDisplayValue))
+            .padding(Constants.main.standardSpacing)
+            .padding(.horizontal, Constants.main.halfSpacing)
+            .glassEffect()
+            .environment(\.colorScheme, .dark)
+            .padding(.leading, Constants.main.standardSpacing)
+            .opacity(scaleDisplayShown ? 1 : 0)
     }
     
     @ViewBuilder
@@ -301,6 +287,7 @@ extension ImageViewer {
                 .padding(padding)
         }
         .labelStyle(.iconOnly)
+        .glassEffect(.regular.interactive())
     }
     
     @ViewBuilder
@@ -319,95 +306,6 @@ extension ImageViewer {
                 .padding(Constants.main.standardSpacing + 4) // +4 to match .title2 implicit padding plus offset
         }
         .labelStyle(.iconOnly)
-    }
-    
-    // MARK: Platform Compatibility
-    // TODO: iOS 18 deprecation remove
-    
-    @ViewBuilder
-    var closeButtonContent: some View {
-        buttonLabel(text: "Close", icon: .general.close, frameSize: 18, padding: Constants.main.standardSpacing + 6)
-    }
-    
-    @ViewBuilder
-    var devToolsButtonContent: some View {
-        buttonLabel(
-            text: "Toggle Developer Tools",
-            icon: .settings.developerMode,
-            frameSize: 22,
-            padding: Constants.main.standardSpacing + 4
-        )
-    }
-    
-    @ViewBuilder
-    var devToolsContent: some View {
-        VStack(alignment: .leading, spacing: Constants.main.halfSpacing) {
-            let imageType: String = url.proxyAwarePathExtension?.lowercased() ?? "Unknown"
-            Text(verbatim: "Media Type: \(imageType) ")
-            if let duration = controlState.duration {
-                Text(verbatim: "Duration: \(String(format: "%.4fs", duration))")
-                    .monospacedDigit()
-            } else {
-                Text(verbatim: "Duration: None")
-            }
-            Text(verbatim: "Playback Position: \(String(format: "%.4f", controlState.playbackPosition))")
-                .monospacedDigit()
-            if let target = controlState.scrubTarget {
-                Text(verbatim: "Scrub Target: \(String(format: "%.4f", target))")
-                    .monospacedDigit()
-            } else {
-                Text(verbatim: "Scrub Target: None")
-            }
-            Text(verbatim: "Scrub Rate: \(String(format: "%.4f", scrubRate))")
-                .monospacedDigit()
-        }
-        .padding(Constants.main.standardSpacing)
-        .contentShape(.rect)
-        .font(.footnote)
-    }
-    
-    @ViewBuilder
-    var playbackBarBaseCapsule: some View {
-        if #available(iOS 26, *) {
-            Color.clear.contentShape(.rect)
-                .glassEffect()
-        } else {
-            Capsule()
-                .fill(.ultraThinMaterial)
-        }
-    }
-    
-    @ViewBuilder
-    var bottomControlBarContent: some View {
-        HStack {
-            saveButton
-            shareButton
-            quickLookButton
-        }
-        .padding(.horizontal, Constants.main.halfSpacing)
-    }
-    
-    @ViewBuilder
-    var playButtonContent: some View {
-        videoStateButtonLabel(
-            isOn: controlState.animating,
-            text: (on: "Pause", off: "Play"),
-            icons: (on: .general.pause, off: .general.play))
-    }
-    
-    @ViewBuilder
-    var muteButtonContent: some View {
-        videoStateButtonLabel(
-            isOn: controlState.muted,
-            text: (on: "Mute", off: "Unmute"),
-            icons: (on: .general.mute, off: .general.unmute))
-    }
-    
-    @ViewBuilder
-    var scaleDisplayContent: some View {
-        Text(String(format: "%.1fx", scaleDisplayValue))
-            .padding(Constants.main.standardSpacing)
-            .padding(.horizontal, Constants.main.halfSpacing)
+        .glassEffect(.regular.interactive())
     }
 }
-// swiftlint:enable file_length

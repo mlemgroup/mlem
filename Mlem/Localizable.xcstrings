@@ -8924,6 +8924,7 @@
       }
     },
     "Swipe Anywhere to Navigate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

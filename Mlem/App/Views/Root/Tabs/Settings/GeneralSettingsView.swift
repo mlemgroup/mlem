@@ -67,21 +67,6 @@ struct GeneralSettingsView: View {
                         }
                     )
                 )
-                if !UIDevice.isIos26 {
-                    Toggle(
-                        "Swipe Anywhere to Navigate",
-                        icon: .settings.swipeAnywhere,
-                        isOn: .init(
-                            get: { swipeAnywhereToNavigate },
-                            set: {
-                                swipeAnywhereToNavigate = $0
-                                if $0 {
-                                    swipeActionsEnabled = false
-                                }
-                            }
-                        )
-                    )
-                }
             }
             
             Section {

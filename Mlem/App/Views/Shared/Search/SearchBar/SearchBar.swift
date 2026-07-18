@@ -83,18 +83,16 @@ import SwiftUI
         }
     
         public func updateUIView(_ uiView: UIViewType, context: Context) {
-            if #available(iOS 26, *) {
-                uiView.backgroundColor = .clear
-                uiView.barTintColor = .clear
-                uiView.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-                uiView.isTranslucent = true
-            }
+            uiView.backgroundColor = .clear
+            uiView.barTintColor = .clear
+            uiView.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+            uiView.isTranslucent = true
             
             context.coordinator.base = self
-        
+            
             _updateUISearchBar(uiView, environment: context.environment)
         }
-    
+        
         func _updateUISearchBar(
             _ uiView: UIViewType,
             environment: EnvironmentValues

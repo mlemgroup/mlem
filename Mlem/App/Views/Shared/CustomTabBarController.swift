@@ -44,10 +44,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         tabBar.tintColor = UIColor(palette.accent)
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
         tabBar.addGestureRecognizer(longPressRecognizer)
-        
-        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeGestureTriggered(_:)))
-        swipeGestureRecognizer.direction = .up
-        tabBar.addGestureRecognizer(swipeGestureRecognizer)
     }
     
     @objc func longPressGestureTriggered(_ recognizer: UILongPressGestureRecognizer) {
@@ -71,12 +67,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             }
             item?.item.onLongPress?()
             break
-        }
-    }
-    
-    @objc func swipeGestureTriggered(_ recognizer: UISwipeGestureRecognizer) {
-        if !UIDevice.isIos26 {
-            swipeGestureCallback()
         }
     }
     

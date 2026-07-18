@@ -59,13 +59,13 @@ struct ContentPurgeEditorView: View {
                 .navigationTitle("Purge")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        CloseButtonView(ios18Label: .cancel)
+                        CloseButtonView()
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
                             Task { await send() }
                         }
-                        .glassProminentButtonStyle()
+                        .buttonStyle(.glassProminent)
                     }
                 }
             }

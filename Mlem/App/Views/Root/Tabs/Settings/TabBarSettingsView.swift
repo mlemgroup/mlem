@@ -45,18 +45,6 @@ struct TabBarSettingsView: View {
                 Toggle("Show Avatar", icon: .lemmy.person, isOn: $showUserAvatar)
                     .symbolVariant(.circle)
             }
-            
-            if !UIDevice.isIos26 {
-                Section {
-                    NavigationLink(
-                        "Long Press Action",
-                        value: .init(localized: longPressAction.label),
-                        fallbackValue: "",
-                        icon: .settings.longPress,
-                        destination: .settings(.longPressAction)
-                    )
-                }
-            }
                 
             Section {
                 NavigationLink(

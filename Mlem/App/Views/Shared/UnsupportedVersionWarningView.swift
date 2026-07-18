@@ -39,7 +39,7 @@ struct UnsupportedVersionWarningView: View {
             account.ignoreVersionWarning(true)
         }
         .toolbar {
-            CloseButtonToolbarItem(ios18Label: .xmark)
+            CloseButtonToolbarItem()
         }
     }
 }

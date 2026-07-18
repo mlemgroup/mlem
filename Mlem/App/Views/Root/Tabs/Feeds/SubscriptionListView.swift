@@ -45,17 +45,10 @@ struct SubscriptionListView: View {
     }
     
     var body: some View {
-        Group {
-            // TODO: iOS 18 deprecation remove compatibility shim
-            if #available(iOS 26, *) {
-                content
-                    .listSectionIndexVisibility(sectionIndicesShown ? .visible : .hidden)
-            } else {
-                content
-            }
-        }
-        .listStyle(.sidebar)
-        .navigationTitle("Feeds")
+        content
+            .listSectionIndexVisibility(sectionIndicesShown ? .visible : .hidden)
+            .listStyle(.sidebar)
+            .navigationTitle("Feeds")
     }
     
     @ViewBuilder
@@ -63,13 +56,8 @@ struct SubscriptionListView: View {
         let sections = subscriptions?.visibleSections(sort: sort) ?? []
         
         Form(tint: .themedPrimary) {
-            // TODO: iOS 18 deprecation remove compatibility shim
-            if #available(iOS 26, *) {
-                feeds
-                    .sectionIndexLabel("★")
-            } else {
-                feeds
-            }
+            feeds
+                .sectionIndexLabel("★")
             
             if AccountsTracker.main.isEmpty {
                 Section {
@@ -91,21 +79,10 @@ struct SubscriptionListView: View {
                 .scrollTargetLayout()
             }
         }
-        .introspect(.form, on: .iOS(.v17, .v18)) { introspectedForm in
-            form = introspectedForm
-        }
         .onChange(of: sectionScroller) {
             form?.scrollToItem(at: .init(row: 0, section: sectionScroller), at: .centeredVertically, animated: false)
         }
         .foregroundStyle(.themedPrimary)
-        .overlay(alignment: .trailing) {
-            if !UIDevice.isIos26, sectionIndicesShown {
-                SectionIndexTitles(
-                    sections: sections,
-                    sectionScroller: $sectionScroller
-                )
-            }
-        }
         .toolbar {
             if !(subscriptions?.communities.isEmpty ?? true) {
                 Menu("Sort", icon: sort.icon) {
@@ -212,17 +189,7 @@ private struct SubscriptionListSectionView: View {
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     
-    // TODO: iOS 18 deprecation remove compatibility shim
     var body: some View {
-        if #available(iOS 26, *) {
-            content
-                .sectionIndexLabel(section.showInScroller ? section.label : nil)
-        } else {
-            content
-        }
-    }
-    
-    var content: some View {
         Section(section.label) {
             ForEach(section.communities) { (community: Community) in
                 SubscriptionListItemView(
@@ -232,6 +199,7 @@ private struct SubscriptionListSectionView: View {
                 )
             }
         }
+        .sectionIndexLabel(section.showInScroller ? section.label : nil)
     }
 }
 

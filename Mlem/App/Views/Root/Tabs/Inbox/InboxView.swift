@@ -20,7 +20,6 @@ struct InboxView: View {
     
     @Setting(\.inbox_showRead) var showRead
     
-    @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
     @State var selectedTab: Tab = .all
     @State var selectedModTab: ModTab = .reports
@@ -167,12 +166,6 @@ struct InboxView: View {
                     )
                 }
                 .frame(width: 0, height: 0)
-                .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
-                    if value != headerPinned {
-                        if UIDevice.isIos26, headerPinned { return }
-                        headerPinned = value
-                    }
-                })
                 switch selectedFeed {
                 case .inbox:
                     inboxFeedView

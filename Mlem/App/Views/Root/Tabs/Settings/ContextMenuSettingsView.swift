@@ -31,7 +31,7 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
         }
         .toolbar {
             if navigation.isInsideSheet {
-                CloseButtonToolbarItem(ios18Label: .xmark)
+                CloseButtonToolbarItem()
             }
         }
         .navigationTitle("Customize Context Menu")
