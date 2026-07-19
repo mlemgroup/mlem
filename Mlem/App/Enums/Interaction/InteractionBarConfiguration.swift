@@ -149,12 +149,6 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
     func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
 }
 
-protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
-    var appearance: MockReadoutAppearance { get }
-    
-    func compatibleWith(otherReadouts: Set<Self>) -> Bool
-}
-
 struct InteractionBarConfigurations: Codable {
     var post: PostBarConfiguration
     var comment: CommentBarConfiguration

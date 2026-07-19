@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ReadoutType: String, ReadoutTypeProviding {
+enum ReadoutType: String, Codable, CaseIterable, Hashable {
     case created
     case score
     case upvote
