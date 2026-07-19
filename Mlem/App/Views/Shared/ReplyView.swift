@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ReplyView: View {
     @Setting(\.interactionBar_reply) var replyInteractionBar
+    @Setting(\.inbox_markReadOnVisit) var markReadOnVisit
     
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
@@ -58,6 +59,9 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
+            if markReadOnVisit {
+                notification.updateRead(true)
+            }
             navigation.push(.comment(comment))
         }
         .quickSwipes(notification: notification, configuration: replyInteractionBar)

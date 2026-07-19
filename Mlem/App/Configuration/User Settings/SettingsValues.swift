@@ -61,6 +61,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
     var inbox_showRead: Bool
+    var inbox_markReadOnVisit: Bool
     var links_displayMode: TapFriendlyLinksDisplayMode
     var links_openInBrowser: Bool
     var links_readerMode: Bool
@@ -205,6 +206,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         }
 
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
+        self.inbox_markReadOnVisit = try container.decodeIfPresent(Bool.self, forKey: ._inbox_markReadOnVisit) ?? true
         self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
         self.links_readerMode = try container.decodeIfPresent(Bool.self, forKey: ._links_readerMode) ?? false
@@ -321,6 +323,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_showRead = true
         self.tab_inbox_badgeIncludedTypes = [.personal, .moderation]
         self.inbox_showRead = true
+        self.inbox_markReadOnVisit = true
         self.links_displayMode = .contextual
         self.links_openInBrowser = false
         self.links_readerMode = false
@@ -431,6 +434,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         feed_markReadOnScroll = otherValues.feed_markReadOnScroll
         feed_showRead = otherValues.feed_showRead
         inbox_showRead = otherValues.inbox_showRead
+        inbox_markReadOnVisit = otherValues.inbox_markReadOnVisit
         links_displayMode = otherValues.links_displayMode
         links_openInBrowser = otherValues.links_openInBrowser
         links_readerMode = otherValues.links_readerMode
@@ -547,6 +551,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _feed_markReadOnScroll = "feed_markReadOnScroll"
         case _feed_showRead = "feed_showRead"
         case _inbox_showRead = "inbox_showRead"
+        case _inbox_markReadOnVisit = "inbox_markReadOnVisit"
         case _links_displayMode = "links_displayMode"
         case _links_openInBrowser = "links_openInBrowser"
         case _links_readerMode = "links_readerMode"

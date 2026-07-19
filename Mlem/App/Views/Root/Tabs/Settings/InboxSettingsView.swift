@@ -11,6 +11,7 @@ import Theming
 struct InboxSettingsView: View {
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     @Setting(\.interactionBar_reply) var replyInteractionBar
+    @Setting(\.inbox_markReadOnVisit) var markReadOnVisit
     
     var body: some View {
         Form {
@@ -44,6 +45,13 @@ struct InboxSettingsView: View {
                     fallbackValue: "",
                     icon: .settings.unreadBadge,
                     destination: .settings(.inboxBadge)
+                )
+            }
+            Section {
+                Toggle(
+                    "Mark Read on Visit",
+                    icon: .lemmy.markRead,
+                    isOn: $markReadOnVisit
                 )
             }
         }
