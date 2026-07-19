@@ -313,7 +313,7 @@ extension Post {
     
     func counter(
         appState: AppState,
-        type: PostBarConfiguration.CounterType,
+        type: CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {

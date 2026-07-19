@@ -99,33 +99,4 @@ extension PostBarConfiguration {
             }
         }
     }
-    
-    enum CounterType: String, CounterTypeProviding {
-        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
-        
-        case score
-        case upvote
-        case downvote
-        case reply
-        
-        static var defaultWidgets: [CounterType] { allCases }
-        
-        var appearance: CounterAppearance {
-            switch self {
-            case .score: .score()
-            case .upvote: .upvote()
-            case .downvote: .downvote()
-            case .reply: .reply()
-            }
-        }
-        
-        func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-            switch self {
-            case .score: [.upvote, .downvote, .score]
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .reply: []
-            }
-        }
-    }
 }

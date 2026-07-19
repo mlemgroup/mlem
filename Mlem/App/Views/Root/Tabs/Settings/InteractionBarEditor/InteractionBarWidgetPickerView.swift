@@ -28,7 +28,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             }
             
             Section("Counters") {
-                ForEach(Array(Configuration.CounterType.allCases), id: \.self) { item in
+                ForEach(Array(CounterType.allCases), id: \.self) { item in
                     widgetButton(.counter(item))
                 }
             }

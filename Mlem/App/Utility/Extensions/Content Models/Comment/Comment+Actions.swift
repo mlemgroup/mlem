@@ -29,7 +29,7 @@ extension Comment {
     
     func counter(
         appState: AppState,
-        type: CommentBarConfiguration.CounterType,
+        type: CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
@@ -40,19 +40,6 @@ extension Comment {
         }
     }
 
-    func counter(
-        appState: AppState,
-        type: ReplyBarConfiguration.CounterType,
-        commentTreeTracker: CommentTreeTracker? = nil
-    ) -> Counter? {
-        switch type {
-        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        case .upvote: upvoteCounter(appState: appState)
-        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
-    }
-    
     // MARK: - Actions
     
     func createImageAction(navigation: NavigationLayer, commentTreeTracker: CommentTreeTracker?) -> BasicAction {

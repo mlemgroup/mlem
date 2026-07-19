@@ -15,9 +15,8 @@ import SwiftUI
 
 protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration, ContextMenuConfiguration {
     associatedtype ActionType: ActionTypeProviding
-    associatedtype CounterType: CounterTypeProviding
     
-    typealias Item = InteractionConfigurationItem<ActionType, CounterType>
+    typealias Item = InteractionConfigurationItem<ActionType>
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
@@ -71,10 +70,7 @@ enum InteractionBarConfigurationConversionType {
     case swipe, bar, contextMenu
 }
 
-enum InteractionConfigurationItem<
-    ActionType: ActionTypeProviding,
-    CounterType: CounterTypeProviding
->: Codable, Hashable {
+enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Hashable {
     case action(ActionType)
     case counter(CounterType)
     
@@ -82,10 +78,7 @@ enum InteractionConfigurationItem<
         CounterType.allCases.map { .counter($0) } + ActionType.allCases.map { .action($0) }
     }
     
-    fileprivate func convert<
-        A: ActionTypeProviding,
-        C: CounterTypeProviding
-    >() -> InteractionConfigurationItem<A, C>? {
+    fileprivate func convert<A: ActionTypeProviding>() -> InteractionConfigurationItem<A>? {
         switch self {
         case let .action(action):
             if let value = A(rawValue: action.rawValue) {
@@ -94,7 +87,7 @@ enum InteractionConfigurationItem<
                 return nil
             }
         case let .counter(counter):
-            if let value = C(rawValue: counter.rawValue) {
+            if let value = CounterType(rawValue: counter.rawValue) {
                 return .counter(value)
             } else {
                 return nil
@@ -125,16 +118,6 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     associatedtype Configuration: InteractionBarConfiguration
     
     var appearance: ActionAppearance { get }
-    
-    static var defaultWidgets: [Self] { get }
-    
-    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
-}
-
-protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
-    associatedtype Configuration: InteractionBarConfiguration
-    
-    var appearance: CounterAppearance { get }
     
     static var defaultWidgets: [Self] { get }
     
