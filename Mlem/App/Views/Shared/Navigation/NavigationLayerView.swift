@@ -24,6 +24,7 @@ struct NavigationLayerView: View {
             if layer.hasNavigationStack {
                 NavigationStack(path: $layer.path) {
                     rootView()
+                        .id(layer.root.updateCountHash)
                         .environment(\.isRootView, true)
                         .navigationDestination(for: NavigationFrame.self) {
                             NavigationFrameView(frame: $0)
