@@ -50,7 +50,7 @@ extension InteractionBarConfiguration {
             leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
             trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
             savedSwipes: types.contains(.swipe) ? other.savedSwipes?.filter(allowed: Self.availableActions.all) : savedSwipes,
-            readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
+            readouts: types.contains(.bar) ? other.readouts : readouts,
             availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
             savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu
         )
@@ -87,11 +87,7 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Has
                 return nil
             }
         case let .counter(counter):
-            if let value = CounterType(rawValue: counter.rawValue) {
-                return .counter(value)
-            } else {
-                return nil
-            }
+            return .counter(counter)
         }
     }
     
