@@ -114,17 +114,9 @@ enum InteractionConfigurationItem<
     func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
         switch self {
         case let .action(actionType):
-            guard let ret = actionType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                assertionFailure("Could not cast to ReadoutType")
-                return []
-            }
-            return ret
+            actionType.associatedReadouts(context: context)
         case let .counter(counterType):
-            guard let ret = counterType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                assertionFailure("Could not cast to ReadoutType")
-                return []
-            }
-            return ret
+            counterType.associatedReadouts(context: context)
         }
     }
 }
