@@ -11,7 +11,7 @@ import SwiftUI
 extension InboxView {
     @ViewBuilder
     var inboxFeedView: some View {
-        LazyVStack(spacing: 0, pinnedViews: []) {
+        LazyVStack(spacing: 0) {
             Section {
                 ForEach(feedLoader.items, id: \.inboxId) { notification in
                     Group {

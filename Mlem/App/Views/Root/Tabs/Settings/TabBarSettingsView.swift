@@ -14,7 +14,6 @@ struct TabBarSettingsView: View {
     
     @Setting(\.tab_profile_labelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tab_profile_showAvatar) var showUserAvatar: Bool
-    @Setting(\.tab_gestures_longPressAction) var longPressAction: TabBarLongPressAction
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var account: any Account {

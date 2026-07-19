@@ -97,9 +97,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var safety_blurNsfw: NsfwBlurBehavior
     var safety_enableModlogWarning: Bool
     var safety_enableNsfwCommunityWarning: Bool
-    var tab_gestures_enableLongPress: Bool
     var tab_gestures_enableSwipeUp: Bool
-    var tab_gestures_longPressAction: TabBarLongPressAction
     var tab_profile_labelType: ProfileTabLabel
     var tab_profile_showAvatar: Bool
     var tab_inbox_badgeIncludedTypes: Set<InboxItemType>
@@ -242,9 +240,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_blurNsfw = try container.decodeIfPresent(NsfwBlurBehavior.self, forKey: ._safety_blurNsfw) ?? .always
         self.safety_enableModlogWarning = try container.decodeIfPresent(Bool.self, forKey: ._safety_enableModlogWarning) ?? true
         self.safety_enableNsfwCommunityWarning = try container.decodeIfPresent(Bool.self, forKey: ._safety_enableNsfwCommunityWarning) ?? true
-        self.tab_gestures_enableLongPress = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableLongPress) ?? true
         self.tab_gestures_enableSwipeUp = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableSwipeUp) ?? true
-        self.tab_gestures_longPressAction = try container.decodeIfPresent(TabBarLongPressAction.self, forKey: ._tab_gestures_longPressAction) ?? .openAccountSwitcher
         self.tab_profile_labelType = try container.decodeIfPresent(ProfileTabLabel.self, forKey: ._tab_profile_labelType) ?? .nickname
         self.tab_profile_showAvatar = try container.decodeIfPresent(Bool.self, forKey: ._tab_profile_showAvatar) ?? true
         self.tab_showNames = try container.decodeIfPresent(Bool.self, forKey: ._tab_showNames) ?? true
@@ -357,9 +353,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_blurNsfw = .always
         self.safety_enableModlogWarning = true
         self.safety_enableNsfwCommunityWarning = true
-        self.tab_gestures_enableLongPress = true
         self.tab_gestures_enableSwipeUp = true
-        self.tab_gestures_longPressAction = .openAccountSwitcher
         self.tab_profile_labelType = .nickname
         self.tab_profile_showAvatar = true
         self.tab_showNames = true
@@ -467,7 +461,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         safety_blurNsfw = otherValues.safety_blurNsfw
         safety_enableModlogWarning = otherValues.safety_enableModlogWarning
         safety_enableNsfwCommunityWarning = otherValues.safety_enableNsfwCommunityWarning
-        tab_gestures_enableLongPress = otherValues.tab_gestures_enableLongPress
         tab_gestures_enableSwipeUp = otherValues.tab_gestures_enableSwipeUp
         tab_profile_labelType = otherValues.tab_profile_labelType
         tab_profile_showAvatar = otherValues.tab_profile_showAvatar
@@ -583,9 +576,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _safety_blurNsfw = "safety_blurNsfw"
         case _safety_enableModlogWarning = "safety_enableModlogWarning"
         case _safety_enableNsfwCommunityWarning = "safety_enableNsfwCommunityWarning"
-        case _tab_gestures_enableLongPress = "tab_gestures_enableLongPress"
         case _tab_gestures_enableSwipeUp = "tab_gestures_enableSwipeUp"
-        case _tab_gestures_longPressAction = "tab_gestures_longPressAction"
         case _tab_profile_labelType = "tab_profile_labelType"
         case _tab_profile_showAvatar = "tab_profile_showAvatar"
         case _tab_inbox_badgeIncludedTypes = "tab_inbox_badgeIncludedTypes"
