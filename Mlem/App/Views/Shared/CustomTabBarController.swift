@@ -42,32 +42,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         hidesBottomBarWhenPushed = true
         tabBar.tintColor = UIColor(palette.accent)
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressGestureTriggered(_:)))
-        tabBar.addGestureRecognizer(longPressRecognizer)
-    }
-    
-    @objc func longPressGestureTriggered(_ recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began else { return }
-        guard let tabBar = recognizer.view as? UITabBar else { return }
-        guard let tabBarItems = tabBar.items else { return }
-        guard let viewControllers else { return }
-        guard tabBarItems.count == viewControllers.count else { return }
-
-        let loc = recognizer.location(in: tabBar)
-
-        for (index, item) in tabBarItems.enumerated() {
-            guard let view = item.value(forKey: "view") as? UIView else { continue }
-            guard view.frame.contains(loc) else { continue }
-            
-            let item: CustomTabViewHostingController?
-            if let navigationController = viewControllers[index] as? UINavigationController {
-                item = navigationController.viewControllers.first as? CustomTabViewHostingController
-            } else {
-                item = viewControllers[index] as? CustomTabViewHostingController
-            }
-            item?.item.onLongPress?()
-            break
-        }
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
