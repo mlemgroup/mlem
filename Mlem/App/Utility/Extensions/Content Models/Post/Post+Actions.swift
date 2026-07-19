@@ -297,7 +297,7 @@ extension Post {
         return nil
     }
     
-    func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+    func readout(type: ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
         // swiftlint:disable:next void_function_in_ternary

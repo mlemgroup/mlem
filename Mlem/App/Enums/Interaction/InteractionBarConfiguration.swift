@@ -16,9 +16,8 @@ import SwiftUI
 protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration, ContextMenuConfiguration {
     associatedtype ActionType: ActionTypeProviding
     associatedtype CounterType: CounterTypeProviding
-    associatedtype ReadoutType: ReadoutTypeProviding
     
-    typealias Item = InteractionConfigurationItem<ActionType, CounterType, ReadoutType>
+    typealias Item = InteractionConfigurationItem<ActionType, CounterType>
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
@@ -74,8 +73,7 @@ enum InteractionBarConfigurationConversionType {
 
 enum InteractionConfigurationItem<
     ActionType: ActionTypeProviding,
-    CounterType: CounterTypeProviding,
-    ReadoutType: ReadoutTypeProviding
+    CounterType: CounterTypeProviding
 >: Codable, Hashable {
     case action(ActionType)
     case counter(CounterType)
@@ -86,9 +84,8 @@ enum InteractionConfigurationItem<
     
     fileprivate func convert<
         A: ActionTypeProviding,
-        C: CounterTypeProviding,
-        R: ReadoutTypeProviding
-    >() -> InteractionConfigurationItem<A, C, R>? {
+        C: CounterTypeProviding
+    >() -> InteractionConfigurationItem<A, C>? {
         switch self {
         case let .action(action):
             if let value = A(rawValue: action.rawValue) {
@@ -139,7 +136,7 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
 }
 
 protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
@@ -149,7 +146,7 @@ protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
 }
 
 protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
