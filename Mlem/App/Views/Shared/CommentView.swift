@@ -37,8 +37,8 @@ struct CommentView<EmbeddedContent: View>: View {
     let highlight: Bool
     let depthOffset: Int
     
-    var compactReadouts: [CommentBarConfiguration.ReadoutType] {
-        var readouts: [CommentBarConfiguration.ReadoutType] = [.created]
+    var compactReadouts: [ReadoutType] {
+        var readouts: [ReadoutType] = [.created]
         readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
         readouts.appendIfPresent(comment.saved.value ?? false ? .saved : nil)
         return readouts
@@ -100,7 +100,7 @@ struct CommentView<EmbeddedContent: View>: View {
                             InfoStackView(
                                 comment: comment,
                                 readouts: compactReadouts,
-                                coloredReadouts: .init(CommentBarConfiguration.ReadoutType.allCases)
+                                coloredReadouts: .init(ReadoutType.allCases)
                             )
                             .layoutPriority(1)
                         }
