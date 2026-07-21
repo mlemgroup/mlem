@@ -4,12 +4,11 @@ on:
   # Run in master as CI
   push:
     branches:
-    - master
+    - main
       
   pull_request:
     branches:
-    - master
-    - dev
+    - main
 
 jobs:
   SwiftLint:

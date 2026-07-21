@@ -23,8 +23,8 @@ struct CompactPostView: View {
     let post: Post
     var requireConsistentHeight: Bool = false
     
-    var readouts: [PostBarConfiguration.ReadoutType] {
-        var readouts: [PostBarConfiguration.ReadoutType] = [.created]
+    var readouts: [ReadoutType] {
+        var readouts: [ReadoutType] = [.created]
         readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
         readouts.appendIfPresent(post.saved.value ?? false ? .saved : nil)
         return readouts
@@ -97,7 +97,7 @@ struct CompactPostView: View {
                 } else {
                     titleAndHostView
                 }
-                InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(PostBarConfiguration.ReadoutType.allCases))
+                InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(ReadoutType.allCases))
             }
             .frame(maxWidth: .infinity)
             

@@ -52,14 +52,14 @@ struct ReadoutView: View {
 }
 
 extension InfoStackView {
-    init(post: Post, readouts: [PostBarConfiguration.ReadoutType], coloredReadouts: Set<PostBarConfiguration.ReadoutType>) {
+    init(post: Post, readouts: [ReadoutType], coloredReadouts: Set<ReadoutType>) {
         self.readouts = readouts.compactMap { post.readout(type: $0, showColor: coloredReadouts.contains($0)) }
     }
     
     init(
         comment: Comment,
-        readouts: [CommentBarConfiguration.ReadoutType],
-        coloredReadouts: Set<CommentBarConfiguration.ReadoutType>
+        readouts: [ReadoutType],
+        coloredReadouts: Set<ReadoutType>
     ) {
         self.readouts = readouts.compactMap { comment.readout(type: $0, showColor: coloredReadouts.contains($0)) }
     }

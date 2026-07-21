@@ -194,7 +194,7 @@ extension InteractionBarEditorView {
     @ViewBuilder
     var readoutSelectors: some View {
         HFlow(spacing: Constants.main.standardSpacing) {
-            ForEach(Array(Configuration.ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
+            ForEach(Array(ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
                 let isActive = configuration.readouts.contains(readout)
                 let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.readouts))
                 Button {
@@ -205,7 +205,7 @@ extension InteractionBarEditorView {
                     } else {
                         // Insert and sort the new `ReadoutType`. In future these could be re-arrangable too
                         // but I need to think about how the UI would work
-                        configuration.readouts = Configuration.ReadoutType.allCases.filter {
+                        configuration.readouts = ReadoutType.allCases.filter {
                             configuration.readouts.contains($0) || $0 == readout
                         }
                     }

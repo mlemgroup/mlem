@@ -20,7 +20,7 @@ struct ExportablePostView: View {
     let appState: AppState
     let colorScheme: ColorScheme
     
-    let infoStackReadouts: [PostBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
+    let infoStackReadouts: [ReadoutType] = [.upvote, .downvote, .created, .comment]
     
     var animationHashValue: Int {
         var hasher = Hasher()

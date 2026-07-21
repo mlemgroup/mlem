@@ -15,10 +15,8 @@ import SwiftUI
 
 protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfiguration, ContextMenuConfiguration {
     associatedtype ActionType: ActionTypeProviding
-    associatedtype CounterType: CounterTypeProviding
-    associatedtype ReadoutType: ReadoutTypeProviding
     
-    typealias Item = InteractionConfigurationItem<ActionType, CounterType, ReadoutType>
+    typealias Item = InteractionConfigurationItem<ActionType>
     
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
@@ -52,7 +50,7 @@ extension InteractionBarConfiguration {
             leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
             trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
             savedSwipes: types.contains(.swipe) ? other.savedSwipes?.filter(allowed: Self.availableActions.all) : savedSwipes,
-            readouts: types.contains(.bar) ? other.readouts.compactMap { .init(rawValue: $0.rawValue) } : readouts,
+            readouts: types.contains(.bar) ? other.readouts : readouts,
             availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
             savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu
         )
@@ -72,11 +70,7 @@ enum InteractionBarConfigurationConversionType {
     case swipe, bar, contextMenu
 }
 
-enum InteractionConfigurationItem<
-    ActionType: ActionTypeProviding,
-    CounterType: CounterTypeProviding,
-    ReadoutType: ReadoutTypeProviding
->: Codable, Hashable {
+enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Hashable {
     case action(ActionType)
     case counter(CounterType)
     
@@ -84,11 +78,7 @@ enum InteractionConfigurationItem<
         CounterType.allCases.map { .counter($0) } + ActionType.allCases.map { .action($0) }
     }
     
-    fileprivate func convert<
-        A: ActionTypeProviding,
-        C: CounterTypeProviding,
-        R: ReadoutTypeProviding
-    >() -> InteractionConfigurationItem<A, C, R>? {
+    fileprivate func convert<A: ActionTypeProviding>() -> InteractionConfigurationItem<A>? {
         switch self {
         case let .action(action):
             if let value = A(rawValue: action.rawValue) {
@@ -97,11 +87,7 @@ enum InteractionConfigurationItem<
                 return nil
             }
         case let .counter(counter):
-            if let value = C(rawValue: counter.rawValue) {
-                return .counter(value)
-            } else {
-                return nil
-            }
+            return .counter(counter)
         }
     }
     
@@ -117,17 +103,9 @@ enum InteractionConfigurationItem<
     func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
         switch self {
         case let .action(actionType):
-            guard let ret = actionType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                assertionFailure("Could not cast to ReadoutType")
-                return []
-            }
-            return ret
+            actionType.associatedReadouts(context: context)
         case let .counter(counterType):
-            guard let ret = counterType.associatedReadouts(context: context) as? Set<ReadoutType> else {
-                assertionFailure("Could not cast to ReadoutType")
-                return []
-            }
-            return ret
+            counterType.associatedReadouts(context: context)
         }
     }
 }
@@ -139,23 +117,7 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     
     static var defaultWidgets: [Self] { get }
     
-    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
-}
-
-protocol CounterTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
-    associatedtype Configuration: InteractionBarConfiguration
-    
-    var appearance: CounterAppearance { get }
-    
-    static var defaultWidgets: [Self] { get }
-    
-    func associatedReadouts(context: any InteractableProviding) -> Set<Configuration.ReadoutType>
-}
-
-protocol ReadoutTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
-    var appearance: MockReadoutAppearance { get }
-    
-    func compatibleWith(otherReadouts: Set<Self>) -> Bool
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
 }
 
 struct InteractionBarConfigurations: Codable {
