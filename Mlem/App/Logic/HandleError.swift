@@ -71,6 +71,9 @@ private func _handleError(
     case ApiClientError.cancelled, is CancellationError:
         print("Cancellation error")
         return true
+    case let error as URLError where error.code == .timedOut:
+        print("Network error")
+        return true
     case let error as NSError where [NSURLErrorCancelled, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost].contains(error.code):
         print("Network error")
         return true
