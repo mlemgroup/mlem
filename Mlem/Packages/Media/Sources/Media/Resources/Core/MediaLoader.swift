@@ -73,7 +73,7 @@ public class MediaLoader {
             self.processors = .init()
         }
         
-        self.proxyBypass = computeProxyBypass(for: url)
+        self.proxyBypass = url?.proxiedUrl()
         
         if let cachedImage = retrieveCachedImage(for: url, with: processors) {
             self.mediaType = cachedImage
@@ -98,7 +98,7 @@ public class MediaLoader {
         await setLoading(.loading)
         await setError(nil)
         
-        proxyBypass = computeProxyBypass(for: url)
+        proxyBypass = url?.proxiedUrl()
         
         // easy case: nil url
         guard let url else {
@@ -160,15 +160,6 @@ func retrieveCachedImage(for url: URL?, with processors: [ImageProcessing]) -> M
            processors: processors
        )) {
         return container.animatedMediaType
-    }
-    return nil
-}
-
-func computeProxyBypass(for url: URL?) -> URL? {
-    if let url,
-       let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-       let base = components.queryItems?.first(where: { $0.name == "url" })?.value {
-        return .init(string: base)
     }
     return nil
 }
