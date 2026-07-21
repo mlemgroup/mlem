@@ -48,6 +48,8 @@
 		0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */; };
 		0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */; };
 		0316CD642C382A6A009EA8EA /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316CD632C382A6A009EA8EA /* MessageView.swift */; };
+		0316D3F1300CC2A2003CB1BD /* ReadoutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316D3F0300CC2A2003CB1BD /* ReadoutType.swift */; };
+		0316D3F5300CC4E1003CB1BD /* CounterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0316D3F4300CC4E1003CB1BD /* CounterType.swift */; };
 		0318BA9F2D72405F006CA71F /* PostSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */; };
 		031CA0D92E4FBFD800CF0C0F /* MarkAllAsReadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA0D82E4FBFD800CF0C0F /* MarkAllAsReadButton.swift */; };
 		031CA4AE2E58A84E00CF0C0F /* View+WithSheetSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */; };
@@ -682,6 +684,8 @@
 		0315B1C02C74C71A006D4F82 /* CommentEditorView+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEditorView+Context.swift"; sourceTree = "<group>"; };
 		0315B1C52C754802006D4F82 /* PostEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditorView+Logic.swift"; sourceTree = "<group>"; };
 		0316CD632C382A6A009EA8EA /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		0316D3F0300CC2A2003CB1BD /* ReadoutType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadoutType.swift; sourceTree = "<group>"; };
+		0316D3F4300CC4E1003CB1BD /* CounterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterType.swift; sourceTree = "<group>"; };
 		0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSortType+Extensions.swift"; sourceTree = "<group>"; };
 		031CA0D82E4FBFD800CF0C0F /* MarkAllAsReadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAllAsReadButton.swift; sourceTree = "<group>"; };
 		031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+WithSheetSearch.swift"; sourceTree = "<group>"; };
@@ -1756,6 +1760,8 @@
 		03AF91E62C1C65AE00E56644 /* Interaction */ = {
 			isa = PBXGroup;
 			children = (
+				0316D3F0300CC2A2003CB1BD /* ReadoutType.swift */,
+				0316D3F4300CC4E1003CB1BD /* CounterType.swift */,
 				0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */,
 				038E62DF2F6F0FC600C54DEB /* ContextMenuConfiguration.swift */,
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
@@ -2847,6 +2853,7 @@
 				0325092A2FD57DE5006F8394 /* ActiveUserTimeRange+Extensions.swift in Sources */,
 				031CA5B52E590B0D00CF0C0F /* QuickSwipeAction+Extensions.swift in Sources */,
 				030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */,
+				0316D3F1300CC2A2003CB1BD /* ReadoutType.swift in Sources */,
 				0315B1C12C74C71A006D4F82 /* CommentEditorView+Context.swift in Sources */,
 				03D283FE2D25EEC500A6659B /* SearchView+Views.swift in Sources */,
 				03AFD0DF2C3B2E000054B8AD /* PersonListRow.swift in Sources */,
@@ -3341,6 +3348,7 @@
 				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
 				CD756A982ED7669C0031D7D1 /* ExportableCommentEditorView.swift in Sources */,
 				CD7743892C20EDEE0085BB43 /* VotesModel+Extensions.swift in Sources */,
+				0316D3F5300CC4E1003CB1BD /* CounterType.swift in Sources */,
 				CD4D58AD2B86BE7100B82964 /* QuickSwitcherView.swift in Sources */,
 				0397D4642C676CA8002C6CDC /* FeedSortPicker.swift in Sources */,
 				0355F9462C150B2300605248 /* ExternalApiInfoView.swift in Sources */,
