@@ -8,10 +8,14 @@
 import Actions
 import Foundation
 
-struct InteractionBarActions {
+struct InteractionBarActions: Encodable {
     var leading: [InteractionBarItem]
     var trailing: [InteractionBarItem]
     var readouts: [ReadoutType]
+
+    enum CodingKeys: CodingKey {
+        case leading, trailing, readouts
+    }
 
     func filter(allowed seeds: [ActionSeed]) -> InteractionBarActions {
         let keys = Set(seeds.lazy.map(\.key))
@@ -23,14 +27,32 @@ struct InteractionBarActions {
     }
 }
 
-enum InteractionBarItem {
-    case action(ActionSeed)
+private enum RawInteractionBarItem: Decodable {
+    case action(String)
     case counter(CounterType)
+}
 
-    fileprivate func matchesActionSeedList(_ seeds: Set<String>) -> Bool {
-        switch self {
-        case let .action(seed): seeds.contains(seed.key)
-        case .counter: true
+private extension InteractionBarItem {
+    init?(raw: RawInteractionBarItem, availableActions: [ActionSeed]) {
+        switch raw {
+        case let .action(key):
+            if let seed = availableActions.first(where: {$0.key == key}) {
+                self = .action(seed)
+            } else {
+                return nil
+            }
+        case let .counter(counter):
+            self = .counter(counter)
         }
+    }
+}
+
+extension InteractionBarActions {
+    init(from container: KeyedDecodingContainer<CodingKeys>, availableActions: [ActionSeed]) throws {
+        let leading = try container.decode([RawInteractionBarItem].self, forKey: .leading) 
+        self.leading = leading.compactMap { .init(raw: $0, availableActions: availableActions) }
+        let trailing = try container.decode([RawInteractionBarItem].self, forKey: .trailing) 
+        self.trailing = trailing.compactMap { .init(raw: $0, availableActions: availableActions) }
+        self.readouts = try container.decode([ReadoutType].self, forKey: .readouts)
     }
 }

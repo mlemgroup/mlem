@@ -238,6 +238,7 @@
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
 		0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */; };
 		0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */; };
+		0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
 		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0381F7242F672258008A7731 /* CommentBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */; };
@@ -867,6 +868,7 @@
 		0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyBlurNsfwSettingsView.swift; sourceTree = "<group>"; };
 		0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActions.swift; sourceTree = "<group>"; };
+		0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarItem.swift; sourceTree = "<group>"; };
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
 		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentBarConfiguration+Types.swift"; sourceTree = "<group>"; };
@@ -1770,6 +1772,7 @@
 				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
 				0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */,
 				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
+				0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
 				0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
@@ -3188,6 +3191,7 @@
 				0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */,
 				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
+				0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */,
 				03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */,
 				03EC83252E916C51004698BB /* View+SafeAreaBar.swift in Sources */,
 				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
