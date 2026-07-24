@@ -21,11 +21,7 @@ struct InteractionBarActionLabelView: View {
     }
 
     init( _ label: ActionLabel) {
-        self.appearance = .init(
-            label: label.title,
-            color: label.color,
-            icon: label.icon.computeImageName()
-        )
+        self.appearance = .init(label)
     }
     
     var body: some View {

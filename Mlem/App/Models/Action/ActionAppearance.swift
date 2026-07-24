@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
+import Actions
 import SwiftUI
 import Theming
 
@@ -67,5 +68,13 @@ struct ActionAppearance {
         self.menuIcon = menuIcon ?? icon
         self.swipeIcon1 = swipeIcon1 ?? icon
         self.swipeIcon2 = swipeIcon2 ?? icon
+    }
+
+    init(_ label: ActionLabel) {
+        self.init(
+            label: label.title,
+            color: label.color,
+            icon: label.icon.computeImageName()
+        )
     }
 }
