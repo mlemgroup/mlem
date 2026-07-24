@@ -25,6 +25,9 @@ struct InboxSettingsView: View {
                 NavigationLink(.settings(.interactionBar(.inboxNotification))) {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
                 }
+                NavigationLink(.settings(.newInteractionBar(.inboxNotification))) {
+                    SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
+                }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.inboxNotification)))
                 NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_reply)))
             }
