@@ -15,19 +15,22 @@ public struct ActionLabel {
     public var color: ThemedColor
     public var isDestructive: Bool
     public var visibility: ActionVisiblity
+    public var prominent: Bool
     
     public init(
         _ title: LocalizedStringResource,
         icon: Icon,
         color: ThemedColor = .themedAccent,
         isDestructive: Bool = false,
-        visibility: ActionVisiblity = .enabled
+        visibility: ActionVisiblity = .enabled,
+        prominent: Bool = false
     ) {
         self.title = .init(localized: title)
         self.icon = icon
         self.color = color
         self.isDestructive = isDestructive
         self.visibility = visibility
+        self.prominent = prominent 
     }
     
     @_disfavoredOverload
@@ -36,18 +39,26 @@ public struct ActionLabel {
         icon: Icon,
         color: ThemedColor = .themedAccent,
         isDestructive: Bool = false,
-        visibility: ActionVisiblity = .enabled
+        visibility: ActionVisiblity = .enabled,
+        prominent: Bool = false
     ) {
         self.title = String(title)
         self.icon = icon
         self.color = color
         self.isDestructive = isDestructive
         self.visibility = visibility
+        self.prominent = prominent
     }
     
     public func withVisibility(_ visibility: ActionVisiblity) -> ActionLabel {
         var new = self
         new.visibility = visibility
+        return new
+    }
+
+    public func withProminent(_ value: Bool) -> ActionLabel {
+        var new = self
+        new.prominent = prominent
         return new
     }
 
