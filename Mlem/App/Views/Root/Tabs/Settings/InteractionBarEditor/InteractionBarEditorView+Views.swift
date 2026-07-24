@@ -12,7 +12,7 @@ import Theming
 
 // swiftlint:disable file_length
 
-extension NewInteractionBarEditorView {
+extension InteractionBarEditorView {
     // MARK: - Previews
     
     @ViewBuilder

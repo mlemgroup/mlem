@@ -38,7 +38,7 @@ enum SettingsPage {
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
     case about, advanced, errorLog, errorToastTimeout
-    case newInteractionBar(ContentActionType)
+    case interactionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
     case postBarWidgetPicker(Binding<PostBarConfiguration>)
@@ -252,14 +252,14 @@ enum SettingsPage {
             }
         case let .contextMenu(page):
             page.view
-        case let .newInteractionBar(type):
+        case let .interactionBar(type):
             switch type {
             case .post:
-                NewInteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
-                NewInteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
             case .inboxNotification:
-                NewInteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
+                InteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
                 Text("TODO")
             case .commentReport:
@@ -267,15 +267,15 @@ enum SettingsPage {
             }
 
         case let .postBarWidgetPicker(configuration):
-            NewInteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentBarWidgetPicker(configuration):
-            NewInteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
         case let .replyBarWidgetPicker(configuration):
-            NewInteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration)
+            InteractionBarWidgetPickerView<ReplyBarConfiguration>(configuration: configuration)
         case let .postReportBarWidgetPicker(configuration):
-            NewInteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
+            InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentReportBarWidgetPicker(configuration):
-            NewInteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
+            InteractionBarWidgetPickerView<CommentBarConfiguration>(configuration: configuration)
         case let .document(doc):
             SimpleMarkdownPage(doc: doc)
         case .licences:

@@ -8,7 +8,7 @@
 import SwiftUI
 import Theming
 
-extension NewInteractionBarEditorView {
+extension InteractionBarEditorView {
     // MARK: - Definitions
     
     enum ConfigurationType {

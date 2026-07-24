@@ -32,7 +32,7 @@ struct PostSettingsView: View {
             }
             
             Section {
-                NavigationLink(.settings(.newInteractionBar(.post))) {
+                NavigationLink(.settings(.interactionBar(.post))) {
                     SettingsInteractionBarSummaryView(configuration: postInteractionBar)
                 }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.post)))

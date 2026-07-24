@@ -24,7 +24,7 @@ struct ModMailInteractionBarSettingsView: View {
             }
             if useAlternateLayout {
                 Section("Posts") {
-                    NavigationLink(.settings(.newInteractionBar(.postReport))) {
+                    NavigationLink(.settings(.interactionBar(.postReport))) {
                         SettingsInteractionBarSummaryView(
                             title: "Interaction Bar",
                             configuration: postReportInteractionBar
@@ -33,7 +33,7 @@ struct ModMailInteractionBarSettingsView: View {
                     NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.postReport)))
                 }
                 Section("Comments") {
-                    NavigationLink(.settings(.newInteractionBar(.commentReport))) {
+                    NavigationLink(.settings(.interactionBar(.commentReport))) {
                         SettingsInteractionBarSummaryView(
                             title: "Interaction Bar",
                             configuration: commentReportInteractionBar

@@ -10,7 +10,7 @@ import Haptics
 import SwiftUI
 import Theming
 
-struct NewInteractionBarEditorView<Configuration: NewInteractionBarConfiguration>: View {
+struct InteractionBarEditorView<Configuration: NewInteractionBarConfiguration>: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
