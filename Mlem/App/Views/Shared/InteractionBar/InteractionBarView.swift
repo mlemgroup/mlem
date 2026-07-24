@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 14/06/2024.
 //
 
+import Actions
 import MlemMiddleware
 import SwiftUI
 
@@ -17,39 +18,59 @@ import SwiftUI
 struct InteractionBarView: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(CommentTreeTracker.self) var commentTreeTracker: CommentTreeTracker?
+
+    @Environment(\.self) var environment
+    @Environment(\.communityContext) var communityContext
+    @Environment(\.reportContext) var reportContext
+
+    enum Content {
+        case post(Post)
+        case comment(Comment)
+        case notification(Comment, InboxNotification)
+    }
     
-    private let leading: [EnrichedWidget]
-    private let trailing: [EnrichedWidget]
+    private let content: Content
+    private let configuration: any NewInteractionBarConfiguration
+
+    private var leading: [EnrichedWidget] {
+        .init(
+            appState: appState,
+            navigation: navigation,
+            content: content,
+            items: configuration.interactionBar.leading,
+            commentTreeTracker: commentTreeTracker,
+            communityContext: communityContext,
+            reportContext: reportContext
+        )
+    }
+
+    private var trailing: [EnrichedWidget] {
+        .init(
+            appState: appState,
+            navigation: navigation,
+            content: content,
+            items: configuration.interactionBar.trailing,
+            commentTreeTracker: commentTreeTracker,
+            communityContext: communityContext,
+            reportContext: reportContext
+        )
+    }
+
+    private func wrapEnrichedWidgets(_ widgets: [EnrichedWidget]) -> [EnrichedWidgetWrapper] {
+        widgets.map {
+            .init(widget: $0, viewId: $0.viewId(environment: environment))
+        }
+    }
+
     private let readouts: [Readout]
     
     init(
-        appState: AppState,
         post: Post,
         configuration: PostBarConfiguration,
-        navigation: NavigationLayer,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report? = nil
     ) {
-        self.leading = .init(
-            appState: appState,
-            navigation: navigation,
-            post: post,
-            items: configuration.leading,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
-        self.trailing = .init(
-            appState: appState,
-            navigation: navigation,
-            post: post,
-            items: configuration.trailing,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
-        
+        self.content = .post(post)
+        self.configuration = configuration
         let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: post))
         }
@@ -59,32 +80,11 @@ struct InteractionBarView: View {
     }
     
     init(
-        appState: AppState,
-        navigation: NavigationLayer,
         comment: Comment,
         configuration: CommentBarConfiguration,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report?
     ) {
-        self.leading = .init(
-            appState: appState,
-            navigation: navigation,
-            comment: comment,
-            items: configuration.leading,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
-        self.trailing = .init(
-            appState: appState,
-            navigation: navigation,
-            comment: comment,
-            items: configuration.trailing,
-            commentTreeTracker: commentTreeTracker,
-            communityContext: communityContext,
-            reportContext: reportContext
-        )
+        self.content = .comment(comment)
+        self.configuration = configuration
         let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
@@ -94,26 +94,12 @@ struct InteractionBarView: View {
     }
     
     init(
-        appState: AppState,
-        navigation: NavigationLayer,
         comment: Comment,
         notification: InboxNotification,
         configuration: ReplyBarConfiguration
     ) {
-        self.leading = .init(
-            appState: appState,
-            navigation: navigation,
-            comment: comment,
-            notification: notification,
-            items: configuration.leading
-        )
-        self.trailing = .init(
-            appState: appState,
-            navigation: navigation,
-            comment: comment,
-            notification: notification,
-            items: configuration.trailing
-        )
+        self.content = .notification(comment, notification)
+        self.configuration = configuration
         let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
@@ -124,12 +110,12 @@ struct InteractionBarView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(leading, id: \.viewId, content: widgetView)
+            ForEach(wrapEnrichedWidgets(leading), id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
             InfoStackView(readouts: readouts)
                 .frame(maxWidth: .infinity, alignment: infoStackAlignment)
                 .padding(.horizontal, Constants.main.standardSpacing)
-            ForEach(trailing, id: \.viewId, content: widgetView)
+            ForEach(wrapEnrichedWidgets(trailing), id: \.viewId, content: widgetView)
                 .fixedSize(horizontal: true, vertical: false)
         }
         .frame(height: Constants.main.barIconHitbox)
@@ -145,8 +131,8 @@ struct InteractionBarView: View {
     }
     
     @ViewBuilder
-    private func widgetView(_ widget: EnrichedWidget) -> some View {
-        switch widget {
+    private func widgetView(_ widget: EnrichedWidgetWrapper) -> some View {
+        switch widget.widget {
         case let .action(action):
             actionView(action)
         case let .counter(counter):
@@ -164,7 +150,8 @@ struct InteractionBarView: View {
         
         HStack(spacing: 0) {
             if let leadingAction = counter.leadingAction {
-                actionView(leadingAction)
+                // actionView(leadingAction)
+                Text("-")
             }
             Text(counter.value?.description ?? "")
                 .monospacedDigit()
@@ -174,72 +161,61 @@ struct InteractionBarView: View {
                 .padding(paddingEdges, Constants.main.standardSpacing)
                 
             if let trailingAction = counter.trailingAction {
-                actionView(trailingAction)
+                // actionView(trailingAction)
+                Text("-")
             }
         }
     }
     
     @ViewBuilder
-    private func actionView(_ action: any Action) -> some View {
-        Group {
-            if let action = action as? ActionGroup {
-                Menu {
-                    ForEach(action.children, id: \.id) { child in
-                        MenuButton(action: child)
-                    }
-                } label: {
-                    InteractionBarActionLabelView(action.appearance)
-                        .opacity(action.disabled ? 0.5 : 1)
-                }
-                .onTapGesture {}
-            } else if let action = action as? BasicAction {
-                InteractionBarBasicButton(action: action)
-                    .popupAnchor()
+    private func actionView(_ action: Actions.Action) -> some View {
+        let label = action.createLabel(environment: environment)
+        InteractionBarBasicButton(action: action)
+            .popupAnchor()
+            .accessibilityLabel(label.title)
+            .accessibilityAction(.default) {
+                action.execute(environment: environment)
             }
-        }
-        .accessibilityLabel(action.appearance.label)
-        .accessibilityAction(.default) {
-            (action as? BasicAction)?.callback?()
-        }
-        .buttonStyle(.empty)
-        .disabled({
-            if let action = action as? BasicAction {
-                return action.callback == nil
-            } else {
-                return false
-            }
-        }())
-        .popupAnchor()
+            .buttonStyle(.empty)
+            .disabled(label.visibility != .enabled)
+            .popupAnchor()
     }
 }
 
 private struct InteractionBarBasicButton: View {
-    @Environment(PopupAnchorModel.self) var popupModel
+    @Environment(\.self) var environment
     
-    let action: BasicAction
+    let action: Actions.Action
     
     var body: some View {
         Button {
-            action.callbackWithConfirmation(popupModel: popupModel)
+            action.execute(environment: environment)
         } label: {
-            InteractionBarActionLabelView(action.appearance)
-                .opacity(action.disabled ? 0.5 : 1)
+            let label = action.createLabel(environment: environment)
+            InteractionBarActionLabelView(label)
+                .opacity(label.visibility == .enabled ? 1 : 0.5)
         }
     }
 }
 
+// Necessary because ForEach requires a property for the ID
+private struct EnrichedWidgetWrapper {
+    let widget: EnrichedWidget
+    let viewId: Int
+}
+
 private enum EnrichedWidget {
-    case action(any Action)
+    case action(Actions.Action)
     case counter(Counter)
     
-    var viewId: Int {
+    func viewId(environment: EnvironmentValues) -> Int {
         var hasher = Hasher()
         switch self {
         case let .action(action):
             hasher.combine(1)
-            hasher.combine(action.id)
-            hasher.combine(action.appearance.isOn)
-            hasher.combine(action.appearance.isInProgress)
+            // hasher.combine(action.id)
+            let label = action.createLabel(environment: environment)
+            hasher.combine(label.prominent)
             hasher.combine((action as? BasicAction)?.disabled)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition
@@ -261,24 +237,60 @@ extension [EnrichedWidget] {
     init(
         appState: AppState,
         navigation: NavigationLayer,
+        content: InteractionBarView.Content,
+        items: [InteractionBarItem],
+        commentTreeTracker: CommentTreeTracker?,
+        communityContext: Community?,
+        reportContext: Report?
+    ) {
+        switch content {
+        case let .post(post):
+            self.init(
+                appState: appState,
+                navigation: navigation,
+                post: post,
+                items: items,
+                commentTreeTracker: commentTreeTracker,
+                communityContext: communityContext,
+                reportContext: reportContext
+            )
+        case let .comment(comment):
+            self.init(
+                appState: appState,
+                navigation: navigation,
+                comment: comment,
+                items: items,
+                commentTreeTracker: commentTreeTracker,
+                communityContext: communityContext,
+                reportContext: reportContext
+            )
+        case let .notification(comment, notification):
+            self.init(
+                appState: appState,
+                navigation: navigation,
+                comment: comment,
+                notification: notification,
+                items: items
+            )
+        }
+    }
+
+    init(
+        appState: AppState,
+        navigation: NavigationLayer,
         post: Post,
-        items: [PostBarConfiguration.Item],
+        items: [InteractionBarItem],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: Community?,
         reportContext: Report?
     ) {
         self = items.compactMap { item in
             switch item {
-            case let .action(action):
-                if let action = post.action(
-                    appState: appState,
-                    navigation: navigation,
-                    type: action,
-                    commentTreeTracker: commentTreeTracker,
-                    communityContext: communityContext,
-                    reportContext: reportContext
-                ) {
+            case let .action(seed):
+                if let action = seed.createAction(post) {
                     return .action(action)
+                } else {
+                     return nil
                 }
             case let .counter(counter):
                 if let counter = post.counter(appState: appState, type: counter, commentTreeTracker: commentTreeTracker) {
@@ -293,23 +305,18 @@ extension [EnrichedWidget] {
         appState: AppState,
         navigation: NavigationLayer,
         comment: Comment,
-        items: [CommentBarConfiguration.Item],
+        items: [InteractionBarItem],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: Community?,
         reportContext: Report?
     ) {
         self = items.compactMap { item in
             switch item {
-            case let .action(action):
-                if let action = comment.action(
-                    appState: appState,
-                    type: action,
-                    navigation: navigation,
-                    commentTreeTracker: commentTreeTracker,
-                    communityContext: communityContext,
-                    reportContext: reportContext
-                ) {
+            case let .action(seed):
+                if let action = seed.createAction(comment) {
                     return .action(action)
+                } else {
+                     return nil
                 }
             case let .counter(counter):
                 if let counter = comment.counter(
@@ -329,18 +336,15 @@ extension [EnrichedWidget] {
         navigation: NavigationLayer,
         comment: Comment,
         notification: InboxNotification,
-        items: [ReplyBarConfiguration.Item]
+        items: [InteractionBarItem]
     ) {
         self = items.compactMap { item in
             switch item {
-            case let .action(action):
-                if let action = comment.action(
-                    appState: appState,
-                    type: action,
-                    navigation: navigation,
-                    notification: notification
-                ) {
+            case let .action(seed):
+                if let action = seed.createAction(comment) {
                     return .action(action)
+                } else {
+                     return nil
                 }
             case let .counter(counter):
                 if let counter = comment.counter(appState: appState, type: counter) {
