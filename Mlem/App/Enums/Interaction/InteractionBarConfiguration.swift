@@ -5,8 +5,6 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
-// swiftlint:disable line_length
-
 import Actions
 import Foundation
 import Icons
@@ -43,19 +41,6 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
 }
 
 extension InteractionBarConfiguration {
-    /// Convert the `InteractionBarConfiguration` to another type of `InteractionBarConfiguration`. This is done by finding cases with
-    /// matching `rawValue` in the new type. If one cannot be found, the item is omitted.
-    func applying(other: some InteractionBarConfiguration, types: Set<InteractionBarConfigurationConversionType>) -> Self {
-        .init(
-            leading: types.contains(.bar) ? other.leading.compactMap { $0.convert() } : leading,
-            trailing: types.contains(.bar) ? other.trailing.compactMap { $0.convert() } : trailing,
-            savedSwipes: types.contains(.swipe) ? other.savedSwipes?.filter(allowed: Self.availableActions.all) : savedSwipes,
-            readouts: types.contains(.bar) ? other.readouts : readouts,
-            availableWidgets: types.contains(.bar) ? .init(other.availableWidgets.compactMap { $0.convert() }) : availableWidgets,
-            savedContextMenu: types.contains(.contextMenu) ? other.savedContextMenu.map { $0.filter { Self.availableActions.all.contains($0) } } : savedContextMenu
-        )
-    }
-    
     var all: [Item] { leading + trailing }
     
     func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
@@ -175,5 +160,3 @@ struct MockReadoutAppearance {
     let icon: Icon
     let label: String
 }
-
-// swiftlint:enable line_length
