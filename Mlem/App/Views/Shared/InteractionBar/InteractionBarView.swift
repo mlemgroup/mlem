@@ -50,7 +50,7 @@ struct InteractionBarView: View {
             reportContext: reportContext
         )
         
-        let associatedReadouts = configuration.all.reduce(into: Set<PostBarConfiguration.ReadoutType>()) { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: post))
         }
         self.readouts = configuration.readouts.compactMap { readout in
@@ -85,7 +85,7 @@ struct InteractionBarView: View {
             communityContext: communityContext,
             reportContext: reportContext
         )
-        let associatedReadouts = configuration.all.reduce(into: Set<CommentBarConfiguration.ReadoutType>()) { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
         self.readouts = configuration.readouts.compactMap { readout in
@@ -114,7 +114,7 @@ struct InteractionBarView: View {
             notification: notification,
             items: configuration.trailing
         )
-        let associatedReadouts = configuration.all.reduce(into: Set<ReplyBarConfiguration.ReadoutType>()) { result, widget in
+        let associatedReadouts = configuration.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
         self.readouts = configuration.readouts.compactMap { readout in
