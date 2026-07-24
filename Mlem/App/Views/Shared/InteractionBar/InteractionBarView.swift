@@ -28,6 +28,14 @@ struct InteractionBarView: View {
         case post(Post)
         case comment(Comment)
         case notification(Comment, InboxNotification)
+
+        var objectId: Int {
+            switch self {
+            case let .post(post): ObjectIdentifier(post).hashValue
+            case let .comment(comment): ObjectIdentifier(comment).hashValue
+            case let .notification(_, notification): ObjectIdentifier(notification).hashValue
+            }
+        }
     }
     
     private let content: Content
@@ -59,7 +67,10 @@ struct InteractionBarView: View {
 
     private func wrapEnrichedWidgets(_ widgets: [EnrichedWidget]) -> [EnrichedWidgetWrapper] {
         widgets.map {
-            .init(widget: $0, viewId: $0.viewId(environment: environment))
+            .init(
+                widget: $0,
+                viewId: $0.viewId(entityId: content.objectId, environment: environment)
+            )
         }
     }
 
@@ -208,13 +219,14 @@ private enum EnrichedWidget {
     case action(Actions.Action)
     case counter(Counter)
     
-    func viewId(environment: EnvironmentValues) -> Int {
+    func viewId(entityId: Int, environment: EnvironmentValues) -> Int {
         var hasher = Hasher()
         switch self {
         case let .action(action):
             hasher.combine(1)
-            // hasher.combine(action.id)
+            hasher.combine(entityId)
             let label = action.createLabel(environment: environment)
+            hasher.combine(label.title)
             hasher.combine(label.prominent)
             hasher.combine((action as? BasicAction)?.disabled)
         case let .counter(counter):
