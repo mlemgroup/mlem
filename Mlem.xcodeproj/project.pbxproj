@@ -1226,6 +1226,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		031DBA6A2F9A8D6500B4BAE4 /* Events */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Events; sourceTree = "<group>"; };
+		0381D0D23013A14000F9F3E0 /* NewInteractionBarEditor */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NewInteractionBarEditor; sourceTree = "<group>"; };
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
@@ -1405,6 +1406,7 @@
 				036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */,
 				0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */,
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
+				0381D0D23013A14000F9F3E0 /* NewInteractionBarEditor */,
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */,
@@ -2587,6 +2589,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				031DBA6A2F9A8D6500B4BAE4 /* Events */,
+				0381D0D23013A14000F9F3E0 /* NewInteractionBarEditor */,
 				03DA26AC2D79F29700E66267 /* Packages */,
 				03EC85ED2E9D925B004698BB /* Actions */,
 				03F6BDA12D502382006A425E /* Preview Content */,
