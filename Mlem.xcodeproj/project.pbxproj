@@ -236,6 +236,8 @@
 		038100512F6AE867008A7731 /* MlemBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 038100502F6AE867008A7731 /* MlemBackend */; };
 		038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038188982D43E0F30073E88D /* SafetySettingsView.swift */; };
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
+		0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */; };
+		0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
 		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0381F7242F672258008A7731 /* CommentBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */; };
@@ -863,6 +865,8 @@
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		038188982D43E0F30073E88D /* SafetySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetySettingsView.swift; sourceTree = "<group>"; };
 		0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyBlurNsfwSettingsView.swift; sourceTree = "<group>"; };
+		0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInteractionBarConfiguration.swift; sourceTree = "<group>"; };
+		0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActions.swift; sourceTree = "<group>"; };
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
 		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentBarConfiguration+Types.swift"; sourceTree = "<group>"; };
@@ -1764,6 +1768,8 @@
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				03B2F09E2FC998B300C36011 /* InstanceActionConfiguration.swift */,
 				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
+				0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */,
+				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
 				0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
@@ -3228,6 +3234,7 @@
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,
 				CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */,
 				CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */,
+				0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */,
 				CD5D8E2B2D6D5AB100AF5CE4 /* CGSize+Extensions.swift in Sources */,
 				CD3485BB2D501470006748B8 /* ZoomSliderLocation.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
@@ -3243,6 +3250,7 @@
 				CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
 				03E0EF432CA73D7A002CB66C /* PostStubResolutionPage.swift in Sources */,
+				0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */,
 				CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */,
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
 				037FC0702E4A6B16009E3E63 /* InstanceView+About.swift in Sources */,
