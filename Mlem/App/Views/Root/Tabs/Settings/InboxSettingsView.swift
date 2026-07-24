@@ -22,9 +22,6 @@ struct InboxSettingsView: View {
             )
             .gradientTint(.themedInbox)
             Section {
-                NavigationLink(.settings(.interactionBar(.inboxNotification))) {
-                    SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
-                }
                 NavigationLink(.settings(.newInteractionBar(.inboxNotification))) {
                     SettingsInteractionBarSummaryView(configuration: replyInteractionBar)
                 }

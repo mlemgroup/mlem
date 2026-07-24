@@ -25,9 +25,6 @@ struct CommentSettingsView: View {
                 }
             }
             Section {
-                NavigationLink(.settings(.interactionBar(.comment))) {
-                    SettingsInteractionBarSummaryView(configuration: commentInteractionBar)
-                }
                 NavigationLink(.settings(.newInteractionBar(.comment))) {
                     SettingsInteractionBarSummaryView(configuration: commentInteractionBar)
                 }

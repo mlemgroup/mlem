@@ -32,9 +32,6 @@ struct PostSettingsView: View {
             }
             
             Section {
-                NavigationLink(.settings(.interactionBar(.post))) {
-                    SettingsInteractionBarSummaryView(configuration: postInteractionBar)
-                }
                 NavigationLink(.settings(.newInteractionBar(.post))) {
                     SettingsInteractionBarSummaryView(configuration: postInteractionBar)
                 }

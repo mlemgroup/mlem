@@ -335,3 +335,13 @@ extension NewInteractionBarEditorView {
         return ret
     }
 }
+
+func computeInfoStackAlignment(infoStackIndex: Int, totalItems: Int) -> Alignment {
+    if infoStackIndex == 0 {
+        return totalItems == 1 ? .center : .leading
+    } else if infoStackIndex == totalItems - 1 {
+        return .trailing
+    } else {
+        return .center
+    }
+}
