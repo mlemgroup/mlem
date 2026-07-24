@@ -10,13 +10,23 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct CommentBarConfiguration: InteractionBarConfiguration {
+struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
     var savedContextMenu: [ActionSeed]?
 
     public var savedSwipes: ActionSeedSwipeConfiguration?
+
+    var savedInteractionBar: InteractionBarActions?
+
+    static var defaultInteractionBar: InteractionBarActions {
+        .init(
+            leading: [.counter(.score)],
+            trailing: [.action(.save), .action(.reply)],
+            readouts: [.created, .comment]
+        )
+    }
 
     static var defaultSwipes: ActionSeedSwipeConfiguration {
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
@@ -45,6 +55,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         self.savedContextMenu = savedContextMenu
     }
     
+    // swiftlint:disable:next function_body_length
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
@@ -57,6 +68,30 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
             self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
             self.savedContextMenu = nil
+        }
+
+        let interactionBarContainer = try? container.nestedContainer(
+            keyedBy: InteractionBarActions.CodingKeys.self,
+            forKey: .interactionBar
+        )
+        if let interactionBarContainer {
+            self.savedInteractionBar = try .init(from: interactionBarContainer, availableActions: Self.availableActions.all)
+        } else {
+            let leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
+            let trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+            let readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
+
+            let bar = InteractionBarActions(
+                leading: leading.map { $0.toInteractionBarItem() },
+                trailing: trailing.map { $0.toInteractionBarItem() },
+                readouts: readouts
+            )
+
+            if bar == Self.defaultInteractionBar {
+                self.savedInteractionBar = nil
+            } else {
+                self.savedInteractionBar = bar
+            }
         }
 
         let swipeConfigurationContainer = try? container.nestedContainer(
@@ -84,16 +119,19 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
     }
     
     enum CodingKeys: CodingKey {
-        case leading
-        case trailing
-        case readouts 
         case availableWidgets
         case savedContextMenu
         case swipes
+        case interactionBar
 
         // Used for conversion from Mlem 2.4 -> 2.5 format
         case leadingSwipes
         case trailingSwipes
+
+        // Used for conversion from Mlem 2.5 -> 2.6 format
+        case leading
+        case trailing
+        case readouts
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -104,6 +142,7 @@ struct CommentBarConfiguration: InteractionBarConfiguration {
         try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
         try container.encode(self.savedSwipes, forKey: .swipes)
+        try container.encode(self.savedInteractionBar, forKey: .interactionBar)
     }
 
     static var `default`: Self {

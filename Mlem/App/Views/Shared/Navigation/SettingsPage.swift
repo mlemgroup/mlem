@@ -271,7 +271,7 @@ enum SettingsPage {
             case .post:
                 NewInteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
             case .comment:
-                Text("TODO")
+                NewInteractionBarEditorView(setting: \.interactionBar_comment, isReport: false)
             case .inboxNotification:
                 Text("TODO")
             case .postReport:

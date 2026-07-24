@@ -28,6 +28,9 @@ struct CommentSettingsView: View {
                 NavigationLink(.settings(.interactionBar(.comment))) {
                     SettingsInteractionBarSummaryView(configuration: commentInteractionBar)
                 }
+                NavigationLink(.settings(.newInteractionBar(.comment))) {
+                    SettingsInteractionBarSummaryView(configuration: commentInteractionBar)
+                }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.comment)))
                 NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_comment)))
             }
