@@ -108,12 +108,22 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Has
             counterType.associatedReadouts(context: context)
         }
     }
+
+    func toInteractionBarItem() -> InteractionBarItem {
+        switch self {
+        case let .action(action):
+            .action(action.actionSeed)
+        case let .counter(counter):
+            .counter(counter)
+        }
+    }
 }
 
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     associatedtype Configuration: InteractionBarConfiguration
     
     var appearance: ActionAppearance { get }
+    var actionSeed: ActionSeed { get }
     
     static var defaultWidgets: [Self] { get }
     
