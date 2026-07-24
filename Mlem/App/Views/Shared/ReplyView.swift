@@ -58,6 +58,7 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
+            notification.updateRead(true)
             navigation.push(.comment(comment))
         }
         .quickSwipes(notification: notification, configuration: replyInteractionBar)
