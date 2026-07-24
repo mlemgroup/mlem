@@ -14,11 +14,11 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
+
     var savedContextMenu: [ActionSeed]?
-
-    public var savedSwipes: ActionSeedSwipeConfiguration?
-
+    var savedSwipes: ActionSeedSwipeConfiguration?
     var savedInteractionBar: InteractionBarActions?
+    var savedPinnedInteractionBarItems: Set<InteractionBarItem>?
 
     static var defaultInteractionBar: InteractionBarActions {
         .init(
@@ -26,6 +26,20 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment]
         )
+    }
+
+    static var defaultPinnedInteractionBarItems: Set<InteractionBarItem> {
+        [
+            .counter(.score),
+            .counter(.upvote),
+            .counter(.downvote),
+            .counter(.reply),
+            .action(.upvote),
+            .action(.downvote),
+            .action(.save),
+            .action(.reply),
+            .action(.share)
+        ]
     }
 
     static var defaultSwipes: ActionSeedSwipeConfiguration {
@@ -36,7 +50,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
         [.selectText, .share, .blockCreator, .report, .edit, .delete, .remove, .banCreator, .resolveReport]
     }
 
-    var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
     
     init(
@@ -44,14 +57,12 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
         trailing: [Item],
         savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
         self.savedSwipes = savedSwipes
         self.readouts = readouts
-        self.availableWidgets = availableWidgets
         self.savedContextMenu = savedContextMenu
     }
     
@@ -61,13 +72,23 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
-        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
-            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+
         if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
             let allActions = Self.availableActions.all
             self.savedContextMenu = contextMenuKeys.compactMap { key in allActions.first(where: {$0.key == key}) }
         } else {
             self.savedContextMenu = nil
+        }
+
+        let pinnedItems = try container.decodeIfPresent([RawInteractionBarItem].self, forKey: .pinnedInteractionBarItems) 
+        if let pinnedItems {
+            self.savedPinnedInteractionBarItems = Set(pinnedItems.compactMap {
+                .init(raw: $0, availableActions: Self.availableActions.all)
+            })
+        } else if let availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) {
+            self.savedPinnedInteractionBarItems = Set(availableWidgets.map { $0.toInteractionBarItem() })
+        } else {
+            self.savedPinnedInteractionBarItems = nil
         }
 
         let interactionBarContainer = try? container.nestedContainer(
@@ -119,16 +140,17 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
     }
     
     enum CodingKeys: CodingKey {
-        case availableWidgets
         case savedContextMenu
         case swipes
         case interactionBar
+        case pinnedInteractionBarItems
 
         // Used for conversion from Mlem 2.4 -> 2.5 format
         case leadingSwipes
         case trailingSwipes
 
         // Used for conversion from Mlem 2.5 -> 2.6 format
+        case availableWidgets
         case leading
         case trailing
         case readouts
@@ -139,10 +161,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
         try container.encode(self.leading, forKey: .leading)
         try container.encode(self.trailing, forKey: .trailing)
         try container.encode(self.readouts, forKey: .readouts)
-        try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
         try container.encode(self.savedSwipes, forKey: .swipes)
         try container.encode(self.savedInteractionBar, forKey: .interactionBar)
+        try container.encode(self.pinnedInteractionBarItems, forKey: .pinnedInteractionBarItems)
     }
 
     static var `default`: Self {
@@ -151,7 +173,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
             trailing: [.action(.save), .action(.reply)],
             savedSwipes: nil,
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
             savedContextMenu: nil
         )
     }
@@ -162,7 +183,6 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
             trailing: [.action(.ban), .action(.remove)],
             savedSwipes: nil,
             readouts: [.upvote, .downvote, .created, .comment],
-            availableWidgets: .init(ActionType.defaultReportWidgets.map { .action($0) }),
             savedContextMenu: nil
         )
     }

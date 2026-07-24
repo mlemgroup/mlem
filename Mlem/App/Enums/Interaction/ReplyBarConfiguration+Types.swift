@@ -22,14 +22,6 @@ extension ReplyBarConfiguration {
         case selectText
         case report
         
-        static var defaultWidgets: [ActionType] { [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .markRead
-        ] }
-        
         var appearance: ActionAppearance {
             switch self {
             case .upvote: .upvote(isOn: false)

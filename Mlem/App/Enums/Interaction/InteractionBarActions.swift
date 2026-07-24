@@ -36,26 +36,6 @@ struct InteractionBarActions: Encodable, Equatable {
     }
 }
 
-private enum RawInteractionBarItem: Decodable {
-    case action(String)
-    case counter(CounterType)
-}
-
-private extension InteractionBarItem {
-    init?(raw: RawInteractionBarItem, availableActions: [ActionSeed]) {
-        switch raw {
-        case let .action(key):
-            if let seed = availableActions.first(where: {$0.key == key}) {
-                self = .action(seed)
-            } else {
-                return nil
-            }
-        case let .counter(counter):
-            self = .counter(counter)
-        }
-    }
-}
-
 extension InteractionBarActions {
     init(from container: KeyedDecodingContainer<CodingKeys>, availableActions: [ActionSeed]) throws {
         let leading = try container.decode([RawInteractionBarItem].self, forKey: .leading) 

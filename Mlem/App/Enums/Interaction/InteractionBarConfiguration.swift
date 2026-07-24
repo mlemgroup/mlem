@@ -19,9 +19,6 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
     var leading: [Item] { get set }
     var trailing: [Item] { get set }
     var readouts: [ReadoutType] { get set }
-
-    var availableWidgets: Set<Item> { get set }
-    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
     
     /// Default configuration for this type
     static var `default`: Self { get }
@@ -35,7 +32,6 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
         trailing: [Item],
         savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     )
 }
@@ -90,8 +86,6 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     
     var appearance: ActionAppearance { get }
     var actionSeed: ActionSeed { get }
-    
-    static var defaultWidgets: [Self] { get }
 }
 
 struct InteractionBarConfigurations: Codable {

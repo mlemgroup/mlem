@@ -8,7 +8,7 @@
 import ComponentViews
 import SwiftUI
 
-struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
+struct InteractionBarWidgetPickerView<Configuration: NewInteractionBarConfiguration>: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var configuration: Configuration
@@ -22,7 +22,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             }
             
             Section("Actions") {
-                ForEach(Array(Configuration.ActionType.allCases), id: \.self) { item in
+                ForEach(Array(Configuration.availableActions.all), id: \.self) { item in
                     widgetButton(.action(item))
                 }
             }
@@ -40,20 +40,20 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     }
     
     @ViewBuilder
-    func widgetButton(_ item: Configuration.Item) -> some View {
-        let selected = configuration.availableWidgets.contains(item)
+    func widgetButton(_ item: InteractionBarItem) -> some View {
+        let selected = configuration.pinnedInteractionBarItems.contains(item)
         let (label, icon): (String, String) = switch item {
         case let .action(action):
-            (action.appearance.label, action.appearance.barIcon)
+            (action.label.title, action.label.icon.computeImageName())
         case let .counter(counter):
             (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
         }
         
         Button {
             if selected {
-                configuration.availableWidgets.remove(item)
+                configuration.pinnedInteractionBarItems.remove(item)
             } else {
-                configuration.availableWidgets.insert(item)
+                configuration.pinnedInteractionBarItems.insert(item)
             }
         } label: {
             HStack {

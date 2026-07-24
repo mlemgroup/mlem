@@ -14,11 +14,11 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
+
     var savedContextMenu: [ActionSeed]?
-
     var savedSwipes: ActionSeedSwipeConfiguration?
-
     var savedInteractionBar: InteractionBarActions?
+    var savedPinnedInteractionBarItems: Set<InteractionBarItem>?
 
     static var defaultInteractionBar: InteractionBarActions {
         .init(
@@ -26,6 +26,20 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
             trailing: [.action(.save), .action(.reply)],
             readouts: [.created, .comment]
         )
+    }
+
+    static var defaultPinnedInteractionBarItems: Set<InteractionBarItem> {
+        [
+            .counter(.score),
+            .counter(.upvote),
+            .counter(.downvote),
+            .counter(.reply),
+            .action(.upvote),
+            .action(.downvote),
+            .action(.save),
+            .action(.reply),
+            .action(.markRead)
+        ]
     }
 
     static var defaultSwipes: ActionSeedSwipeConfiguration {
@@ -36,7 +50,6 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
         [.markRead, .share, .blockCreator, .report]
     }
 
-    var availableWidgets: Set<Item>
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .replyBarWidgetPicker(configuration) }
     
     init(
@@ -44,14 +57,12 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
         trailing: [Item],
         savedSwipes: ActionSeedSwipeConfiguration?,
         readouts: [ReadoutType],
-        availableWidgets: Set<Item>,
         savedContextMenu: [ActionSeed]?
     ) {
         self.leading = leading
         self.trailing = trailing
         self.savedSwipes = savedSwipes
         self.readouts = readouts
-        self.availableWidgets = availableWidgets
         self.savedContextMenu = savedContextMenu
     }
 
@@ -61,8 +72,17 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
         self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
         self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
         self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
-        self.availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) ??
-            .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) })
+
+        let pinnedItems = try container.decodeIfPresent([RawInteractionBarItem].self, forKey: .pinnedInteractionBarItems) 
+        if let pinnedItems {
+            self.savedPinnedInteractionBarItems = Set(pinnedItems.compactMap {
+                .init(raw: $0, availableActions: Self.availableActions.all)
+            })
+        } else if let availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) {
+            self.savedPinnedInteractionBarItems = Set(availableWidgets.map { $0.toInteractionBarItem() })
+        } else {
+            self.savedPinnedInteractionBarItems = nil
+        }
 
         if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
             let allActions = Self.availableActions.all
@@ -120,10 +140,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
     }
 
     enum CodingKeys: CodingKey {
-        case availableWidgets
         case savedContextMenu
         case swipes
         case interactionBar
+        case pinnedInteractionBarItems
 
         // Used for conversion from Mlem 2.4 -> 2.5 format
         case leadingSwipes
@@ -133,6 +153,7 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
         case leading
         case trailing
         case readouts
+        case availableWidgets
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -140,10 +161,10 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
         try container.encode(self.leading, forKey: .leading)
         try container.encode(self.trailing, forKey: .trailing)
         try container.encode(self.readouts, forKey: .readouts)
-        try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
         try container.encode(self.savedSwipes, forKey: .swipes)
         try container.encode(self.savedInteractionBar, forKey: .interactionBar)
+        try container.encode(self.pinnedInteractionBarItems, forKey: .pinnedInteractionBarItems)
     }
 
     static var `default`: Self {
@@ -152,7 +173,6 @@ struct ReplyBarConfiguration: InteractionBarConfiguration, NewInteractionBarConf
             trailing: [.action(.save), .action(.reply)],
             savedSwipes: nil,
             readouts: [.created, .comment],
-            availableWidgets: .init(CounterType.defaultWidgets.map { .counter($0) } + ActionType.defaultWidgets.map { .action($0) }),
             savedContextMenu: nil
         )
     }

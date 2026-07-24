@@ -6,13 +6,18 @@
 //
 
 import Actions
-import Foundation
+import SwiftUI
 
 protocol NewInteractionBarConfiguration {
     var savedInteractionBar: InteractionBarActions? { get set }
+    var savedPinnedInteractionBarItems: Set<InteractionBarItem>? { get set }
+
+    func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage
 
     static var availableActions: ActionSeedSections { get }
     static var defaultInteractionBar: InteractionBarActions { get }
+
+    static var defaultPinnedInteractionBarItems: Set<InteractionBarItem> { get }
 }
 
 extension NewInteractionBarConfiguration {
@@ -25,8 +30,25 @@ extension NewInteractionBarConfiguration {
         }
     }
 
+    var pinnedInteractionBarItems: Set<InteractionBarItem> {
+        get {
+            savedPinnedInteractionBarItems ?? Self.defaultPinnedInteractionBarItems
+        }
+        set {
+            savedPinnedInteractionBarItems = newValue
+        }
+    }
+
     mutating func applyInteractionBar<Configuration: NewInteractionBarConfiguration>(other: Configuration) {
         let interactionBar = other.savedInteractionBar ?? Configuration.defaultInteractionBar
         self.savedInteractionBar = interactionBar.filter(allowed: Self.availableActions.all)
+    }
+
+    static func allItems() -> [InteractionBarItem] {
+        CounterType.allCases.map {
+            .counter($0)
+        } + availableActions.all.map {
+            .action($0)
+        }
     }
 }

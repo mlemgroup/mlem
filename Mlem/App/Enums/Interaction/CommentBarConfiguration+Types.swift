@@ -27,15 +27,7 @@ extension CommentBarConfiguration {
         case collapse
         case collapseParent
         case collapseToTop
-        
-        static var defaultWidgets: [ActionType] { [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .share
-        ] }
-        
+         
         static var defaultReportWidgets: [ActionType] { [
             .share,
             .resolve,

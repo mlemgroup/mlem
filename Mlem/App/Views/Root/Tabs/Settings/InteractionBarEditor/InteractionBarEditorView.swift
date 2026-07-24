@@ -85,17 +85,16 @@ struct InteractionBarEditorView<Configuration: NewInteractionBarConfiguration>: 
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
-            // TODO
-            // Button("More Widgets...") {
-            //     navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
-            // }
+            Button("More Widgets...") {
+                navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
+            }
         }
-        // .onChange(of: configuration.availableWidgets, initial: true) {
-        //     onSet(configuration)
-        //     trayItems = Configuration.Item.allCases
-        //         .filter { configuration.availableWidgets.contains($0) }
-        //         .map { TrayItem(item: $0, visible: true) }
-        // }
+        .onChange(of: configuration.pinnedInteractionBarItems, initial: true) {
+            onSet(configuration)
+            trayItems = Configuration.allItems()
+                .filter { configuration.pinnedInteractionBarItems.contains($0) }
+                .map { TrayItem(item: $0, visible: true) }
+        }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)

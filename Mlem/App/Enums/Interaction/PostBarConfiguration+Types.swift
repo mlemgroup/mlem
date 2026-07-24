@@ -31,14 +31,6 @@ extension PostBarConfiguration {
         case remove
         case ban
         
-        static var defaultWidgets: [ActionType] { [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .share
-        ] }
-        
         static var defaultReportWidgets: [ActionType] { [
             .share,
             .lock,
