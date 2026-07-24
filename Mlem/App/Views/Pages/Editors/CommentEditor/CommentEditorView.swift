@@ -79,7 +79,7 @@ struct CommentEditorView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            CloseButtonView(ios18Label: .cancel, requiresConfirmation: !textIsEmpty)
+                            CloseButtonView(requiresConfirmation: !textIsEmpty)
                         }
                         ToolbarItem(placement: .principal) {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
@@ -283,6 +283,6 @@ struct CommentEditorView: View {
             }
         }
         .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
-        .glassProminentButtonStyle()
+        .buttonStyle(.glassProminent)
     }
 }

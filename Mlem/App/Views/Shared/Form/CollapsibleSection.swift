@@ -71,7 +71,7 @@ struct CollapsibleSection<Content: View>: View {
             }
         }
         .background(.themedSecondaryGroupedBackground)
-        .clipShape(RoundedRectangle(cornerRadius: UIDevice.isIos26 ? 24 : 16))
+        .clipShape(RoundedRectangle(cornerRadius: 24))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 16)
     }

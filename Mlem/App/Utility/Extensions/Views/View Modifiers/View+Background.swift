@@ -10,12 +10,6 @@ import Theming
 
 extension View {
     func themedGroupedBackground() -> some View {
-        Group {
-            if #available(iOS 18.0, *) {
-                containerBackground(.themedGroupedBackground, for: .navigation)
-            } else {
-                background(ThemedColor.themedGroupedBackground, in: Rectangle())
-            }
-        }
+        containerBackground(.themedGroupedBackground, for: .navigation)
     }
 }

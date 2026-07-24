@@ -44,21 +44,17 @@ struct ShareInstancePickerView: View {
     
     @ViewBuilder
     var closeButton: some View {
-        if #available(iOS 26, *) {
-            Button {
-                dismiss()
-            } label: {
-                Label("Close", icon: .general.close)
-                    .padding(10)
-                    .background(.themedSecondaryGroupedBackground, in: .circle)
-                    .foregroundStyle(.themedSecondary)
-            }
-            .labelStyle(.iconOnly)
-            .font(.title)
-            .buttonStyle(.plain)
-        } else {
-            CloseButtonView()
+        Button {
+            dismiss()
+        } label: {
+            Label("Close", icon: .general.close)
+                .padding(10)
+                .background(.themedSecondaryGroupedBackground, in: .circle)
+                .foregroundStyle(.themedSecondary)
         }
+        .labelStyle(.iconOnly)
+        .font(.title)
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder

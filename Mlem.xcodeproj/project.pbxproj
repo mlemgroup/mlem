@@ -441,8 +441,6 @@
 		6363D5C927EE196A00E34822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6363D5C827EE196A00E34822 /* Assets.xcassets */; };
 		6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE1183B2A4A217400810C7E /* Profile View.swift */; };
 		814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */; };
-		81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */; };
-		81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */; };
 		81C4B4332F493C5E001406A1 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */; };
 		81DE61C52F48AF44006E4C36 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */; };
 		81DE61D02F48AF44006E4C36 /* OpenInMlem.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -1066,8 +1064,6 @@
 		6363D5E027EE196A00E34822 /* MlemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MlemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DE1183B2A4A217400810C7E /* Profile View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Profile View.swift"; sourceTree = "<group>"; };
 		814CEF622F44577A0090F812 /* HiddenReadBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenReadBannerView.swift; sourceTree = "<group>"; };
-		81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressActionSettingsView.swift; sourceTree = "<group>"; };
-		81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarLongPressAction.swift; sourceTree = "<group>"; };
 		81C4B4322F493C5E001406A1 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		81DE61C32F48AF44006E4C36 /* OpenInMlem.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenInMlem.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		81DE61C42F48AF44006E4C36 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
@@ -1348,7 +1344,6 @@
 		03134A492BEACF46002662CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				81A179BB2DDE591700B17017 /* LongPressActionSettingsView.swift */,
 				03250CE72FD71085006F8394 /* AvatarSettingsView.swift */,
 				CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */,
 				03250CE92FD71303006F8394 /* CacheSettingsView.swift */,
@@ -2227,7 +2222,6 @@
 		CD4D58C62B86DCE500B82964 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				81A179BE2DDE5BF300B17017 /* TabBarLongPressAction.swift */,
 				CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */,
 				CD2C86532D5556BE0034CD8A /* MlemError.swift */,
 				CD3485BA2D501463006748B8 /* ZoomSliderLocation.swift */,
@@ -2845,7 +2839,6 @@
 				CDCC1BA72D99BDB7006579DF /* GestureRecognizers.swift in Sources */,
 				03E614E52C0BCCAA00F692A4 /* PostSize.swift in Sources */,
 				03B72B672C2888EE0023A6C4 /* View+ContextMenu.swift in Sources */,
-				81A179BF2DDE5BF300B17017 /* TabBarLongPressAction.swift in Sources */,
 				CDD8E30D2EEA07F100FC4C8D /* ExportableCommentLoader.swift in Sources */,
 				03B25B352CC4446400EB6DF5 /* FediseerOpinionListView.swift in Sources */,
 				CDB2EC7D2BFADAB300DBC0EF /* CompactPostView.swift in Sources */,
@@ -3161,7 +3154,6 @@
 				038E5E8B2F6D6C3800C54DEB /* ImageViewerDismissSettingsView.swift in Sources */,
 				CDB41E8A2C83C24400BD2DE9 /* Section.swift in Sources */,
 				CD7BF9322D18F4ED0020F2C5 /* FiltersTracker.swift in Sources */,
-				81A179BC2DDE591700B17017 /* LongPressActionSettingsView.swift in Sources */,
 				CD44C92C2E5CC8B900F24AC8 /* ConditionalLabelStyleViewModifier.swift in Sources */,
 				0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */,
 				03B045F62E26D64900540EFB /* SiteSoftwareType+Extensions.swift in Sources */,
@@ -3577,7 +3569,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3624,7 +3616,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

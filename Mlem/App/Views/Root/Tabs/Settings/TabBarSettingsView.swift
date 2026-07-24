@@ -14,7 +14,6 @@ struct TabBarSettingsView: View {
     
     @Setting(\.tab_profile_labelType) var profileTabLabel: ProfileTabLabel
     @Setting(\.tab_profile_showAvatar) var showUserAvatar: Bool
-    @Setting(\.tab_gestures_longPressAction) var longPressAction: TabBarLongPressAction
     @Setting(\.tab_inbox_badgeIncludedTypes) var tabInboxBadgeIncludedTypes
     
     var account: any Account {
@@ -44,18 +43,6 @@ struct TabBarSettingsView: View {
             Section {
                 Toggle("Show Avatar", icon: .lemmy.person, isOn: $showUserAvatar)
                     .symbolVariant(.circle)
-            }
-            
-            if !UIDevice.isIos26 {
-                Section {
-                    NavigationLink(
-                        "Long Press Action",
-                        value: .init(localized: longPressAction.label),
-                        fallbackValue: "",
-                        icon: .settings.longPress,
-                        destination: .settings(.longPressAction)
-                    )
-                }
             }
                 
             Section {

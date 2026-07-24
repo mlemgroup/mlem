@@ -23,7 +23,6 @@ struct ContentView: View {
     @Setting(\.appearance_palette) var colorPalette
     @Setting(\.tab_profile_labelType) var tabProfileLabelType
     @Setting(\.tab_profile_showAvatar) var tabProfileShowAvatar
-    @Setting(\.tab_gestures_longPressAction) var tabLongPressAction
     @Setting(\.dev_developerMode) var developerMode
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
@@ -154,19 +153,6 @@ struct ContentView: View {
                 profileLabelType: tabProfileLabelType,
                 imageOverride: avatarImage ?? UIImage(systemName: "person.crop.circle"),
                 selectedImageOverride: selectedAvatarImage ?? UIImage(systemName: "person.crop.circle.fill"),
-                onLongPress: {
-                    hapticManager.play(haptic: .rigidInfo, tier: .high)
-                    
-                    switch tabLongPressAction {
-                    case .openAccountSwitcher:
-                        navigationModel.openSheet(.quickSwitcher)
-                    case .switchToMostRecentAccount:
-                        // If switch fails (no other accounts), fall back to account switcher.
-                        if !appState.switchToMostRecentAccount() {
-                            navigationModel.openSheet(.quickSwitcher)
-                        }
-                    }
-                },
                 content: {
                     NavigationLayerView(layer: .init(root: .profile, model: navigationModel), hasSheetModifiers: false)
                 }

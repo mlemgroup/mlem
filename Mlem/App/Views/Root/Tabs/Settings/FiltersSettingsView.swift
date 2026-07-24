@@ -55,7 +55,7 @@ struct FiltersSettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .withConditionalLabelStyle()
         .navigationTitle("Filters")
-        .versionAwareDialog("Deprecated Format", isPresented: $legacyWarningDisplayed) {
+        .alert("Deprecated Format", isPresented: $legacyWarningDisplayed) {
             Button("Re-Export") { export() }
             Button("Close", role: .cancel) {}
         } message: {

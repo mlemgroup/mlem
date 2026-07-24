@@ -45,19 +45,11 @@ extension TranslateAction {
 
    func createLabel(environment: EnvironmentValues) -> ActionLabel {
        if self.entity.content.translated == .untranslated {
-           Self.translateLabel.withVisibility(visibility(environment))
+           Self.translateLabel
        } else {
-           Self.showOriginalLabel.withVisibility(visibility(environment))
+           Self.showOriginalLabel
        }
    }
-
-    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-       if #available(iOS 26, *) {
-           .enabled
-       } else {
-           .hidden
-       }
-    }
 }
 
 // MARK: - Behavior
@@ -65,15 +57,10 @@ extension TranslateAction {
 extension TranslateAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        if #available(iOS 26, *) {
-            internalExecute(environment: environment)
-        } else {
-            assertionFailure()
-        }
+        internalExecute(environment: environment)
     }
 }
 
-@available(iOS 26, *)
 extension TranslateAction {
     enum TranslationError: Error {
         case couldNotDetermineLanguage
