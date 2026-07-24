@@ -2180,9 +2180,6 @@
         }
       }
     },
-    "Choose which action to perform when you tap and hold the profile icon." : {
-
-    },
     "Choose which feed is shown when the app opens." : {
       "localizations" : {
         "fr" : {
@@ -5272,6 +5269,7 @@
       }
     },
     "Long Press Action" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6197,6 +6195,7 @@
       }
     },
     "Open Account Switcher" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8924,6 +8923,7 @@
       }
     },
     "Swipe Anywhere to Navigate" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8934,6 +8934,7 @@
       }
     },
     "Swiping up on the tab bar will always open the account switcher." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8964,6 +8965,7 @@
       }
     },
     "Switch to Most Recent Account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

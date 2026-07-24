@@ -55,7 +55,7 @@ struct ReportEditorView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        CloseButtonView(ios18Label: .cancel)
+                        CloseButtonView()
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Send", icon: .lemmy.send) {
@@ -63,7 +63,7 @@ struct ReportEditorView: View {
                                 await send()
                             }
                         }
-                        .glassProminentButtonStyle()
+                        .buttonStyle(.glassProminent)
                         .disabled(reason.isEmpty)
                     }
                 }

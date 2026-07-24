@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import ImageIO
 import MlemMiddleware
 import Nuke
 import Photos
 import SwiftUI
+import UniformTypeIdentifiers
 
 func saveMedia(url: URL) async {
     do {
@@ -68,29 +70,33 @@ func fullSizeUrl(url: URL?) -> URL? {
 func downloadImageToFileSystem(url: URL) async -> URL? {
     do {
         let (data, _) = try await ImagePipeline.shared.data(url: url)
-        var fileName: String
-        
-        // image proxies that use url query param don't have pathExtension so we extract it from the embedded url
-        if url.pathExtension.isEmpty,
-           let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-           let queryItems = components.queryItems,
-           let baseUrlString = queryItems.first(where: { $0.name == "url" })?.value,
-           let baseUrl = URL(string: baseUrlString) {
-            fileName = baseUrl.lastPathComponent
-        } else {
-            fileName = url.lastPathComponent
-        }
-        
-        if fileName.isEmpty {
-            assertionFailure("Empty fileName!")
-            return nil
-        }
-        
+        let fileName = try getFileName(url: url, data: data)
         return try data.writeToTempFile(fileName: fileName)
     } catch {
         handleError(error)
         return nil
     }
+}
+
+private func getFileName(url: URL, data: Data) throws(FileDownloadError) -> String {
+    let url = url.unwrapProxy()
+
+    if !url.pathExtension.isEmpty {
+        return url.pathExtension
+    }
+
+    // Infer file type from the image data
+    if let source = CGImageSourceCreateWithData(data as CFData, nil),
+       let typeIdentifier = CGImageSourceGetType(source),
+       let ext = UTType(typeIdentifier as String)?.preferredFilenameExtension {
+        return "\(String(localized: "image")).\(ext)"
+    }
+
+    throw .couldNotDetermineFileType
+}
+
+enum FileDownloadError: Error {
+    case couldNotDetermineFileType
 }
 
 func downloadTextToFileSystem(fileName: String, text: String) async -> URL? {

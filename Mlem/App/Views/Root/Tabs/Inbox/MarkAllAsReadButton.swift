@@ -17,7 +17,7 @@ struct MarkAllAsReadButton: ToolbarContent {
     
     var body: some ToolbarContent {
         Group {
-            if newMessagesExist || animationPlaying || !UIDevice.isIos26 {
+            if newMessagesExist || animationPlaying {
                 ToolbarItem(placement: .topBarTrailing) {
                     PhaseAnimator([0, 1], trigger: phaseAnimatorTrigger) { value in
                         Button {
@@ -34,12 +34,7 @@ struct MarkAllAsReadButton: ToolbarContent {
                                 animationPlaying = false
                             }
                         } label: {
-                            if UIDevice.isIos26 {
-                                label(value: value)
-                            } else {
-                                label(value: value)
-                                    .background(.bar, in: .capsule)
-                            }
+                            label(value: value)
                         }
                         .opacity((newMessagesExist || value != 0) ? 1 : 0)
                     }

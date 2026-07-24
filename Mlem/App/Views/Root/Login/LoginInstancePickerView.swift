@@ -31,7 +31,7 @@ struct LoginInstancePickerView: View {
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
-                        CloseButtonView(ios18Label: .cancel)
+                        CloseButtonView()
                             .disabled(connecting)
                     }
                 }

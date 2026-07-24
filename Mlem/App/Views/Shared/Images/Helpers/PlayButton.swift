@@ -19,19 +19,6 @@ struct PlayButton: View {
     }
     
     var body: some View {
-        if #available(iOS 26, *) {
-            label
-                .glassEffect(.clear.interactive(), in: .circle)
-        } else {
-            label
-                .background {
-                    Circle().fill(.ultraThinMaterial)
-                }
-        }
-    }
-    
-    // TODO: iOS 18 deprecation remove
-    var label: some View {
         Label {
             Text("Play")
         } icon: {
@@ -43,5 +30,6 @@ struct PlayButton: View {
                 .contentShape(.rect)
         }
         .labelStyle(.iconOnly)
+        .glassEffect(.clear.interactive(), in: .circle)
     }
 }

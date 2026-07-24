@@ -36,7 +36,7 @@ struct CommunityDescriptionEditorView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            CloseButtonView(ios18Label: .cancel)
+                            CloseButtonView()
                         }
                         ToolbarItem(placement: .topBarTrailing) {
                             if sending {
@@ -105,7 +105,7 @@ struct CommunityDescriptionEditorView: View {
             }
         }
         .disabled(!textHasChanged)
-        .glassProminentButtonStyle()
+        .buttonStyle(.glassProminent)
     }
 
     func send() async {

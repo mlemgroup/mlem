@@ -15,38 +15,6 @@ private struct SearchSheetViewModifier: ViewModifier {
     @FocusState var focused: Bool
     
     func body(content: Content) -> some View {
-        Group {
-            if #available(iOS 26, *) {
-                ios26Body(content: content)
-            } else {
-                ios18Body(content: content)
-            }
-        }
-        .toolbar {
-            CloseButtonToolbarItem(ios18Label: .cancel) {
-                navigation.dismissSheet()
-            }
-        }
-        .onAppear {
-            focused = true
-        }
-    }
-    
-    func ios18Body(content: Content) -> some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    HStack(spacing: 0) {
-                        SearchBar("Search", text: $query, isEditing: .constant(true))
-                            .isInitialFirstResponder(true)
-                            .focused($focused)
-                            .autocorrectionDisabled()
-                    }
-                }
-            }
-    }
-    
-    func ios26Body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -57,6 +25,9 @@ private struct SearchSheetViewModifier: ViewModifier {
                             .autocorrectionDisabled()
                     }
                     .padding(-10)
+                }
+                CloseButtonToolbarItem {
+                    navigation.dismissSheet()
                 }
             }
     }

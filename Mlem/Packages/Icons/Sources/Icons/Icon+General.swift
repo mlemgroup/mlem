@@ -41,21 +41,9 @@ public extension Icon {
 
         public let settings: Icon = .init("gear")
         public let filter: Icon = .init("line.3.horizontal.decrease.circle")
-        public let filterMenu: Icon = .init(.custom { _ in
-            if #available(iOS 26, *) {
-                "line.3.horizontal.decrease"
-            } else {
-                "line.3.horizontal.decrease.circle"
-            }
-        })
+        public let filterMenu: Icon = .init("line.3.horizontal.decrease")
         public let menu: Icon = .init("ellipsis")
-        public let toolbarMenu: Icon = .init(.custom { _ in
-            if #available(iOS 26, *) {
-                "ellipsis"
-            } else {
-                "ellipsis.circle"
-            }
-        })
+        public let toolbarMenu: Icon = .init("ellipsis")
         public let configure: Icon = .init("slider.horizontal.3")
         public let `import`: Icon = .init("square.and.arrow.down")
         public let export: Icon = .init("square.and.arrow.up")

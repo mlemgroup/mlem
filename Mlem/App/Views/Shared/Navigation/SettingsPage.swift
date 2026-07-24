@@ -33,7 +33,7 @@ enum SettingsPage {
     case importExportSettings
     case theme, icon
     case post, comment, inbox, community, person, instance, subscriptionList
-    case tabBar, longPressAction
+    case tabBar
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
     case inboxBadge
@@ -173,8 +173,6 @@ enum SettingsPage {
             SubscriptionListSettingsView()
         case .tabBar:
             TabBarSettingsView()
-        case .longPressAction:
-            LongPressActionSettingsView()
         case .inboxBadge:
             InboxBadgeSettingsView()
         case .imageViewer:

@@ -11,7 +11,7 @@ import SwiftUI
 extension InboxView {
     @ViewBuilder
     var inboxFeedView: some View {
-        LazyVStack(spacing: 0, pinnedViews: UIDevice.isIos26 ? [] : [.sectionHeaders]) {
+        LazyVStack(spacing: 0) {
             Section {
                 ForEach(feedLoader.items, id: \.inboxId) { notification in
                     Group {
@@ -81,22 +81,16 @@ extension InboxView {
             selected: $selectedTab,
             label: \.label
         )
-        .background(.themedGroupedBackground.opacity(headerPinned ? 1 : 0))
-        .background(.bar)
     }
     
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if #available(iOS 26, *) {
-                if showRead {
-                    hideReadButton
-                } else {
-                    hideReadButton
-                        .buttonStyle(.glassProminent)
-                }
+            if showRead {
+                hideReadButton
             } else {
                 hideReadButton
+                    .buttonStyle(.glassProminent)
             }
         }
         if selectedFeed == .inbox {

@@ -12,16 +12,9 @@ struct ExportableViewControlOverlay: View {
     let createSnapshot: () -> UIImage?
     
     var body: some View {
-        Group {
-            if #available(iOS 26, *) {
-                content
-                    .glassEffect(.regular.interactive(), in: .capsule)
-            } else {
-                content
-                    .background(.regularMaterial, in: .capsule)
-            }
-        }
-        .padding(Constants.main.standardSpacing)
+        content
+            .glassEffect(.regular.interactive(), in: .capsule)
+            .padding(Constants.main.standardSpacing)
     }
     
     var content: some View {

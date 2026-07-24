@@ -81,7 +81,7 @@ struct ExportableCommentEditorView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                CloseButtonView(ios18Label: .cancel)
+                CloseButtonView()
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Details", icon: .general.configure) {

@@ -59,7 +59,7 @@ struct QuickSwipeViewModifier: ViewModifier {
                 // disables links from highlighting when tapped
                 .buttonStyle(.empty)
                 .clipShape(.rect(cornerRadius: cornerRadius)) // clip entire view
-                .versionAwareDialog(
+                .alert(
                     activeChoiceGroup?.title ?? "",
                     isPresented: .init(get: { activeChoiceGroup != nil }, set: { _ in activeChoiceGroup = nil })
                 ) {
