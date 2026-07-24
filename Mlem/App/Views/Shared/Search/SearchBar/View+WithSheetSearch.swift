@@ -42,9 +42,6 @@ private struct SearchSheetViewModifier: ViewModifier {
                         .onAppear { width = proxy.size.width }
                         .onChange(of: proxy.size.width) { width = $1 }
                 }
-                CloseButtonToolbarItem {
-                    navigation.dismissSheet()
-                }
             }
     }
 }
