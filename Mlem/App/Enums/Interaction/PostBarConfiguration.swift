@@ -10,13 +10,23 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct PostBarConfiguration: InteractionBarConfiguration {
+struct PostBarConfiguration: InteractionBarConfiguration, NewInteractionBarConfiguration {
     var leading: [Item]
     var trailing: [Item]
     var readouts: [ReadoutType]
     var savedContextMenu: [ActionSeed]?
 
     var savedSwipes: ActionSeedSwipeConfiguration?
+
+    var savedInteractionBar: InteractionBarActions?
+
+    static var defaultInteractionBar: InteractionBarActions {
+        .init(
+            leading: [.counter(.score)],
+            trailing: [.action(.save), .action(.reply)],
+            readouts: [.created, .comment]
+        )
+    }
 
     static var defaultSwipes: ActionSeedSwipeConfiguration {
         .init(leading: [.downvote, .upvote], trailing: [.save, .reply])
@@ -61,6 +71,18 @@ struct PostBarConfiguration: InteractionBarConfiguration {
             self.savedContextMenu = nil
         }
 
+        let interactionBarContainer = try? container.nestedContainer(
+            keyedBy: InteractionBarActions.CodingKeys.self,
+            forKey: .interactionBar
+        )
+        if let interactionBarContainer {
+            self.savedInteractionBar = try .init(from: interactionBarContainer, availableActions: Self.availableActions.all)
+        } else {
+            // TODO
+            assertionFailure()
+            self.savedInteractionBar = Self.defaultInteractionBar
+        }
+
         let swipeConfigurationContainer = try? container.nestedContainer(
             keyedBy: ActionSeedSwipeConfiguration.CodingKeys.self,
             forKey: .swipes
@@ -92,6 +114,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         case availableWidgets
         case savedContextMenu
         case swipes
+        case interactionBar
 
         // Used for conversion from Mlem 2.4 -> 2.5 format
         case leadingSwipes
@@ -106,6 +129,7 @@ struct PostBarConfiguration: InteractionBarConfiguration {
         try container.encode(self.availableWidgets, forKey: .availableWidgets)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
         try container.encode(self.savedSwipes, forKey: .swipes)
+        try container.encode(self.savedInteractionBar, forKey: .interactionBar)
     }
     
     static var `default`: Self {

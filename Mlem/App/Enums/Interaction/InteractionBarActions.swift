@@ -8,7 +8,7 @@
 import Actions
 import Foundation
 
-struct InteractionBarActions: Encodable {
+struct InteractionBarActions: Encodable, Equatable {
     var leading: [InteractionBarItem]
     var trailing: [InteractionBarItem]
     var readouts: [ReadoutType]

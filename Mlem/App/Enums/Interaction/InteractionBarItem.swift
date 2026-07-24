@@ -8,7 +8,7 @@
 import Actions
 import Foundation
 
-enum InteractionBarItem: Encodable {
+enum InteractionBarItem: Encodable, Equatable {
     case action(ActionSeed)
     case counter(CounterType)
 
