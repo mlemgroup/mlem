@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 16/08/2024.
 //
 
+import Actions
 import SwiftUI
 import Theming
 
@@ -17,6 +18,14 @@ struct InteractionBarActionLabelView: View {
     
     init(_ appearance: ActionAppearance) {
         self.appearance = appearance
+    }
+
+    init( _ label: ActionLabel) {
+        self.appearance = .init(
+            label: label.title,
+            color: label.color,
+            icon: label.icon.computeImageName()
+        )
     }
     
     var body: some View {

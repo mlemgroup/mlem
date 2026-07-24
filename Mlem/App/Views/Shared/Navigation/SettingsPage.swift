@@ -39,6 +39,7 @@ enum SettingsPage {
     case inboxBadge
     case about, advanced, errorLog, errorToastTimeout
     case interactionBar(ContentActionType)
+    case newInteractionBar(ContentActionType)
     case swipeActions(SwipeActionSettingType)
     case contextMenu(ContextMenuSettingsPage)
     case postBarWidgetPicker(Binding<PostBarConfiguration>)
@@ -265,6 +266,20 @@ enum SettingsPage {
             case .commentReport:
                 InteractionBarEditorView(setting: \.interactionBar_commentReport, isReport: true)
             }
+        case let .newInteractionBar(type):
+            switch type {
+            case .post:
+                NewInteractionBarEditorView(setting: \.interactionBar_post, isReport: false)
+            case .comment:
+                Text("TODO")
+            case .inboxNotification:
+                Text("TODO")
+            case .postReport:
+                Text("TODO")
+            case .commentReport:
+                Text("TODO")
+            }
+
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentBarWidgetPicker(configuration):

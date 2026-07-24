@@ -173,7 +173,7 @@ extension NewInteractionBarEditorView {
                 Group {
                     switch trayItem.item {
                     case let .action(action):
-                        InteractionBarActionLabelView(action.appearance)
+                        InteractionBarActionLabelView(action.label)
                     case let .counter(counter):
                         counterLabel(counter.appearance)
                             .fixedSize()
@@ -195,18 +195,18 @@ extension NewInteractionBarEditorView {
     var readoutSelectors: some View {
         HFlow(spacing: Constants.main.standardSpacing) {
             ForEach(Array(ReadoutType.allCases.enumerated()), id: \.offset) { _, readout in
-                let isActive = configuration.readouts.contains(readout)
-                let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.readouts))
+                let isActive = configuration.interactionBar.readouts.contains(readout)
+                let disabled = !readout.compatibleWith(otherReadouts: Set(configuration.interactionBar.readouts))
                 Button {
                     if isActive {
-                        if let index = configuration.readouts.firstIndex(of: readout) {
-                            configuration.readouts.remove(at: index)
+                        if let index = configuration.interactionBar.readouts.firstIndex(of: readout) {
+                            configuration.interactionBar.readouts.remove(at: index)
                         }
                     } else {
                         // Insert and sort the new `ReadoutType`. In future these could be re-arrangable too
                         // but I need to think about how the UI would work
-                        configuration.readouts = ReadoutType.allCases.filter {
-                            configuration.readouts.contains($0) || $0 == readout
+                        configuration.interactionBar.readouts = ReadoutType.allCases.filter {
+                            configuration.interactionBar.readouts.contains($0) || $0 == readout
                         }
                     }
                     hapticManager.play(haptic: .gentleInfo, tier: .low)
@@ -264,8 +264,8 @@ extension NewInteractionBarEditorView {
                 switch trayPickedUpItem.item {
                 case let .action(action):
                     HStack {
-                        Image(systemName: action.appearance.barIcon)
-                        Text(action.appearance.label)
+                        Image(icon: action.label.icon)
+                        Text(action.label.title)
                     }
                 case let .counter(counter):
                     HStack {
@@ -292,20 +292,20 @@ extension NewInteractionBarEditorView {
     var buttons: some View {
         HStack {
             Button("Reset") {
-                assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
-                let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
-                var newConfiguration = configuration
-                newConfiguration.leading = defaultConfiguration.leading
-                newConfiguration.trailing = defaultConfiguration.trailing
-                newConfiguration.readouts = defaultConfiguration.readouts
-                self.configuration = newConfiguration
-                infoStackAlignment = computeInfoStackAlignment(
-                    infoStackIndex: configuration.leading.count,
-                    totalItems: configuration.all.count
-                )
-                barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
-                    .init(item: item, expanded: true, visible: true)
-                }
+                // assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
+                // let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
+                // var newConfiguration = configuration
+                // newConfiguration.leading = defaultConfiguration.leading
+                // newConfiguration.trailing = defaultConfiguration.trailing
+                // newConfiguration.readouts = defaultConfiguration.readouts
+                // self.configuration = newConfiguration
+                // infoStackAlignment = computeInfoStackAlignment(
+                //     infoStackIndex: configuration.leading.count,
+                //     totalItems: configuration.all.count
+                // )
+                // barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
+                //     .init(item: item, expanded: true, visible: true)
+                // }
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
@@ -319,9 +319,9 @@ extension NewInteractionBarEditorView {
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
-                        postInteractionBar = postInteractionBar.applying(other: configuration, types: [.bar])
-                        commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.bar])
-                        replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.bar])
+                        // postInteractionBar = postInteractionBar.applying(other: configuration, types: [.bar])
+                        // commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.bar])
+                        // replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.bar])
                         // reports intentionally omitted
                     }
                 }
@@ -355,11 +355,11 @@ extension NewInteractionBarEditorView {
     }
     
     @ViewBuilder
-    func itemLabel(_ item: Configuration.Item?) -> some View {
+    func itemLabel(_ item: InteractionBarItem?) -> some View {
         Group {
             switch item {
             case let .action(action):
-                InteractionBarActionLabelView(action.appearance)
+                InteractionBarActionLabelView(action.label)
             case let .counter(counter):
                 counterLabel(counter.appearance)
                     .fixedSize()
@@ -378,7 +378,7 @@ extension NewInteractionBarEditorView {
     @ViewBuilder
     var infoStack: some View {
         HStack(spacing: 12) {
-            ForEach(configuration.readouts, id: \.hashValue) { readout in
+            ForEach(configuration.interactionBar.readouts, id: \.hashValue) { readout in
                 HStack(spacing: 2) {
                     Image(icon: readout.appearance.icon.representingState(active: false))
                     Text(readout.appearance.label)

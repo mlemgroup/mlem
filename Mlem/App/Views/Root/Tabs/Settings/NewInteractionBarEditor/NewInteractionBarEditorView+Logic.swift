@@ -29,11 +29,11 @@ extension NewInteractionBarEditorView {
     
     @Observable
     class TrayItem: Equatable {
-        let item: Configuration.Item
+        let item: InteractionBarItem
         
         private(set) var opacity: CGFloat
         
-        init(item: Configuration.Item, visible: Bool) {
+        init(item: InteractionBarItem, visible: Bool) {
             self.item = item
             self.opacity = visible ? 1 : 0
         }
@@ -51,7 +51,7 @@ extension NewInteractionBarEditorView {
      
     @Observable
     class BarItem: Equatable {
-        let item: Configuration.Item?
+        let item: InteractionBarItem?
         
         /// Controls the width of the barItem view
         private(set) var maxWidth: CGFloat?
@@ -67,7 +67,7 @@ extension NewInteractionBarEditorView {
         /// to exist at once on the bar (used when moving bar items) without relying on index-based identification
         let uuid: UUID = .init()
         
-        init(item: Configuration.Item?, expanded: Bool, visible: Bool, ancestor: BarItem? = nil) {
+        init(item: InteractionBarItem?, expanded: Bool, visible: Bool, ancestor: BarItem? = nil) {
             self.item = item
             self.maxWidth = expanded ? nil : 0
             self.opacity = visible ? 1 : 0
@@ -203,13 +203,19 @@ extension NewInteractionBarEditorView {
         updateConfiguration()
     }
   
+    // swiftlint:disable:next function_body_length
     func moveOnBar(barItem: BarItem, from sourceIndex: Int, to targetIndex: Int) {
         // noop on move to current location or immediately after current location
         guard targetIndex != sourceIndex, targetIndex != sourceIndex + 1 else { return }
         
         hapticManager.play(haptic: .firmInfo, tier: .high)
         
-        let newItem: BarItem = .init(item: barItem.item, expanded: false, visible: true, ancestor: barItem)
+        let newItem: BarItem = .init(
+            item: barItem.item,
+            expanded: false,
+            visible: true,
+            ancestor: barItem
+        )
         barItem.hide()
         
         if targetIndex == barItems.count {
@@ -304,13 +310,10 @@ extension NewInteractionBarEditorView {
             assertionFailure("Could not find info stack in barItems")
             return
         }
-        configuration = .init(
+        configuration.interactionBar = .init(
             leading: barItems[..<infoStackIndex].compactMap(\.item),
             trailing: barItems[infoStackIndex...].compactMap(\.item),
-            savedSwipes: configuration.savedSwipes,
-            readouts: configuration.readouts,
-            availableWidgets: configuration.availableWidgets,
-            savedContextMenu: configuration.savedContextMenu
+            readouts: configuration.interactionBar.readouts
         )
     }
     

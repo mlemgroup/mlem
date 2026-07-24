@@ -35,6 +35,9 @@ struct PostSettingsView: View {
                 NavigationLink(.settings(.interactionBar(.post))) {
                     SettingsInteractionBarSummaryView(configuration: postInteractionBar)
                 }
+                NavigationLink(.settings(.newInteractionBar(.post))) {
+                    SettingsInteractionBarSummaryView(configuration: postInteractionBar)
+                }
                 NavigationLink("Swipe Actions", destination: .settings(.swipeActions(.post)))
                 NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_post)))
             }

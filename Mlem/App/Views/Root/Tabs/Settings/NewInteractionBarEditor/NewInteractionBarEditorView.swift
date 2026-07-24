@@ -10,7 +10,7 @@ import Haptics
 import SwiftUI
 import Theming
 
-struct NewInteractionBarEditorView<Configuration: InteractionBarConfiguration>: View {
+struct NewInteractionBarEditorView<Configuration: NewInteractionBarConfiguration>: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.palette) var palette
@@ -54,7 +54,7 @@ struct NewInteractionBarEditorView<Configuration: InteractionBarConfiguration>: 
         self.onSet = onSet
         self.configuration = configuration
         self.isReport = isReport
-        let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
+        let configurationItems: [InteractionBarItem?] = configuration.interactionBar.leading + [nil] + configuration.interactionBar.trailing
         self.configurationType = configuration is PostBarConfiguration ? .post : .comment
         
         let newBarItems: [BarItem] = configurationItems.map { .init(item: $0, expanded: true, visible: true) }
@@ -85,16 +85,17 @@ struct NewInteractionBarEditorView<Configuration: InteractionBarConfiguration>: 
             Divider()
             tray.zIndex(trayPickedUpItem == nil ? 0 : 1)
             
-            Button("More Widgets...") {
-                navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
-            }
+            // TODO
+            // Button("More Widgets...") {
+            //     navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
+            // }
         }
-        .onChange(of: configuration.availableWidgets, initial: true) {
-            onSet(configuration)
-            trayItems = Configuration.Item.allCases
-                .filter { configuration.availableWidgets.contains($0) }
-                .map { TrayItem(item: $0, visible: true) }
-        }
+        // .onChange(of: configuration.availableWidgets, initial: true) {
+        //     onSet(configuration)
+        //     trayItems = Configuration.Item.allCases
+        //         .filter { configuration.availableWidgets.contains($0) }
+        //         .map { TrayItem(item: $0, visible: true) }
+        // }
         .frame(maxWidth: .infinity)
         .padding(Constants.main.standardSpacing)
         .padding(.bottom, Constants.main.standardSpacing)
