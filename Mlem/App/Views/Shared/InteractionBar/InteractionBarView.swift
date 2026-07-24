@@ -29,11 +29,11 @@ struct InteractionBarView: View {
         case comment(Comment)
         case notification(Comment, InboxNotification)
 
-        var objectId: Int {
+        var inner: AnyObject {
             switch self {
-            case let .post(post): ObjectIdentifier(post).hashValue
-            case let .comment(comment): ObjectIdentifier(comment).hashValue
-            case let .notification(_, notification): ObjectIdentifier(notification).hashValue
+            case let .post(post): post
+            case let .comment(comment): comment
+            case let .notification(_, notification): notification
             }
         }
     }
@@ -69,7 +69,10 @@ struct InteractionBarView: View {
         widgets.map {
             .init(
                 widget: $0,
-                viewId: $0.viewId(entityId: content.objectId, environment: environment)
+                viewId: $0.viewId(
+                    entityId: ObjectIdentifier(content.inner).hashValue,
+                    environment: environment
+                )
             )
         }
     }
@@ -160,9 +163,8 @@ struct InteractionBarView: View {
         }()
         
         HStack(spacing: 0) {
-            if let leadingAction = counter.leadingAction {
-                // actionView(leadingAction)
-                Text("-")
+            if let leadingAction = counter.leadingAction?.createAction(content.inner) {
+                actionView(leadingAction)
             }
             Text(counter.value?.description ?? "")
                 .monospacedDigit()
@@ -171,9 +173,8 @@ struct InteractionBarView: View {
                 .foregroundStyle(.themedPrimary)
                 .padding(paddingEdges, Constants.main.standardSpacing)
                 
-            if let trailingAction = counter.trailingAction {
-                // actionView(trailingAction)
-                Text("-")
+            if let trailingAction = counter.trailingAction?.createAction(content.inner) {
+                actionView(trailingAction)
             }
         }
     }
@@ -236,8 +237,8 @@ private enum EnrichedWidget {
             // so I'm hoping it'll be fine? The inclusion of `action.isOn` above is definitely
             // needed. - Sjmarf 2024-06-15
             hasher.combine(2)
-            hasher.combine(counter.leadingAction?.id)
-            hasher.combine(counter.trailingAction?.id)
+            hasher.combine(counter.leadingAction?.key)
+            hasher.combine(counter.trailingAction?.key)
             hasher.combine((counter.leadingAction as? BasicAction)?.disabled)
             hasher.combine((counter.trailingAction as? BasicAction)?.disabled)
         }
