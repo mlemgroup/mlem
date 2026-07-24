@@ -319,9 +319,9 @@ extension InteractionBarEditorView {
                     titleVisibility: .visible
                 ) {
                     Button("Yes") {
-                        // postInteractionBar = postInteractionBar.applying(other: configuration, types: [.bar])
-                        // commentInteractionBar = commentInteractionBar.applying(other: configuration, types: [.bar])
-                        // replyInteractionBar = replyInteractionBar.applying(other: configuration, types: [.bar])
+                        postInteractionBar.applyInteractionBar(other: configuration)
+                        commentInteractionBar.applyInteractionBar(other: configuration)
+                        replyInteractionBar.applyInteractionBar(other: configuration)
                         // reports intentionally omitted
                     }
                 }
