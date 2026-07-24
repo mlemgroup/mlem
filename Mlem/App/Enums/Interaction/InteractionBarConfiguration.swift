@@ -40,16 +40,6 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
     )
 }
 
-extension InteractionBarConfiguration {
-    var all: [Item] { leading + trailing }
-    
-    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-        all.reduce(into: Set<ReadoutType>()) { result, element in
-            result.formUnion(element.associatedReadouts(context: context))
-        }
-    }
-}
-
 // swiftlint:disable:next type_name
 enum InteractionBarConfigurationConversionType {
     case swipe, bar, contextMenu
@@ -85,15 +75,6 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Has
         }
     }
     
-    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-        switch self {
-        case let .action(actionType):
-            actionType.associatedReadouts(context: context)
-        case let .counter(counterType):
-            counterType.associatedReadouts(context: context)
-        }
-    }
-
     func toInteractionBarItem() -> InteractionBarItem {
         switch self {
         case let .action(action):
@@ -111,8 +92,6 @@ protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable 
     var actionSeed: ActionSeed { get }
     
     static var defaultWidgets: [Self] { get }
-    
-    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType>
 }
 
 struct InteractionBarConfigurations: Codable {

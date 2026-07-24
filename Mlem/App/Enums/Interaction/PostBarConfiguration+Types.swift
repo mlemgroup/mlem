@@ -69,15 +69,6 @@ extension PostBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-            switch self {
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .save: [.saved]
-            case .reply, .share, .selectText, .postDetails, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
-            }
-        }
-        
         var actionSeed: ActionSeed {
             switch self {
             case .upvote: .upvote

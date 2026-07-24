@@ -42,15 +42,6 @@ extension ReplyBarConfiguration {
             }
         }
         
-        func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-            switch self {
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .save: [.saved]
-            case .reply, .markRead, .selectText, .report: []
-            }
-        }
-
         var actionSeed: ActionSeed {
             switch self {
             case .upvote: .upvote

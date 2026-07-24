@@ -7,6 +7,7 @@
 
 import Actions
 import Foundation
+import MlemMiddleware
 
 enum InteractionBarItem: Encodable, Hashable {
     case action(ActionSeed)
@@ -25,6 +26,15 @@ enum InteractionBarItem: Encodable, Hashable {
         case .action: 1
         case let .counter(counter):
             counter.appearance.leading == nil || counter.appearance.trailing == nil ? 2 : 3
+        }
+    }
+
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
+        switch self {
+        case let .action(seed):
+            seed.associatedReadouts(context: context)
+        case let .counter(counter):
+            counter.associatedReadouts(context: context)
         }
     }
 }

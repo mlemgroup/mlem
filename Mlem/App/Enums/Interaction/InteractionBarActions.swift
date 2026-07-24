@@ -7,6 +7,7 @@
 
 import Actions
 import Foundation
+import MlemMiddleware
 
 struct InteractionBarActions: Encodable, Equatable {
     var leading: [InteractionBarItem]
@@ -24,6 +25,14 @@ struct InteractionBarActions: Encodable, Equatable {
             trailing: trailing.filter { $0.matchesActionSeedList(keys) },
             readouts: readouts
         )
+    }
+
+    var all: [InteractionBarItem] { leading + trailing }
+    
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
+        all.reduce(into: Set<ReadoutType>()) { result, element in
+            result.formUnion(element.associatedReadouts(context: context))
+        }
     }
 }
 

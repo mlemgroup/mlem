@@ -60,16 +60,6 @@ extension CommentBarConfiguration {
             case .collapseToTop: .collapseToTop()
             }
         }
-        
-        func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-            switch self {
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .save: [.saved]
-            case .reply, .share, .selectText, .report, .resolve, .remove, .ban: []
-            case .collapse, .collapseParent, .collapseToTop: []
-            }
-        }
                
         var actionSeed: ActionSeed {
             switch self {

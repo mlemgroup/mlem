@@ -202,24 +202,20 @@ struct ExpandedPostView<Content: View>: View {
     @ViewBuilder
     func toolbarContent(post: Post, scrollProxy: ScrollViewProxy) -> some View {
         sortPicker(tracker: tracker)
-        if post.shouldShowLoadingSymbol() {
-            ProgressView()
-        } else {
-            ToolbarEllipsisMenu {
-                ControlGroup {
-                    ActionButtons { _ in
-                        PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
-                    }
+        ToolbarEllipsisMenu {
+            ControlGroup {
+                ActionButtons { _ in
+                    PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
                 }
-                .controlGroupStyle(.compactMenu)
-                if !tapPostsToCollapse {
-                    Section {
-                        Button(
-                            postCollapsed ? "Expand Post" : "Collapse Post",
-                            icon: postCollapsed ? .general.expand : .general.collapse
-                        ) {
-                            togglePostCollapsed(post: post, scrollProxy: scrollProxy)
-                        }
+            }
+            .controlGroupStyle(.compactMenu)
+            if !tapPostsToCollapse {
+                Section {
+                    Button(
+                        postCollapsed ? "Expand Post" : "Collapse Post",
+                        icon: postCollapsed ? .general.expand : .general.collapse
+                    ) {
+                        togglePostCollapsed(post: post, scrollProxy: scrollProxy)
                     }
                 }
             }
