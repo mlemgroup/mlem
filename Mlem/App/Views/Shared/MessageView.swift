@@ -15,7 +15,7 @@ struct MessageView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) private var reportContext
     
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
-    
+
     let message: any Message
     let notification: InboxNotification?
     let embeddedContent: EmbeddedContent
@@ -78,6 +78,7 @@ struct MessageView<EmbeddedContent: View>: View {
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if let otherPerson, message.api.canInteract(appState: appState) {
+                notification?.updateRead(true)
                 navigation.push(.messageFeed(otherPerson))
             }
         }
