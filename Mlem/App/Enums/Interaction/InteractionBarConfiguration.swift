@@ -11,7 +11,7 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-protocol InteractionBarConfiguration: Codable, SwipeActionConfiguration, ContextMenuConfiguration {
+protocol InteractionBarConfiguration {
     associatedtype ActionType: ActionTypeProviding
     
     typealias Item = InteractionConfigurationItem<ActionType>

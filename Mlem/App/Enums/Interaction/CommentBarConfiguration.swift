@@ -10,7 +10,13 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarConfiguration {
+struct CommentBarConfiguration:
+    Codable,
+    InteractionBarConfiguration,
+    NewInteractionBarConfiguration,
+    SwipeActionConfiguration,
+    ContextMenuConfiguration {
+
     var savedContextMenu: [ActionSeed]?
     var savedSwipes: ActionSeedSwipeConfiguration?
     var savedInteractionBar: InteractionBarActions?

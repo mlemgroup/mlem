@@ -10,7 +10,13 @@ import Foundation
 import MlemMiddleware
 import SwiftUI
 
-struct PostBarConfiguration: InteractionBarConfiguration, NewInteractionBarConfiguration {
+struct PostBarConfiguration:
+    Codable,
+    InteractionBarConfiguration,
+    NewInteractionBarConfiguration,
+    SwipeActionConfiguration,
+    ContextMenuConfiguration {
+
     var savedContextMenu: [ActionSeed]?
     var savedSwipes: ActionSeedSwipeConfiguration?
     var savedInteractionBar: InteractionBarActions?
