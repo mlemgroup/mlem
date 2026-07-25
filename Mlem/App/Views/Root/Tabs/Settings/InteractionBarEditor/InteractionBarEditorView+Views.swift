@@ -10,8 +10,6 @@ import Flow
 import SwiftUI
 import Theming
 
-// swiftlint:disable file_length
-
 extension InteractionBarEditorView {
     // MARK: - Previews
     
@@ -292,20 +290,10 @@ extension InteractionBarEditorView {
     var buttons: some View {
         HStack {
             Button("Reset") {
-                // assert(!(isReport && Configuration.reportDefault == nil), "isReport is true but no reportDefault found")
-                // let defaultConfiguration: Configuration = isReport ? .reportDefault ?? .default : .default
-                // var newConfiguration = configuration
-                // newConfiguration.leading = defaultConfiguration.leading
-                // newConfiguration.trailing = defaultConfiguration.trailing
-                // newConfiguration.readouts = defaultConfiguration.readouts
-                // self.configuration = newConfiguration
-                // infoStackAlignment = computeInfoStackAlignment(
-                //     infoStackIndex: configuration.leading.count,
-                //     totalItems: configuration.all.count
-                // )
-                // barItems = (configuration.leading + [nil] + configuration.trailing).map { item in
-                //     .init(item: item, expanded: true, visible: true)
-                // }
+                self.configuration.savedInteractionBar = nil
+                barItems = (configuration.interactionBar.leading + [nil] + configuration.interactionBar.trailing).map { item in
+                    .init(item: item, expanded: true, visible: true)
+                }
             }
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
@@ -404,5 +392,3 @@ extension InteractionBarEditorView {
             }
     }
 }
-
-// swiftlint:enable file_length
