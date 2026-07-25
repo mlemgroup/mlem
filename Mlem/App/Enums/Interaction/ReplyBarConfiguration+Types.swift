@@ -12,8 +12,6 @@ import SwiftUI
 
 extension ReplyBarConfiguration {
     enum ActionType: String, ActionTypeProviding {
-        typealias Configuration = ReplyBarConfiguration // swiftlint:disable:this nesting
-        
         case upvote
         case downvote
         case save
@@ -21,18 +19,6 @@ extension ReplyBarConfiguration {
         case markRead
         case selectText
         case report
-        
-        var appearance: ActionAppearance {
-            switch self {
-            case .upvote: .upvote(isOn: false)
-            case .downvote: .downvote(isOn: false)
-            case .save: .save(isOn: false)
-            case .reply: .reply()
-            case .markRead: .markRead(isOn: false)
-            case .selectText: .selectText()
-            case .report: .report()
-            }
-        }
         
         var actionSeed: ActionSeed {
             switch self {
