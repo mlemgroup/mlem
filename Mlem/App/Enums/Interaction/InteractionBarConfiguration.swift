@@ -11,8 +11,4 @@ import Icons
 import MlemMiddleware
 import SwiftUI
 
-protocol InteractionBarConfiguration {
-    associatedtype ActionType: LegacyActionTypeProviding
-    typealias Item = LegacyInteractionBarItem<ActionType>
-}
-
+protocol InteractionBarConfiguration {}

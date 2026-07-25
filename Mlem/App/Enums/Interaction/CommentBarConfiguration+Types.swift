@@ -11,7 +11,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension CommentBarConfiguration {
-    enum ActionType: String, LegacyActionTypeProviding {
+    typealias LegacyItem = LegacyInteractionBarItem<LegacyActionType>
+
+    enum LegacyActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save
@@ -26,13 +28,6 @@ extension CommentBarConfiguration {
         case collapseParent
         case collapseToTop
          
-        static var defaultReportWidgets: [ActionType] { [
-            .share,
-            .resolve,
-            .remove,
-            .ban
-        ] }
-   
         var actionSeed: ActionSeed {
             switch self {
             case .upvote: .upvote

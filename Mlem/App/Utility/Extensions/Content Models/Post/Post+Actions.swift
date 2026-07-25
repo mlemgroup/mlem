@@ -237,7 +237,7 @@ extension Post {
     func action(
         appState: AppState,
         navigation: NavigationLayer,
-        type: PostBarConfiguration.ActionType,
+        type: PostBarConfiguration.LegacyActionType,
         feedback: Set<FeedbackType> = [.haptic, .toast],
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: Community? = nil,

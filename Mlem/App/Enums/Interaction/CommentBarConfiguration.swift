@@ -72,7 +72,7 @@ struct CommentBarConfiguration:
             self.savedPinnedInteractionBarItems = Set(pinnedItems.compactMap {
                 .init(raw: $0, availableActions: Self.availableActions.all)
             })
-        } else if let availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) {
+        } else if let availableWidgets = try container.decodeIfPresent(Set<LegacyItem>.self, forKey: .availableWidgets) {
             self.savedPinnedInteractionBarItems = Set(availableWidgets.map { .init(legacy: $0) })
         } else {
             self.savedPinnedInteractionBarItems = nil
@@ -85,8 +85,8 @@ struct CommentBarConfiguration:
         if let interactionBarContainer {
             self.savedInteractionBar = try .init(from: interactionBarContainer, availableActions: Self.availableActions.all)
         } else {
-            let leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
-            let trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
+            let leading = try container.decodeIfPresent([LegacyItem].self, forKey: .leading) ?? [.counter(.score)]
+            let trailing = try container.decodeIfPresent([LegacyItem].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
             let readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
 
             let bar = InteractionBarActions(
@@ -110,8 +110,8 @@ struct CommentBarConfiguration:
             self.savedSwipes = try .init(from: swipeConfigurationContainer, availableActions: Self.availableActions.all)
         } else {
             // Convert from Mlem 2.4 -> 2.5 format
-            let leadingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
-            let trailingSwipes = try container.decodeIfPresent([ActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
+            let leadingSwipes = try container.decodeIfPresent([LegacyActionType].self, forKey: .leadingSwipes) ?? [.upvote, .downvote]
+            let trailingSwipes = try container.decodeIfPresent([LegacyActionType].self, forKey: .trailingSwipes) ?? [.save, .reply]
 
             let swipes = ActionSeedSwipeConfiguration(
                 leading: leadingSwipes.map(\.actionSeed),

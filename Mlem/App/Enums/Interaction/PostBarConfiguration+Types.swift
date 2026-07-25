@@ -11,7 +11,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension PostBarConfiguration {
-    enum ActionType: String, LegacyActionTypeProviding {
+    typealias LegacyItem = LegacyInteractionBarItem<LegacyActionType>
+
+    enum LegacyActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save
@@ -28,15 +30,6 @@ extension PostBarConfiguration {
         case resolve
         case remove
         case ban
-        
-        static var defaultReportWidgets: [ActionType] { [
-            .share,
-            .lock,
-            .pin,
-            .resolve,
-            .remove,
-            .ban
-        ] }
         
         var actionSeed: ActionSeed {
             switch self {

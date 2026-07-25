@@ -11,7 +11,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension ReplyBarConfiguration {
-    enum ActionType: String, LegacyActionTypeProviding {
+    typealias LegacyItem = LegacyInteractionBarItem<LegacyActionType>
+
+    enum LegacyActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save

@@ -125,7 +125,7 @@ extension Comment {
     // swiftlint:disable:next cyclomatic_complexity
     func action(
         appState: AppState,
-        type: CommentBarConfiguration.ActionType,
+        type: CommentBarConfiguration.LegacyActionType,
         navigation: NavigationLayer?,
         commentTreeTracker: CommentTreeTracker? = nil,
         communityContext: Community? = nil,
@@ -151,7 +151,7 @@ extension Comment {
     
     func action(
         appState: AppState,
-        type: ReplyBarConfiguration.ActionType,
+        type: ReplyBarConfiguration.LegacyActionType,
         navigation: NavigationLayer?,
         notification: InboxNotification,
         commentTreeTracker: CommentTreeTracker? = nil,
