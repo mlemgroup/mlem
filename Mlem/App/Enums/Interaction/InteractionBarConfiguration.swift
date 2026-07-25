@@ -16,7 +16,3 @@ protocol InteractionBarConfiguration {
     typealias Item = LegacyInteractionBarItem<ActionType>
 }
 
-struct MockReadoutAppearance {
-    let icon: Icon
-    let label: String
-}
