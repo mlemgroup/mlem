@@ -37,22 +37,22 @@ private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteActi
 extension VoteAction {
     static let upvoteLabel: ActionLabel = .init(
         "Upvote",
-        icon: .lemmy.upvoted.representingState(active: false),
+        icon: .lemmy.upvoted,
         color: .themedUpvote
     )
     static let downvoteLabel: ActionLabel = .init(
         "Downvote",
-        icon: .lemmy.downvoted.representingState(active: false),
+        icon: .lemmy.downvoted,
         color: .themedDownvote
     )
     static let removeUpvoteLabel: ActionLabel = .init(
         "Upvoted",
-        icon: .lemmy.upvoted.representingState(active: true),
+        icon: .lemmy.upvoted,
         color: .themedUpvote
     )
     static let removeDownvoteLabel: ActionLabel = .init(
         "Downvoted",
-        icon: .lemmy.downvoted.representingState(active: true),
+        icon: .lemmy.downvoted,
         color: .themedDownvote
     )
 

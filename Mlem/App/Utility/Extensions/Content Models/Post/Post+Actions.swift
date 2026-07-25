@@ -9,8 +9,6 @@ import MlemMiddleware
 import Foundation
 import os
 
-// swiftlint:disable file_length
-
 // Functions to support the old Action system
 
 extension Post {
@@ -386,5 +384,3 @@ extension Post {
         }
     }
 }
-
-// swiftlint:enable file_length

@@ -29,12 +29,12 @@ extension ActionSeed {
 extension SaveAction {
     static let saveLabel: ActionLabel = .init(
         "Save",
-        icon: .lemmy.saved.representingState(active: false),
+        icon: .lemmy.addSave,
         color: .themedSave
     )
     static let unsaveLabel: ActionLabel = .init(
         "Saved",
-        icon: .lemmy.saved.representingState(active: true),
+        icon: .lemmy.removeSave,
         color: .themedSave
     )
     
