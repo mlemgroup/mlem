@@ -238,6 +238,7 @@
 		0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */; };
 		0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */; };
 		0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */; };
+		0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
 		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0381F7242F672258008A7731 /* CommentBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */; };
@@ -864,6 +865,7 @@
 		0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActions.swift; sourceTree = "<group>"; };
 		0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarItem.swift; sourceTree = "<group>"; };
+		0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyInteractionBarItem.swift; sourceTree = "<group>"; };
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
 		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentBarConfiguration+Types.swift"; sourceTree = "<group>"; };
@@ -1750,6 +1752,7 @@
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				03B2F09E2FC998B300C36011 /* InstanceActionConfiguration.swift */,
 				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
+				0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */,
 				0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */,
 				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
 				0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */,
@@ -2937,6 +2940,7 @@
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
 				03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */,
 				035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */,
+				0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */,
 				0381F7282F6724D3008A7731 /* ReplyBarConfiguration+Types.swift in Sources */,
 				CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */,
 				034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */,

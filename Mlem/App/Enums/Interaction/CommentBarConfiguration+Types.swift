@@ -11,7 +11,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension CommentBarConfiguration {
-    enum ActionType: String, ActionTypeProviding {
+    enum ActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save

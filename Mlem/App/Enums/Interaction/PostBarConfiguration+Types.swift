@@ -11,7 +11,7 @@ import MlemMiddleware
 import SwiftUI
 
 extension PostBarConfiguration {
-    enum ActionType: String, ActionTypeProviding {
+    enum ActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save
