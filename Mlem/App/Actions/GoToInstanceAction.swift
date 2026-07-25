@@ -34,7 +34,9 @@ extension GoToInstanceAction {
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
-        Self.appearance.withTitle(entity.host)
+        var appearance = Self.appearance
+        appearance.title = entity.host
+        return appearance
     }
 }
 

@@ -61,17 +61,4 @@ public struct ActionAppearance {
         new.prominent = prominent
         return new
     }
-
-    public func withTitle(_ title: LocalizedStringResource) -> ActionAppearance {
-        var new = self
-        new.title = .init(localized: title)
-        return new
-    }
-
-    @_disfavoredOverload
-    public func withTitle(_ title: some StringProtocol) -> ActionAppearance {
-        var new = self
-        new.title = String(title)
-        return new
-    }
 }
