@@ -17,10 +17,10 @@ struct VoteAction: Actions.Action {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let upvote = ActionSeed("upvote", label: VoteAction.upvoteLabel) {
+    static let upvote = ActionSeed("upvote", appearance: VoteAction.upvoteAppearance) {
         createVoteAction($0, type: .upvote)
     }
-    static let downvote = ActionSeed("downvote", label: VoteAction.downvoteLabel) {
+    static let downvote = ActionSeed("downvote", appearance: VoteAction.downvoteAppearance) {
         createVoteAction($0, type: .downvote)
     }
 }
@@ -35,45 +35,47 @@ private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteActi
 // MARK: - Appearance
 
 extension VoteAction {
-    static let upvoteLabel: ActionLabel = .init(
+    static let upvoteAppearance: ActionAppearance = .init(
         "Upvote",
         icon: .lemmy.upvoted.representingState(active: false),
         color: .themedUpvote
     )
-    static let downvoteLabel: ActionLabel = .init(
+    static let downvoteAppearance: ActionAppearance = .init(
         "Downvote",
         icon: .lemmy.downvoted.representingState(active: false),
         color: .themedDownvote
     )
-    static let removeUpvoteLabel: ActionLabel = .init(
+    static let removeUpvoteAppearance: ActionAppearance = .init(
         "Upvoted",
         icon: .lemmy.upvoted.representingState(active: true),
         color: .themedUpvote
     )
-    static let removeDownvoteLabel: ActionLabel = .init(
+    static let removeDownvoteAppearance: ActionAppearance = .init(
         "Downvoted",
         icon: .lemmy.downvoted.representingState(active: true),
         color: .themedDownvote
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let votes = entity.votes.value else { return Self.upvoteLabel.withVisibility(.hidden) }
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let votes = entity.votes.value else { return Self.upvoteAppearance.withVisibility(.hidden) }
         let hasMatchingVote = votes.myVote == type
 
         guard type != .none else {
             assertionFailure()
-            return Self.upvoteLabel
+            return Self.upvoteAppearance
         }
 
-        let label = switch (type, hasMatchingVote) {
-        case (.upvote, false): Self.upvoteLabel
-        case (.upvote, true): Self.removeUpvoteLabel
-        case (.downvote, false): Self.downvoteLabel
-        case (.downvote, true): Self.removeDownvoteLabel
-        default: Self.upvoteLabel
-        }
+        return baseAppearance(hasMatchingVote: hasMatchingVote).withVisibility(visibility(environment))
+    }
 
-        return label.withVisibility(visibility(environment))
+    private func baseAppearance(hasMatchingVote: Bool) -> ActionAppearance {
+        switch (type, hasMatchingVote) {
+        case (.upvote, false): return Self.upvoteAppearance
+        case (.upvote, true): return Self.removeUpvoteAppearance
+        case (.downvote, false): return Self.downvoteAppearance
+        case (.downvote, true): return Self.removeDownvoteAppearance
+        default: return Self.upvoteAppearance
+        }
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

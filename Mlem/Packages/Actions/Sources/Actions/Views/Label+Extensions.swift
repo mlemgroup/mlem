@@ -10,7 +10,7 @@ import SwiftUI
 
 public extension Label where Title == Text, Icon == Image {
     @inlinable
-    init(_ actionLabel: ActionLabel) {
-        self.init(actionLabel.title, icon: actionLabel.icon)
+    init(_ appearance: ActionAppearance) {
+        self.init(appearance.title, icon: appearance.icon)
     }
 }

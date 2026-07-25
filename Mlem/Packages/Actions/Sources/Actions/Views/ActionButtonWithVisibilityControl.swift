@@ -17,17 +17,17 @@ public struct ActionButtonWithVisibilityControl: View {
     }
     
     public var body: some View {
-        let label = action.createLabel(environment: environment)
-        if label.visibility != .hidden {
-            Button(label) {
+        let appearance = action.createAppearance(environment: environment)
+        if appearance.visibility != .hidden {
+            Button(appearance) {
                 action.execute(environment: environment)
             }
-            .disabled(label.visibility == .disabled)
+            .disabled(appearance.visibility == .disabled)
 
             // Without this, destructive items appear black in the
             // subscription list due to a shim we've got in there #2374.
             // Intentionally unthemed.
-            .tint(label.isDestructive ? .red : .primary)
+            .tint(appearance.isDestructive ? .red : .primary)
         }
     }
 }

@@ -8,13 +8,13 @@
 import SwiftUI
 
 public extension Button {
-    // Remeber to handle ActionLabel visibility when you use this
+    // Remember to handle ActionAppearance visibility when you use this
     init(
-        _ label: ActionLabel,
+        _ appearance: ActionAppearance,
         callback: @escaping () -> Void
     ) where Label == SwiftUI.Label<Text, Image> {
-        self.init(role: label.isDestructive ? .destructive : nil, action: callback) {
-            Label(label)
+        self.init(role: appearance.isDestructive ? .destructive : nil, action: callback) {
+            Label(appearance)
         }
     }
 }

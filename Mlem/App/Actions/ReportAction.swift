@@ -27,15 +27,15 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ReportAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Report",
         icon: .lemmy.report,
         color: .themedNegative,
         isDestructive: true
     )
-    
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

@@ -28,14 +28,14 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ViewVotesAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "View Votes",
         icon: .lemmy.votes,
         color: .themedColorfulAccent(4)
     )
-    
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

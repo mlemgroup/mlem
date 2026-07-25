@@ -13,7 +13,7 @@ struct ActionGroup: Action {
     }
     
     let id: String = UUID().uuidString
-    let appearance: ActionAppearance
+    let appearance: LegacyActionAppearance
 
     let prompt: String?
     
@@ -24,7 +24,7 @@ struct ActionGroup: Action {
     let displayMode: DisplayMode
     
     init(
-        appearance: ActionAppearance = .groupDefault,
+        appearance: LegacyActionAppearance = .groupDefault,
         prompt: LocalizedStringResource? = nil,
         disabled: Bool? = nil,
         displayMode: DisplayMode = .section,
@@ -47,7 +47,7 @@ struct ActionGroup: Action {
     
     @_disfavoredOverload
     init(
-        appearance: ActionAppearance = .groupDefault,
+        appearance: LegacyActionAppearance = .groupDefault,
         prompt: String? = nil,
         disabled: Bool? = nil,
         displayMode: DisplayMode = .section,
@@ -69,6 +69,6 @@ struct ActionGroup: Action {
     }
 }
 
-private extension ActionAppearance {
+private extension LegacyActionAppearance {
     static let groupDefault: Self = .init(label: "More...", color: .themedNeutralAccent, icon: Icons.menuCircle)
 }

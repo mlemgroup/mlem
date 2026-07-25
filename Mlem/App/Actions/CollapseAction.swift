@@ -27,29 +27,29 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension CollapseAction {
-    static let collapseLabel: ActionLabel = .init(
+    static let collapseAppearance: ActionAppearance = .init(
         "Collapse",
         icon: .general.collapse,
         color: .themedColorfulAccent(0)
     )
 
-    static let expandLabel: ActionLabel = .init(
+    static let expandAppearance: ActionAppearance = .init(
         "Expand",
         icon: .general.expand,
         color: .themedColorfulAccent(0)
     )
 
-   static var label: ActionLabel { collapseLabel }
+    static var appearance: ActionAppearance { collapseAppearance }
 
-   func createLabel(environment: EnvironmentValues) -> ActionLabel {
-       guard let node = environment.commentTreeTracker?.getNode(actorId: entity.actorId) else {
-           return Self.label.withVisibility(.hidden)
-       } 
-       if node.collapsed {
-           return Self.expandLabel
-       } else {
-           return Self.collapseLabel
-       }
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let node = environment.commentTreeTracker?.getNode(actorId: entity.actorId) else {
+            return Self.appearance.withVisibility(.hidden)
+        }
+        if node.collapsed {
+            return Self.expandAppearance
+        } else {
+            return Self.collapseAppearance
+        }
     }
 }
 

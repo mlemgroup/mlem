@@ -27,7 +27,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ShareAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Share...",
         icon: .general.share,
         color: .themedColorfulAccent(3)

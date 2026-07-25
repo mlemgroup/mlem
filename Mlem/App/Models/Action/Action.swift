@@ -9,5 +9,5 @@ import SwiftUI
 
 protocol Action: Identifiable {
     var id: String { get }
-    var appearance: ActionAppearance { get }
+    var appearance: LegacyActionAppearance { get }
 }

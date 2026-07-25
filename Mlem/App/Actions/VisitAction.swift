@@ -27,13 +27,12 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension VisitAction {
-    static let label: ActionLabel = .init("Visit", icon: .lemmy.visitInstance)
+    static let appearance: ActionAppearance = .init("Visit", icon: .lemmy.visitInstance)
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         let api = environment.appState.firstApi
         let isVisiting = api.host == instance.actorId.host && api.token == nil
-
-        return Self.label.withVisibility(isVisiting ? .disabled : .enabled)
+        return Self.appearance.withVisibility(isVisiting ? .disabled : .enabled)
     }
 }
 

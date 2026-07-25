@@ -30,7 +30,7 @@ extension ReplyBarConfiguration {
             .markRead
         ] }
         
-        var appearance: ActionAppearance {
+        var appearance: LegacyActionAppearance {
             switch self {
             case .upvote: .upvote(isOn: false)
             case .downvote: .downvote(isOn: false)

@@ -27,32 +27,32 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ToggleNotificationsAction {
-    static let enableLabel: ActionLabel = .init(
+    static let enableAppearance: ActionAppearance = .init(
         "Enable Notifications",
         icon: .lemmy.enableNotifications,
         color: .themedColorfulAccent(4)
     )
 
-    static let disableLabel: ActionLabel = .init(
+    static let disableAppearance: ActionAppearance = .init(
         "Disable Notifications",
         icon: .lemmy.disableNotifications,
         color: .themedColorfulAccent(4)
     )
-    
-    static let label: ActionLabel = .init(
+
+    static let appearance: ActionAppearance = .init(
         "Toggle Notifications",
         icon: .lemmy.notification,
         color: .themedColorfulAccent(4)
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         guard let notificationsEnabled = entity.notificationsEnabled.value else {
-            return Self.enableLabel.withVisibility(.hidden)
+            return Self.enableAppearance.withVisibility(.hidden)
         }
         if notificationsEnabled {
-            return Self.disableLabel.withVisibility(visibility(environment))
+            return Self.disableAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.enableLabel.withVisibility(visibility(environment))
+            return Self.enableAppearance.withVisibility(visibility(environment))
         }
     }
 

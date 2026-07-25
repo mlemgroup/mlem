@@ -27,27 +27,27 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension SubscribeAction {
-    static let subscribeLabel: ActionLabel = .init(
+    static let subscribeAppearance: ActionAppearance = .init(
         "Subscribe",
         icon: .lemmy.subscribe,
         color: .themedPositive
     )
-    static let unsubscribeLabel: ActionLabel = .init(
+    static let unsubscribeAppearance: ActionAppearance = .init(
         "Unsubscribe",
         icon: .lemmy.unsubscribe,
         color: .themedNegative
     )
-    
-    static var label: ActionLabel { subscribeLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let subscription = entity.subscription.value  else {
-            return Self.subscribeLabel.withVisibility(.hidden)
+    static var appearance: ActionAppearance { subscribeAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let subscription = entity.subscription.value else {
+            return Self.subscribeAppearance.withVisibility(.hidden)
         }
         if subscription.subscribed {
-            return Self.unsubscribeLabel.withVisibility(visibility(environment))
+            return Self.unsubscribeAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.subscribeLabel.withVisibility(visibility(environment))
+            return Self.subscribeAppearance.withVisibility(visibility(environment))
         }
     }
 

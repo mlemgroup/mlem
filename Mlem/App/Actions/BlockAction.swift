@@ -56,7 +56,7 @@ private extension [Blockable] {
 extension ActionSeed {
     static let block = ActionSeed(
         "block",
-        label: BlockAction.createLabel(relationship: .direct, mode: .block, contentType: .multi)
+        appearance: BlockAction.createAppearance(relationship: .direct, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
         case let entity as any Blockable: BlockAction(content: [entity], relationship: .direct)
@@ -66,7 +66,7 @@ extension ActionSeed {
 
     static let blockCreator = ActionSeed(
         "blockCreator",
-        label: BlockAction.createLabel(relationship: .indirect, mode: .block, contentType: .multi)
+        appearance: BlockAction.createAppearance(relationship: .indirect, mode: .block, contentType: .multi)
     ) { entity in
         switch entity {
         case let entity as Comment:
@@ -96,8 +96,8 @@ extension BlockAction {
     enum Mode { case block, unblock }
 
     // swiftlint:disable:next cyclomatic_complexity
-    static func createLabel(relationship: Relationship, mode: Mode, contentType: ContentType) -> ActionLabel {
-        let label: LocalizedStringResource = switch (relationship, mode, contentType) {
+    static func createAppearance(relationship: Relationship, mode: Mode, contentType: ContentType) -> ActionAppearance {
+        let title: LocalizedStringResource = switch (relationship, mode, contentType) {
         case (.direct, .block, _): "Block"
         case (.direct, .unblock, _): "Unblock"
         case (.indirect, .block, .personOnly): "Block User"
@@ -113,21 +113,21 @@ extension BlockAction {
 
         return switch mode {
         case .block: .init(
-            label,
+            title,
             icon: .lemmy.block,
             color: .themedNegative,
             isDestructive: true
         )
         case .unblock: .init(
-            label,
+            title,
             icon: .lemmy.unblock,
             color: .themedPositive
         )
         }
     }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        return Self.createLabel(
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.createAppearance(
             relationship: self.relationship,
             mode: content.first!.blocked(environment: environment) ? .unblock : .block,
             contentType: availableContent.contentType
@@ -188,14 +188,14 @@ extension BlockAction {
             let callback = {
                 submit(entity: item, environment: environment)
             }
-            let label = Self.createLabel(
+            let appearance = Self.createAppearance(
                 relationship: .indirect,
                 mode: item.blocked(environment: environment) ? .unblock : .block,
-                contentType: item is Person ? .personOnly: .communityOnly
+                contentType: item is Person ? .personOnly : .communityOnly
             )
             return .init(
-                title: label.title,
-                isDestructive: label.isDestructive,
+                title: appearance.title,
+                isDestructive: appearance.isDestructive,
                 callback: callback
             )
         }

@@ -16,8 +16,8 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
     var body: some View {
         Form {
             ForEach(configuration, id: \.key) { seed in
-                Label(seed.label)
-                    .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
+                Label(seed.appearance)
+                    .foregroundStyle(seed.appearance.isDestructive ? .themedWarning : .themedPrimary)
             }
             .onMove { fromOffsets, toOffset in
                 configuration.move(fromOffsets: fromOffsets, toOffset: toOffset)
@@ -54,8 +54,8 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
             }
         } label: {
             HStack {
-                Label(seed.label)
-                    .foregroundStyle(seed.label.isDestructive ? .themedWarning : .themedPrimary)
+                Label(seed.appearance)
+                    .foregroundStyle(seed.appearance.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
                 if !configuration.contains(seed) {
                     Image(icon: .general.add)

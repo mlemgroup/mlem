@@ -90,23 +90,22 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BanAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Ban",
         icon: .lemmy.banFromCommunity,
         color: .themedNegative,
         isDestructive: true
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let label: ActionLabel
-
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         let appliedBanScopes = getAppliedBanScopes(environment: environment)
         let actionableBanScopes = getActionableBanScopes(environment: environment)
+        let base: ActionAppearance
 
         switch (bannedFrom: appliedBanScopes, canBanFrom: actionableBanScopes) {
         case (bannedFrom: .none, canBanFrom: .both),
              (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
-            label = .init(
+            base = .init(
                 "Ban",
                 icon: .lemmy.banFromInstance,
                 color: .themedNegative,
@@ -115,7 +114,7 @@ extension BanAction {
 
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
              (bannedFrom: .both, canBanFrom: .both):
-            label = .init(
+            base = .init(
                 "Unban",
                 icon: .lemmy.unbanFromInstance,
                 color: .themedPositive
@@ -123,7 +122,7 @@ extension BanAction {
 
         case (bannedFrom: .instanceOnly, canBanFrom: .both),
              (bannedFrom: .communityOnly, canBanFrom: .both):
-            label = .init(
+            base = .init(
                 "Ban...",
                 icon: .lemmy.banFromInstance,
                 color: .themedNegative,
@@ -131,20 +130,20 @@ extension BanAction {
             )
 
         case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
-            label = .init(
+            base = .init(
                 "Unban",
                 icon: .lemmy.unbanFromCommunity,
                 color: .themedPositive
             )
 
         case (bannedFrom: .anyNotContaining(.community), canBanFrom: .communityOnly):
-            label = Self.label
+            base = Self.appearance
 
         default:
-            return Self.label.withVisibility(.hidden)
+            return Self.appearance.withVisibility(.hidden)
         }
 
-        return label.withVisibility(visibility(environment))
+        return base.withVisibility(visibility(environment))
     }
 
     /// Get the scopes that the target is current banned within.

@@ -27,26 +27,26 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension HideAction {
-    static let hideLabel: ActionLabel = .init(
+    static let hideAppearance: ActionAppearance = .init(
         "Hide",
         icon: .general.hide,
         color: .themedColorfulAccent(4)
     )
 
-    static let showLabel: ActionLabel = .init(
+    static let showAppearance: ActionAppearance = .init(
         "Show",
         icon: .general.show,
         color: .themedColorfulAccent(4)
     )
-    
-    static var label: ActionLabel { hideLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let hidden = entity.hidden.value else { return Self.showLabel.withVisibility(.hidden) }
+    static var appearance: ActionAppearance { hideAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let hidden = entity.hidden.value else { return Self.showAppearance.withVisibility(.hidden) }
         if hidden {
-            return Self.showLabel.withVisibility(visibility(environment))
+            return Self.showAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.hideLabel.withVisibility(visibility(environment))
+            return Self.hideAppearance.withVisibility(visibility(environment))
         }
     }
 

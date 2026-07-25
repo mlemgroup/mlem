@@ -9,7 +9,7 @@ import Foundation
 import Icons
 import Theming
 
-public struct ActionLabel {
+public struct ActionAppearance {
     public var title: String
     public var icon: Icon
     public var color: ThemedColor
@@ -50,26 +50,26 @@ public struct ActionLabel {
         self.prominent = prominent
     }
     
-    public func withVisibility(_ visibility: ActionVisiblity) -> ActionLabel {
+    public func withVisibility(_ visibility: ActionVisiblity) -> ActionAppearance {
         var new = self
         new.visibility = visibility
         return new
     }
 
-    public func withProminent(_ value: Bool) -> ActionLabel {
+    public func withProminent(_ value: Bool) -> ActionAppearance {
         var new = self
         new.prominent = prominent
         return new
     }
 
-    public func withTitle(_ title: LocalizedStringResource) -> ActionLabel {
+    public func withTitle(_ title: LocalizedStringResource) -> ActionAppearance {
         var new = self
         new.title = .init(localized: title)
         return new
     }
 
     @_disfavoredOverload
-    public func withTitle(_ title: some StringProtocol) -> ActionLabel {
+    public func withTitle(_ title: some StringProtocol) -> ActionAppearance {
         var new = self
         new.title = String(title)
         return new

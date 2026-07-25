@@ -27,7 +27,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension LogInAction {
-    static let label: ActionLabel = .init("Log In", icon: .lemmy.logIn)
+    static let appearance: ActionAppearance = .init("Log In", icon: .lemmy.logIn)
 }
 
 // MARK: - Behavior
