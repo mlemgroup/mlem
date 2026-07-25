@@ -15,25 +15,10 @@ protocol InteractionBarConfiguration: Codable, Equatable, SwipeActionConfigurati
     associatedtype ActionType: ActionTypeProviding
     
     typealias Item = InteractionConfigurationItem<ActionType>
-    
-    var leading: [Item] { get set }
-    var trailing: [Item] { get set }
-    var readouts: [ReadoutType] { get set }
-    
-    /// Default configuration for this type
-    static var `default`: Self { get }
-    /// Default report configuration for this type. `nil` if inapplicable.
-    static var reportDefault: Self? { get }
 
     static var availableActions: ActionSeedSections { get }
     
-    init(
-        leading: [Item],
-        trailing: [Item],
-        savedSwipes: ActionSeedSwipeConfiguration?,
-        readouts: [ReadoutType],
-        savedContextMenu: [ActionSeed]?
-    )
+    init()
 }
 
 // swiftlint:disable:next type_name
@@ -94,17 +79,7 @@ struct InteractionBarConfigurations: Codable {
     var reply: ReplyBarConfiguration
     var postReport: PostBarConfiguration
     var commentReport: CommentBarConfiguration
-    
-    static var `default`: Self {
-        .init(
-            post: .default,
-            comment: .default,
-            reply: .default,
-            postReport: .reportDefault_,
-            commentReport: .reportDefault_
-        )
-    }
-    
+
     init(
         post: PostBarConfiguration,
         comment: CommentBarConfiguration,
@@ -121,11 +96,11 @@ struct InteractionBarConfigurations: Codable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .default
-        self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .default
-        self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .default
-        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .reportDefault_
-        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .reportDefault_
+        self.post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .post) ?? .init()
+        self.comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .comment) ?? .init()
+        self.reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: .reply) ?? .init()
+        self.postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: .postReport) ?? .init()
+        self.commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: .commentReport) ?? .init()
     }
 }
 

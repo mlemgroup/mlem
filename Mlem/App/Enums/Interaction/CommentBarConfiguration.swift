@@ -11,10 +11,6 @@ import MlemMiddleware
 import SwiftUI
 
 struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarConfiguration {
-    var leading: [Item]
-    var trailing: [Item]
-    var readouts: [ReadoutType]
-
     var savedContextMenu: [ActionSeed]?
     var savedSwipes: ActionSeedSwipeConfiguration?
     var savedInteractionBar: InteractionBarActions?
@@ -52,26 +48,11 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
 
     func widgetPickerPage(_ configuration: Binding<Self>) -> SettingsPage { .commentBarWidgetPicker(configuration) }
     
-    init(
-        leading: [Item],
-        trailing: [Item],
-        savedSwipes: ActionSeedSwipeConfiguration?,
-        readouts: [ReadoutType],
-        savedContextMenu: [ActionSeed]?
-    ) {
-        self.leading = leading
-        self.trailing = trailing
-        self.savedSwipes = savedSwipes
-        self.readouts = readouts
-        self.savedContextMenu = savedContextMenu
-    }
-    
+    init() {}    
+
     // swiftlint:disable:next function_body_length
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.leading = try container.decodeIfPresent([Item].self, forKey: .leading) ?? [.counter(.score)]
-        self.trailing = try container.decodeIfPresent([Item].self, forKey: .trailing) ?? [.action(.save), .action(.reply)]
-        self.readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
 
         if let contextMenuKeys = try container.decodeIfPresent([String].self, forKey: .savedContextMenu) {
             let allActions = Self.availableActions.all
@@ -158,33 +139,10 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
 
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.leading, forKey: .leading)
-        try container.encode(self.trailing, forKey: .trailing)
-        try container.encode(self.readouts, forKey: .readouts)
         try container.encode(self.savedContextMenu, forKey: .savedContextMenu)
         try container.encode(self.savedSwipes, forKey: .swipes)
         try container.encode(self.savedInteractionBar, forKey: .interactionBar)
         try container.encode(self.pinnedInteractionBarItems, forKey: .pinnedInteractionBarItems)
-    }
-
-    static var `default`: Self {
-        .init(
-            leading: [.counter(.score)],
-            trailing: [.action(.save), .action(.reply)],
-            savedSwipes: nil,
-            readouts: [.created, .comment],
-            savedContextMenu: nil
-        )
-    }
-    
-    static var reportDefault_: Self {
-        .init(
-            leading: [.action(.resolve), .action(.share)],
-            trailing: [.action(.ban), .action(.remove)],
-            savedSwipes: nil,
-            readouts: [.upvote, .downvote, .created, .comment],
-            savedContextMenu: nil
-        )
     }
 
     static var availableActions: ActionSeedSections { .init(sections: [
@@ -223,6 +181,4 @@ struct CommentBarConfiguration: InteractionBarConfiguration, NewInteractionBarCo
             ]
         ])
     }
-    
-    static var reportDefault: Self? { reportDefault_ }
 }

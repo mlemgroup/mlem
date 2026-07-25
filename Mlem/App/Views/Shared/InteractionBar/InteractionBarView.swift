@@ -88,7 +88,7 @@ struct InteractionBarView: View {
         let associatedReadouts = configuration.interactionBar.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: post))
         }
-        self.readouts = configuration.readouts.compactMap { readout in
+        self.readouts = configuration.interactionBar.readouts.compactMap { readout in
             post.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
     }
@@ -102,7 +102,7 @@ struct InteractionBarView: View {
         let associatedReadouts = configuration.interactionBar.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
-        self.readouts = configuration.readouts.compactMap { readout in
+        self.readouts = configuration.interactionBar.readouts.compactMap { readout in
             comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
     }
@@ -117,7 +117,7 @@ struct InteractionBarView: View {
         let associatedReadouts = configuration.interactionBar.all.reduce(into: Set<ReadoutType>()) { result, widget in
             result.formUnion(widget.associatedReadouts(context: comment))
         }
-        self.readouts = configuration.readouts.compactMap { readout in
+        self.readouts = configuration.interactionBar.readouts.compactMap { readout in
             comment.readout(type: readout, showColor: !associatedReadouts.contains(readout))
         }
     }
