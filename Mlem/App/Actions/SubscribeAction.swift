@@ -35,7 +35,8 @@ extension SubscribeAction {
     static let unsubscribeAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Subscribed", icon: .lemmy.subscribed.representingState(active: true)),
         stateTransitionLabel: .init("Unsubscribe", icon: .lemmy.unsubscribe),
-        color: .themedNegative
+        color: .themedNegative,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { subscribeAppearance }

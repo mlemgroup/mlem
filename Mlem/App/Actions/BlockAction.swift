@@ -167,7 +167,8 @@ extension BlockAction {
         case .unblock: .init(
             currentStateLabel: .init(titles.currentState, icon: .lemmy.blocked.representingState(active: true)),
             stateTransitionLabel: .init(titles.stateTransition, icon: .lemmy.unblock),
-            color: .themedPositive
+            color: .themedPositive,
+            prominent: true
         )
         }
     }

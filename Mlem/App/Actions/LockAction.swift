@@ -36,7 +36,8 @@ extension LockAction {
     static let unlockAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Locked", icon: .lemmy.locked.representingState(active: true)),
         stateTransitionLabel: .init("Unlock", icon: .lemmy.removeLock),
-        color: .themedLockAccent
+        color: .themedLockAccent,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { lockAppearance }

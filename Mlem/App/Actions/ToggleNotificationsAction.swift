@@ -36,7 +36,8 @@ extension ToggleNotificationsAction {
     static let disableAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Notifications Enabled", icon: .lemmy.notification.representingState(active: true)),
         stateTransitionLabel: .init("Disable Notifications", icon: .lemmy.disableNotifications),
-        color: .themedColorfulAccent(4)
+        color: .themedColorfulAccent(4),
+        prominent: true
     )
 
     static let appearance: ActionAppearance = .init(

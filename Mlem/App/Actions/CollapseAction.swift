@@ -36,6 +36,8 @@ extension CollapseAction {
     static let expandAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Collapsed", icon: .general.collapse),
         stateTransitionLabel: .init("Expand", icon: .general.expand),
+        color: .themedColorfulAccent(0),
+        prominent: true
     )
 
     static var appearance: ActionAppearance { collapseAppearance }

@@ -36,7 +36,8 @@ extension MarkNsfwAction {
     static let removeAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Marked NSFW", icon: .settings.blurNsfw.representingState(active: false)),
         stateTransitionLabel: .init("Remove NSFW Tag", icon: .settings.blurNsfw),
-        color: .themedNegative
+        color: .themedNegative,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { addAppearance }

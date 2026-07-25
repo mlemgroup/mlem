@@ -36,7 +36,8 @@ extension ResolveAction {
     static let unresolveAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Resolved", icon: .lemmy.resolved.representingState(active: true)),
         stateTransitionLabel: .init("Unresolve", icon: .lemmy.unresolve),
-        color: .themedNegative
+        color: .themedNegative,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { resolveAppearance }

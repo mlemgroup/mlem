@@ -36,7 +36,8 @@ extension DeleteAction {
     static let restoreAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Deleted", icon: .general.deleted.representingState(active: true)),
         stateTransitionLabel: .init("Restore", icon: .lemmy.restore),
-        color: .themedPositive
+        color: .themedPositive,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { deleteAppearance }

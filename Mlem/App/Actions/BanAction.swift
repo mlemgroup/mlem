@@ -117,7 +117,8 @@ extension BanAction {
             base = .init(
                 currentStateLabel: .init("Banned", icon: .lemmy.bannedFromInstance.representingState(active: true)),
                 stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromInstance),
-                color: .themedPositive
+                color: .themedPositive,
+                prominent: true
             )
 
         case (bannedFrom: .instanceOnly, canBanFrom: .both),
@@ -133,7 +134,8 @@ extension BanAction {
             base = .init(
                 currentStateLabel: .init("Banned", icon: .lemmy.bannedFromCommunity.representingState(active: true)),
                 stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromCommunity),
-                color: .themedPositive
+                color: .themedPositive,
+                prominent: true
             )
 
         case (bannedFrom: .anyNotContaining(.community), canBanFrom: .communityOnly):

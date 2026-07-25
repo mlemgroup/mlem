@@ -35,7 +35,8 @@ extension MarkReadAction {
     static let markUnreadAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Read", icon: .lemmy.markedRead.representingState(active: true)),
         stateTransitionLabel: .init("Mark Unread", icon: .lemmy.markUnread),
-        color: .themedRead
+        color: .themedRead,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { markReadAppearance }

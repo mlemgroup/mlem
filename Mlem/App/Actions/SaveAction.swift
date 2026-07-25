@@ -35,7 +35,8 @@ extension SaveAction {
     static let unsaveAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Saved", icon: .lemmy.saved.representingState(active: true)),
         stateTransitionLabel: .init("Unsave", icon: .lemmy.removeSave),
-        color: .themedSave
+        color: .themedSave,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { saveAppearance }

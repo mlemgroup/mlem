@@ -36,7 +36,8 @@ extension PinAction {
     static let unpinAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Pinned", icon: .lemmy.pinned.representingState(active: true)),
         stateTransitionLabel: .init("Unpin", icon: .lemmy.removePin),
-        color: .themedModeration
+        color: .themedModeration,
+        prominent: true
     )
 
     static let pinDetailsAppearance: ActionAppearance = .init(

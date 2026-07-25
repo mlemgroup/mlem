@@ -35,7 +35,8 @@ extension FavoriteAction {
     static let unfavoriteAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Favorited", icon: .lemmy.favorited.representingState(active: true)),
         stateTransitionLabel: .init("Favorite", icon: .lemmy.unfavorite),
-        color: .themedFavorite
+        color: .themedFavorite,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { favoriteAppearance }
