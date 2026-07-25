@@ -66,7 +66,7 @@ struct ReplyBarConfiguration:
                 .init(raw: $0, availableActions: Self.availableActions.all)
             })
         } else if let availableWidgets = try container.decodeIfPresent(Set<Item>.self, forKey: .availableWidgets) {
-            self.savedPinnedInteractionBarItems = Set(availableWidgets.map { $0.toInteractionBarItem() })
+            self.savedPinnedInteractionBarItems = Set(availableWidgets.map { .init(legacy: $0) })
         } else {
             self.savedPinnedInteractionBarItems = nil
         }
@@ -90,8 +90,8 @@ struct ReplyBarConfiguration:
             let readouts = try container.decodeIfPresent([ReadoutType].self, forKey: .readouts) ?? [.created, .comment]
 
             let bar = InteractionBarActions(
-                leading: leading.map { $0.toInteractionBarItem() },
-                trailing: trailing.map { $0.toInteractionBarItem() },
+                leading: leading.map { .init(legacy: $0) },
+                trailing: trailing.map { .init(legacy: $0) },
                 readouts: readouts
             )
 

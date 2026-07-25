@@ -13,9 +13,11 @@ import Foundation
 enum LegacyInteractionBarItem<ActionType: LegacyActionTypeProviding>: Codable, Hashable {
     case action(ActionType)
     case counter(CounterType)
-    
-    func toInteractionBarItem() -> InteractionBarItem {
-        switch self {
+}
+
+extension InteractionBarItem {
+    init<ActionType>(legacy: LegacyInteractionBarItem<ActionType>) {
+        self = switch legacy {
         case let .action(action):
             .action(action.actionSeed)
         case let .counter(counter):
