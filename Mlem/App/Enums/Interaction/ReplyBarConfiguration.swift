@@ -12,7 +12,6 @@ import SwiftUI
 
 struct ReplyBarConfiguration:
     Codable,
-    InteractionBarConfiguration,
     NewInteractionBarConfiguration,
     SwipeActionConfiguration,
     ContextMenuConfiguration {

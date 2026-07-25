@@ -280,7 +280,6 @@
 		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
 		0397D4912C6CE871002C6CDC /* PostEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48F2C6CE871002C6CDC /* PostEditorView.swift */; };
 		0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */; };
-		0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */; };
 		0397D4A22C6EB035002C6CDC /* ActionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */; };
 		0397D4A42C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A32C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
@@ -907,7 +906,6 @@
 		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0397D48F2C6CE871002C6CDC /* PostEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorView.swift; sourceTree = "<group>"; };
 		0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorTargetView.swift; sourceTree = "<group>"; };
-		0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0397D4A12C6EB035002C6CDC /* ActionAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAppearance.swift; sourceTree = "<group>"; };
 		0397D4A32C6FBC04002C6CDC /* ActionAppearance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActionAppearance+StaticValues.swift"; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
@@ -1751,7 +1749,6 @@
 				038E62DF2F6F0FC600C54DEB /* ContextMenuConfiguration.swift */,
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				03B2F09E2FC998B300C36011 /* InstanceActionConfiguration.swift */,
-				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
 				0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */,
 				0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */,
 				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
@@ -3094,7 +3091,6 @@
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
 				03AB48572CBC0DFC00567FF9 /* AccountSignInSettingsView.swift in Sources */,
 				037F78452D3C25AB00D4E180 /* PostSubscriptionIndicatorSettingsView.swift in Sources */,
-				0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				03B7F3352EEEC70F00B00F6A /* NoteEditorView.swift in Sources */,
 				03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */,

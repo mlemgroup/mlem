@@ -12,7 +12,6 @@ import SwiftUI
 
 struct PostBarConfiguration:
     Codable,
-    InteractionBarConfiguration,
     NewInteractionBarConfiguration,
     SwipeActionConfiguration,
     ContextMenuConfiguration {
