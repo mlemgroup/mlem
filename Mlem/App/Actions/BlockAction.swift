@@ -95,32 +95,78 @@ extension ActionSeed {
 extension BlockAction {
     enum Mode { case block, unblock }
 
-    // swiftlint:disable:next cyclomatic_complexity
+    typealias Titles = (currentState: LocalizedStringResource, stateTransition: LocalizedStringResource)
+
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     static func createAppearance(relationship: Relationship, mode: Mode, contentType: ContentType) -> ActionAppearance {
-        let title: LocalizedStringResource = switch (relationship, mode, contentType) {
-        case (.direct, .block, _): "Block"
-        case (.direct, .unblock, _): "Unblock"
-        case (.indirect, .block, .personOnly): "Block User"
-        case (.indirect, .unblock, .personOnly): "Unblock User"
-        case (.indirect, .block, .communityOnly): "Block Community"
-        case (.indirect, .unblock, .communityOnly): "Unblock Community"
-        case (.indirect, .block, .instanceOnly): "Block Instance"
-        case (.indirect, .unblock, .instanceOnly): "Unblock Instance"
-        case (.indirect, .block, .multi): "Block..."
-        case (.indirect, .unblock, .multi): "Unblock..."
-        case (_, _, .other): "Block..."
+        let titles: Titles = switch (relationship, mode, contentType) {
+        case (.direct, .block, _):
+            (
+            currentState: "Unblocked",
+            stateTransition: "Block"
+            )
+        case (.direct, .unblock, _):
+            (
+            currentState: "Blocked",
+            stateTransition: "Unblock"
+            )
+        case (.indirect, .block, .personOnly):
+            (
+            currentState: "User Unblocked",
+            stateTransition: "Block User"
+            )
+        case (.indirect, .unblock, .personOnly):
+            (
+            currentState: "User Blocked",
+            stateTransition: "Unblock User"
+            )
+        case (.indirect, .block, .communityOnly):
+            (
+            currentState: "Community Unblocked",
+            stateTransition: "Block Community"
+            )
+        case (.indirect, .unblock, .communityOnly):
+            (
+            currentState: "Community Blocked",
+            stateTransition: "Unblock Community"
+            )
+        case (.indirect, .block, .instanceOnly):
+            (
+            currentState: "Instance Unblocked",
+            stateTransition: "Block Instance"
+            )
+        case (.indirect, .unblock, .instanceOnly):
+            (
+            currentState: "Instance Blocked",
+            stateTransition: "Unblock Instance"
+            )
+        case (.indirect, .block, .multi):
+            (
+            currentState: "Block...",
+            stateTransition: "Block..."
+            )
+        case (.indirect, .unblock, .multi):
+            (
+            currentState: "Unblock...",
+            stateTransition: "Unblock..."
+            )
+        case (_, _, .other):
+            (
+            currentState: "Block...",
+            stateTransition: "Block..."
+            )
         }
 
         return switch mode {
         case .block: .init(
-            title,
-            icon: .lemmy.block,
+            currentStateLabel: .init(titles.currentState, icon: .lemmy.blocked.representingState(active: false)),
+            stateTransitionLabel: .init(titles.stateTransition, icon: .lemmy.block),
             color: .themedNegative,
             isDestructive: true
         )
         case .unblock: .init(
-            title,
-            icon: .lemmy.unblock,
+            currentStateLabel: .init(titles.currentState, icon: .lemmy.blocked.representingState(active: true)),
+            stateTransitionLabel: .init(titles.stateTransition, icon: .lemmy.unblock),
             color: .themedPositive
         )
         }

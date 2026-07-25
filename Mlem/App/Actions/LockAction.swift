@@ -28,14 +28,14 @@ extension ActionSeed {
 
 extension LockAction {
     static let lockAppearance: ActionAppearance = .init(
-        "Lock",
-        icon: .lemmy.addLock,
+        currentStateLabel: .init("Unlocked", icon: .lemmy.locked.representingState(active: false)),
+        stateTransitionLabel: .init("Lock", icon: .lemmy.addLock),
         color: .themedLockAccent
     )
 
     static let unlockAppearance: ActionAppearance = .init(
-        "Unlock",
-        icon: .lemmy.removeLock,
+        currentStateLabel: .init("Locked", icon: .lemmy.locked.representingState(active: true)),
+        stateTransitionLabel: .init("Unlock", icon: .lemmy.removeLock),
         color: .themedLockAccent
     )
 

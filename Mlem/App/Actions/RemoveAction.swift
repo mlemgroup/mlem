@@ -28,14 +28,14 @@ extension ActionSeed {
 
 extension RemoveAction {
     static let removeAppearance: ActionAppearance = .init(
-        "Remove",
-        icon: .lemmy.remove,
+        currentStateLabel: .init("Unremoved", icon: .lemmy.removed.representingState(active: false)),
+        stateTransitionLabel: .init("Remove", icon: .lemmy.remove),
         color: .themedNegative,
         isDestructive: true
     )
     static let restoreAppearance: ActionAppearance = .init(
-        "Restore",
-        icon: .lemmy.restore,
+        currentStateLabel: .init("Removed", icon: .lemmy.removed.representingState(active: true)),
+        stateTransitionLabel: .init("Restore", icon: .lemmy.restore),
         color: .themedPositive
     )
 

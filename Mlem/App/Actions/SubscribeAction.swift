@@ -28,13 +28,13 @@ extension ActionSeed {
 
 extension SubscribeAction {
     static let subscribeAppearance: ActionAppearance = .init(
-        "Subscribe",
-        icon: .lemmy.subscribe,
+        currentStateLabel: .init("Unsubscribed", icon: .lemmy.subscribed.representingState(active: false)),
+        stateTransitionLabel: .init("Subscribe", icon: .lemmy.subscribe),
         color: .themedPositive
     )
     static let unsubscribeAppearance: ActionAppearance = .init(
-        "Unsubscribe",
-        icon: .lemmy.unsubscribe,
+        currentStateLabel: .init("Subscribed", icon: .lemmy.subscribed.representingState(active: true)),
+        stateTransitionLabel: .init("Unsubscribe", icon: .lemmy.unsubscribe),
         color: .themedNegative
     )
 

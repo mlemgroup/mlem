@@ -47,6 +47,24 @@ public struct ActionAppearance {
         self.prominent = prominent
     }
     
+    public init(
+        currentStateLabel: ActionLabel,
+        stateTransitionLabel: ActionLabel,
+        color: ThemedColor = .themedAccent,
+        isDestructive: Bool = false,
+        visibility: ActionVisiblity = .enabled,
+        prominent: Bool = false
+    ) {
+        self.labels = .stateChange(
+            currentState: currentStateLabel,
+            transition: stateTransitionLabel
+        )
+        self.color = color
+        self.isDestructive = isDestructive
+        self.visibility = visibility
+        self.prominent = prominent 
+    }
+    
     public func withVisibility(_ visibility: ActionVisiblity) -> ActionAppearance {
         var new = self
         new.visibility = visibility

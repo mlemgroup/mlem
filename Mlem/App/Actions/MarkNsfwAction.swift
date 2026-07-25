@@ -28,14 +28,14 @@ extension ActionSeed {
 
 extension MarkNsfwAction {
     static let addAppearance: ActionAppearance = .init(
-        "Add NSFW Tag",
-        icon: .settings.blurNsfw,
+        currentStateLabel: .init("Not Marked NSFW", icon: .settings.blurNsfw.representingState(active: false)),
+        stateTransitionLabel: .init("Add NSFW Tag", icon: .settings.blurNsfw),
         color: .themedNegative
     )
 
     static let removeAppearance: ActionAppearance = .init(
-        "Remove NSFW Tag",
-        icon: .settings.blurNsfw,
+        currentStateLabel: .init("Marked NSFW", icon: .settings.blurNsfw.representingState(active: false)),
+        stateTransitionLabel: .init("Remove NSFW Tag", icon: .settings.blurNsfw),
         color: .themedNegative
     )
 

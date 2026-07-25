@@ -28,13 +28,13 @@ extension ActionSeed {
 
 extension FavoriteAction {
     static let favoriteAppearance: ActionAppearance = .init(
-        "Favorite",
-        icon: .lemmy.favorite,
+        currentStateLabel: .init("Unfavorited", icon: .lemmy.favorited.representingState(active: false)),
+        stateTransitionLabel: .init("Favorite", icon: .lemmy.favorite),
         color: .themedFavorite
     )
     static let unfavoriteAppearance: ActionAppearance = .init(
-        "Unfavorite",
-        icon: .lemmy.unfavorite,
+        currentStateLabel: .init("Favorited", icon: .lemmy.favorited.representingState(active: true)),
+        stateTransitionLabel: .init("Favorite", icon: .lemmy.unfavorite),
         color: .themedFavorite
     )
 

@@ -91,8 +91,8 @@ extension ActionSeed {
 
 extension BanAction {
     static let appearance: ActionAppearance = .init(
-        "Ban",
-        icon: .lemmy.banFromCommunity,
+        currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromCommunity.representingState(active: false)),
+        stateTransitionLabel: .init("Ban", icon: .lemmy.banFromCommunity),
         color: .themedNegative,
         isDestructive: true
     )
@@ -106,8 +106,8 @@ extension BanAction {
         case (bannedFrom: .none, canBanFrom: .both),
              (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
             base = .init(
-                "Ban",
-                icon: .lemmy.banFromInstance,
+                currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromInstance.representingState(active: false)),
+                stateTransitionLabel: .init("Ban", icon: .lemmy.banFromInstance),
                 color: .themedNegative,
                 isDestructive: true
             )
@@ -115,8 +115,8 @@ extension BanAction {
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
              (bannedFrom: .both, canBanFrom: .both):
             base = .init(
-                "Unban",
-                icon: .lemmy.unbanFromInstance,
+                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromInstance.representingState(active: true)),
+                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromInstance),
                 color: .themedPositive
             )
 
@@ -131,8 +131,8 @@ extension BanAction {
 
         case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
             base = .init(
-                "Unban",
-                icon: .lemmy.unbanFromCommunity,
+                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromCommunity.representingState(active: true)),
+                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromCommunity),
                 color: .themedPositive
             )
 

@@ -28,15 +28,14 @@ extension ActionSeed {
 
 extension CollapseAction {
     static let collapseAppearance: ActionAppearance = .init(
-        "Collapse",
-        icon: .general.collapse,
+        currentStateLabel: .init("Expanded", icon: .general.expand),
+        stateTransitionLabel: .init("Collapse", icon: .general.collapse),
         color: .themedColorfulAccent(0)
     )
 
     static let expandAppearance: ActionAppearance = .init(
-        "Expand",
-        icon: .general.expand,
-        color: .themedColorfulAccent(0)
+        currentStateLabel: .init("Collapsed", icon: .general.collapse),
+        stateTransitionLabel: .init("Expand", icon: .general.expand),
     )
 
     static var appearance: ActionAppearance { collapseAppearance }

@@ -28,14 +28,14 @@ extension ActionSeed {
 
 extension ToggleNotificationsAction {
     static let enableAppearance: ActionAppearance = .init(
-        "Enable Notifications",
-        icon: .lemmy.enableNotifications,
+        currentStateLabel: .init("Notifications Disabled", icon: .lemmy.notification.representingState(active: false)),
+        stateTransitionLabel: .init("Enable Notifications", icon: .lemmy.enableNotifications),
         color: .themedColorfulAccent(4)
     )
 
     static let disableAppearance: ActionAppearance = .init(
-        "Disable Notifications",
-        icon: .lemmy.disableNotifications,
+        currentStateLabel: .init("Notifications Enabled", icon: .lemmy.notification.representingState(active: true)),
+        stateTransitionLabel: .init("Disable Notifications", icon: .lemmy.disableNotifications),
         color: .themedColorfulAccent(4)
     )
 
