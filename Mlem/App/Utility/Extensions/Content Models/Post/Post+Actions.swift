@@ -99,17 +99,6 @@ extension Post {
         )
     }
     
-    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
-        .init(
-            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
-            prompt: "Pin to Community or Instance?",
-            displayMode: .popup
-        ) {
-            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
-            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
-        }
-    }
-    
     func pinToCommunityAction(
         appState: AppState,
         feedback: Set<FeedbackType> = [],
@@ -179,14 +168,6 @@ extension Post {
             }
     }
     
-    func postDetailsAction(navigation: NavigationLayer) -> BasicAction {
-        .init(
-            id: "postDetails\(uid)",
-            appearance: .postDetails()) {
-                navigation.openSheet(.postDetails(self))
-            }
-    }
-    
     func editAction(appState: AppState, navigation: NavigationLayer) -> BasicAction? {
         guard api.canInteract(appState: appState) else { return nil }
         return .init(
@@ -231,42 +212,6 @@ extension Post {
             appearance: .viewVotes(),
             callback: { @MainActor in navigation.push(.votesList(.post(self))) }
         )
-    }
-    
-    // swiftlint:disable:next cyclomatic_complexity
-    func action(
-        appState: AppState,
-        navigation: NavigationLayer,
-        type: PostBarConfiguration.LegacyActionType,
-        feedback: Set<FeedbackType> = [.haptic, .toast],
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report? = nil
-    ) -> (any Action)? {
-        switch type {
-        case .upvote: return upvoteAction(appState: appState, feedback: feedback)
-        case .downvote: return downvoteAction(appState: appState, feedback: feedback)
-        case .save: return saveAction(appState: appState, feedback: feedback)
-        case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: return shareAction(navigation: navigation)
-        case .selectText: return selectTextAction()
-        case .postDetails: return postDetailsAction(navigation: navigation)
-        case .hide: return hideAction(appState: appState, feedback: feedback)
-        case .block: return blockAction(appState: appState, feedback: feedback)
-        case .report: return reportAction(appState: appState, communityContext: communityContext)
-        case .crossPost: return crossPostAction()
-        case .lock: return lockAction(appState: appState, feedback: feedback)
-        case .pin: return api.isAdmin ? pinAction(
-                appState: appState,
-                feedback: feedback
-            ) : pinToCommunityAction(
-                appState: appState,
-                feedback: feedback
-            )
-        case .resolve: return reportContext?.resolveAction(appState: appState, feedback: feedback)
-        case .remove: return removeAction(appState: appState, feedback: feedback)
-        case .ban: return reportContext?.contextualBanAction(appState: appState)
-        }
     }
     
     // MARK: - Readouts
