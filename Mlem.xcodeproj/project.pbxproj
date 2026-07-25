@@ -235,7 +235,7 @@
 		038100512F6AE867008A7731 /* MlemBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 038100502F6AE867008A7731 /* MlemBackend */; };
 		038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038188982D43E0F30073E88D /* SafetySettingsView.swift */; };
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
-		0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */; };
+		0381D18B3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */; };
 		0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */; };
 		0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */; };
 		0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */; };
@@ -861,7 +861,7 @@
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		038188982D43E0F30073E88D /* SafetySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetySettingsView.swift; sourceTree = "<group>"; };
 		0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyBlurNsfwSettingsView.swift; sourceTree = "<group>"; };
-		0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInteractionBarConfiguration.swift; sourceTree = "<group>"; };
+		0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActions.swift; sourceTree = "<group>"; };
 		0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarItem.swift; sourceTree = "<group>"; };
 		0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyInteractionBarItem.swift; sourceTree = "<group>"; };
@@ -1750,7 +1750,7 @@
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				03B2F09E2FC998B300C36011 /* InstanceActionConfiguration.swift */,
 				0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */,
-				0381D18A3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift */,
+				0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */,
 				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
 				0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
@@ -3232,7 +3232,7 @@
 				03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
 				03E0EF432CA73D7A002CB66C /* PostStubResolutionPage.swift in Sources */,
-				0381D18B3013A3AC00F9F3E0 /* NewInteractionBarConfiguration.swift in Sources */,
+				0381D18B3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift in Sources */,
 				CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */,
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
 				037FC0702E4A6B16009E3E63 /* InstanceView+About.swift in Sources */,

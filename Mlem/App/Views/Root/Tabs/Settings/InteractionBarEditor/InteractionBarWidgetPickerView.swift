@@ -8,7 +8,7 @@
 import ComponentViews
 import SwiftUI
 
-struct InteractionBarWidgetPickerView<Configuration: NewInteractionBarConfiguration>: View {
+struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration>: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var configuration: Configuration

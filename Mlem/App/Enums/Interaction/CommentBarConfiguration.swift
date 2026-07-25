@@ -12,7 +12,7 @@ import SwiftUI
 
 struct CommentBarConfiguration:
     Codable,
-    NewInteractionBarConfiguration,
+    InteractionBarConfiguration,
     SwipeActionConfiguration,
     ContextMenuConfiguration {
 

@@ -1,5 +1,5 @@
 //
-//  NewInteractionBarConfiguration.swift
+//  InteractionBarConfiguration.swift
 //  Mlem
 //
 //  Created by Sjmarf on 2026-07-24.
@@ -8,7 +8,7 @@
 import Actions
 import SwiftUI
 
-protocol NewInteractionBarConfiguration {
+protocol InteractionBarConfiguration {
     var savedInteractionBar: InteractionBarActions? { get set }
     var savedPinnedInteractionBarItems: Set<InteractionBarItem>? { get set }
 
@@ -20,7 +20,7 @@ protocol NewInteractionBarConfiguration {
     static var defaultPinnedInteractionBarItems: Set<InteractionBarItem> { get }
 }
 
-extension NewInteractionBarConfiguration {
+extension InteractionBarConfiguration {
     var interactionBar: InteractionBarActions {
         get {
             savedInteractionBar ?? Self.defaultInteractionBar
@@ -39,7 +39,7 @@ extension NewInteractionBarConfiguration {
         }
     }
 
-    mutating func applyInteractionBar<Configuration: NewInteractionBarConfiguration>(other: Configuration) {
+    mutating func applyInteractionBar<Configuration: InteractionBarConfiguration>(other: Configuration) {
         let interactionBar = other.savedInteractionBar ?? Configuration.defaultInteractionBar
         self.savedInteractionBar = interactionBar.filter(allowed: Self.availableActions.all)
     }

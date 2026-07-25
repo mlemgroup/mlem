@@ -39,7 +39,7 @@ struct InteractionBarView: View {
     }
     
     private let content: Content
-    private let configuration: any NewInteractionBarConfiguration
+    private let configuration: any InteractionBarConfiguration
 
     private var leading: [EnrichedWidget] {
         .init(

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsInteractionBarSummaryView<Configuration: NewInteractionBarConfiguration>: View {
+struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfiguration>: View {
     var title: LocalizedStringResource = "Interaction Bar"
     var configuration: Configuration
     
