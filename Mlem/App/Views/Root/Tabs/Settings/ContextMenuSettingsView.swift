@@ -16,7 +16,7 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
     var body: some View {
         Form {
             ForEach(configuration, id: \.key) { seed in
-                Label(seed.appearance)
+                Label(seed.appearance, describing: .stateTransition)
                     .foregroundStyle(seed.appearance.isDestructive ? .themedWarning : .themedPrimary)
             }
             .onMove { fromOffsets, toOffset in
@@ -54,7 +54,7 @@ struct ContextMenuSettingsView<Configuration: ContextMenuConfiguration>: View {
             }
         } label: {
             HStack {
-                Label(seed.appearance)
+                Label(seed.appearance, describing: .stateTransition)
                     .foregroundStyle(seed.appearance.isDestructive ? .themedWarning : .themedPrimary)
                 Spacer()
                 if !configuration.contains(seed) {

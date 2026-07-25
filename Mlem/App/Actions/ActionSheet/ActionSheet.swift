@@ -99,7 +99,7 @@ private struct ActionSheetButton: View {
     let dismiss: DismissAction
 
     var body: some View {
-        Button(appearance) {
+        Button(appearance, describing: .stateTransition) {
             action.execute(environment: environment)
             if !navigation.rootChangePending, popupAnchorModel.data == nil {
                 dismiss()

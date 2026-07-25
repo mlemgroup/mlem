@@ -87,7 +87,7 @@ private struct ActionListView: View {
         Section(title) {
             ForEach(actions, id: \.hashValue) { action in
                 HStack {
-                    Label(action.appearance.title, icon: action.appearance.icon)
+                    Label(action.appearance, describing: .stateTransition)
                         .symbolVariant(.fill)
                         .gradientTint(action.appearance.color)
                     Spacer()
@@ -110,7 +110,7 @@ private struct ActionListView: View {
     var addButtonView: some View {
         Menu("Add", icon: .general.add) {
             ForEach(allActions, id: \.self) { action in
-                Button(action.appearance.title, icon: action.appearance.icon) {
+                Button(action.appearance, describing: .stateTransition) {
                     actions.append(action)
                 }
                 .disabled(actions.contains(action))

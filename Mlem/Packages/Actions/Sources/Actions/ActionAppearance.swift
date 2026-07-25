@@ -10,8 +10,7 @@ import Icons
 import Theming
 
 public struct ActionAppearance {
-    public var title: String
-    public var icon: Icon
+    public var labels: ActionLabels
     public var color: ThemedColor
     public var isDestructive: Bool
     public var visibility: ActionVisiblity
@@ -25,8 +24,7 @@ public struct ActionAppearance {
         visibility: ActionVisiblity = .enabled,
         prominent: Bool = false
     ) {
-        self.title = .init(localized: title)
-        self.icon = icon
+        self.labels = .basic(.init(title, icon: icon))
         self.color = color
         self.isDestructive = isDestructive
         self.visibility = visibility
@@ -42,8 +40,7 @@ public struct ActionAppearance {
         visibility: ActionVisiblity = .enabled,
         prominent: Bool = false
     ) {
-        self.title = String(title)
-        self.icon = icon
+        self.labels = .basic(.init(title, icon: icon))
         self.color = color
         self.isDestructive = isDestructive
         self.visibility = visibility
@@ -60,5 +57,13 @@ public struct ActionAppearance {
         var new = self
         new.prominent = prominent
         return new
+    }
+
+    public func label(describing type: ActionLabelType) -> ActionLabel {
+        switch (self.labels, type) {
+        case let (.basic(label), _): label
+        case let (.stateChange(current, _), .currentState): current
+        case let (.stateChange(_, transition), .stateTransition): transition
+        }
     }
 }

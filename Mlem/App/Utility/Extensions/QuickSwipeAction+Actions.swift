@@ -13,8 +13,9 @@ import SwiftUI
 private extension QuickSwipeAction {
     init?(appearance: ActionAppearance, callback: @escaping () -> Void) {
         if appearance.visibility == .hidden { return nil }
+        let label = appearance.label(describing: .stateTransition)
         self.init(
-            icon: appearance.icon,
+            icon: label.icon,
             color: appearance.color,
             enabled: appearance.visibility == .enabled,
             confirmationPrompt: nil,

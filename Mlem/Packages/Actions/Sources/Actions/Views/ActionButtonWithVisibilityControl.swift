@@ -11,15 +11,17 @@ public struct ActionButtonWithVisibilityControl: View {
     @Environment(\.self) private var environment
     
     private let action: any Action
+    private let labelType: ActionLabelType
     
-    public init(_ action: any Action) {
+    public init(_ action: any Action, describing labelType: ActionLabelType) {
         self.action = action
+        self.labelType = labelType
     }
     
     public var body: some View {
         let appearance = action.createAppearance(environment: environment)
         if appearance.visibility != .hidden {
-            Button(appearance) {
+            Button(appearance, describing: labelType) {
                 action.execute(environment: environment)
             }
             .disabled(appearance.visibility == .disabled)

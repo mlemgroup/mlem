@@ -194,7 +194,7 @@ extension BlockAction {
                 contentType: item is Person ? .personOnly : .communityOnly
             )
             return .init(
-                title: appearance.title,
+                title: appearance.label(describing: .stateTransition).title,
                 isDestructive: appearance.isDestructive,
                 callback: callback
             )
