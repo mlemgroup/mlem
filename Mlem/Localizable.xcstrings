@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "@%@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "@%@"
+          }
+        }
+      }
     },
     "**%@** and **%@** chose to defederate from one another." : {
       "localizations" : {
@@ -205,11 +212,24 @@
             "state" : "new",
             "value" : "%1$@ is running %2$@, and Mlem requires %3$@ or later."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ utilise %2$@, et Mlem exige %3$@ ou ultérieur."
+          }
         }
       }
     },
     "%@ is unsupported" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ n’est pas supporté"
+          }
+        }
+      }
     },
     "%@ locked a post" : {
       "localizations" : {
@@ -238,7 +258,14 @@
       }
     },
     "%@ pinned a post to a community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a épinglé une publication dans une communauté"
+          }
+        }
+      }
     },
     "%@ purged a comment" : {
       "localizations" : {
@@ -437,7 +464,14 @@
       }
     },
     "%@ unpinned a post from a community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a desépinglé une publication d’une communauté"
+          }
+        }
+      }
     },
     "%lld Active" : {
       "localizations" : {
@@ -508,7 +542,14 @@
       }
     },
     "%lld Errors" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Erreurs"
+          }
+        }
+      }
     },
     "%lld more links..." : {
       "localizations" : {
@@ -679,7 +720,14 @@
       }
     },
     "A-Z" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A-Z"
+          }
+        }
+      }
     },
     "About" : {
       "localizations" : {
@@ -792,7 +840,14 @@
       }
     },
     "Actor ID" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actor ID"
+          }
+        }
+      }
     },
     "Add" : {
       "localizations" : {
@@ -879,7 +934,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajouter langue"
+            "value" : "Ajouter une langue…"
           }
         }
       }
@@ -935,7 +990,14 @@
       }
     },
     "Admin" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Admin"
+          }
+        }
+      }
     },
     "Administration" : {
       "localizations" : {
@@ -1058,7 +1120,14 @@
       }
     },
     "Alt Text" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Texte alternatif"
+          }
+        }
+      }
     },
     "Always" : {
       "localizations" : {
@@ -1464,7 +1533,14 @@
       }
     },
     "Avatars" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avatars"
+          }
+        }
+      }
     },
     "Average: %@" : {
       "localizations" : {
@@ -1487,7 +1563,14 @@
       }
     },
     "Backend Status" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status du backend"
+          }
+        }
+      }
     },
     "Ban" : {
       "localizations" : {
@@ -1913,6 +1996,12 @@
             "state" : "new",
             "value" : "Cannot translate from %1$@ to %2$@."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de traduire de %1$@ vers %2$@."
+          }
         }
       }
     },
@@ -2021,7 +2110,14 @@
       }
     },
     "Choices" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choix"
+          }
+        }
+      }
     },
     "Choose a community..." : {
       "localizations" : {
@@ -2104,7 +2200,14 @@
       }
     },
     "Choose how far you have to drag to dismiss the image viewer." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir la distance de glissement nécessaire pour fermer la visionneuse d'images."
+          }
+        }
+      }
     },
     "Choose Instance..." : {
       "localizations" : {
@@ -2137,38 +2240,94 @@
       }
     },
     "Choose the default sort mode for posts and comments." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir le mode de tri par défaut pour les publications et les commentaires."
+          }
+        }
+      }
     },
     "Choose when Not Safe For Work content should be blurred." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez quand le contenu inapproprié au travail (NSFW) doit être flouté."
+          }
+        }
+      }
     },
     "Choose when the image viewer controls should appear." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir quand les commandes de la visionneuse d'images doivent apparaître."
+          }
+        }
+      }
     },
     "Choose whether avatars should be shown, and whether they should animate." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir si les avatars doivent être affichés, et s'ils doivent s'animer."
+          }
+        }
+      }
     },
     "Choose whether moderator actions appear in a separate menu." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir si les actions des modérateurs doivent apparaître dans un menu séparé."
+          }
+        }
+      }
     },
     "Choose whether to show a user's account age next to their username." : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choisir d'afficher ou non l'âge du compte d'un utilisateur à côté de son nom d'utilisateur."
+            "value" : "Choisir d'afficher ou non l'ancienneté du compte d'un utilisateur à côté de son nom d'utilisateur."
           }
         }
       }
     },
     "Choose whether to show a warning when opening a page that is likely to contain sensitive content." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir si vous souhaitez afficher un avertissement lors de l'ouverture d'une page susceptible de contenir du contenu sensible."
+          }
+        }
+      }
     },
     "Choose whether to show community avatars on posts." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir d'afficher ou non les avatars de la communauté sur les publications."
+          }
+        }
+      }
     },
     "Choose whether to show user avatars on posts." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir d'afficher ou non les avatars des utilisateurs sur les publications."
+          }
+        }
+      }
     },
     "Choose whether to use alternate interaction bar and swipe action layouts for post and comment reports in Mod Mail." : {
       "localizations" : {
@@ -2191,7 +2350,14 @@
       }
     },
     "Choose which languages appear in your feed. Posts and comments in other languages will be hidden." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir les langues qui s'affichent dans votre fil d'actualité. Les publications et les commentaires rédigés dans d'autres langues seront masqués."
+          }
+        }
+      }
     },
     "Choose which widgets to display in your palette." : {
       "localizations" : {
@@ -2274,7 +2440,14 @@
       }
     },
     "Close Button" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bouton Fermer"
+          }
+        }
+      }
     },
     "Closed" : {
       "localizations" : {
@@ -2357,7 +2530,14 @@
       }
     },
     "Combined" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combiné"
+          }
+        }
+      }
     },
     "Comment" : {
       "localizations" : {
@@ -2402,7 +2582,14 @@
       }
     },
     "Comment unavailable" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commentaire indisponible"
+          }
+        }
+      }
     },
     "Comment Upvotes" : {
       "localizations" : {
@@ -2415,7 +2602,14 @@
       }
     },
     "Comment Votes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes de commentaire"
+          }
+        }
+      }
     },
     "Comment was deleted" : {
       "localizations" : {
@@ -2478,7 +2672,14 @@
       }
     },
     "Communities Only" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communautés seulement"
+          }
+        }
+      }
     },
     "Community" : {
       "localizations" : {
@@ -2531,7 +2732,14 @@
       }
     },
     "Community unavailable" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Communauté indisponible"
+          }
+        }
+      }
     },
     "Community was hidden" : {
       "localizations" : {
@@ -2670,10 +2878,24 @@
       }
     },
     "Consider choosing another instance, or asking your server administrators to upgrade." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envisagez de choisir une autre instance ou de demander aux administrateurs de votre serveur d'effectuer une mise à niveau."
+          }
+        }
+      }
     },
     "Content" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contenu"
+          }
+        }
+      }
     },
     "Content & Notifications" : {
       "localizations" : {
@@ -2696,7 +2918,14 @@
       }
     },
     "Context Menu" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu contextuel"
+          }
+        }
+      }
     },
     "Continue" : {
       "localizations" : {
@@ -2709,7 +2938,14 @@
       }
     },
     "Continue Anyway" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer quand même"
+          }
+        }
+      }
     },
     "Contrast" : {
       "localizations" : {
@@ -2722,7 +2958,14 @@
       }
     },
     "Controls" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôles"
+          }
+        }
+      }
     },
     "Controversial" : {
       "localizations" : {
@@ -2845,7 +3088,14 @@
       }
     },
     "Created" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crée"
+          }
+        }
+      }
     },
     "Creator" : {
       "localizations" : {
@@ -2878,7 +3128,14 @@
       }
     },
     "Crossposts" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publications croisées"
+          }
+        }
+      }
     },
     "Current Password" : {
       "localizations" : {
@@ -2937,6 +3194,12 @@
             "state" : "translated",
             "value" : "Customise"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser"
+          }
         }
       }
     },
@@ -2946,6 +3209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise Context Menu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser le menu contextuel"
           }
         }
       }
@@ -2957,6 +3226,12 @@
             "state" : "translated",
             "value" : "Customise how content is displayed in your feed. Choose which types of content are blurred, and apply filters to hide posts from the feed altogether."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l'affichage du contenu dans votre fil d'actualité. Choisissez les types de contenu à flouter et appliquez des filtres pour masquer complètement certaines publications."
+          }
         }
       }
     },
@@ -2966,6 +3241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise how long error notifications remain on-screen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser la durée d'affichage des notifications d'erreur à l'écran."
           }
         }
       }
@@ -2994,6 +3275,12 @@
             "state" : "translated",
             "value" : "Customise how often Mlem plays haptic feedback."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser la fréquence à laquelle Mlem émet un retour haptique."
+          }
         }
       }
     },
@@ -3003,6 +3290,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise how your subscription list is sorted."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnalisez le tri de votre liste d'abonnements."
           }
         }
       }
@@ -3014,6 +3307,12 @@
             "state" : "translated",
             "value" : "Customise Mlem to work best for you. Some features are tied to system-wide accessibility settings."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser Mlem pour qu'il réponde au mieux à vos besoins. Certaines fonctionnalités sont liées aux paramètres d'accessibilité du système."
+          }
         }
       }
     },
@@ -3023,6 +3322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise the appearance of communities."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l'apparence des communautés."
           }
         }
       }
@@ -3034,6 +3339,12 @@
             "state" : "translated",
             "value" : "Customise the appearance of instances."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l'apparence des instances."
+          }
         }
       }
     },
@@ -3043,6 +3354,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise the appearance of the tab bar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l'apparence de la barre d'onglets."
           }
         }
       }
@@ -3054,6 +3371,12 @@
             "state" : "translated",
             "value" : "Customise the appearance of users."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser l'apparence des utilisateurs."
+          }
         }
       }
     },
@@ -3064,6 +3387,12 @@
             "state" : "translated",
             "value" : "Customise the image viewer's buttons and gestures."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser les boutons et les gestes de la visionneuse d'images."
+          }
         }
       }
     },
@@ -3073,6 +3402,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Customise the interaction bar for inbox items, and choose which types of notification are included in the tab bar badge."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnaliser la barre d'interaction pour les éléments de la boîte de réception et choisissez les types de notifications inclus dans le badge de la barre d'onglets."
+          }
+        }
+      }
+    },
+    "Dark" : {
+      "comment" : "Dark user interface style.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sombre"
           }
         }
       }
@@ -3138,7 +3485,14 @@
       }
     },
     "Default: %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Défaut : %@"
+          }
+        }
+      }
     },
     "Delete" : {
       "localizations" : {
@@ -3283,7 +3637,14 @@
       }
     },
     "Developer Mode" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode Développeur"
+          }
+        }
+      }
     },
     "Diagnosing..." : {
       "localizations" : {
@@ -3306,7 +3667,14 @@
       }
     },
     "Disable Notifications" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver les Notifications"
+          }
+        }
+      }
     },
     "Disabled" : {
       "localizations" : {
@@ -3364,16 +3732,30 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rejeter"
+            "value" : "Ignorer"
           }
         }
       }
     },
     "Dismiss Sensitivity" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorer la Sensibilité"
+          }
+        }
+      }
     },
     "Display linked media from supported hosts in-app rather than as a link." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les médias liés provenant de plateformes prises en charge directement dans l'application, plutôt que sous forme de lien."
+          }
+        }
+      }
     },
     "Display Name" : {
       "localizations" : {
@@ -3467,7 +3849,14 @@
       }
     },
     "Downvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes négatifs"
+          }
+        }
+      }
     },
     "Dracula" : {
       "localizations" : {
@@ -3534,7 +3923,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Soit"
+            "value" : "L’un ou l'autre"
           }
         }
       }
@@ -3580,7 +3969,14 @@
       }
     },
     "Empty" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vide"
+          }
+        }
+      }
     },
     "Enable" : {
       "localizations" : {
@@ -3593,10 +3989,24 @@
       }
     },
     "Enable Notifications" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer les Notifications"
+          }
+        }
+      }
     },
     "End Date" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date de Fin"
+          }
+        }
+      }
     },
     "end.of.feed.icon.1" : {
       "comment" : "This is the key for an icon that appears next to the \"I think I've found the bottom!\" text. It is localized so that you can change the icon to fit better with your translation of the text.",
@@ -3703,10 +4113,24 @@
       }
     },
     "Error Log" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log d'Erreur"
+          }
+        }
+      }
     },
     "Error Notification Timeout" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Délai d'expiration de la notification d'erreur"
+          }
+        }
+      }
     },
     "EULA" : {
       "localizations" : {
@@ -3719,7 +4143,14 @@
       }
     },
     "Events" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Évènements"
+          }
+        }
+      }
     },
     "Every time I share a link, show a popup asking which instance to use." : {
       "localizations" : {
@@ -3819,7 +4250,14 @@
       }
     },
     "Expand" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Développer"
+          }
+        }
+      }
     },
     "Expand Post" : {
       "localizations" : {
@@ -4012,7 +4450,14 @@
       }
     },
     "Failed to share error log" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du partage du journal d'erreurs"
+          }
+        }
+      }
     },
     "Failed to unblock!" : {
       "localizations" : {
@@ -4103,7 +4548,14 @@
       }
     },
     "Federated" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fédéré"
+          }
+        }
+      }
     },
     "Federates" : {
       "localizations" : {
@@ -4564,7 +5016,14 @@
       }
     },
     "Highest" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus haut"
+          }
+        }
+      }
     },
     "Hot" : {
       "localizations" : {
@@ -4616,6 +5075,18 @@
         }
       }
     },
+    "image" : {
+      "comment" : "File extension for an image file.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "image"
+          }
+        }
+      }
+    },
     "Image" : {
       "localizations" : {
         "fr" : {
@@ -4647,7 +5118,14 @@
       }
     },
     "Image Viewer" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visionneuse d’image"
+          }
+        }
+      }
     },
     "Images are cached on your device for fast reuse. The maximum cache size is around %@." : {
       "localizations" : {
@@ -4660,7 +5138,14 @@
       }
     },
     "Immediately" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immédiatement"
+          }
+        }
+      }
     },
     "Import Settings" : {
       "localizations" : {
@@ -4743,7 +5228,14 @@
       }
     },
     "In the Fediverse, many different links can point to the same piece of content. Choose which site to use when sharing content." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans le Fediverse, de nombreux liens différents peuvent pointer vers un même contenu. Choisissez le site à utiliser pour partager du contenu."
+          }
+        }
+      }
     },
     "Inbox" : {
       "localizations" : {
@@ -4990,7 +5482,14 @@
       }
     },
     "Language" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue"
+          }
+        }
+      }
     },
     "Large" : {
       "localizations" : {
@@ -5013,10 +5512,24 @@
       }
     },
     "Last Updated" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernière mise à jour"
+          }
+        }
+      }
     },
     "Latest Vote" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dernier vote"
+          }
+        }
+      }
     },
     "Learn more..." : {
       "localizations" : {
@@ -5078,6 +5591,18 @@
         }
       }
     },
+    "Light" : {
+      "comment" : "Label for light user interface style.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clair"
+          }
+        }
+      }
+    },
     "Link" : {
       "localizations" : {
         "fr" : {
@@ -5089,7 +5614,14 @@
       }
     },
     "Link URL" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link URL"
+          }
+        }
+      }
     },
     "Literals" : {
       "localizations" : {
@@ -5162,7 +5694,14 @@
       }
     },
     "Local ID" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID local"
+          }
+        }
+      }
     },
     "Local Only" : {
       "localizations" : {
@@ -5185,7 +5724,14 @@
       }
     },
     "Local Subscribers" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnés Locaux"
+          }
+        }
+      }
     },
     "local.subscriber.count.text" : {
       "comment" : "Used in the \"Details\" tab of a community page to indicate how many local subscribers use the instance. E.g. \"56 on lemmy.world\".",
@@ -5236,7 +5782,14 @@
       }
     },
     "Locked" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verrouillé"
+          }
+        }
+      }
     },
     "Log In" : {
       "localizations" : {
@@ -5300,19 +5853,54 @@
       }
     },
     "Lowest" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus bas"
+          }
+        }
+      }
     },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer la manière dont Mlem traite les liens et contrôlez l'affichage des images et des vidéos."
+          }
+        }
+      }
     },
     "Manage how Mlem interacts with Lemmy instances and other websites." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer la manière dont Mlem interagit avec les instances Lemmy et d'autres sites web."
+          }
+        }
+      }
     },
     "Manage settings related to content moderation." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer les paramètres relatifs à la modération du contenu."
+          }
+        }
+      }
     },
     "Manage your overall setup for Mlem." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer votre configuration globale pour Mlem."
+          }
+        }
+      }
     },
     "Mark Read" : {
       "localizations" : {
@@ -5649,7 +6237,14 @@
       }
     },
     "More info" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus d’infos"
+          }
+        }
+      }
     },
     "More Info" : {
       "localizations" : {
@@ -5772,7 +6367,14 @@
       }
     },
     "My vote" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mon vote"
+          }
+        }
+      }
     },
     "Name" : {
       "localizations" : {
@@ -5881,10 +6483,24 @@
       }
     },
     "Newest" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus récent"
+          }
+        }
+      }
     },
     "Newest Federated" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les fédérés les plus récents"
+          }
+        }
+      }
     },
     "news@example.com" : {
       "localizations" : {
@@ -5937,10 +6553,24 @@
       }
     },
     "No errors" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas d’erreurs"
+          }
+        }
+      }
     },
     "No Errors" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas d'Erreurs"
+          }
+        }
+      }
     },
     "No image" : {
       "localizations" : {
@@ -6023,10 +6653,24 @@
       }
     },
     "Notifications Disabled" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications Désactivées"
+          }
+        }
+      }
     },
     "Notifications Enabled" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications Activées"
+          }
+        }
+      }
     },
     "Notifications will be sent to %@." : {
       "localizations" : {
@@ -6129,10 +6773,24 @@
       }
     },
     "Oldest" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus vieux"
+          }
+        }
+      }
     },
     "Oldest Federated" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les fédérés les plus vieux"
+          }
+        }
+      }
     },
     "OLED" : {
       "localizations" : {
@@ -6340,7 +6998,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En dehors de Communautés NSFW"
+            "value" : "En dehors des communautés NSFW"
           }
         }
       }
@@ -6436,7 +7094,14 @@
       }
     },
     "Personal" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personnel"
+          }
+        }
+      }
     },
     "Personal Only" : {
       "localizations" : {
@@ -6569,10 +7234,24 @@
       }
     },
     "Pinned to Community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épinglé à la Communauté"
+          }
+        }
+      }
     },
     "Pinned to Instance" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Épinglé à l’Instance"
+          }
+        }
+      }
     },
     "Play" : {
       "localizations" : {
@@ -6585,10 +7264,24 @@
       }
     },
     "Please return to Canvas." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez retourner sur Canvas."
+          }
+        }
+      }
     },
     "Poll" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sondage"
+          }
+        }
+      }
     },
     "Poll has ended" : {
       "localizations" : {
@@ -6621,7 +7314,14 @@
       }
     },
     "Post Details" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détails de publication"
+          }
+        }
+      }
     },
     "Post Downvotes" : {
       "localizations" : {
@@ -6686,7 +7386,14 @@
       }
     },
     "Post unavailable" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publication indisponible"
+          }
+        }
+      }
     },
     "Post Upvotes" : {
       "localizations" : {
@@ -6699,7 +7406,14 @@
       }
     },
     "Post Votes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes de publication"
+          }
+        }
+      }
     },
     "Post was locked" : {
       "localizations" : {
@@ -6722,7 +7436,14 @@
       }
     },
     "Post was pinned to a community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La publication a été épinglée dans une communauté"
+          }
+        }
+      }
     },
     "Post was purged" : {
       "localizations" : {
@@ -6775,7 +7496,14 @@
       }
     },
     "Post was unpinned from a community" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La publication a été désépinglée dans une communauté"
+          }
+        }
+      }
     },
     "Posts" : {
       "localizations" : {
@@ -7041,7 +7769,14 @@
       }
     },
     "Read" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lu"
+          }
+        }
+      }
     },
     "Read %lld posts" : {
       "localizations" : {
@@ -7064,7 +7799,14 @@
       }
     },
     "Read posts are shown with dimmed title text. If you like, you can choose an additional way of indicating read status." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les publications lues s'affichent avec un titre en gris atténué. Si vous le souhaitez, vous pouvez choisir un autre moyen d'indiquer le statut de lecture."
+          }
+        }
+      }
     },
     "Really add NSFW tag?" : {
       "localizations" : {
@@ -7381,7 +8123,14 @@
       }
     },
     "Recent Activity" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activité Récente"
+          }
+        }
+      }
     },
     "Recent Checks" : {
       "localizations" : {
@@ -7438,16 +8187,30 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Token de rafraîchissement"
+            "value" : "Jeton de rafraîchissement"
           }
         }
       }
     },
     "Refreshed at %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mis à jour le %@"
+          }
+        }
+      }
     },
     "Refreshing..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mis à jour..."
+          }
+        }
+      }
     },
     "Registration" : {
       "localizations" : {
@@ -7601,7 +8364,14 @@
       }
     },
     "Removed" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retiré"
+          }
+        }
+      }
     },
     "Removed: %@" : {
       "localizations" : {
@@ -7768,7 +8538,14 @@
       }
     },
     "Requires Invitation" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessite une Invitation"
+          }
+        }
+      }
     },
     "Reset" : {
       "localizations" : {
@@ -8148,10 +8925,24 @@
       }
     },
     "Sent by Mlem to sign in to Canvas." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyé par Mlem pour se connecter à Canvas."
+          }
+        }
+      }
     },
     "Separate" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séparer"
+          }
+        }
+      }
     },
     "Separate Actions Using" : {
       "localizations" : {
@@ -8285,7 +9076,14 @@
       }
     },
     "Show additional debug information. Not recommended for normal use." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher des informations de débogage supplémentaires. Déconseillé pour une utilisation normale."
+          }
+        }
+      }
     },
     "Show All Actions in Feed" : {
       "localizations" : {
@@ -8308,7 +9106,14 @@
       }
     },
     "Show avatars for..." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les avatars pour…"
+          }
+        }
+      }
     },
     "Show Bot Accounts" : {
       "localizations" : {
@@ -8331,7 +9136,14 @@
       }
     },
     "Show Controls" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les contrôles"
+          }
+        }
+      }
     },
     "Show Details" : {
       "localizations" : {
@@ -8354,7 +9166,14 @@
       }
     },
     "Show Events" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les évènements"
+          }
+        }
+      }
     },
     "Show Full URL" : {
       "localizations" : {
@@ -8397,7 +9216,14 @@
       }
     },
     "Show Original" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher l’original"
+          }
+        }
+      }
     },
     "Show Parent" : {
       "localizations" : {
@@ -8500,7 +9326,14 @@
       }
     },
     "Sign In to Canvas" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se connecter à Canvas"
+          }
+        }
+      }
     },
     "Sign In to Lemmy" : {
       "localizations" : {
@@ -8550,7 +9383,14 @@
       }
     },
     "Signed In" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se connecter"
+          }
+        }
+      }
     },
     "Silver" : {
       "localizations" : {
@@ -8667,7 +9507,14 @@
       }
     },
     "Some users set animated media as their avatar. Control whether these avatars should play their animations." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certains utilisateurs choisissent des médias animés comme avatar. Vous pouvez choisir si ces avatars doivent lire leur animation."
+          }
+        }
+      }
     },
     "Sort" : {
       "localizations" : {
@@ -8740,7 +9587,14 @@
       }
     },
     "Starts %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment le %@"
+          }
+        }
+      }
     },
     "Stats" : {
       "localizations" : {
@@ -8887,7 +9741,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suggérées"
+            "value" : "Suggéré"
           }
         }
       }
@@ -8985,6 +9839,18 @@
         }
       }
     },
+    "System" : {
+      "comment" : "Label for the system-provided UIUserInterfaceStyle.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Système"
+          }
+        }
+      }
+    },
     "Tab Bar" : {
       "localizations" : {
         "fr" : {
@@ -9006,7 +9872,14 @@
       }
     },
     "Taller Collapsed Comments" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commentaires réduits plus hauts"
+          }
+        }
+      }
     },
     "Tap and hold items to add, remove, or rearrange them." : {
       "localizations" : {
@@ -9039,10 +9912,24 @@
       }
     },
     "Tap to expand" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appuyer pour développer"
+          }
+        }
+      }
     },
     "Tap to refresh" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appuyer pour mettre à jour"
+          }
+        }
+      }
     },
     "Tap to show slur filter regex." : {
       "localizations" : {
@@ -9065,7 +9952,14 @@
       }
     },
     "Tap-Friendly Links" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liens faciles à toucher"
+          }
+        }
+      }
     },
     "Tappable Links" : {
       "extractionState" : "stale",
@@ -9433,7 +10327,14 @@
       }
     },
     "This content is no longer available.\n\nIt may have been removed automatically. PieFed purges content 7 days after it is removed.\n\nOr, it may have been purged by an administrator." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce contenu n'est plus disponible.\n\nIl a peut-être été supprimé automatiquement. PieFed supprime définitivement le contenu 7 jours après sa suppression.\n\nOu bien, il a peut-être été supprimé définitivement par un administrateur."
+          }
+        }
+      }
     },
     "This content will be loaded from **%@** instead." : {
       "localizations" : {
@@ -9576,7 +10477,14 @@
       }
     },
     "Thumbnail URL" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL de la vignette"
+          }
+        }
+      }
     },
     "Tiled" : {
       "extractionState" : "manual",
@@ -9600,7 +10508,14 @@
       }
     },
     "Timeout" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiration"
+          }
+        }
+      }
     },
     "Title" : {
       "localizations" : {
@@ -9653,7 +10568,14 @@
       }
     },
     "Toggle Notifications" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer les Notifications"
+          }
+        }
+      }
     },
     "Too many items" : {
       "localizations" : {
@@ -9716,7 +10638,14 @@
       }
     },
     "Total" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        }
+      }
     },
     "Trailing" : {
       "localizations" : {
@@ -9749,10 +10678,24 @@
       }
     },
     "Translate" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduire"
+          }
+        }
+      }
     },
     "Translated from %@" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduire depuis %@"
+          }
+        }
+      }
     },
     "Trending Communities" : {
       "localizations" : {
@@ -9805,7 +10748,14 @@
       }
     },
     "Turn Off Events" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactiver les Évènements"
+          }
+        }
+      }
     },
     "Turn Off Search History" : {
       "localizations" : {
@@ -9838,7 +10788,14 @@
       }
     },
     "Type" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
     },
     "Unavailable" : {
       "localizations" : {
@@ -10200,7 +11157,14 @@
       }
     },
     "Unread" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non lu"
+          }
+        }
+      }
     },
     "Unresolve" : {
       "localizations" : {
@@ -10243,7 +11207,14 @@
       }
     },
     "Unsupported" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non supporté"
+          }
+        }
+      }
     },
     "Unsupported Badge" : {
       "localizations" : {
@@ -10256,7 +11227,14 @@
       }
     },
     "Unsupported Language" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue non supportée"
+          }
+        }
+      }
     },
     "Upload" : {
       "localizations" : {
@@ -10349,7 +11327,14 @@
       }
     },
     "Upvotes" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votes positifs"
+          }
+        }
+      }
     },
     "Use Alternate Layouts" : {
       "localizations" : {
@@ -10402,10 +11387,24 @@
       }
     },
     "User or community?" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateur ou communauté ?"
+          }
+        }
+      }
     },
     "User unavailable" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateur indisponible"
+          }
+        }
+      }
     },
     "User was banned" : {
       "localizations" : {
@@ -10528,7 +11527,14 @@
       }
     },
     "Users Only" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisateurs Seulement"
+          }
+        }
+      }
     },
     "Version" : {
       "localizations" : {
@@ -10551,7 +11557,14 @@
       }
     },
     "Video URL" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL de la vidéo"
+          }
+        }
+      }
     },
     "View All" : {
       "localizations" : {
@@ -10746,7 +11759,14 @@
       }
     },
     "When I Tap" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quand j’appuie"
+          }
+        }
+      }
     },
     "Would you like to open this email address in your mail app?" : {
       "localizations" : {
@@ -10819,7 +11839,14 @@
       }
     },
     "You can choose to continue anyway, but some features may not work on this version." : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous pouvez choisir de continuer malgré tout, mais certaines fonctionnalités pourraient ne pas fonctionner sur cette version."
+          }
+        }
+      }
     },
     "You cannot change your vote." : {
       "localizations" : {
@@ -10974,10 +12001,24 @@
       }
     },
     "Z-A" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z-A"
+          }
+        }
+      }
     },
     "Zoom Indicator" : {
-
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indicateur de Zoom"
+          }
+        }
+      }
     },
     "Zoom the image viewer with a slide gesture on the selected side." : {
       "localizations" : {
@@ -10990,5 +12031,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }
