@@ -3742,7 +3742,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ignorer la Sensibilité"
+            "value" : "Sensibilité pour fermer"
           }
         }
       }
@@ -5847,7 +5847,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bas"
+            "value" : "Faible"
           }
         }
       }
@@ -8552,7 +8552,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Réinitialsier"
+            "value" : "Réinitialiser"
           }
         }
       }
@@ -10562,7 +10562,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Basculer les outils développeur"
+            "value" : "Activer les outils développeur"
           }
         }
       }
