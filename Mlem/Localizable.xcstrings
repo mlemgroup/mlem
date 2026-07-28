@@ -3671,7 +3671,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Désactiver les Notifications"
+            "value" : "Désactiver les notifications"
           }
         }
       }
@@ -3993,7 +3993,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activer les Notifications"
+            "value" : "Activer les notifications"
           }
         }
       }
@@ -4117,7 +4117,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Log d'Erreur"
+            "value" : "Log d’erreur"
           }
         }
       }
@@ -4799,7 +4799,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niveau d’Haptique"
+            "value" : "Niveau d’haptique"
           }
         }
       }
@@ -6657,7 +6657,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notifications Désactivées"
+            "value" : "Notifications désactivées"
           }
         }
       }
@@ -6667,7 +6667,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notifications Activées"
+            "value" : "Notifications activées"
           }
         }
       }
@@ -7158,7 +7158,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Épingler la Publication"
+            "value" : "Épingler la publication"
           }
         }
       }
@@ -7178,7 +7178,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Épingler la Communauté"
+            "value" : "Épingler la communauté"
           }
         }
       }
@@ -7238,7 +7238,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Épinglé à la Communauté"
+            "value" : "Épinglé à la communauté"
           }
         }
       }
@@ -7590,7 +7590,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Politique de Confidentialité"
+            "value" : "Politique de confidentialité"
           }
         }
       }
@@ -9571,7 +9571,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Divulgâcheur"
+            "value" : "Divulgâcher"
           }
         }
       }
@@ -10572,7 +10572,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activer les Notifications"
+            "value" : "Activer les notifications"
           }
         }
       }
@@ -10752,7 +10752,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Désactiver les Évènements"
+            "value" : "Désactiver les évènements"
           }
         }
       }
@@ -12015,7 +12015,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Indicateur de Zoom"
+            "value" : "Indicateur de zoom"
           }
         }
       }
@@ -12025,7 +12025,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zoomez la visionneuse d'images avec un geste de glissement sur le côté sélectionné."
+            "value" : "Zoomer la visionneuse d'images avec un geste de glissement sur le côté sélectionné."
           }
         }
       }
