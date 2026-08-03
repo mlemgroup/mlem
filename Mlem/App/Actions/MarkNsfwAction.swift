@@ -27,25 +27,26 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension MarkNsfwAction {
-    static let addLabel: ActionLabel = .init(
-        "Add NSFW Tag",
-        icon: .settings.blurNsfw,
+    static let addAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Not Marked NSFW", icon: .settings.blurNsfw.representingState(active: false)),
+        stateTransitionLabel: .init("Add NSFW Tag", icon: .settings.blurNsfw),
         color: .themedNegative
     )
 
-    static let removeLabel: ActionLabel = .init(
-        "Remove NSFW Tag",
-        icon: .settings.blurNsfw,
-        color: .themedNegative
+    static let removeAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Marked NSFW", icon: .settings.blurNsfw.representingState(active: false)),
+        stateTransitionLabel: .init("Remove NSFW Tag", icon: .settings.blurNsfw),
+        color: .themedNegative,
+        prominent: true
     )
-    
-    static var label: ActionLabel { addLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    static var appearance: ActionAppearance { addAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         if entity.nsfw {
-            Self.removeLabel.withVisibility(visibility(environment))
+            Self.removeAppearance.withVisibility(visibility(environment))
         } else {
-            Self.addLabel.withVisibility(visibility(environment))
+            Self.addAppearance.withVisibility(visibility(environment))
         }
     }
 

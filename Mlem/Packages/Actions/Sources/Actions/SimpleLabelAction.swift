@@ -8,11 +8,11 @@
 import SwiftUI
 
 public protocol SimpleLabelAction: Action {
-    static var label: ActionLabel { get }
+    static var appearance: ActionAppearance { get }
 }
 
 public extension SimpleLabelAction {
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance
     }
 }

@@ -9,7 +9,7 @@ import Actions
 import SwiftUI
 import Theming
 
-struct ActionAppearance {
+struct LegacyActionAppearance {
     let label: String
     let isOn: Bool
     let isInProgress: Bool

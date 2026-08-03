@@ -43,10 +43,10 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension EditAction {
-    static let label: ActionLabel = .init("Edit", icon: .general.edit)
-    
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+    static let appearance: ActionAppearance = .init("Edit", icon: .general.edit)
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

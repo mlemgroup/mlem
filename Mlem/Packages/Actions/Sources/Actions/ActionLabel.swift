@@ -1,77 +1,25 @@
 //
-//  File.swift
-//  Actions
+//  ActionLabel.swift
+//  Mlem
 //
-//  Created by Sjmarf on 2025-10-13.
+//  Created by Sjmarf on 2026-07-25.
 //
 
 import Foundation
 import Icons
-import Theming
 
 public struct ActionLabel {
-    public var title: String
-    public var icon: Icon
-    public var color: ThemedColor
-    public var isDestructive: Bool
-    public var visibility: ActionVisiblity
-    public var prominent: Bool
-    
-    public init(
-        _ title: LocalizedStringResource,
-        icon: Icon,
-        color: ThemedColor = .themedAccent,
-        isDestructive: Bool = false,
-        visibility: ActionVisiblity = .enabled,
-        prominent: Bool = false
-    ) {
+    public let title: String
+    public let icon: Icon
+
+    public init(_ title: LocalizedStringResource, icon: Icon) {
         self.title = .init(localized: title)
         self.icon = icon
-        self.color = color
-        self.isDestructive = isDestructive
-        self.visibility = visibility
-        self.prominent = prominent 
     }
     
     @_disfavoredOverload
-    public init(
-        _ title: some StringProtocol,
-        icon: Icon,
-        color: ThemedColor = .themedAccent,
-        isDestructive: Bool = false,
-        visibility: ActionVisiblity = .enabled,
-        prominent: Bool = false
-    ) {
+    public init(_ title: some StringProtocol, icon: Icon) {
         self.title = String(title)
         self.icon = icon
-        self.color = color
-        self.isDestructive = isDestructive
-        self.visibility = visibility
-        self.prominent = prominent
-    }
-    
-    public func withVisibility(_ visibility: ActionVisiblity) -> ActionLabel {
-        var new = self
-        new.visibility = visibility
-        return new
-    }
-
-    public func withProminent(_ value: Bool) -> ActionLabel {
-        var new = self
-        new.prominent = prominent
-        return new
-    }
-
-    public func withTitle(_ title: LocalizedStringResource) -> ActionLabel {
-        var new = self
-        new.title = .init(localized: title)
-        return new
-    }
-
-    @_disfavoredOverload
-    public func withTitle(_ title: some StringProtocol) -> ActionLabel {
-        var new = self
-        new.title = String(title)
-        return new
     }
 }

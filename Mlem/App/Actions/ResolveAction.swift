@@ -27,22 +27,23 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ResolveAction {
-    static let resolveLabel: ActionLabel = .init(
-        "Resolve",
-        icon: .init("checkmark.circle"),
+    static let resolveAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unresolved", icon: .lemmy.resolved.representingState(active: false)),
+        stateTransitionLabel: .init("Resolve", icon: .lemmy.resolve),
         color: .themedPositive
     )
-    
-    static let unresolveLabel: ActionLabel = .init(
-        "Unresolve",
-        icon: .init("xmark.circle"),
-        color: .themedNegative
+
+    static let unresolveAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Resolved", icon: .lemmy.resolved.representingState(active: true)),
+        stateTransitionLabel: .init("Unresolve", icon: .lemmy.unresolve),
+        color: .themedNegative,
+        prominent: true
     )
-    
-    static var label: ActionLabel { resolveLabel }
-    
-    func createLabel(environment: EnvironmentValues) -> Actions.ActionLabel {
-        entity.resolved ? Self.unresolveLabel : Self.resolveLabel
+
+    static var appearance: ActionAppearance { resolveAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        entity.resolved ? Self.unresolveAppearance : Self.resolveAppearance
     }
     
     func execute(environment: EnvironmentValues) {

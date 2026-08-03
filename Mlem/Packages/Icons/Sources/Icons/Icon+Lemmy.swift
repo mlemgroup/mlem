@@ -55,11 +55,13 @@ public extension Icon {
         
         // MARK: - Mark Read
         
+        @inlinable public var markedRead: Icon { markUnread }
         public let markRead: Icon = .init("envelope.open")
         public let markUnread: Icon = .init("envelope")
         
         // MARK: - Block
         
+        @inlinable public var blocked: Icon { block }
         public let block: Icon = .init("hand.raised")
         public let unblock: Icon = .init("hand.raised.slash")
         
@@ -94,6 +96,12 @@ public extension Icon {
         @inlinable public var bannedFromCommunity: Icon { banFromCommunity }
         public let banFromCommunity: Icon = .init("xmark.shield")
         public let unbanFromCommunity: Icon = .init("checkmark.shield")
+
+        // MARK: - Resolve
+        
+        @inlinable public var resolved: Icon { resolve }
+        public let resolve: Icon = .init("checkmark.circle")
+        public let unresolve: Icon = .init("xmark.circle")
 
         // MARK: - Subscribe
 

@@ -16,7 +16,7 @@ struct AppointModeratorAction: Actions.Action {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let appointModerator = ActionSeed("appointModerator", label: AppointModeratorAction.appointLabel) { entity in
+    static let appointModerator = ActionSeed("appointModerator", appearance: AppointModeratorAction.appointAppearance) { entity in
         switch entity {
         case let entity as Person:
             AppointModeratorAction(entity: entity)
@@ -29,28 +29,21 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension AppointModeratorAction {
-    static let appointLabel: ActionLabel = .init(
+    static let appointAppearance: ActionAppearance = .init(
         "Appoint Moderator",
         icon: .lemmy.addModerator,
         color: .themedPositive
     )
 
-    static let demoteLabel: ActionLabel = .init(
+    static let demoteAppearance: ActionAppearance = .init(
         "Remove Moderator",
         icon: .lemmy.removeModerator,
         color: .themedNegative
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let label: ActionLabel
-
-        if isModerator(environment: environment) ?? false {
-            label = Self.demoteLabel
-        } else {
-            label = Self.appointLabel
-        }
-
-        return label.withVisibility(visibility(environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        let base = isModerator(environment: environment) ?? false ? Self.demoteAppearance : Self.appointAppearance
+        return base.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SelectTextAction: Actions.SimpleLabelAction {
-    static let label: ActionLabel = .init("Select Text", icon: .general.select)
+    static let appearance: ActionAppearance = .init("Select Text", icon: .general.select)
     
     let text: String
     

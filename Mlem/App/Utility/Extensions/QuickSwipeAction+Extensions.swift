@@ -60,7 +60,7 @@ extension QuickSwipeChoice {
 
 // Temporary shim. Eventually the action system will use Icon rather than String and this can be removed
 private extension Icon {
-    init(from appearance: ActionAppearance) {
+    init(from appearance: LegacyActionAppearance) {
         self = .custom { variant in
             switch variant {
             case .active:

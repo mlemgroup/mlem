@@ -27,27 +27,28 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension SubscribeAction {
-    static let subscribeLabel: ActionLabel = .init(
-        "Subscribe",
-        icon: .lemmy.subscribe,
+    static let subscribeAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unsubscribed", icon: .lemmy.subscribed.representingState(active: false)),
+        stateTransitionLabel: .init("Subscribe", icon: .lemmy.subscribe),
         color: .themedPositive
     )
-    static let unsubscribeLabel: ActionLabel = .init(
-        "Unsubscribe",
-        icon: .lemmy.unsubscribe,
-        color: .themedNegative
+    static let unsubscribeAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Subscribed", icon: .lemmy.subscribed.representingState(active: true)),
+        stateTransitionLabel: .init("Unsubscribe", icon: .lemmy.unsubscribe),
+        color: .themedNegative,
+        prominent: true
     )
-    
-    static var label: ActionLabel { subscribeLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let subscription = entity.subscription.value  else {
-            return Self.subscribeLabel.withVisibility(.hidden)
+    static var appearance: ActionAppearance { subscribeAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let subscription = entity.subscription.value else {
+            return Self.subscribeAppearance.withVisibility(.hidden)
         }
         if subscription.subscribed {
-            return Self.unsubscribeLabel.withVisibility(visibility(environment))
+            return Self.unsubscribeAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.subscribeLabel.withVisibility(visibility(environment))
+            return Self.subscribeAppearance.withVisibility(visibility(environment))
         }
     }
 

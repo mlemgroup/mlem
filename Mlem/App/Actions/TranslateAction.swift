@@ -29,27 +29,27 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension TranslateAction {
-    static let translateLabel: ActionLabel = .init(
+    static let translateAppearance: ActionAppearance = .init(
         "Translate",
         icon: .general.translate,
         color: .themedTranslationAccent
     )
 
-    static let showOriginalLabel: ActionLabel = .init(
+    static let showOriginalAppearance: ActionAppearance = .init(
         "Show Original",
         icon: .general.translate,
         color: .themedTranslationAccent
     )
 
-   static var label: ActionLabel { translateLabel }
+    static var appearance: ActionAppearance { translateAppearance }
 
-   func createLabel(environment: EnvironmentValues) -> ActionLabel {
-       if self.entity.content.translated == .untranslated {
-           Self.translateLabel
-       } else {
-           Self.showOriginalLabel
-       }
-   }
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        if self.entity.content.translated == .untranslated {
+            Self.translateAppearance
+        } else {
+            Self.showOriginalAppearance
+        }
+    }
 }
 
 // MARK: - Behavior

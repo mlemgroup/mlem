@@ -42,10 +42,10 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension SendMessageAction {
-    static let label: ActionLabel = .init("Send Message", icon: .lemmy.message)
+    static let appearance: ActionAppearance = .init("Send Message", icon: .lemmy.message)
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

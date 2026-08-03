@@ -11,7 +11,7 @@ import SwiftUI
 
 struct BasicAction: Action {
     let id: String
-    let appearance: ActionAppearance
+    let appearance: LegacyActionAppearance
     
     let confirmationPrompt: String?
 
@@ -24,7 +24,7 @@ struct BasicAction: Action {
     /// If you don't do this, SwiftUI can get confused in a lazy view.
     init(
         id: String,
-        appearance: ActionAppearance,
+        appearance: LegacyActionAppearance,
         confirmationPrompt: LocalizedStringResource? = nil,
         enabled: Bool = true,
         callback: (@MainActor () -> Void)? = nil

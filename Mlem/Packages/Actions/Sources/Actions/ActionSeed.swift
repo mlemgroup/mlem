@@ -11,16 +11,16 @@ public final class ActionSeed: Hashable, Encodable {
     public let key: String
     private let actionType: any Action.Type
     
-    public let label: ActionLabel
+    public let appearance: ActionAppearance
     public let createAction: (Any) -> (any Action)?
-    
+
     public init<T: Action>(
         _ key: String,
-        label: ActionLabel,
+        appearance: ActionAppearance,
         createAction: @escaping (Any) -> T?
     ) {
         self.key = key
-        self.label = label
+        self.appearance = appearance
         self.createAction = createAction
         self.actionType = T.self
     }
@@ -29,7 +29,7 @@ public final class ActionSeed: Hashable, Encodable {
         _ key: String,
         createAction: @escaping (Any) -> T?
     ) {
-        self.init(key, label: T.label, createAction: createAction)
+        self.init(key, appearance: T.appearance, createAction: createAction)
     }
     
     public static func == (lhs: ActionSeed, rhs: ActionSeed) -> Bool {
