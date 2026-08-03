@@ -356,7 +356,9 @@ extension [EnrichedWidget] {
         self = items.compactMap { item in
             switch item {
             case let .action(seed):
-                if let action = seed.createAction(comment) {
+                if let action = seed.createAction(notification) {
+                    return .action(action)
+                } else if let action = seed.createAction(comment) {
                     return .action(action)
                 } else {
                      return nil
