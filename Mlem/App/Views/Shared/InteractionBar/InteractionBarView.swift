@@ -24,16 +24,31 @@ struct InteractionBarView: View {
     @Environment(\.communityContext) var communityContext
     @Environment(\.reportContext) var reportContext
 
-    enum Content {
+    enum Content: Hashable {
         case post(Post)
         case comment(Comment)
         case notification(Comment, InboxNotification)
 
-        var inner: AnyObject {
+        func createAction(seed: ActionSeed) -> Actions.Action? {
             switch self {
-            case let .post(post): post
-            case let .comment(comment): comment
-            case let .notification(_, notification): notification
+            case let .post(post):
+                seed.createAction(post)
+            case let .comment(comment):
+                seed.createAction(comment)
+            case let .notification(comment, notification):
+                seed.createAction(notification) ?? seed.createAction(comment)
+            }
+        }
+
+        func hash(into hasher: inout Hasher) {
+            switch self {
+            case let .post(post):
+                hasher.combine(ObjectIdentifier(post))
+            case let .comment(comment):
+                hasher.combine(ObjectIdentifier(comment))
+            case let .notification(comment, notification):
+                hasher.combine(ObjectIdentifier(comment))
+                hasher.combine(ObjectIdentifier(notification))
             }
         }
     }
@@ -70,7 +85,7 @@ struct InteractionBarView: View {
             .init(
                 widget: $0,
                 viewId: $0.viewId(
-                    entityId: ObjectIdentifier(content.inner).hashValue,
+                    entityId: content.hashValue,
                     environment: environment
                 )
             )
@@ -163,7 +178,7 @@ struct InteractionBarView: View {
         }()
         
         HStack(spacing: 0) {
-            if let leadingAction = counter.leadingAction?.createAction(content.inner) {
+            if let leadingAction = counter.leadingAction.flatMap(content.createAction(seed:)) {
                 actionView(leadingAction)
             }
             Text(counter.value?.description ?? "")
@@ -173,7 +188,7 @@ struct InteractionBarView: View {
                 .foregroundStyle(.themedPrimary)
                 .padding(paddingEdges, Constants.main.standardSpacing)
                 
-            if let trailingAction = counter.trailingAction?.createAction(content.inner) {
+            if let trailingAction = counter.trailingAction.flatMap(content.createAction(seed:)) {
                 actionView(trailingAction)
             }
         }
