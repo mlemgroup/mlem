@@ -11,12 +11,13 @@ import QuickSwipes
 import SwiftUI
 
 private extension QuickSwipeAction {
-    init?(label: ActionLabel, callback: @escaping () -> Void) {
-        if label.visibility == .hidden { return nil }
+    init?(appearance: ActionAppearance, callback: @escaping () -> Void) {
+        if appearance.visibility == .hidden { return nil }
+        let label = appearance.label(describing: .stateTransition)
         self.init(
             icon: label.icon,
-            color: label.color,
-            enabled: label.visibility == .enabled,
+            color: appearance.color,
+            enabled: appearance.visibility == .enabled,
             confirmationPrompt: nil,
             callback: callback
         )
@@ -45,7 +46,7 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
 
     func createAction(_ action: any Actions.Action) -> QuickSwipeAction? {
         .init(
-            label: action.createLabel(environment: environment),
+            appearance: action.createAppearance(environment: environment),
             callback: { action.execute(environment: environment) }
         )
     }

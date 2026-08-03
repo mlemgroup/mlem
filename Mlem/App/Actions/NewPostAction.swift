@@ -27,13 +27,13 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension NewPostAction {
-    static let label: ActionLabel = .init("New Post", icon: .lemmy.send)
+    static let appearance: ActionAppearance = .init("New Post", icon: .lemmy.send)
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         if entity.api.canInteract(appState: environment.appState) {
-            Self.label.withVisibility(.enabled)
+            Self.appearance.withVisibility(.enabled)
         } else {
-            Self.label.withVisibility(.hidden)
+            Self.appearance.withVisibility(.hidden)
         }
     }
 }

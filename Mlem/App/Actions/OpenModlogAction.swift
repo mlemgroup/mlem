@@ -25,7 +25,7 @@ struct OpenModlogAction: Actions.Action {
 extension ActionSeed {
     static let openModlog = ActionSeed(
         "openModlog",
-        label: OpenModlogAction.createLabel(relationship: .identity)
+        appearance: OpenModlogAction.createAppearance(relationship: .identity)
     ) { entity in
         switch entity {
         case let entity as Person: OpenModlogAction(content: .person(entity), relationship: .identity)
@@ -35,7 +35,7 @@ extension ActionSeed {
 
     static let openCreatorModlog = ActionSeed(
         "openCreatorModlog",
-        label: OpenModlogAction.createLabel(relationship: .author)
+        appearance: OpenModlogAction.createAppearance(relationship: .author)
     ) { entity in
         switch entity {
         case let entity as any InteractableProviding:
@@ -52,7 +52,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension OpenModlogAction {
-    static func createLabel(relationship: Relationship) -> ActionLabel {
+    static func createAppearance(relationship: Relationship) -> ActionAppearance {
         .init(
             relationship == .identity ? "Modlog" : "User Modlog",
             icon: .lemmy.modlog,
@@ -60,8 +60,8 @@ extension OpenModlogAction {
         )
     }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        return Self.createLabel(relationship: relationship)
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.createAppearance(relationship: relationship)
     }
 }
 

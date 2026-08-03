@@ -27,14 +27,14 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension CollapseToTopAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Collapse to Top",
         icon: .lemmy.collapseToTop,
         color: .themedColorfulAccent(0)
     )
 
-   func createLabel(environment: EnvironmentValues) -> ActionLabel {
-       return Self.label.withVisibility(visibility(environment: environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment: environment))
     }
 
     func visibility(environment: EnvironmentValues) -> ActionVisiblity {

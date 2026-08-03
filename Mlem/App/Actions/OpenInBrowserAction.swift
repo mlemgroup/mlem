@@ -28,7 +28,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension OpenInBrowserAction {
-    static let label: ActionLabel = .init("Open in Browser", icon: .general.browser)
+    static let appearance: ActionAppearance = .init("Open in Browser", icon: .general.browser)
 }
 
 // MARK: - Behavior

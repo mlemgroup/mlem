@@ -27,25 +27,26 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension LockAction {
-    static let lockLabel: ActionLabel = .init(
-        "Lock",
-        icon: .lemmy.addLock,
+    static let lockAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unlocked", icon: .lemmy.locked.representingState(active: false)),
+        stateTransitionLabel: .init("Lock", icon: .lemmy.addLock),
         color: .themedLockAccent
     )
 
-    static let unlockLabel: ActionLabel = .init(
-        "Unlock",
-        icon: .lemmy.removeLock,
-        color: .themedLockAccent
+    static let unlockAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Locked", icon: .lemmy.locked.representingState(active: true)),
+        stateTransitionLabel: .init("Unlock", icon: .lemmy.removeLock),
+        color: .themedLockAccent,
+        prominent: true
     )
-    
-    static var label: ActionLabel { lockLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    static var appearance: ActionAppearance { lockAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         if entity.locked {
-            Self.unlockLabel.withVisibility(visibility(environment))
+            Self.unlockAppearance.withVisibility(visibility(environment))
         } else {
-            Self.lockLabel.withVisibility(visibility(environment))
+            Self.lockAppearance.withVisibility(visibility(environment))
         }
     }
 

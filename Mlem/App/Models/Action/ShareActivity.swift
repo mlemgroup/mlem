@@ -8,10 +8,10 @@
 import UIKit
 
 class ShareActivity: UIActivity {
-    let appearance: ActionAppearance
+    let appearance: LegacyActionAppearance
     let action: @MainActor () -> Void
     
-    init(appearance: ActionAppearance, performAction: @escaping @MainActor () -> Void) {
+    init(appearance: LegacyActionAppearance, performAction: @escaping @MainActor () -> Void) {
         self.appearance = appearance
         self.action = performAction
         super.init()

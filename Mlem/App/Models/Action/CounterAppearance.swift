@@ -9,8 +9,8 @@ import Foundation
 
 struct CounterAppearance {
     let value: Int?
-    let leading: ActionAppearance?
-    let trailing: ActionAppearance?
+    let leading: LegacyActionAppearance?
+    let trailing: LegacyActionAppearance?
     let label: LocalizedStringResource
     let singleIcon: String
 }

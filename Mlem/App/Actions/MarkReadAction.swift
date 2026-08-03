@@ -27,24 +27,25 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension MarkReadAction {
-    static let markReadLabel: ActionLabel = .init(
-        "Mark Read",
-        icon: .lemmy.markRead,
+    static let markReadAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unread", icon: .lemmy.markedRead.representingState(active: false)),
+        stateTransitionLabel: .init("Mark Read", icon: .lemmy.markRead),
         color: .themedRead
     )
-    static let markUnreadLabel: ActionLabel = .init(
-        "Mark Unread",
-        icon: .lemmy.markUnread,
-        color: .themedRead
+    static let markUnreadAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Read", icon: .lemmy.markedRead.representingState(active: true)),
+        stateTransitionLabel: .init("Mark Unread", icon: .lemmy.markUnread),
+        color: .themedRead,
+        prominent: true
     )
-    
-    static var label: ActionLabel { markReadLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    static var appearance: ActionAppearance { markReadAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         if notification.read {
-            Self.markUnreadLabel.withVisibility(visibility(environment))
+            Self.markUnreadAppearance.withVisibility(visibility(environment))
         } else {
-            Self.markReadLabel.withVisibility(visibility(environment))
+            Self.markReadAppearance.withVisibility(visibility(environment))
         }
     }
 

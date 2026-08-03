@@ -31,7 +31,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension DetailsAction {
-    static var label: Actions.ActionLabel {
+    static var appearance: ActionAppearance {
         .init(
             "Details",
             icon: .general.info,

@@ -66,9 +66,9 @@ struct ActionSheet: View {
 
     private func frames(for actions: [any Actions.Action]) -> [ActionFrame] {
         actions.compactMap {
-            let label = $0.createLabel(environment: environment)
-            if label.visibility == .hidden { return nil }
-            return .init(action: $0, label: label)
+            let appearance = $0.createAppearance(environment: environment)
+            if appearance.visibility == .hidden { return nil }
+            return .init(action: $0, appearance: appearance)
         }
     }
 
@@ -78,7 +78,7 @@ struct ActionSheet: View {
             Divider()
                 .padding(.horizontal, 15)
         }
-        ActionSheetButton(action: frame.action, label: frame.label, dismiss: dismiss)
+        ActionSheetButton(action: frame.action, appearance: frame.appearance, dismiss: dismiss)
             .popupAnchor(model: popupAnchorModel)
             .environment(\.isRootView, isRootView)
             .environment(navigation)
@@ -93,25 +93,25 @@ private struct ActionSheetButton: View {
 
     let action: any Actions.Action
 
-    // Lable passed separately for performance reasons
-    let label: ActionLabel
+    // Appearance passed separately for performance reasons
+    let appearance: ActionAppearance
 
     let dismiss: DismissAction
 
     var body: some View {
-        Button(label) {
+        Button(appearance, describing: .stateTransition) {
             action.execute(environment: environment)
             if !navigation.rootChangePending, popupAnchorModel.data == nil {
                 dismiss()
             }
         }
-        .disabled(label.visibility == .disabled)
+        .disabled(appearance.visibility == .disabled)
     }
 }
 
 private struct ActionFrame {
     let action: any Actions.Action
-    let label: ActionLabel
+    let appearance: ActionAppearance
 }
 
 private struct ActionSheetButtonStyle: ButtonStyle {

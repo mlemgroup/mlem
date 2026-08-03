@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ActionAppearance {
+extension LegacyActionAppearance {
     static func upvote(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Undo Upvote" : "Upvote",

@@ -20,7 +20,7 @@ struct CopyNameAction: Actions.Action {
 extension ActionSeed {
     static let copyName = ActionSeed(
         "copyName",
-        label: CopyNameAction.createLabel(relationship: .identity)
+        appearance: CopyNameAction.createAppearance(relationship: .identity)
     ) { entity in
         switch entity {
         case let entity as Person:
@@ -34,7 +34,7 @@ extension ActionSeed {
 
     static let copyAuthorName = ActionSeed(
         "copyAuthorName",
-        label: CopyNameAction.createLabel(relationship: .author)
+        appearance: CopyNameAction.createAppearance(relationship: .author)
     ) { entity in
         switch entity {
         case let entity as any InteractableProviding:
@@ -52,7 +52,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension CopyNameAction {
-    static func createLabel(relationship: Relationship) -> ActionLabel {
+    static func createAppearance(relationship: Relationship) -> ActionAppearance {
         .init(
             relationship == .identity ? "Copy Name" : "Copy Username",
             icon: .general.copy,
@@ -60,8 +60,8 @@ extension CopyNameAction {
         )
     }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.createLabel(relationship: self.relationship)
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.createAppearance(relationship: self.relationship)
     }
 }
 

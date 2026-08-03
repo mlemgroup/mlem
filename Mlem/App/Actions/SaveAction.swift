@@ -27,25 +27,26 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension SaveAction {
-    static let saveLabel: ActionLabel = .init(
-        "Save",
-        icon: .lemmy.saved.representingState(active: false),
+    static let saveAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unsaved", icon: .lemmy.saved.representingState(active: false)),
+        stateTransitionLabel: .init("Save", icon: .lemmy.addSave),
         color: .themedSave
     )
-    static let unsaveLabel: ActionLabel = .init(
-        "Saved",
-        icon: .lemmy.saved.representingState(active: true),
-        color: .themedSave
+    static let unsaveAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Saved", icon: .lemmy.saved.representingState(active: true)),
+        stateTransitionLabel: .init("Unsave", icon: .lemmy.removeSave),
+        color: .themedSave,
+        prominent: true
     )
-    
-    static var label: ActionLabel { saveLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let saved = entity.saved.value else { return Self.saveLabel.withVisibility(.hidden) }
+    static var appearance: ActionAppearance { saveAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let saved = entity.saved.value else { return Self.saveAppearance.withVisibility(.hidden) }
         if saved {
-            return Self.unsaveLabel.withVisibility(visibility(environment))
+            return Self.unsaveAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.saveLabel.withVisibility(visibility(environment))
+            return Self.saveAppearance.withVisibility(visibility(environment))
         }
     }
 

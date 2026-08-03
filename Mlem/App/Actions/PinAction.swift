@@ -27,45 +27,40 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension PinAction {
-    static let pinLabel: ActionLabel = .init(
-        "Pin",
-        icon: .lemmy.addPin,
+    static let pinAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unpinned", icon: .lemmy.pinned.representingState(active: false)),
+        stateTransitionLabel: .init("Pin", icon: .lemmy.addPin),
         color: .themedModeration
     )
 
-    static let unpinLabel: ActionLabel = .init(
-        "Unpin",
-        icon: .lemmy.removePin,
-        color: .themedModeration
+    static let unpinAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Pinned", icon: .lemmy.pinned.representingState(active: true)),
+        stateTransitionLabel: .init("Unpin", icon: .lemmy.removePin),
+        color: .themedModeration,
+        prominent: true
     )
 
-    static let pinDetailsLabel: ActionLabel = .init(
+    static let pinDetailsAppearance: ActionAppearance = .init(
         "Pin...",
         icon: .lemmy.addPin,
         color: .themedModeration
     )
-    
-    static var label: ActionLabel { pinLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let label: ActionLabel = if entity.api.isAdmin {
+    static var appearance: ActionAppearance { pinAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        baseAppearance().withVisibility(visibility(environment))
+    }
+
+    private func baseAppearance() -> ActionAppearance {
+        if entity.api.isAdmin {
             switch (entity.pinnedInstance, entity.pinnedCommunity) {
-            case (true, true):
-                Self.unpinLabel
-            case (true, false), (false, true):
-                Self.pinDetailsLabel
-            case (false, false):
-                Self.pinLabel
-            }
-        } else {
-            if entity.pinnedCommunity {
-                Self.unpinLabel
-            } else {
-                Self.pinLabel
+            case (true, true): return Self.unpinAppearance
+            case (true, false), (false, true): return Self.pinDetailsAppearance
+            default: return Self.pinAppearance
             }
         }
-
-        return label.withVisibility(visibility(environment))
+        return entity.pinnedCommunity ? Self.unpinAppearance : Self.pinAppearance
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

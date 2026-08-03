@@ -18,7 +18,7 @@ struct EditNoteAction: Actions.Action {
 extension ActionSeed {
     static let editNote = ActionSeed(
         "editNote",
-        label: EditNoteAction.createLabel(noteExists: true)
+        appearance: EditNoteAction.createAppearance(noteExists: true)
     ) { entity in
         switch entity {
         case let entity as Person: EditNoteAction(entity: entity)
@@ -30,7 +30,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension EditNoteAction {
-    static func createLabel(noteExists: Bool) -> ActionLabel {
+    static func createAppearance(noteExists: Bool) -> ActionAppearance {
         if noteExists {
             .init("Edit Note", icon: .lemmy.editNote)
         } else {
@@ -38,8 +38,8 @@ extension EditNoteAction {
         }
     }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.createLabel(noteExists: entity.note != nil)
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.createAppearance(noteExists: entity.note != nil)
             .withVisibility(entity.api.supports(.userNotes, defaultValue: false) ? .enabled : .hidden)
     }
 }

@@ -113,7 +113,7 @@ enum InteractionConfigurationItem<ActionType: ActionTypeProviding>: Codable, Has
 protocol ActionTypeProviding: Codable, CaseIterable, Hashable, RawRepresentable where RawValue == String {
     associatedtype Configuration: InteractionBarConfiguration
     
-    var appearance: ActionAppearance { get }
+    var appearance: LegacyActionAppearance { get }
     
     static var defaultWidgets: [Self] { get }
     

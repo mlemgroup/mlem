@@ -17,29 +17,29 @@ import SwiftUI
 /// ```
 ///
 public struct BasicAction: Action {
-    private let label: ActionLabel
+    private let appearance: ActionAppearance
     private let callback: () -> Void
-    
+
     public init(
         _ title: LocalizedStringResource,
         icon: Icon,
         callback: @escaping () -> Void
     ) {
-        self.label = .init(title, icon: icon)
+        self.appearance = .init(title, icon: icon)
         self.callback = callback
     }
-    
+
     @_disfavoredOverload
     public init(
         _ title: String,
         icon: Icon,
         callback: @escaping () -> Void
     ) {
-        self.label = .init(title, icon: icon)
+        self.appearance = .init(title, icon: icon)
         self.callback = callback
     }
 
-    public func createLabel(environment: EnvironmentValues) -> ActionLabel { label }
+    public func createAppearance(environment: EnvironmentValues) -> ActionAppearance { appearance }
     
     public func execute(environment: EnvironmentValues) { callback() }
 }
