@@ -36,23 +36,23 @@ private func createVoteAction(_ entity: Any, type: ScoringOperation) -> VoteActi
 
 extension VoteAction {
     static let upvoteAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Not Upvoted", icon: .lemmy.upvoted.representingState(active: false)),
+        currentStateLabel: .init("Not Upvoted", icon: .lemmy.upvoted),
         stateTransitionLabel: .init("Upvote", icon: .lemmy.addUpvote),
         color: .themedUpvote
     )
     static let downvoteAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Not Downvoted", icon: .lemmy.downvoted.representingState(active: false)),
+        currentStateLabel: .init("Not Downvoted", icon: .lemmy.downvoted),
         stateTransitionLabel: .init("Downvote", icon: .lemmy.addDownvote),
         color: .themedDownvote
     )
     static let removeUpvoteAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Upvoted", icon: .lemmy.upvoted.representingState(active: true)),
+        currentStateLabel: .init("Upvoted", icon: .lemmy.upvoted),
         stateTransitionLabel: .init("Remove Upvote", icon: .lemmy.removeUpvote),
         color: .themedUpvote,
         prominent: true
     )
     static let removeDownvoteAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Downvote", icon: .lemmy.downvoted.representingState(active: true)),
+        currentStateLabel: .init("Downvote", icon: .lemmy.downvoted),
         stateTransitionLabel: .init("Remove Downvote", icon: .lemmy.removeDownvote),
         color: .themedDownvote,
         prominent: true
