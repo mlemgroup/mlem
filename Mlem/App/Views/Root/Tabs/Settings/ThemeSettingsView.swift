@@ -28,7 +28,8 @@ struct ThemeSettingsView: View {
                 .pickerStyle(.inline)
             } footer: {
                 if supportedModes != .unspecified {
-                    Text("The \(colorPalette.label) theme only supports \(supportedModes.label.lowercased()) mode.")
+                    let label = String(localized: supportedModes.label)
+                    Text("The \(colorPalette.label) theme only supports \(label.lowercased()) mode.")
                 }
             }
             
