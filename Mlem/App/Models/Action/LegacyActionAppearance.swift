@@ -71,9 +71,10 @@ struct LegacyActionAppearance {
     }
 
     init(_ appearance: ActionAppearance) {
-        let label = appearance.label(describing: .stateTransition)
+        let label = appearance.label(describing: .currentState)
         self.init(
             label: label.title,
+            isOn: appearance.prominent,
             color: appearance.color,
             icon: label.icon.computeImageName()
         )

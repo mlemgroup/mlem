@@ -11,8 +11,8 @@ public extension Icon {
     struct LemmyIcons {
         // MARK: - Votes
         
-        @inlinable public var upvoted: Icon { addUpvote }
-        @inlinable public var downvoted: Icon { addDownvote }
+        public let upvoted: Icon = .baseOnly("arrow.up")
+        public let downvoted: Icon = .baseOnly("arrow.down")
         
         public let addUpvote: Icon = .applySquare("arrow.up")
         public let addDownvote: Icon = .applySquare("arrow.down")

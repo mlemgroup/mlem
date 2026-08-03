@@ -43,13 +43,13 @@ extension VoteAction {
     static let downvoteAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Not Downvoted", icon: .lemmy.downvoted.representingState(active: false)),
         stateTransitionLabel: .init("Downvote", icon: .lemmy.addDownvote),
-        color: .themedDownvote,
-        prominent: true
+        color: .themedDownvote
     )
     static let removeUpvoteAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Upvoted", icon: .lemmy.upvoted.representingState(active: true)),
         stateTransitionLabel: .init("Remove Upvote", icon: .lemmy.removeUpvote),
-        color: .themedUpvote
+        color: .themedUpvote,
+        prominent: true
     )
     static let removeDownvoteAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Downvote", icon: .lemmy.downvoted.representingState(active: true)),
