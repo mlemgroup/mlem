@@ -20,8 +20,8 @@ struct InteractionBarActionLabelView: View {
         self.appearance = appearance
     }
 
-    init( _ label: ActionLabel) {
-        self.appearance = .init(label)
+    init( _ appearance: ActionAppearance) {
+        self.appearance = .init(appearance)
     }
     
     var body: some View {

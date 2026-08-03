@@ -181,7 +181,8 @@ struct InteractionBarView: View {
     
     @ViewBuilder
     private func actionView(_ action: Actions.Action) -> some View {
-        let label = action.createLabel(environment: environment)
+        let appearance = action.createAppearance(environment: environment)
+        let label = appearance.label(describing: .currentState)
         InteractionBarBasicButton(action: action)
             .popupAnchor()
             .accessibilityLabel(label.title)
@@ -189,7 +190,7 @@ struct InteractionBarView: View {
                 action.execute(environment: environment)
             }
             .buttonStyle(.empty)
-            .disabled(label.visibility != .enabled)
+            .disabled(appearance.visibility != .enabled)
             .popupAnchor()
     }
 }
@@ -203,9 +204,9 @@ private struct InteractionBarBasicButton: View {
         Button {
             action.execute(environment: environment)
         } label: {
-            let label = action.createLabel(environment: environment)
-            InteractionBarActionLabelView(label)
-                .opacity(label.visibility == .enabled ? 1 : 0.5)
+            let appearance = action.createAppearance(environment: environment)
+            InteractionBarActionLabelView(appearance)
+                .opacity(appearance.visibility == .enabled ? 1 : 0.5)
         }
     }
 }
@@ -226,21 +227,22 @@ private enum EnrichedWidget {
         case let .action(action):
             hasher.combine(1)
             hasher.combine(entityId)
-            let label = action.createLabel(environment: environment)
+            let appearance = action.createAppearance(environment: environment)
+            let label = appearance.label(describing: .currentState)
             hasher.combine(label.title)
-            hasher.combine(label.prominent)
-            hasher.combine((action as? BasicAction)?.disabled)
+            hasher.combine(appearance.prominent)
+            hasher.combine(appearance.visibility)
         case let .counter(counter):
             // If `counter.value` is included in this, the fancy `.numericText()` transition
             // won't work. In theory, you *do* need to include `counter.value` if you want a
             // view update to happen when it changes... but one occurs anyway without doing that,
-            // so I'm hoping it'll be fine? The inclusion of `action.isOn` above is definitely
+            // so I'm hoping it'll be fine? The inclusion of `action.prominent` above is definitely
             // needed. - Sjmarf 2024-06-15
             hasher.combine(2)
             hasher.combine(counter.leadingAction?.key)
             hasher.combine(counter.trailingAction?.key)
-            hasher.combine((counter.leadingAction as? BasicAction)?.disabled)
-            hasher.combine((counter.trailingAction as? BasicAction)?.disabled)
+            hasher.combine(counter.leadingAction?.appearance.visibility)
+            hasher.combine(counter.trailingAction?.appearance.visibility)
         }
         return hasher.finalize()
     }

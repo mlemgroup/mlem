@@ -70,10 +70,11 @@ struct LegacyActionAppearance {
         self.swipeIcon2 = swipeIcon2 ?? icon
     }
 
-    init(_ label: ActionLabel) {
+    init(_ appearance: ActionAppearance) {
+        let label = appearance.label(describing: .stateTransition)
         self.init(
             label: label.title,
-            color: label.color,
+            color: appearance.color,
             icon: label.icon.computeImageName()
         )
     }

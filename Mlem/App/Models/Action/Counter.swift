@@ -18,8 +18,8 @@ struct Counter: Identifiable {
     var appearance: CounterAppearance {
         .init(
             value: value,
-            leading: (leadingAction?.label).map { .init($0) },
-            trailing: (trailingAction?.label).map { .init($0) },
+            leading: (leadingAction?.appearance).map { .init($0) },
+            trailing: (trailingAction?.appearance).map { .init($0) },
             label: "Unknown",
             singleIcon: ""
         )

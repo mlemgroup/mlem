@@ -171,7 +171,7 @@ extension InteractionBarEditorView {
                 Group {
                     switch trayItem.item {
                     case let .action(action):
-                        InteractionBarActionLabelView(action.label)
+                        InteractionBarActionLabelView(action.appearance)
                     case let .counter(counter):
                         counterLabel(counter.appearance)
                             .fixedSize()
@@ -261,9 +261,10 @@ extension InteractionBarEditorView {
             Group {
                 switch trayPickedUpItem.item {
                 case let .action(action):
+                    let label = action.appearance.label(describing: .currentState)
                     HStack {
-                        Image(icon: action.label.icon)
-                        Text(action.label.title)
+                        Image(icon: label.icon)
+                        Text(label.title)
                     }
                 case let .counter(counter):
                     HStack {
@@ -347,7 +348,7 @@ extension InteractionBarEditorView {
         Group {
             switch item {
             case let .action(action):
-                InteractionBarActionLabelView(action.label)
+                InteractionBarActionLabelView(action.appearance)
             case let .counter(counter):
                 counterLabel(counter.appearance)
                     .fixedSize()

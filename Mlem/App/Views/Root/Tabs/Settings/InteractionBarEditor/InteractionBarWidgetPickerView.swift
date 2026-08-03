@@ -42,12 +42,6 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     @ViewBuilder
     func widgetButton(_ item: InteractionBarItem) -> some View {
         let selected = configuration.pinnedInteractionBarItems.contains(item)
-        let (label, icon): (String, String) = switch item {
-        case let .action(action):
-            (action.label.title, action.label.icon.computeImageName())
-        case let .counter(counter):
-            (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
-        }
         
         Button {
             if selected {
@@ -57,12 +51,8 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             }
         } label: {
             HStack {
-                Label {
-                    Text(label)
-                } icon: {
-                    Image(systemName: icon)
-                        .foregroundStyle(selected ? .themedAccent : .themedSecondary)
-                }
+                widgetLabel(item)
+                    .labelStyle(WidgetButtonLabelStyle(selected: selected))
                 
                 Spacer()
                 
@@ -76,5 +66,27 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
+    }
+
+    func widgetLabel(_ item: InteractionBarItem) -> some View {
+        switch item {
+        case let .action(action):
+            let label = action.appearance.label(describing: .currentState)
+            return Label(label.title, icon: label.icon)
+        case let .counter(counter):
+            return Label(counter.appearance.label, systemImage: counter.appearance.singleIcon)
+        }
+    }
+}
+
+private struct WidgetButtonLabelStyle: LabelStyle {
+    let selected: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.icon
+            configuration.title
+                .foregroundStyle(selected ? .themedAccent : .themedSecondary)
+        }
     }
 }
