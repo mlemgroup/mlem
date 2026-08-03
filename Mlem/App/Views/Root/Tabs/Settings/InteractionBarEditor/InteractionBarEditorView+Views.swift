@@ -261,7 +261,7 @@ extension InteractionBarEditorView {
             Group {
                 switch trayPickedUpItem.item {
                 case let .action(action):
-                    let label = action.appearance.label(describing: .currentState)
+                    let label = action.appearance.label(describing: .stateTransition)
                     HStack {
                         Image(icon: label.icon)
                         Text(label.title)

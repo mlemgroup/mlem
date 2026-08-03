@@ -71,7 +71,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     func widgetLabel(_ item: InteractionBarItem) -> some View {
         switch item {
         case let .action(action):
-            let label = action.appearance.label(describing: .currentState)
+            let label = action.appearance.label(describing: .stateTransition)
             return Label(label.title, icon: label.icon)
         case let .counter(counter):
             return Label(counter.appearance.label, systemImage: counter.appearance.singleIcon)
@@ -85,8 +85,8 @@ private struct WidgetButtonLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.icon
-            configuration.title
                 .foregroundStyle(selected ? .themedAccent : .themedSecondary)
+            configuration.title
         }
     }
 }
