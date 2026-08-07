@@ -169,6 +169,13 @@ public extension PieFedConnection {
             nextLocation: nextLocation
         )
     }
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot> {
+        throw ApiClientError.featureUnsupported
+    }
     
     // Returns a raw API type. For use inside PieFedConnection only
     internal func rawGetMyPerson() async throws -> (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse) {

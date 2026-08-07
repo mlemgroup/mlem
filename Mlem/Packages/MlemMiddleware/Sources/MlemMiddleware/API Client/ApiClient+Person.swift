@@ -144,6 +144,29 @@ public extension ApiClient {
             nextLocation: response.nextLocation
         )
     }
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContent> {
+        let response = try await repository.getCombinedContent(authorId: id, pageInfo: pageInfo)
+
+        let items = await Task { @MainActor in
+            response.items.map { self.getPersonContent(snapshot: $0) }
+        }.value
+
+        return .init(items: items, nextLocation: response.nextLocation)
+    }
+
+    @MainActor
+    private func getPersonContent(snapshot: PersonContentSnapshot) -> PersonContent {
+        switch snapshot {
+        case let .post(post):
+            .post(caches.post.getModel(api: self, from: .post2(post)))
+        case let .comment(comment):
+            .comment(caches.comment.getModel(api: self, from: .comment2(comment)))
+        }
+    }
     
     func getMyPerson() async throws -> (person: Person?, instance: Instance, blocks: BlockList?) {
         let snapshot = try await repository.getMyPerson()
