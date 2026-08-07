@@ -28,14 +28,7 @@ struct SubscriptionListItemView: View {
             .background(.themedSecondaryGroupedBackground)
             .contextMenu(community: community)
             .quickSwipes(community: community, configuration: communityActionConfiguration, leadingBuffer: .standard)
-            // .swipeActions(edge: .trailing) {
-            //     Button("Unsubscribe", icon: .lemmy.unsubscribe) {
-            //         SubscribeAction(entity: community).execute(environment: environment)
-            //     }
-            //     .buttonStyle(.automatic)
-            //     .labelStyle(.iconOnly)
-            //     .tint(.red)
-            // }
+            .popupAnchor()
             .padding(.trailing, sectionIndicesShown ? 5 : 0)
     }
     
