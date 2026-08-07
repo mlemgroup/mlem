@@ -14,6 +14,7 @@ struct SubscriptionListView: View {
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
     @Environment(TabReselectTracker.self) var tabReselectTracker
+    @Environment(\.defaultMinListRowHeight) var defaultMinListRowHeight
     
     @Setting(\.subscriptions_sort) private var sort
     
@@ -79,6 +80,9 @@ struct SubscriptionListView: View {
                 .scrollTargetLayout()
             }
         }
+        .environment(\.defaultMinListRowHeight, 0)
+        .environment(\.originalMinListRowHeight, defaultMinListRowHeight)
+        .quickSwipeCornerRadius(24)
         .onChange(of: sectionScroller) {
             form?.scrollToItem(at: .init(row: 0, section: sectionScroller), at: .centeredVertically, animated: false)
         }
@@ -127,7 +131,7 @@ struct SubscriptionListView: View {
     var feeds: some View {
         Section {
             ForEach(feedOptions, id: \.hashValue) { feedOption in
-                SubscriptionListNavigationButton(.feeds(feedOption)) {
+                SubscriptionListNavigationButton(.feeds(feedOption), withPadding: false) {
                     HStack(spacing: 15) {
                         FeedIconView(
                             feedDescription: feedOption.description,
@@ -261,4 +265,8 @@ private extension SubscriptionList {
         
         return sections
     }
+}
+
+extension EnvironmentValues {
+    @Entry var originalMinListRowHeight: CGFloat = 0
 }

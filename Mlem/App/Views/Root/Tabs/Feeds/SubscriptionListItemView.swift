@@ -12,25 +12,30 @@ struct SubscriptionListItemView: View {
     @Environment(\.self) var environment
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
+    @Environment(\.originalMinListRowHeight) var originalMinListRowHeight
 
     @Setting(\.subscriptions_sort) private var sort
     @Setting(\.subscriptions_instanceLocation) private var savedInstanceLocation
+    @Setting(\.interactionBar_community) var communityActionConfiguration
 
     let community: Community
     let section: SubscriptionListSection
     let sectionIndicesShown: Bool
     
     var body: some View {
-        SubscriptionListNavigationButton(.community(community), label: label)
+        SubscriptionListNavigationButton(.community(community), withPadding: true, label: label)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .background(.themedSecondaryGroupedBackground)
             .contextMenu(community: community)
-            .swipeActions(edge: .trailing) {
-                Button("Unsubscribe", icon: .lemmy.unsubscribe) {
-                    SubscribeAction(entity: community).execute(environment: environment)
-                }
-                .buttonStyle(.automatic)
-                .labelStyle(.iconOnly)
-                .tint(.red)
-            }
+            .quickSwipes(community: community, configuration: communityActionConfiguration, leadingBuffer: .standard)
+            // .swipeActions(edge: .trailing) {
+            //     Button("Unsubscribe", icon: .lemmy.unsubscribe) {
+            //         SubscribeAction(entity: community).execute(environment: environment)
+            //     }
+            //     .buttonStyle(.automatic)
+            //     .labelStyle(.iconOnly)
+            //     .tint(.red)
+            // }
             .padding(.trailing, sectionIndicesShown ? 5 : 0)
     }
     
@@ -64,6 +69,8 @@ struct SubscriptionListItemView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
+        .padding(.vertical)
+        .frame(minHeight: originalMinListRowHeight)
     }
     
     private func instanceLocation(section: SubscriptionListSection) -> InstanceLocation {
