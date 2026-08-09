@@ -21,15 +21,17 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                     .frame(maxWidth: .infinity, alignment: .center)
             }
             
-            Section("Actions") {
-                ForEach(Array(Configuration.availableActions.all), id: \.self) { item in
-                    widgetButton(.action(item))
-                }
-            }
-            
             Section("Counters") {
                 ForEach(Array(CounterType.allCases), id: \.self) { item in
                     widgetButton(.counter(item))
+                }
+            }
+
+            ForEach(Array(Configuration.availableActions.sections).enumerated(), id: \.offset) { _, actions in
+                Section {
+                    ForEach(actions, id: \.self) { item in
+                        widgetButton(.action(item))
+                    }
                 }
             }
         }
