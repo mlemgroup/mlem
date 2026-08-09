@@ -257,14 +257,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
         self.filters_literalFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_literalFilterEnabled) ?? true
         self.filters_literals = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_literals) ?? .init()
-        self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .default
-        self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .default
-        self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .default
+        self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .init()
+        self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .init()
+        self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .init()
         self.interactionBar_community = try container.decodeIfPresent(CommunityActionConfiguration.self, forKey: ._interactionBar_community) ?? .init()
         self.interactionBar_person = try container.decodeIfPresent(PersonActionConfiguration.self, forKey: ._interactionBar_person) ?? .init()
         self.interactionBar_instance = try container.decodeIfPresent(InstanceActionConfiguration.self, forKey: ._interactionBar_instance) ?? .init()
-        self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
-        self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
+        self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .init()
+        self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .init()
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
 
         self.events_showEvents = try container.decodeIfPresent(Bool.self, forKey: ._events_showEvents) ?? true
@@ -370,14 +370,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.filters_keywords = .init()
         self.filters_literalFilterEnabled = true
         self.filters_literals = .init()
-        self.interactionBar_post = .default
-        self.interactionBar_comment = .default
-        self.interactionBar_reply = .default
+        self.interactionBar_post = .init()
+        self.interactionBar_comment = .init()
+        self.interactionBar_reply = .init()
         self.interactionBar_community = .init()
         self.interactionBar_person = .init()
         self.interactionBar_instance = .init()
-        self.interactionBar_postReport = .reportDefault_
-        self.interactionBar_commentReport = .reportDefault_
+        self.interactionBar_postReport = .init()
+        self.interactionBar_commentReport = .init()
         self.interactionBar_alternateReportLayout = false
         self.events_showEvents = true
     }

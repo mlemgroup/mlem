@@ -15,11 +15,11 @@ struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfigurat
         HStack(spacing: 4) {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            ForEach(configuration.all, id: \.self) { item in
+            ForEach(configuration.interactionBar.all, id: \.self) { item in
                 HStack(spacing: 0) {
                     switch item {
                     case let .action(action):
-                        Image(systemName: action.appearance.barIcon)
+                        Image(icon: action.appearance.label(describing: .currentState).icon)
                             .frame(width: 24, height: 24)
                     case let .counter(counter):
                         if let appearance = counter.appearance.leading {

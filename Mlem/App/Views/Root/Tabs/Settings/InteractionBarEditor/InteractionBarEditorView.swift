@@ -54,7 +54,7 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
         self.onSet = onSet
         self.configuration = configuration
         self.isReport = isReport
-        let configurationItems: [Configuration.Item?] = configuration.leading + [nil] + configuration.trailing
+        let configurationItems: [InteractionBarItem?] = configuration.interactionBar.leading + [nil] + configuration.interactionBar.trailing
         self.configurationType = configuration is PostBarConfiguration ? .post : .comment
         
         let newBarItems: [BarItem] = configurationItems.map { .init(item: $0, expanded: true, visible: true) }
@@ -89,10 +89,10 @@ struct InteractionBarEditorView<Configuration: InteractionBarConfiguration>: Vie
                 navigation.openSheet(.settings(configuration.widgetPickerPage($configuration)))
             }
         }
-        .onChange(of: configuration.availableWidgets, initial: true) {
+        .onChange(of: configuration.pinnedInteractionBarItems, initial: true) {
             onSet(configuration)
-            trayItems = Configuration.Item.allCases
-                .filter { configuration.availableWidgets.contains($0) }
+            trayItems = Configuration.allItems()
+                .filter { configuration.pinnedInteractionBarItems.contains($0) }
                 .map { TrayItem(item: $0, visible: true) }
         }
         .frame(maxWidth: .infinity)

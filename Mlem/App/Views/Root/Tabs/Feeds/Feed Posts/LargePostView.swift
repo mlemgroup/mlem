@@ -99,13 +99,8 @@ struct LargePostView: View {
             .padding([.top, .horizontal], Constants.main.standardSpacing)
             
             InteractionBarView(
-                appState: appState,
                 post: post,
-                configuration: interactionBarConfiguration,
-                navigation: navigation,
-                commentTreeTracker: commentTreeTracker,
-                communityContext: communityContext,
-                reportContext: reportContext
+                configuration: interactionBarConfiguration
             )
         }
     }

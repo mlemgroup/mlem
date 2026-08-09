@@ -60,7 +60,7 @@ extension InteractableProviding {
            let updateVote {
             return { feedback in
                 if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
+                    HapticManager.main.play(haptic: .success, tier: .low)
                 }
                 
                 @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
