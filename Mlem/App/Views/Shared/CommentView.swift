@@ -110,13 +110,8 @@ struct CommentView<EmbeddedContent: View>: View {
                     
                     if !compact, !collapsed {
                         InteractionBarView(
-                            appState: appState,
-                            navigation: navigation,
                             comment: comment,
-                            configuration: interactionBarConfiguration,
-                            commentTreeTracker: commentTreeTracker,
-                            communityContext: communityContext,
-                            reportContext: reportContext
+                            configuration: interactionBarConfiguration
                         )
                     }
                 }

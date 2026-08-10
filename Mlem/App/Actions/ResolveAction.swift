@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ResolveAction: SimpleLabelAction {
-    let entity: Report
+    let entity: any ReportableProviding
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct ResolveAction: SimpleLabelAction {
 extension ActionSeed {
     static let resolveReport = ActionSeed("resolveReport") { entity in
         switch entity {
-        case let entity as Report: ResolveAction(entity: entity)
+        case let entity as any ReportableProviding: ResolveAction(entity: entity)
         default: nil
         }
     }
@@ -43,10 +43,16 @@ extension ResolveAction {
     static var appearance: ActionAppearance { resolveAppearance }
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
-        entity.resolved ? Self.unresolveAppearance : Self.resolveAppearance
+        let resolved = environment.reportContext?.resolved ?? false
+        let appearance = resolved ? Self.unresolveAppearance : Self.resolveAppearance
+        return appearance.withVisibility(visibility(environment))
     }
-    
+
+    private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
+        environment.reportContext != nil ? .enabled : .disabled
+    }
+
     func execute(environment: EnvironmentValues) {
-        entity.toggleResolved()
+        environment.reportContext?.toggleResolved()
     }
 }
