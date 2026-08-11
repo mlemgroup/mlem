@@ -20,6 +20,13 @@ class MultiFetcher<Item: FeedLoadable>: Fetcher<Item> {
     }
     
     override func fetch() async throws -> LoadingResponse<Item> {
+        // preemptively trigger loading on all child feed loaders if they have not loaded anything yet
+        for source in sources where source.fetcher.location == .start {
+            Task {
+                try await source.loadMoreItems()
+            }
+        }
+        
         var newItems: [Item] = .init()
         
         while newItems.count < pageSize {
