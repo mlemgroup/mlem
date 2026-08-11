@@ -71,14 +71,25 @@ private func _handleError(
     case ApiClientError.cancelled, is CancellationError:
         print("Cancellation error")
         return true
-    case let error as URLError where error.code == .timedOut:
-        print("Network error")
+    case let error where error.isUnimportantNetworkError:
         return true
-    case let error as NSError where [NSURLErrorCancelled, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost].contains(error.code):
-        print("Network error")
+    case let ApiClientError.networking(error) where error.isUnimportantNetworkError:
         return true
     default:
         return false
+    }
+}
+
+private extension Error {
+    var isUnimportantNetworkError: Bool {
+        switch self {
+        case let error as URLError where error.code == .timedOut:
+            true
+        case let error as NSError where [NSURLErrorCancelled, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost].contains(error.code):
+            true
+        default:
+            false
+        }
     }
 }
 
