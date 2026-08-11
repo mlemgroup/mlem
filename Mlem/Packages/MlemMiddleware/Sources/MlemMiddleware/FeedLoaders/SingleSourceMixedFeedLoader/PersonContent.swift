@@ -21,11 +21,33 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
     public init(wrappedValue: PersonContent.Value) {
         self.wrappedValue = wrappedValue
     }
+
+    public static func post(_ post: Post) -> PersonContent {
+        .init(wrappedValue: .post(post))
+    }
+
+    public static func comment(_ comment: Comment) -> PersonContent {
+        .init(wrappedValue: .comment(comment))
+    }
     
     public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch wrappedValue {
         case let .post(post): post.sortVal(sortType: sortType)
         case let .comment(comment): comment.sortVal(sortType: sortType)
+        }
+    }
+
+    public var post: Post? {
+        switch wrappedValue {
+        case let .post(post): post
+        case .comment: nil
+        }
+    }
+
+    public var comment: Comment? {
+        switch wrappedValue {
+        case let .comment(comment): comment
+        case .post: nil
         }
     }
     
