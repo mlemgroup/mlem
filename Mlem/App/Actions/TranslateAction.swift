@@ -38,7 +38,8 @@ extension TranslateAction {
     static let showOriginalAppearance: ActionAppearance = .init(
         "Show Original",
         icon: .general.translate,
-        color: .themedTranslationAccent
+        color: .themedTranslationAccent,
+        prominent: true
     )
 
     static var appearance: ActionAppearance { translateAppearance }

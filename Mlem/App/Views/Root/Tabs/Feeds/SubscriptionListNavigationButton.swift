@@ -13,10 +13,16 @@ struct SubscriptionListNavigationButton<Content: View>: View {
     @Environment(\.sidebarPresentationMode) var sidebarPresentationMode
 
     let destination: NavigationPage
+    let withPadding: Bool
     @ViewBuilder var label: () -> Content
     
-    init(_ destination: NavigationPage, @ViewBuilder label: @escaping () -> Content) {
+    init(
+        _ destination: NavigationPage,
+        withPadding: Bool,
+        @ViewBuilder label: @escaping () -> Content
+    ) {
         self.destination = destination
+        self.withPadding = withPadding
         self.label = label
     }
     
@@ -25,11 +31,14 @@ struct SubscriptionListNavigationButton<Content: View>: View {
             navigation.popToRoot()
             navigation.replace(destination)
         } label: {
-            if sidebarPresentationMode == .single {
-                FormChevron { label() }
-            } else {
-                label()
+            Group {
+                if sidebarPresentationMode == .single {
+                    FormChevron { label() }
+                } else {
+                    label()
+                }
             }
+            .padding(.horizontal, withPadding ? 16 : 0)
         }
         .buttonStyle(.empty)
     }

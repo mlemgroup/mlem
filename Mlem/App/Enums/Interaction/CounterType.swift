@@ -14,8 +14,6 @@ enum CounterType: String, Codable, CaseIterable, Hashable {
     case downvote
     case reply
         
-    static var defaultWidgets: [CounterType] { allCases }
-        
     var appearance: CounterAppearance {
         switch self {
         case .score: .score()

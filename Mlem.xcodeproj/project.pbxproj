@@ -16,7 +16,6 @@
 		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
 		0302A8802F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0302A87F2F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift */; };
 		03036C742C71408700C6DA1D /* CounterAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C732C71408700C6DA1D /* CounterAppearance.swift */; };
-		03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */; };
 		03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A192C6502F300FF6889 /* FormSection.swift */; };
 		03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */; };
 		03049A1E2C6508F400FF6889 /* RegistrationMode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03049A1D2C6508F400FF6889 /* RegistrationMode+Extensions.swift */; };
@@ -236,6 +235,10 @@
 		038100512F6AE867008A7731 /* MlemBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 038100502F6AE867008A7731 /* MlemBackend */; };
 		038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038188982D43E0F30073E88D /* SafetySettingsView.swift */; };
 		0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */; };
+		0381D18B3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */; };
+		0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */; };
+		0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */; };
+		0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */; };
 		0381F7142F670F95008A7731 /* SwipeActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */; };
 		0381F7162F671427008A7731 /* PostBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */; };
 		0381F7242F672258008A7731 /* CommentBarConfiguration+Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */; };
@@ -514,7 +517,6 @@
 		CD5CAA0C2D41AE57008E20F2 /* EmbeddingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */; };
 		CD5D8E2B2D6D5AB100AF5CE4 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */; };
 		CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */; };
-		CD6436502D483C96002668FB /* InteractionBarEditorView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */; };
 		CD6DC02A2D86513D00693B16 /* AnimatedAvatarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */; };
 		CD6DC02C2D86540A00693B16 /* AnimatedAvatarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */; };
 		CD737FBA2F771BF600E46411 /* InstanceSummarySoftware+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD737FB92F771BF100E46411 /* InstanceSummarySoftware+Extensions.swift */; };
@@ -597,7 +599,6 @@
 		CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */; };
 		CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15532D22364500EB9D7B /* ErrorLogView.swift */; };
 		CDF60A012E998BB5005FA3F1 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */; };
-		CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */; };
 		CDF9EF332AB2845C003F885B /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF9EF322AB2845C003F885B /* Icons.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
 		CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */; };
@@ -651,7 +652,6 @@
 		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
 		0302A87F2F9BC379000A127A /* SearchHomeCategoryLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeCategoryLabelStyle.swift; sourceTree = "<group>"; };
 		03036C732C71408700C6DA1D /* CounterAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterAppearance.swift; sourceTree = "<group>"; };
-		03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Logic.swift"; sourceTree = "<group>"; };
 		03049A192C6502F300FF6889 /* FormSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSection.swift; sourceTree = "<group>"; };
 		03049A1B2C65039400FF6889 /* ActiveUserCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveUserCountView.swift; sourceTree = "<group>"; };
 		03049A1D2C6508F400FF6889 /* RegistrationMode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegistrationMode+Extensions.swift"; sourceTree = "<group>"; };
@@ -863,6 +863,10 @@
 		038096602C10AAD8003ED1D8 /* TransitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionView.swift; sourceTree = "<group>"; };
 		038188982D43E0F30073E88D /* SafetySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetySettingsView.swift; sourceTree = "<group>"; };
 		0381889A2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyBlurNsfwSettingsView.swift; sourceTree = "<group>"; };
+		0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
+		0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarActions.swift; sourceTree = "<group>"; };
+		0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarItem.swift; sourceTree = "<group>"; };
+		0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyInteractionBarItem.swift; sourceTree = "<group>"; };
 		0381F7132F670F95008A7731 /* SwipeActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionConfiguration.swift; sourceTree = "<group>"; };
 		0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostBarConfiguration+Types.swift"; sourceTree = "<group>"; };
 		0381F7232F672258008A7731 /* CommentBarConfiguration+Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentBarConfiguration+Types.swift"; sourceTree = "<group>"; };
@@ -1135,7 +1139,6 @@
 		CD5CAA0B2D41AE52008E20F2 /* EmbeddingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingSettingsView.swift; sourceTree = "<group>"; };
 		CD5D8E2A2D6D5AAE00AF5CE4 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
 		CD635E1A2C94DACD00864F75 /* BypassProxyWarningSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BypassProxyWarningSheet.swift; sourceTree = "<group>"; };
-		CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InteractionBarEditorView+Views.swift"; sourceTree = "<group>"; };
 		CD6DC0292D86513800693B16 /* AnimatedAvatarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarBehavior.swift; sourceTree = "<group>"; };
 		CD6DC02B2D86540500693B16 /* AnimatedAvatarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedAvatarSettingsView.swift; sourceTree = "<group>"; };
 		CD737FB92F771BF100E46411 /* InstanceSummarySoftware+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceSummarySoftware+Extensions.swift"; sourceTree = "<group>"; };
@@ -1218,7 +1221,6 @@
 		CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorsTracker.swift; sourceTree = "<group>"; };
 		CDEE15532D22364500EB9D7B /* ErrorLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLogView.swift; sourceTree = "<group>"; };
 		CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
-		CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarWidgetPickerView.swift; sourceTree = "<group>"; };
 		CDF9EF322AB2845C003F885B /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
 		CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
@@ -1226,6 +1228,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		031DBA6A2F9A8D6500B4BAE4 /* Events */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Events; sourceTree = "<group>"; };
+		0381D0D23013A14000F9F3E0 /* InteractionBarEditor */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = InteractionBarEditor; sourceTree = "<group>"; };
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
 		03F6BDA12D502382006A425E /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
@@ -1405,12 +1408,12 @@
 				036FFA2C2D45110C00998D8A /* ChangePasswordView.swift */,
 				0397D46B2C67E583002C6CDC /* SortingSettingsView.swift */,
 				03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */,
+				0381D0D23013A14000F9F3E0 /* InteractionBarEditor */,
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */,
 				039F588D2C7B598000C61658 /* Components */,
 				033FCB262C5E3933007B7CD1 /* Icon */,
-				0397D4982C6EA68A002C6CDC /* InteractionBarEditor */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1688,17 +1691,6 @@
 			path = PostEditor;
 			sourceTree = "<group>";
 		};
-		0397D4982C6EA68A002C6CDC /* InteractionBarEditor */ = {
-			isa = PBXGroup;
-			children = (
-				CDF8C1902D5D501E00295CBA /* InteractionBarWidgetPickerView.swift */,
-				CD64364F2D483C8F002668FB /* InteractionBarEditorView+Views.swift */,
-				0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */,
-				03036C822C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift */,
-			);
-			path = InteractionBarEditor;
-			sourceTree = "<group>";
-		};
 		039D75652C4FC56A004F24C2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1761,7 +1753,10 @@
 				038E62DF2F6F0FC600C54DEB /* ContextMenuConfiguration.swift */,
 				038E1ABB2F58B9EF00D30F01 /* CommunityActionConfiguration.swift */,
 				03B2F09E2FC998B300C36011 /* InstanceActionConfiguration.swift */,
-				0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */,
+				0381D3B33014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift */,
+				0381D18A3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift */,
+				0381D18C3013A3B000F9F3E0 /* InteractionBarActions.swift */,
+				0381D18E3013A74800F9F3E0 /* InteractionBarItem.swift */,
 				03AF91E42C1C61FA00E56644 /* PostBarConfiguration.swift */,
 				0381F7152F671427008A7731 /* PostBarConfiguration+Types.swift */,
 				033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */,
@@ -2587,6 +2582,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				031DBA6A2F9A8D6500B4BAE4 /* Events */,
+				0381D0D23013A14000F9F3E0 /* InteractionBarEditor */,
 				03DA26AC2D79F29700E66267 /* Packages */,
 				03EC85ED2E9D925B004698BB /* Actions */,
 				03F6BDA12D502382006A425E /* Preview Content */,
@@ -2945,6 +2941,7 @@
 				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
 				03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */,
 				035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */,
+				0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */,
 				0381F7282F6724D3008A7731 /* ReplyBarConfiguration+Types.swift in Sources */,
 				CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */,
 				034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */,
@@ -3098,7 +3095,6 @@
 				03134A5A2BEC2253002662CC /* AvatarStackView.swift in Sources */,
 				03AB48572CBC0DFC00567FF9 /* AccountSignInSettingsView.swift in Sources */,
 				037F78452D3C25AB00D4E180 /* PostSubscriptionIndicatorSettingsView.swift in Sources */,
-				0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */,
 				03D3A1F32BB9D49B009DE55E /* ActionGroup.swift in Sources */,
 				03B7F3352EEEC70F00B00F6A /* NoteEditorView.swift in Sources */,
 				03049A222C650B2C00FF6889 /* CommunityDetailsView.swift in Sources */,
@@ -3177,8 +3173,8 @@
 				03ECD7192C81195000D48BF6 /* PostEditorView+LinkView.swift in Sources */,
 				030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */,
 				0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */,
-				03036C832C727D0500C6DA1D /* InteractionBarEditorView+Logic.swift in Sources */,
 				6DE1183C2A4A217400810C7E /* Profile View.swift in Sources */,
+				0381D18F3013A74800F9F3E0 /* InteractionBarItem.swift in Sources */,
 				03CBD18D2C6120F600E870BC /* PersonFlair.swift in Sources */,
 				03EC83252E916C51004698BB /* View+SafeAreaBar.swift in Sources */,
 				033FCB3E2C5E7FA9007B7CD1 /* View+OutdatedFeedPopup.swift in Sources */,
@@ -3225,6 +3221,7 @@
 				032C32042C3439C600595286 /* ActorIdentifiable+Extensions.swift in Sources */,
 				CD57AFA52D0377EB00AB3956 /* AnimationControlLayer.swift in Sources */,
 				CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */,
+				0381D18D3013A3B000F9F3E0 /* InteractionBarActions.swift in Sources */,
 				CD5D8E2B2D6D5AB100AF5CE4 /* CGSize+Extensions.swift in Sources */,
 				CD3485BB2D501470006748B8 /* ZoomSliderLocation.swift in Sources */,
 				CD4D59182B87B3B000B82964 /* UIViewController+Extensions.swift in Sources */,
@@ -3237,9 +3234,9 @@
 				0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */,
 				0397D4A42C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift in Sources */,
 				03B431C02C45ABFB001A1EB5 /* UITextView+Extensions.swift in Sources */,
-				CDF8C1912D5D502400295CBA /* InteractionBarWidgetPickerView.swift in Sources */,
 				034B947F2C091EDD00039AF4 /* ProfileHeaderView.swift in Sources */,
 				03E0EF432CA73D7A002CB66C /* PostStubResolutionPage.swift in Sources */,
+				0381D18B3013A3AC00F9F3E0 /* InteractionBarConfiguration.swift in Sources */,
 				CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */,
 				030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */,
 				037FC0702E4A6B16009E3E63 /* InstanceView+About.swift in Sources */,
@@ -3272,7 +3269,6 @@
 				CD6DC02A2D86513D00693B16 /* AnimatedAvatarBehavior.swift in Sources */,
 				03A82FA32C0D1F2400D01A5C /* View+ExternalApiWarning.swift in Sources */,
 				033F84C32C2B12AA002E3EDF /* InstanceSummary.swift in Sources */,
-				CD6436502D483C96002668FB /* InteractionBarEditorView+Views.swift in Sources */,
 				0369B3532BFA514B001EFEDF /* ToastLocation.swift in Sources */,
 				03F6BD9A2D501041006A425E /* SeededRandomNumberGenerator.swift in Sources */,
 				036ED6792D0AF3740018E5EA /* PinnedSortTracker.swift in Sources */,
@@ -3287,7 +3283,6 @@
 				CDCC7FEF2D9B1E7100CE18DA /* CachedComputation.swift in Sources */,
 				03049A202C650A8100FF6889 /* FormReadout.swift in Sources */,
 				030050D32D109B7E002B1E99 /* ReportView.swift in Sources */,
-				0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */,
 				03F6BDAF2D516636006A425E /* CommunityMockType.swift in Sources */,
 				0325FF302FD40CB4006F8394 /* LoginVersionWarningView.swift in Sources */,
 				0300309D2C4163C9009A65FF /* CommentTreeTracker.swift in Sources */,
