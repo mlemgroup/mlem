@@ -52,6 +52,10 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
     }
     
     override func fetch() async throws -> LoadingResponse<PersonContent> {
+        if try await api.supports(.combinedPagedResponses) {
+            return try await super.fetch()
+        }
+
         var newItems: [PersonContent] = .init()
         
         while newItems.count < pageSize {
@@ -65,8 +69,12 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         return .success(newItems)
     }
     
+    /// This function is called by `fetch()` iff `Feature.combinedPagedResponses` is available
     override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<PersonContent> {
-        fatalError("Unsupported loading operation")
+        let response = try await api.getCombinedContent(authorId: userId, pageInfo: pageInfo)
+        postStream.addItems(response.items.compactMap { $0.post })
+        commentStream.addItems(response.items.compactMap { $0.comment })
+        return response
     }
     
     /// Returns the next post or comment, depending on which is sorted first

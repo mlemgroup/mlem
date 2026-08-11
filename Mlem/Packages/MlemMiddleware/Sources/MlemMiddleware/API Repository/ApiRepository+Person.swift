@@ -116,6 +116,15 @@ extension ApiRepository {
             )
         }
     }
+ 
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot> {
+        try await performingForConnection { connection in
+            try await connection.getCombinedContent(authorId: id, pageInfo: pageInfo)
+        }
+    }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
         try await performingForConnection { connection in

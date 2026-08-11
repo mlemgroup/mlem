@@ -267,6 +267,28 @@ internal extension LemmyConnection {
             nextLocation: nextLocation
         )
     }
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot> {
+        let response = try await performingForEndpoint { endpoint in
+            if endpoint == .v3 {
+                throw ApiClientError.featureUnsupported
+            }
+            return LemmyListPersonContentRequest(
+                type_: .all,
+                personId: id,
+                username: nil,
+                communityId: nil,
+                communityName: nil,
+                pageCursor: try pageInfo.cursor.requireCursorString,
+                limit: pageInfo.limit
+            )
+        }
+
+        return try .init(from: response) { try .init(from: $0) }
+    }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
         let rawContext = try await getRawContextWithCaching()
