@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Icons
 
 enum ReadoutType: String, Codable, CaseIterable, Hashable {
     case created
@@ -33,4 +34,9 @@ enum ReadoutType: String, Codable, CaseIterable, Hashable {
         default: true
         }
     }
+}
+
+struct MockReadoutAppearance {
+    let icon: Icon
+    let label: String
 }

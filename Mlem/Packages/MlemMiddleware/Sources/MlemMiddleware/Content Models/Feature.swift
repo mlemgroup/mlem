@@ -50,4 +50,6 @@ public enum Feature: Hashable {
 
     case userNotes
     case toggleNotifications
+
+    case combinedPagedResponses
 }

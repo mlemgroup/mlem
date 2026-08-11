@@ -173,7 +173,7 @@ extension InteractableProviding {
               let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) else { return nil }
         return .init(
             value: votes.upvotes,
-            leadingAction: upvoteAction,
+            leadingAction: .upvote,
             trailingAction: nil
         )
     }
@@ -185,7 +185,7 @@ extension InteractableProviding {
                 feedback: [.haptic]) else { return nil }
         return .init(
             value: votes.downvotes,
-            leadingAction: downvoteAction,
+            leadingAction: .downvote,
             trailingAction: nil
         )
     }
@@ -198,11 +198,8 @@ extension InteractableProviding {
               let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) else { return nil }
         return .init(
             value: votes.total,
-            leadingAction: upvoteAction,
-            trailingAction: downvoteAction(
-                appState: appState,
-                feedback: [.haptic]
-            )
+            leadingAction: .upvote,
+            trailingAction: .downvote
         )
     }
     
@@ -210,7 +207,7 @@ extension InteractableProviding {
         guard let commentCount = self.commentCount.value else { return nil }
         return .init(
             value: commentCount,
-            leadingAction: replyAction(appState: appState, commentTreeTracker: commentTreeTracker),
+            leadingAction: .reply,
             trailingAction: nil
         )
     }

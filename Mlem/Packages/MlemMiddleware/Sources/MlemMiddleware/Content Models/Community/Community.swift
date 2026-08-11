@@ -266,6 +266,7 @@ public extension Community {
             await updateQueue.addItem {
                 do {
                     let snapshot = try await self.api.repository.subscribeToCommunity(id: self.id, subscribe: newValue)
+                    self.api.subscriptions?.updateCommunitySubscription(community: self)
                     return await .init(api: self.api, snapshot: .community2(snapshot))
                 } catch {
                     self.shouldBeFavorited = oldFavorited

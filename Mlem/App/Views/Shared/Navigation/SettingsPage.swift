@@ -186,40 +186,40 @@ enum SettingsPage {
             case .post:
                 SwipeActionEditorView(\.interactionBar_post, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_comment) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                     Settings.mutate(\.interactionBar_reply) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                 })
             case .comment:
                 SwipeActionEditorView(\.interactionBar_comment, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_post) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                     Settings.mutate(\.interactionBar_reply) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                 })
             case .inboxNotification:
                 SwipeActionEditorView(\.interactionBar_reply, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_post) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                     Settings.mutate(\.interactionBar_comment) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                 })
             case .postReport:
                 SwipeActionEditorView(\.interactionBar_postReport, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_commentReport) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                 })
             case .commentReport:
                 SwipeActionEditorView(\.interactionBar_commentReport, onApplyToAll: { configuration in
                     Settings.mutate(\.interactionBar_postReport) {
-                        $0.applying(other: configuration, types: [.swipe])
+                        $0.applySwipes(other: configuration)
                     }
                 })
             case .community:
@@ -261,10 +261,11 @@ enum SettingsPage {
             case .inboxNotification:
                 InteractionBarEditorView(setting: \.interactionBar_reply, isReport: false)
             case .postReport:
-                InteractionBarEditorView(setting: \.interactionBar_postReport, isReport: true)
+                Text("TODO")
             case .commentReport:
-                InteractionBarEditorView(setting: \.interactionBar_commentReport, isReport: true)
+                Text("TODO")
             }
+
         case let .postBarWidgetPicker(configuration):
             InteractionBarWidgetPickerView<PostBarConfiguration>(configuration: configuration)
         case let .commentBarWidgetPicker(configuration):

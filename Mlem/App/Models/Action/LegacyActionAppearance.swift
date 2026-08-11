@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 15/08/2024.
 //
 
+import Actions
 import SwiftUI
 import Theming
 
@@ -67,5 +68,15 @@ struct LegacyActionAppearance {
         self.menuIcon = menuIcon ?? icon
         self.swipeIcon1 = swipeIcon1 ?? icon
         self.swipeIcon2 = swipeIcon2 ?? icon
+    }
+
+    init(_ appearance: ActionAppearance) {
+        let label = appearance.label(describing: .currentState)
+        self.init(
+            label: label.title,
+            isOn: appearance.prominent,
+            color: appearance.color,
+            icon: label.icon.computeImageName()
+        )
     }
 }

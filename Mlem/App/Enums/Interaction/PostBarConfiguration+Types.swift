@@ -11,9 +11,9 @@ import MlemMiddleware
 import SwiftUI
 
 extension PostBarConfiguration {
-    enum ActionType: String, ActionTypeProviding {
-        typealias Configuration = PostBarConfiguration // swiftlint:disable:this nesting
-        
+    typealias LegacyItem = LegacyInteractionBarItem<LegacyActionType>
+
+    enum LegacyActionType: String, LegacyActionTypeProviding {
         case upvote
         case downvote
         case save
@@ -30,53 +30,6 @@ extension PostBarConfiguration {
         case resolve
         case remove
         case ban
-        
-        static var defaultWidgets: [ActionType] { [
-            .upvote,
-            .downvote,
-            .save,
-            .reply,
-            .share
-        ] }
-        
-        static var defaultReportWidgets: [ActionType] { [
-            .share,
-            .lock,
-            .pin,
-            .resolve,
-            .remove,
-            .ban
-        ] }
-        
-        var appearance: LegacyActionAppearance {
-            switch self {
-            case .upvote: .upvote(isOn: false)
-            case .downvote: .downvote(isOn: false)
-            case .save: .save(isOn: false)
-            case .reply: .reply()
-            case .share: .share()
-            case .selectText: .selectText()
-            case .postDetails: .postDetails()
-            case .hide: .hide(isOn: false)
-            case .block: .block(isOn: false)
-            case .report: .report()
-            case .crossPost: .crossPost()
-            case .lock: .lock(isOn: false)
-            case .pin: .pin(isOn: false)
-            case .resolve: .resolve(isOn: false)
-            case .remove: .remove(isOn: false)
-            case .ban: .banFromCommunity(isOn: false)
-            }
-        }
-        
-        func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
-            switch self {
-            case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
-            case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
-            case .save: [.saved]
-            case .reply, .share, .selectText, .postDetails, .hide, .block, .report, .crossPost, .lock, .pin, .resolve, .remove, .ban: []
-            }
-        }
         
         var actionSeed: ActionSeed {
             switch self {

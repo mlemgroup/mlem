@@ -28,7 +28,6 @@ enum PersistencePath {
     static var guestAccounts = root.appendingPathComponent("Guest Accounts", conformingTo: .json)
     static var favoriteCommunities = root.appendingPathComponent("Favorite Communities", conformingTo: .json)
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
-    static var layoutWidgets = root.appendingPathComponent("Layout Widgets", conformingTo: .json)
     static var pinnedSortTypes = root.appendingPathComponent("Sort Settings", conformingTo: .json)
     static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
     
@@ -138,17 +137,6 @@ class PersistenceRepository {
         try await save(value, to: PersistencePath.guestAccounts)
     }
 
-    func loadInteractionBarConfigurations() -> InteractionBarConfigurations {
-        if let standard = load(InteractionBarConfigurations.self, from: PersistencePath.layoutWidgets, silentError: true) {
-            return standard
-        }
-        return .default
-    }
-    
-    func saveInteractionBarConfigurations(_ value: InteractionBarConfigurations) async throws {
-        try await save(value, to: PersistencePath.layoutWidgets)
-    }
-    
     func loadVisitHistory(for account: UserAccount) async throws -> VisitHistory {
         let path = PersistencePath.visitHistory(for: account)
         let data = load(VisitHistory.CodedData.self, from: path, silentError: true) ?? .init()
