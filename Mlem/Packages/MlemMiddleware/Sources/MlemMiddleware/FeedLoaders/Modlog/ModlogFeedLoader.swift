@@ -48,7 +48,7 @@ public class ModlogFeedLoader: StandardFeedLoader<ModlogEntry> {
         )
         
         for source in sources {
-            source.setParent(parent: self)
+            source.setParent(parent: self, preheat: true)
         }
     }
     

@@ -23,7 +23,7 @@ public class ModMailFeedLoader: StandardFeedLoader<ModMailItem> {
         )
         
         for source in sources {
-            source.setParent(parent: self)
+            source.setParent(parent: self, preheat: true)
         }
     }
     

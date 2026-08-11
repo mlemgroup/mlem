@@ -27,7 +27,7 @@ public class ReportChildFeedLoader: ChildFeedLoader<ModMailItem>, InboxFeedLoadi
         super.init(filter: ModMailItemFilter(showRead: showRead), fetcher: fetcher, sortType: sortType)
         
         for source in sources {
-            source.setParent(parent: self)
+            source.setParent(parent: self, preheat: true)
         }
     }
     

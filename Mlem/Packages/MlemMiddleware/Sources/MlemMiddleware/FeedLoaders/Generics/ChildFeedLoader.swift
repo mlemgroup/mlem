@@ -26,8 +26,18 @@ public class ChildFeedLoader<Item: FeedLoadable>: StandardFeedLoader<Item> {
         super.init(filter: filter, fetcher: fetcher)
     }
     
-    public func setParent(parent: any FeedLoading<Item>) {
+    public func setParent(parent: any FeedLoading<Item>, preheat: Bool = false) {
         stream = .init(parent: parent)
+        
+        if preheat {
+            Task {
+                do {
+                    try await loadMoreItems()
+                } catch {
+                    // noop -- if the error recurs it will be handled by the normal error handling process
+                }
+            }
+        }
     }
     
     public func nextItemSortVal(sortType: FeedLoaderSort.SortType) async throws -> FeedLoaderSort? {
