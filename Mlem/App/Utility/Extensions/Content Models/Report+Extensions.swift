@@ -16,20 +16,4 @@ extension Report {
         toggleResolved()
     }
     
-    @ActionBuilder
-    func menuActions(
-        appState: AppState,
-        feedback: Set<FeedbackType> = [.haptic]
-    ) -> [any Action] {
-        resolveAction(appState: appState, feedback: feedback)
-    }
-    
-    func resolveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "resolve\(cacheId)",
-            appearance: .resolve(isOn: resolved),
-            callback: api.canInteract(appState: appState) ? { @MainActor in self.toggleResolved(feedback: feedback) } : nil
-        )
-    }
-    
 }
