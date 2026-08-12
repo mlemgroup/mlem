@@ -34,51 +34,6 @@ extension InteractableProviding {
         )
     }
     
-    func saveAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleSaved, let saved = saved.value else { return nil }
-        return .init(
-            id: "save\(uid)",
-            appearance: .save(isOn: saved),
-            callback: api.canInteract(appState: appState)
-            ? { @MainActor in toggleSaved(feedback) }
-            : nil
-        )
-    }
-    
-    func replyAction(appState: AppState, commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        return .init(
-            id: "reply\(uid)",
-            appearance: .reply(),
-            callback: api.canInteract(appState: appState)
-            ? { @MainActor in self.showReplySheet(commentTreeTracker: commentTreeTracker) }
-            : nil
-        )
-    }
-    
-    func blockCreatorAction(appState: AppState, feedback: Set<FeedbackType> = [], showConfirmation: Bool = true) -> BasicAction? {
-        guard let creator = creator.value,
-              let toggleBlocked = creator.toggleBlocked else { return nil }
-        return .init(
-            id: "blockCreator\(uid)",
-            appearance: .blockCreator(),
-            confirmationPrompt: showConfirmation ? "Really block this user?" : nil,
-            callback: api.canInteract(appState: appState)
-            ? { @MainActor in toggleBlocked(feedback, nil) }
-            : nil
-        )
-    }
-    
-    func purgeCreatorAction(appState: AppState) -> BasicAction? {
-        guard let creator = creator.value else { return nil }
-        return .init(
-            id: "purgeCreator\(uid)",
-            appearance: .purgePerson(),
-            callback: api.canInteract(appState: appState) && api.isAdmin
-            ? { @MainActor in creator.showPurgeSheet() }
-            : nil
-        )
-    }
-    
     // MARK: Readouts
     
     var createdReadout: Readout {

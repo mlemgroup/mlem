@@ -15,41 +15,6 @@ extension Person {
         )
     }
     
-    func banActions(appState: AppState, community: Community?, withUserLabel: Bool = false) -> [any Action] {
-        let canBanFromCommunity: Bool
-        let showBoth: Bool
-        
-        let canBanFromInstance = api.isAdmin && api.supports(.banFromInstance, defaultValue: false)
-        
-        if let myPerson = api.myPerson, let community, let myPersonModerates = myPerson.moderates {
-            let supportedByApi = apiIsLocal || api.supports(.banFromNonLocalCommunity, defaultValue: false)
-            canBanFromCommunity = myPersonModerates(.id(community.id)) && supportedByApi
-            showBoth = canBanFromInstance && isBannedFromCommunity(community) != bannedFromInstance
-        } else {
-            canBanFromCommunity = false
-            showBoth = false
-        }
-        var output: [any Action] = .init()
-        // admins should see separate 'ban' and 'unban' actions if ban statuses conflict; otherwise actions are grouped under a single entry (community or instance, depending on moderation status)
-        // moderators see community ban action by default, regardless of admin status
-        if canBanFromCommunity {
-            if showBoth {
-                output.append(banFromInstanceAction(appState: appState))
-            }
-            if let community {
-                output.append(banFromCommunityAction(appState: appState, community: community, withUserLabel: withUserLabel))
-            }
-        }
-        // non-moderator admins see instance ban action by default
-        else if canBanFromInstance {
-            output.append(banFromInstanceAction(appState: appState))
-            if showBoth, let community {
-                output.append(banFromCommunityAction(appState: appState, community: community, withUserLabel: withUserLabel))
-            }
-        }
-        return output
-    }
-    
     func banFromInstanceAction(appState: AppState, withUserLabel: Bool = false) -> BasicAction {
         .init(
             id: "banFromInstance\(uid)",
