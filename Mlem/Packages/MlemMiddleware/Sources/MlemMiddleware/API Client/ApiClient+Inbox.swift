@@ -115,16 +115,4 @@ public extension ApiClient {
             myPersonId: myPersonId
         )
     }
-    
-    @discardableResult
-    func deleteMessage(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Message2 {
-        let snapshot = try await repository.deleteMessage(id: id, delete: delete)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
-            api: self,
-            from: snapshot,
-            myPersonId: myPersonId,
-            semaphore: semaphore
-        )
-    }
 }

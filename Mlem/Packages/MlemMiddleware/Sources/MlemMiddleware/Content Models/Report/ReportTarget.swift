@@ -40,7 +40,6 @@ public enum ReportTarget {
         }
     }
     
-    // TODO: NOW remove this shim
     public var creator: ExpectedValue<Person> {
         switch self {
         case let .post(post): post.creator
@@ -61,17 +60,19 @@ public enum ReportTarget {
         }
     }
     
-    @MainActor
-    func update(with snapshot: ReportTargetSnapshot) {
-        // TODO: NOW rework reports to integrate UpdateQueue
-//        switch (self, snapshot) {
-//        case (.post, .post), (.comment, .comment):
-//            break
-//        case let (.message(message), .message(updatedMessage)):
-//            message.update(with: updatedMessage)
-//        default:
-//            assertionFailure()
-//        }
+    func attemptDirectUpdate(with snapshot: ReportTargetSnapshot) async {
+        switch (self, snapshot) {
+        case let (.post(post), .post(snapshot)):
+            await post.updateQueue.attemptDirectUpdate(with: .init(api: post.api, snapshot: .post2(snapshot)))
+        case let (.comment(comment), .comment(snapshot)):
+            await comment.updateQueue.attemptDirectUpdate(with: .init(api: comment.api, snapshot: .comment2(snapshot)))
+        case let (.message(message), .message(snapshot)):
+            await message.updateQueue.attemptDirectUpdate(
+                with: .init(api: message.api, snapshot: .message2(snapshot), isOwnMessage: message.isOwnMessage)
+            )
+        default:
+            assertionFailure()
+        }
     }
 }
 

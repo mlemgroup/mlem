@@ -29,9 +29,6 @@ extension ApiClient {
         var comment: CommentCache = .init()
         var message: MessageCache = .init()
         
-        var message1: Message1Cache = .init()
-        var message2: Message2Cache = .init()
-        
         var imageUpload1: ImageUpload1Cache = .init()
         
         var report: ReportCache = .init()
@@ -48,8 +45,7 @@ extension ApiClient {
             person.clean()
             post.clean()
             comment.clean()
-            message1.clean()
-            message2.clean()
+            message.clean()
             imageUpload1.clean()
             report.clean()
             personVote.clean()
