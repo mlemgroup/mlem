@@ -75,7 +75,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         )
         let contentView = contentController.view!
         
-        let inputView = UIInputView(frame: CGRect(x: 0, y: 0, width: 0, height: UIDevice.isIos26 ? 48 : 36), inputViewStyle: .keyboard)
+        let inputView = UIInputView(frame: CGRect(x: 0, y: 0, width: 0, height: 48), inputViewStyle: .keyboard)
         inputView.addSubview(contentController.view)
         inputView.inputViewController?.addChild(contentController)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,9 +106,9 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
     }
  
     func updateUIView(_ textView: UITextView, context: Context) {
-        textView.sizeToFit()
+        // no-op
     }
-    
+
     func sizeThatFits(_ proposal: ProposedViewSize, uiView textView: UITextView, context: Context) -> CGSize? {
         let dimensions = proposal.replacingUnspecifiedDimensions(
             by: .init(
@@ -116,7 +116,22 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
                 height: CGFloat.greatestFiniteMagnitude
             )
         )
-        textView.sizeToFit()
+
+        // Make the text view width equal to the current width before calling `sizeToFit`.
+        // Fixes #2779.
+        //
+        // `sizeToFit` measures against the text view's current bounds width, which on the
+        // first layout pass is infinite. This caused the text editor to calculate the
+        // incorrect height on the first pass.
+        if dimensions.width > 0, dimensions.width.isFinite {
+            textView.frame.size.width = dimensions.width
+        }
+        // Skip sizeToFit() when the available width hasn't changed — textViewDidChange
+        // already called it. This avoids unnecessary state updates when typing.
+        if dimensions.width != context.coordinator.lastProposedWidth {
+            textView.sizeToFit()
+            context.coordinator.lastProposedWidth = dimensions.width
+        }
 
         // `textView.contentSize` varies slightly on one line depending on which characters are typed.
         // To avoid this we get the line height from the font and round `contentSize` to the nearest line.
@@ -127,7 +142,7 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
         let constant: CGFloat = 15
         let calculatedHeight = constant + round((textView.contentSize.height - constant) / lineHeight) * lineHeight
           
-        // The "+ 1" fixes a bug in which there wouldn't be enough room to render a second line when using
+        // `sizingOffset` fixes a bug in which there wouldn't be enough room to render a second line when using
         // certain fonts (specifically, `.title2`). This would cause lines to sometimes not render. This
         // is probably a result of floating point error or something like that. This bug isn't a result
         // of the rounding logic above; it still happens when simply using `contentSize`.
@@ -139,19 +154,20 @@ struct MarkdownTextEditor<Content: View>: UIViewRepresentable {
  
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: MarkdownTextEditor
- 
+        var lastProposedWidth: CGFloat = -1
+
         init(_ textView: MarkdownTextEditor) {
             self.parent = textView
         }
  
         func textViewDidChange(_ textView: UITextView) {
             parent.onChange(textView.text)
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             textView.sizeToFit()
         }
-        
+
         func textViewDidBeginEditing(_ textView: UITextView) {
-            parent.placeholderLabel.isHidden = !textView.text.isEmpty
+            parent.placeholderLabel.isHidden = textView.hasText
             parent.onBeginEditing()
         }
     }

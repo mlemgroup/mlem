@@ -31,6 +31,7 @@ extension Date {
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone.gmt
         return dateFormatter.string(from: self)
     }
     
@@ -55,12 +56,34 @@ extension Date {
     }
     
     var isAnniversaryToday: Bool {
-        let calendar = Calendar.current
-        let date = calendar.dateComponents([.month, .day, .year], from: self)
-        let current = calendar.dateComponents([.month, .day, .year], from: .now)
-        return date.month == current.month && date.day == current.day && date.year != current.year
+        return isAnniversaryDate(.now)
     }
-    
+
+    func isAnniversaryDate(_ otherDate: Date) -> Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.gmt
+        let date = calendar.dateComponents([.month, .day, .year], from: self)
+        let current = calendar.dateComponents([.month, .day, .year], from: otherDate)
+
+        // Year component must be explicitly unwrapped for less than comparison
+        guard let dateYear = date.year, let currentYear = current.year else { return false }
+
+        // If our target day occurred in a leap year, adjust to Feb 28 if it
+        // is being compared to a non leap year
+        let targetDay: Int?
+        if date.month == 2,
+           date.day == 29,
+           !otherDate.isLeapYear {
+            targetDay = 28
+        } else {
+            targetDay = date.day
+        }
+
+        return date.month == current.month &&
+        targetDay == current.day &&
+        dateYear < currentYear
+    }
+
     // https://stackoverflow.com/a/48652058/17629371
     func messagesRelativeDate() -> String {
         let dateFormatter = DateFormatter()
@@ -82,5 +105,21 @@ extension Date {
         }
 
         return dateFormatter.string(from: self)
+    }
+
+    var isLeapYear: Bool {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.gmt
+        let date = calendar.dateComponents([.year], from: self)
+        guard let year = date.year else { return false }
+
+        let isDivisible400 = year % 400 == 0
+        let isDivisible100 = year % 100 == 0
+
+        if isDivisible100 {
+            return isDivisible400
+        } else {
+            return year % 4 == 0
+        }
     }
 }

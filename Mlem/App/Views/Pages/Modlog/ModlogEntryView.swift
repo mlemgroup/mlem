@@ -277,7 +277,7 @@ struct ModlogEntryView: View {
             if let comment {
                 NavigationLink(.comment(comment, exposeRemovedContent: true)) {
                     VStack {
-                        Text(comment.content)
+                        Text(comment.content.string)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.subheadline)
                             .fontWeight(.semibold)

@@ -10,8 +10,8 @@ import Rest
 
 internal struct BackendListInstancesRequest: GetRequest {
     struct Parameters: Encodable {
-        let minTotalUsers: Int
-        let minMonthlyUsers: Int
+        let minTotalUsers: Int?
+        let minMonthlyUsers: Int?
     }
 
     typealias Response = [InstanceSummary]
@@ -19,7 +19,7 @@ internal struct BackendListInstancesRequest: GetRequest {
     let path: String = "v1/stats/instances"
     var parameters: Parameters?
 
-    init(minTotalUsers: Int, minMonthlyUsers: Int) {
+    init(minTotalUsers: Int?, minMonthlyUsers: Int?) {
         self.parameters = .init(
             minTotalUsers: minTotalUsers,
             minMonthlyUsers: minMonthlyUsers

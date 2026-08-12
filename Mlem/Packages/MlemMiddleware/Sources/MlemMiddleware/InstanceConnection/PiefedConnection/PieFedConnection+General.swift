@@ -24,10 +24,7 @@ public extension PieFedConnection {
         }
         let request = PieFedUserLoginRequest(username: usernameOrEmail, password: password)
         let response = try await perform(request)
-        guard let jwt = response.jwt else {
-            throw ApiClientError.notLoggedIn
-        }
-        return jwt
+        return response.jwt
     }
     
     func getUsernameFromToken(token: String) async throws -> String {
@@ -71,7 +68,7 @@ public extension PieFedConnection {
         return try .init(from: response)
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
         let request = PieFedGetSiteRequest()
         let response = try await perform(request)
         guard let myUser = response.myUser else { return ([], [], []) }
@@ -79,32 +76,34 @@ public extension PieFedConnection {
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.target) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks.compactMap(\.site).map { try .init(from: $0) }
+            instances: myUser.instanceBlocks.map(\.instance.domain)
         )
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         let request = PieFedGetModlogRequest(
-                modPersonId: moderatorId,
-                communityId: communityId,
-                page: page,
-                limit: limit,
-                type_: type?.piefedApiType,
-                otherPersonId: subjectPersonId,
-                postId: postId,
-                commentId: commentId,
-            )
+            modPersonId: moderatorId,
+            communityId: communityId,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
+            type_: type?.piefedApiType,
+            otherPersonId: subjectPersonId,
+            postId: postId,
+            commentId: commentId
+        )
         let response = try await perform(request)
-        return try response.toSnapshots()
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.toSnapshots()
+        )
     }
     
     func getPostLink(url: URL) async throws -> PostLink {

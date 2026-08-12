@@ -8,10 +8,62 @@
 import Haptics
 import MlemMiddleware
 import Nuke
-import Rest
+import SafariServices
 import SwiftUI
 
 extension ContentView {
+    func handleIncomingDeeplink(url: URL) {
+        guard url.scheme == "mlem" else { return }
+
+        // mlem://fediverse-auth/login is used in reality,
+        // but the docs say it should be mlem://fediverse-auth/handoff,
+        // so I'm supporting both in case it gets changed.
+        if url.absoluteString.hasPrefix("mlem://fediverse-auth") { 
+            handleHandoffDeeplink(url: url)
+        } else {
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+            components?.scheme = "https"
+            guard let targetURL = components?.url else { return }
+            navigationModel.pendingOpenURL = targetURL
+        }
+    }
+
+    private func handleHandoffDeeplink(url: URL) {
+        guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else { return }
+        let session = queryItems.first { $0.name == "session" }?.value
+        let handle = queryItems.first { $0.name == "actor" }?.value
+        guard let session,
+            let handle,
+            let personHandle = try? PersonHandle(string: handle, allowMissingPrefix: true) else { return }
+
+        guard let defaultAccount = (appState.firstAccount as? UserAccount) ?? AccountsTracker.main.userAccounts.first else {
+            return
+        }
+
+        // This logic is needed to present the sheet over the top of the SFSafariViewController.
+        let topVC = UIApplication.shared.firstKeyWindow?.rootViewController?.topMostViewController()
+        if topVC is SFSafariViewController {
+            let view = AuthHandoffView(
+                session: session,
+                personHandle: personHandle,
+                openedFromInAppBrowser: true,
+                defaultAccount: defaultAccount
+            )
+            .environment(appState)
+            .environment(mediaTracker)
+            .environment(hapticManager)
+            let hostingController = UIHostingController(rootView: view)
+            hostingController.sheetPresentationController?.detents = [.medium()]
+            topVC?.present(hostingController, animated: true)
+        } else {
+            navigationModel.openSheet(.authHandoff(
+                session: session,
+                personHandle: personHandle,
+                defaultAccount: defaultAccount
+            ))
+        }
+    }
+
     var shouldDisplayToasts: Bool {
         navigationModel.layers.allSatisfy { !$0.canDisplayToasts }
     }
@@ -28,8 +80,7 @@ extension ContentView {
     func loadAvatar(url: URL) async {
         do {
             if tabProfileShowAvatar {
-                let urlRequest = mlemUrlRequest(url: url.withIconSize(128))
-                let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
+                let imageTask = ImagePipeline.shared.imageTask(with: url.withIconSize(128))
                 let avatarImage = try await imageTask.image
                     .resized(to: .init(width: imageTask.image.size.width / imageTask.image.size.height * 26, height: 26))
                     .circleMasked

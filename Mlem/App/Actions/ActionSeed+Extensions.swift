@@ -6,6 +6,7 @@
 //
 
 import Actions
+import MlemMiddleware
 
 extension ActionSeed {
     private static let moderatorActions: Set<ActionSeed> = [
@@ -26,5 +27,14 @@ extension ActionSeed {
 
     var isBasicAction: Bool {
         !Self.moderatorActions.contains(self)
+    }
+        
+    func associatedReadouts(context: any InteractableProviding) -> Set<ReadoutType> {
+        switch self {
+        case .upvote: context.votes.value?.myVote ?? .none == .upvote ? [.upvote, .score] : [.upvote]
+        case .downvote: context.votes.value?.myVote ?? .none == .downvote ? [.downvote, .score] : [.downvote]
+        case .save: [.saved]
+        default: []
+        }
     }
 }

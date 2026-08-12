@@ -38,7 +38,7 @@ struct VisitAgainView: View {
             filter: filter
         )
         
-        self._mixedFeedLoader = .init(wrappedValue: feedLoaders.savedFeedLoader)
+        self._mixedFeedLoader = .init(wrappedValue: feedLoaders.parentFeedLoader)
         self._postsFeedLoader = .init(wrappedValue: feedLoaders.postFeedLoader)
         self._commentsFeedLoader = .init(wrappedValue: feedLoaders.commentFeedLoader)
         

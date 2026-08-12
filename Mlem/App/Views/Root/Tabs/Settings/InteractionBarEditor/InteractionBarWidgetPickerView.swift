@@ -21,15 +21,17 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
                     .frame(maxWidth: .infinity, alignment: .center)
             }
             
-            Section("Actions") {
-                ForEach(Array(Configuration.ActionType.allCases), id: \.self) { item in
-                    widgetButton(.action(item))
+            Section("Counters") {
+                ForEach(Array(CounterType.allCases), id: \.self) { item in
+                    widgetButton(.counter(item))
                 }
             }
-            
-            Section("Counters") {
-                ForEach(Array(Configuration.CounterType.allCases), id: \.self) { item in
-                    widgetButton(.counter(item))
+
+            ForEach(Array(Configuration.availableActions.sections).enumerated(), id: \.offset) { _, actions in
+                Section {
+                    ForEach(actions, id: \.self) { item in
+                        widgetButton(.action(item))
+                    }
                 }
             }
         }
@@ -40,29 +42,19 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
     }
     
     @ViewBuilder
-    func widgetButton(_ item: Configuration.Item) -> some View {
-        let selected = configuration.availableWidgets.contains(item)
-        let (label, icon): (String, String) = switch item {
-        case let .action(action):
-            (action.appearance.label, action.appearance.barIcon)
-        case let .counter(counter):
-            (.init(localized: counter.appearance.label), counter.appearance.singleIcon)
-        }
+    func widgetButton(_ item: InteractionBarItem) -> some View {
+        let selected = configuration.pinnedInteractionBarItems.contains(item)
         
         Button {
             if selected {
-                configuration.availableWidgets.remove(item)
+                configuration.pinnedInteractionBarItems.remove(item)
             } else {
-                configuration.availableWidgets.insert(item)
+                configuration.pinnedInteractionBarItems.insert(item)
             }
         } label: {
             HStack {
-                Label {
-                    Text(label)
-                } icon: {
-                    Image(systemName: icon)
-                        .foregroundStyle(selected ? .themedAccent : .themedSecondary)
-                }
+                widgetLabel(item)
+                    .labelStyle(WidgetButtonLabelStyle(selected: selected))
                 
                 Spacer()
                 
@@ -76,5 +68,27 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
+    }
+
+    func widgetLabel(_ item: InteractionBarItem) -> some View {
+        switch item {
+        case let .action(action):
+            let label = action.appearance.label(describing: .stateTransition)
+            return Label(label.title, icon: label.icon)
+        case let .counter(counter):
+            return Label(counter.appearance.label, systemImage: counter.appearance.singleIcon)
+        }
+    }
+}
+
+private struct WidgetButtonLabelStyle: LabelStyle {
+    let selected: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.icon
+                .foregroundStyle(selected ? .themedAccent : .themedSecondary)
+            configuration.title
+        }
     }
 }

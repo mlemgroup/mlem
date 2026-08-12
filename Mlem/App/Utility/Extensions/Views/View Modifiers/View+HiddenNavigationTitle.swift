@@ -16,12 +16,8 @@ extension View {
     @_disfavoredOverload
     @ViewBuilder
     func hiddenNavigationTitle(_ title: String) -> some View {
-        if #available(iOS 18.0, *) {
-            self
-                .navigationTitle(title)
-                .toolbar(removing: .title)
-        } else {
-            self
-        }
+        self
+            .navigationTitle(title)
+            .toolbar(removing: .title)
     }
 }

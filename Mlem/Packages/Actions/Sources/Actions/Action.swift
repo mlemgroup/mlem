@@ -8,7 +8,7 @@
 import SwiftUI
 
 public protocol Action {
-    func createLabel(environment: EnvironmentValues) -> ActionLabel
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance
     
     @MainActor
     func execute(environment: EnvironmentValues)

@@ -11,7 +11,6 @@ import MlemMiddleware
 import SwiftUI
 
 extension NavigationPage {
-
     @MainActor @ViewBuilder
     func sheetView(selectedDetent: Binding<PresentationDetent>) -> some View {
         if let presentationDetentConfiguration {
@@ -30,7 +29,7 @@ extension NavigationPage {
         case let .selectText(string):
             SelectTextView(text: string)
         case let .shareInstancePicker(sharable):
-            ShareInstancePickerView(entity: sharable.wrappedValue)
+            ShareInstancePickerView(entity: sharable)
         case let .settings(page):
             page.view()
         case let .logIn(page):
@@ -68,11 +67,11 @@ extension NavigationPage {
         case .quickSwitcher:
             QuickSwitcherView()
         case let .report(target, community):
-            ReportEditorView(target: target.wrappedValue, community: community)
+            ReportEditorView(target: target, community: community)
         case let .remove(target):
-            ContentRemovalEditorView(target: target.wrappedValue)
+            ContentRemovalEditorView(target: target)
         case let .purge(target):
-            ContentPurgeEditorView(target: target.wrappedValue)
+            ContentPurgeEditorView(target: target)
         case let .ban(person, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community):
             PersonBanEditorView(
                 person: person,
@@ -89,6 +88,8 @@ extension NavigationPage {
             .environment(\.communityContext, communityContext)
         case let .postStub(post, _):
             PostStubResolutionPage(stub: post)
+        case let .postDetails(post):
+            PostDetailsView(post: post)
         case let .comment(comment, comments, showViewPostButton, exposeRemovedContent):
             CommentPage(
                 comment: comment,
@@ -137,7 +138,7 @@ extension NavigationPage {
                 content: content,
                 type: type,
                 nsfw: nsfw,
-                feedLoader: feedLoader.wrappedValue
+                feedLoader: feedLoader
             ) {
                 view
             } else {
@@ -148,7 +149,7 @@ extension NavigationPage {
         case let .communityPicker(api: api, callback: callback):
             SearchSheetView(api: api) { (community: Community, navigation: NavigationLayer) in
                 Button {
-                    callback.wrappedValue(community, navigation)
+                    callback(community, navigation)
                 } label: {
                     CommunityListRowBody(community, readout: .subscribers)
                         .tint(.themedPrimary)
@@ -159,7 +160,7 @@ extension NavigationPage {
         case let .personPicker(api: api, filter: filter, callback: callback):
             SearchSheetView(api: api, filter: filter) { (person: Person, navigation: NavigationLayer) in
                 Button {
-                    callback.wrappedValue(person, navigation)
+                    callback(person, navigation)
                 } label: {
                     PersonListRowBody(person)
                         .tint(.themedPrimary)
@@ -170,7 +171,7 @@ extension NavigationPage {
         case let .instancePicker(callback: callback, requiredFeature: requiredFeature):
             SearchSheetView { (instance: InstanceSummary, navigation: NavigationLayer) in
                 Button {
-                    callback.wrappedValue(instance, navigation)
+                    callback(instance, navigation)
                 } label: {
                     InstanceListRowBody(instance)
                         .tint(.themedPrimary)
@@ -193,11 +194,11 @@ extension NavigationPage {
                 }
             }
         case let .languagePicker(selectedLanguages: selectedLanguages, callback: callback):
-            LanguagePickerSheetView(selectedLanguages: selectedLanguages, callback: callback.wrappedValue)
+            LanguagePickerSheetView(selectedLanguages: selectedLanguages, callback: callback)
         case let .instance(instance, visitContext):
             InstanceView(instance: instance, visitContext: visitContext)
         case let .instanceStub(instance, targetPage):
-            InstanceStubResolutionPage(stub: instance, targetPage: targetPage.wrappedValue)
+            InstanceStubResolutionPage(stub: instance, targetPage: targetPage)
         case let .instanceOpinionList(instance: instance, opinionType: opinionType, data: data):
             FediseerOpinionListView(instance: instance, opinionType: opinionType, fediseerData: data)
         case .fediseerInfo:
@@ -207,7 +208,7 @@ extension NavigationPage {
         case let .deleteAccount(account):
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):
-            BypassProxyWarningSheet(callback: callback.wrappedValue)
+            BypassProxyWarningSheet(callback: callback)
         case let .confirmUpload(imageData: imageData, fileExtension: fileExtension, imageManager: imageManager, uploadApi: uploadApi):
             UploadConfirmationView(
                 imageData: imageData,
@@ -216,11 +217,11 @@ extension NavigationPage {
                 uploadApi: uploadApi
             )
         case let .rulesList(model, callback):
-            RulesPickerView(model: model.wrappedValue, callback: callback.wrappedValue)
+            RulesPickerView(model: model, callback: callback)
         case .blockList:
             BlockListView()
         case let .advancedSorting(sort):
-            AdvancedSortView(selectedSort: sort.wrappedValue)
+            AdvancedSortView(selectedSort: sort)
         case let .votesList(target):
             VotesListView(target: target)
         case let .messageFeed(person, messageContent: messageContent, focusTextField: focusTextField, editing: editing):
@@ -228,7 +229,7 @@ extension NavigationPage {
                 person: person,
                 messageContent: messageContent,
                 focusTextField: focusTextField,
-                editing: editing?.wrappedValue
+                editing: editing
             )
         case let .modlog(target, targetPerson, moderatorPerson):
             ModlogView(initialTarget: target, targetPerson: targetPerson, moderatorPerson: moderatorPerson)
@@ -240,14 +241,21 @@ extension NavigationPage {
             ExportableCommentEditorView(comment: comment, commentTreeTracker: tracker)
         case let .actionSheet(sections, environment, configuration):
             ActionSheet(
-                sections: sections.wrappedValue,
-                environment: environment.wrappedValue,
+                sections: sections,
+                environment: environment,
                 configuration: configuration
             )
         case .unavailableContentInfo:
             UnavailableContentInfoView()
         case let .unsupportedVersion(account):
-            UnsupportedVersionWarningView(account: account.wrappedValue)
+            UnsupportedVersionWarningView(account: account)
+        case let .authHandoff(session: session, personHandle: personHandle, defaultAccount: defaultAccount):
+            AuthHandoffView(
+                session: session,
+                personHandle: personHandle,
+                openedFromInAppBrowser: false,
+                defaultAccount: defaultAccount
+            )
         }
     }
 }

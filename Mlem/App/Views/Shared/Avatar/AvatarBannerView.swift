@@ -7,7 +7,6 @@
 
 import MlemMiddleware
 import NukeUI
-import Rest
 import SwiftUI
 
 struct AvatarBannerView: View {
@@ -47,7 +46,7 @@ struct AvatarBannerView: View {
             if model?.banner != nil || showEmptyBanner, showBanner {
                 ZStack(alignment: .bottom) {
                     VStack {
-                        LazyImage(request: imageRequest) { state in
+                        LazyImage(url: model?.banner) { state in
                             VStack {
                                 if let image = state.image {
                                     image
@@ -94,14 +93,6 @@ struct AvatarBannerView: View {
                         .padding(.top)
                 }
             }
-        }
-    }
-    
-    var imageRequest: ImageRequest? {
-        if let url = model?.banner {
-            .init(urlRequest: mlemUrlRequest(url: url))
-        } else {
-            nil
         }
     }
     

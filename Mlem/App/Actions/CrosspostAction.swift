@@ -27,14 +27,14 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension CrosspostAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Crosspost",
         icon: .lemmy.crosspost,
         color: .themedColorfulAccent(5)
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
@@ -64,7 +64,7 @@ extension CrosspostAction {
             content: crossPostContent,
             type: entity.type,
             nsfw: entity.nsfw,
-            feedLoader: .init(wrappedValue: nil)
+            feedLoader: nil
         ))
     }
 }

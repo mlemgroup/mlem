@@ -161,26 +161,15 @@ struct MediaView: View {
     
     @ViewBuilder
     var content: some View {
-        Group {
-            if #available(iOS 18.0, *) {
-                image
-                    .onScrollVisibilityChange(threshold: 0.5) { isVisible in
-                        if isVisible, controlState.autoplay {
-                            controlState.animating = true
-                        }
-                        if !isVisible {
-                            controlState.animating = false
-                        }
-                    }
-            } else {
-                image
-                    .onDisappear {
-                        if controlState.mediaLockId == mediaLockId {
-                            controlState.mediaLockId = nil
-                        }
-                    }
+        image
+            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                if isVisible, controlState.autoplay {
+                    controlState.animating = true
+                }
+                if !isVisible {
+                    controlState.animating = false
+                }
             }
-        }
     }
 }
 

@@ -15,14 +15,9 @@ import Media
 @main
 struct MlemApp: App {
     init() {
-        var imageConfig = ImagePipeline.Configuration.withDataCache(name: "main", sizeLimit: Constants.main.cacheSize)
-        imageConfig.dataLoadingQueue = OperationQueue(maxConcurrentCount: 8)
-        imageConfig.imageDecodingQueue = OperationQueue(maxConcurrentCount: 8) // Let's use those CORES
-        imageConfig.imageDecompressingQueue = OperationQueue(maxConcurrentCount: 8)
-        
         // TODO: rate limiting
-        ImagePipeline.shared = ImagePipeline(configuration: imageConfig)
-        
+        ImagePipeline.shared = ImagePipeline(configuration: .mlem(sizeLimit: Constants.main.cacheSize))
+
         // video handling
         ImageDecoderRegistry.shared.register(MlemVideoDecoder.init)
         
@@ -45,12 +40,5 @@ struct MlemApp: App {
         WindowGroup {
             ContentView()
         }
-    }
-}
-
-extension OperationQueue {
-    convenience init(maxConcurrentCount: Int) {
-        self.init()
-        self.maxConcurrentOperationCount = maxConcurrentCount
     }
 }

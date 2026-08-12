@@ -61,8 +61,8 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             }
     }
     
-    @MainActor
-    func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
+    // swiftlint:disable:next cyclomatic_complexity
+    @MainActor func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         // TODO: Consider handling links to alternative frontends such as `old.lemmy.world` or `oldsh.itjust.works`.
         
         guard let scheme = url.scheme else {
@@ -78,6 +78,11 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             }
             
             openLinkAsWebsite(url: url)
+            return .handled
+        }
+
+        if url.host() == "canvas.fediverse.events" {
+            handleCanvasLink(url: url)
             return .handled
         }
         
@@ -178,7 +183,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
                 return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
                 return .postStub(PostStub(api: appState.firstApi, url: url))
-            } else if components.count == 3 {
+            } else if components.count == 3 || (components.count == 4 && components[2] == "comment") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
                 return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
             } else {
@@ -217,6 +222,19 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         }
         
         return true
+    }
+
+    func handleCanvasLink(url: URL) {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        var queryItems = components?.queryItems ?? []
+        queryItems.append(.init(name: "fediverse-auth[exchanger]", value: "mlem://fediverse-auth/login"))
+        components?.queryItems = queryItems
+        guard let newUrl = components?.url else {
+            assertionFailure()
+            openLinkAsWebsite(url: url)
+            return
+        }
+        openLinkAsWebsite(url: newUrl)
     }
     
     func showToastAndResolve(url: URL, fallback: @escaping (URL) -> Void) async {

@@ -33,16 +33,15 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         sortType: FeedLoaderSort.SortType,
         userId: Int,
         savedOnly: Bool,
-        withContent: (posts: [Post], comments: [Comment])?,
         prefetchingConfiguration: PrefetchingConfiguration
     ) {
         self.sortType = sortType
         self.userId = userId
         self.savedOnly = savedOnly
-        self.postStream = .init(items: withContent?.posts, prefetchingConfiguration: prefetchingConfiguration)
-        self.commentStream = .init(items: withContent?.comments, prefetchingConfiguration: prefetchingConfiguration)
+        self.postStream = .init(items: [], prefetchingConfiguration: prefetchingConfiguration)
+        self.commentStream = .init(items: [], prefetchingConfiguration: prefetchingConfiguration)
         
-        super.init(api: api, pageSize: pageSize, page: withContent == nil ? 0 : 1)
+        super.init(api: api, pageSize: pageSize)
     }
     
     override func reset() async {
@@ -53,6 +52,10 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
     }
     
     override func fetch() async throws -> LoadingResponse<PersonContent> {
+        if try await api.supports(.combinedPagedResponses) {
+            return try await super.fetch()
+        }
+
         var newItems: [PersonContent] = .init()
         
         while newItems.count < pageSize {
@@ -66,22 +69,27 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         return .success(newItems)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        fatalError("Unsupported loading operation")
-    }
-    
-    override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
-        fatalError("Unsupported loading operation")
+    /// This function is called by `fetch()` iff `Feature.combinedPagedResponses` is available
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<PersonContent> {
+        let response = try await api.getCombinedContent(authorId: userId, pageInfo: pageInfo)
+        postStream.addItems(response.items.compactMap { $0.post })
+        commentStream.addItems(response.items.compactMap { $0.comment })
+        return response
     }
     
     /// Returns the next post or comment, depending on which is sorted first
     private func computeNextItem() async throws -> PersonContent? {
         // if either postStream or commentStream needs items, load the next page from the API
-        if postStream.needsMoreItems || commentStream.needsMoreItems {
-            page += 1
-            let response = try await api.getContent(authorId: userId, sort: .new, page: page, limit: pageSize, savedOnly: savedOnly)
+        if postStream.needsMoreItems || commentStream.needsMoreItems, let cursor = self.location.cursor {
+            let response = try await api.getContent(
+                authorId: userId,
+                sort: .new,
+                pageInfo: .init(cursor: cursor, limit: pageSize),
+                savedOnly: savedOnly
+            )
             postStream.addItems(response.posts)
             commentStream.addItems(response.comments)
+            self.location = response.nextLocation
         }
         
         let nextPost = try await postStream.nextItemSortVal(sortType: sortType)
@@ -133,8 +141,7 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
         userId: Int,
         sortType: FeedLoaderSort.SortType,
         savedOnly: Bool,
-        prefetchingConfiguration: PrefetchingConfiguration,
-        withContent: (posts: [Post], comments: [Comment])? = nil
+        prefetchingConfiguration: PrefetchingConfiguration
     ) {
         super.init(filter: MultiFilter(), fetcher: SingleSourceMixedFetcher(
             api: api,
@@ -142,7 +149,6 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
             sortType: sortType,
             userId: userId,
             savedOnly: savedOnly,
-            withContent: withContent,
             prefetchingConfiguration: prefetchingConfiguration
         ))
     }

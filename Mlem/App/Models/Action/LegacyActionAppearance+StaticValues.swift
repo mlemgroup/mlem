@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ActionAppearance {
+extension LegacyActionAppearance {
     static func upvote(isOn: Bool) -> Self {
         .init(
             label: isOn ? "Undo Upvote" : "Upvote",
@@ -127,6 +127,15 @@ extension ActionAppearance {
             isOn: false,
             color: .themedAccent,
             icon: Icons.select
+        )
+    }
+    
+    static func postDetails() -> Self {
+        .init(
+            label: "Post Details",
+            isOn: false,
+            color: .themedAccent,
+            icon: Icons.infoCircle
         )
     }
     

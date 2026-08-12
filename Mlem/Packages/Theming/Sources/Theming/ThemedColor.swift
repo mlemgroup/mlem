@@ -203,6 +203,7 @@ public extension ShapeStyle where Self == ThemedColor {
     static var themedInstanceAccent: ThemedColor { themedColorfulAccent(1) }
     static var themedCommunityAccent: ThemedColor { themedColorfulAccent(3) }
     static var themedLockAccent: ThemedColor { themedColorfulAccent(0) }
+    static var themedTranslationAccent: ThemedColor { themedColorfulAccent(9) }
     
     static var themedDivider: ThemedColor {
         .init(hashString: "divider") {

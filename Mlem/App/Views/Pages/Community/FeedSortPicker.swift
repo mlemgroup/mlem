@@ -156,18 +156,11 @@ struct FeedSortPicker: View {
                     Image(icon: .lemmy.topSort)
                         .imageScale(.small)
                     Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
-                        .font(UIDevice.isIos26 ? .body : .footnote)
+                        .font(.body)
                         .fontDesign(.rounded)
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background {
-                    if !UIDevice.isIos26 {
-                        Capsule()
-                            // 1.51 is intentional - iOS doesn't render it quite right at 1.5 (iPhone 12)
-                            .strokeBorder(.themedAccent, lineWidth: 1.51)
-                    }
-                }
                 .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else if let sortType = value.sortType {
                 Label(sortType.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), icon: sortType.icon)

@@ -45,7 +45,8 @@ struct CommentEditorView: View {
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var slurMatch: String?
-    
+    @State var slurTask: Task<Void, Never>?
+
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     init?(
@@ -64,7 +65,7 @@ struct CommentEditorView: View {
         }
         self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
         
-        textView.text = commentToEdit?.content ?? ""
+        textView.text = commentToEdit?.content.string ?? ""
     }
         
     var minTextEditorHeight: CGFloat {
@@ -78,7 +79,7 @@ struct CommentEditorView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
-                            CloseButtonView(ios18Label: .cancel, requiresConfirmation: !textIsEmpty)
+                            CloseButtonView(requiresConfirmation: !textIsEmpty)
                         }
                         ToolbarItem(placement: .principal) {
                             if AccountsTracker.main.userAccounts.count > 1, commentToEdit == nil {
@@ -282,6 +283,6 @@ struct CommentEditorView: View {
             }
         }
         .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
-        .glassProminentButtonStyle()
+        .buttonStyle(.glassProminent)
     }
 }

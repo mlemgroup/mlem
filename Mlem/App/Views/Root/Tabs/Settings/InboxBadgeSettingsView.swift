@@ -15,19 +15,8 @@ struct InboxBadgeSettingsView: View {
         Form {
             headerView
             Section {
-                toggle(forType: .reply)
-                toggle(forType: .mention)
-                toggle(forType: .message)
-            }
-            if AccountsTracker.main.highestLevelAccountType >= .moderator {
-                Section {
-                    toggle(forType: .postReport)
-                    toggle(forType: .commentReport)
-                    if AccountsTracker.main.highestLevelAccountType == .admin {
-                        toggle(forType: .messageReport)
-                        toggle(forType: .registrationApplication)
-                    }
-                }
+                toggle(forType: .personal)
+                toggle(forType: .moderation)
             }
         }
         .contentMargins(.top, 16, for: .scrollContent)

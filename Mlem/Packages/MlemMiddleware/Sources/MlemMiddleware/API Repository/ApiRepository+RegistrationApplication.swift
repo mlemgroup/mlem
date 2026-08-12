@@ -13,14 +13,12 @@ extension ApiRepository {
     }
     
     func getRegistrationApplications(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [RegistrationApplicationSnapshot] {
+    ) async throws -> PagedResponse<RegistrationApplicationSnapshot> {
         try await performingForConnection { connection in
             try await connection.getRegistrationApplications(
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 unreadOnly: unreadOnly
             )
         }

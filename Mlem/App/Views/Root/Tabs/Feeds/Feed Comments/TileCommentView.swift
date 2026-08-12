@@ -58,7 +58,7 @@ struct TileCommentView: View {
                     }
                     .paletteBorder(cornerRadius: Constants.main.smallItemCornerRadius)
             }
-            MarkdownText(comment.content, configuration: .caption(palette: palette))
+            MarkdownText(comment.content.string, configuration: .caption(palette: palette))
                 .frame(height: contentHeight, alignment: .top)
                 .clipped()
 

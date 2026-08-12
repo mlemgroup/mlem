@@ -7,34 +7,38 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getRegistrationApplicationCount() async throws -> Int {
-        let response = try await performingForEndpoint { endpoint in
+        try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
-            LemmyGetUnreadRegistrationApplicationCountRequest()
+                let response = try await self.perform(LemmyGetUnreadRegistrationApplicationCountRequest(), endpoint: .v3)
+                return response.registrationApplications
             case .v4:
-                throw ApiClientError.featureUnsupported
+                let response = try await self.perform(LemmyGetUnreadCountsRequest(), endpoint: .v4)
+                return response.registrationApplicationCount ?? 0
             }
         }
-        return response.registrationApplications
     }
     
     func getRegistrationApplications(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [RegistrationApplicationSnapshot] {
+    ) async throws -> PagedResponse<RegistrationApplicationSnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyListRegistrationApplicationsRequest(
                 endpoint: endpoint,
                 unreadOnly: unreadOnly,
-                page: page,
-                limit: limit,
-                pageCursor: nil
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
-        return try response.items.map { try .init(from: $0) }
+        return try .fromLemmyV3(
+            pageInfo: pageInfo,
+            items: try response.items.map { try .init(from: $0) },
+            nextCursor: response.nextPage
+        )
     }
     
     @discardableResult

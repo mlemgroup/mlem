@@ -13,12 +13,12 @@ public enum InstanceUpgradeError: Error {
     case noSiteReturned
 }
 
-public struct InstanceStub: Hashable {
+public struct InstanceStub: Hashable, ActorIdentifiable {
     public var api: ApiClient
     public let actorId: ActorIdentifier
     
     public var local: Bool { actorId.url == api.baseUrl }
-    
+
     public init(api: ApiClient, actorId: ActorIdentifier) {
         self.api = api
         self.actorId = actorId
@@ -50,5 +50,11 @@ public struct InstanceStub: Hashable {
             throw InstanceUpgradeError.noSiteReturned
         }
         return instance
+    }
+}
+
+extension InstanceStub: Sharable {
+    public func url() -> URL {
+        actorId.url
     }
 }

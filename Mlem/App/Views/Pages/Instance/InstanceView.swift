@@ -78,7 +78,7 @@ struct InstanceView: View {
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             if instance.apiIsLocal {
                 BubblePicker(
-                    availableTabs,
+                    Tab.allCases,
                     selected: $selectedTab,
                     label: { $0.label }
                 )

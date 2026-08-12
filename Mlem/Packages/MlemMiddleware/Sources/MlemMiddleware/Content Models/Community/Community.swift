@@ -233,18 +233,14 @@ public extension Community {
     
     func getPosts(
         sort: PostSortType,
-        page: Int = 1,
-        cursor: String? = nil,
-        limit: Int,
+        pageInfo: PageInfo,
         filter: GetContentFilter? = nil,
         showHidden: Bool = false
-    ) async throws -> (posts: [Post], cursor: String?) {
+    ) async throws -> PagedResponse<Post> {
         try await api.getPosts(
             communityId: id,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
-            cursor: cursor,
-            limit: limit,
             filter: filter,
             showHidden: showHidden
         )
@@ -270,6 +266,7 @@ public extension Community {
             await updateQueue.addItem {
                 do {
                     let snapshot = try await self.api.repository.subscribeToCommunity(id: self.id, subscribe: newValue)
+                    self.api.subscriptions?.updateCommunitySubscription(community: self)
                     return await .init(api: self.api, snapshot: .community2(snapshot))
                 } catch {
                     self.shouldBeFavorited = oldFavorited

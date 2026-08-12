@@ -25,7 +25,7 @@ extension PlatformConstants {
         mediumItemCornerRadius: 8,
         smallItemCornerRadius: 6,
         appIconSize: 60,
-        appIconCornerRadius: UIDevice.isIos26 ? 16 : 10,
+        appIconCornerRadius: 16,
         settingsIconSize: 28,
         barIconSize: 15.5,
         barIconCornerRadius: 4,

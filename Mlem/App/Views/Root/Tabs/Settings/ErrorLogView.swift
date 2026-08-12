@@ -5,7 +5,6 @@
 //  Created by Eric Andrews on 2024-12-29.
 //
 
-import Rest
 import SwiftUI
 import Theming
 

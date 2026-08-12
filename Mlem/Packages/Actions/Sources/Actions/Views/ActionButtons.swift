@@ -15,13 +15,15 @@ public struct ActionButtons: View {
     
     let actions: (EnvironmentValues) -> [any Actions.Action]
     
-    public init(_ actions: @escaping (EnvironmentValues) -> [any Actions.Action]) {
+    public init(
+        _ actions: @escaping (EnvironmentValues) -> [any Actions.Action]
+    ) {
         self.actions = actions
     }
 
     public var body: some View {
         ForEach(Array(actions(environment).enumerated()), id: \.offset) { _, action in
-            ActionButtonWithVisibilityControl(action)
+            ActionButtonWithVisibilityControl(action, describing: .stateTransition)
         }
     }
 }

@@ -76,7 +76,7 @@ class ConnectionMultiplexer<Candidate> {
                         self.selectedCandidate = candidate
                         self.ongoingTask = nil
                         return value
-                    } catch ApiClientError.serverError(404), ApiClientError.featureUnsupported {
+                    } catch ApiClientError.serverError(404), ApiClientError.response(_, 404), ApiClientError.featureUnsupported {
                         // no-op
                     } catch {
                         throw error

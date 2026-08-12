@@ -10,13 +10,13 @@ import Foundation
 extension PieFedPostAggregates: ApiContentAggregatesProtocol {
     static var zero: Self {
         .init(
-            postId: 0,
             comments: 0,
+            downvotes: 0,
+            newestCommentTime: .distantPast,
+            postId: 0,
+            published: .distantPast,
             score: 0,
             upvotes: 0,
-            downvotes: 0,
-            published: .distantPast,
-            newestCommentTime: .distantPast,
             crossPosts: 0
         )
     }

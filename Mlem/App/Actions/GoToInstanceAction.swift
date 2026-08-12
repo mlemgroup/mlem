@@ -27,14 +27,16 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension GoToInstanceAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Go to Instance",
         icon: .lemmy.instance,
         color: .themedInstanceAccent
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withTitle(entity.host)
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        var appearance = Self.appearance
+        appearance.labels = .basic(.init(entity.host, icon: .lemmy.instance))
+        return appearance
     }
 }
 

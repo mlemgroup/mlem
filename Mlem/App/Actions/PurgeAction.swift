@@ -19,14 +19,14 @@ struct PurgeAction: Actions.Action {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let purge = ActionSeed("purge", label: PurgeAction.createLabel(relationship: .identity)) { entity in
+    static let purge = ActionSeed("purge", appearance: PurgeAction.createAppearance(relationship: .identity)) { entity in
         switch entity {
         case let entity as any PurgableProviding: PurgeAction(entity: entity, relationship: .identity)
         default: nil
         }
     }
 
-    static let purgeCreator = ActionSeed("purgeCreator", label: PurgeAction.createLabel(relationship: .author)) { entity in
+    static let purgeCreator = ActionSeed("purgeCreator", appearance: PurgeAction.createAppearance(relationship: .author)) { entity in
         switch entity {
         case let entity as any InteractableProviding:
             if let creator = entity.creator.value {
@@ -42,7 +42,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension PurgeAction {
-    static func createLabel(relationship: Relationship) -> ActionLabel {
+    static func createAppearance(relationship: Relationship) -> ActionAppearance {
         .init(
             relationship == .identity ? "Purge" : "Purge User",
             icon: .lemmy.purge,
@@ -50,9 +50,9 @@ extension PurgeAction {
             isDestructive: true
         )
     }
-    
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        return Self.createLabel(relationship: self.relationship).withVisibility(visibility(environment))
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.createAppearance(relationship: self.relationship).withVisibility(visibility(environment))
     }
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

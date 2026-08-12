@@ -13,10 +13,9 @@ public extension PieFedConnection {
     }
     
     func getRegistrationApplications(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> [RegistrationApplicationSnapshot] {
+    ) async throws -> PagedResponse<RegistrationApplicationSnapshot> {
         throw ApiClientError.featureUnsupported
     }
     

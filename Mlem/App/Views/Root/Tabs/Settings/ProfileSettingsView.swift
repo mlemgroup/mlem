@@ -41,8 +41,10 @@ struct ProfileSettingsView: View {
         .init(get: {
             profileDetails.displayName ?? ""
         }, set: { newValue in
-            if newValue == person.displayName || newValue.isEmpty {
+            if newValue.isEmpty {
                 profileDetails.displayName = nil
+            } else {
+                profileDetails.displayName = newValue
             }
         })
     }
@@ -103,11 +105,7 @@ struct ProfileSettingsView: View {
                         profileDetails = person.profileDetails()
                         bioTextView.text = profileDetails.description
                     } label: {
-                        if #available(iOS 26, *) {
-                            Label("Discard", icon: .general.delete)
-                        } else {
-                            Text("Cancel")
-                        }
+                        Label("Discard", icon: .general.delete)
                     }
                     .disabled(isSubmitting)
                 }
@@ -191,13 +189,9 @@ struct ProfileSettingsView: View {
         Button {
             Task { @MainActor in await submit() }
         } label: {
-            if #available(iOS 26, *) {
-                Label("Save", icon: .general.success)
-            } else {
-                Text("Save")
-            }
+            Label("Save", icon: .general.success)
         }
-        .glassProminentButtonStyle()
+        .buttonStyle(.glassProminent)
     }
     
     @MainActor

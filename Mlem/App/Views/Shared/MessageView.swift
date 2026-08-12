@@ -78,6 +78,7 @@ struct MessageView<EmbeddedContent: View>: View {
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if let otherPerson, message.api.canInteract(appState: appState) {
+                notification?.updateRead(true)
                 navigation.push(.messageFeed(otherPerson))
             }
         }

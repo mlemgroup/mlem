@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct SelectTextAction: Actions.SimpleLabelAction {
-    static let label: ActionLabel = .init("Select Text", icon: .general.select)
+    static let appearance: ActionAppearance = .init("Select Text", icon: .general.select)
     
     let text: String
     
@@ -25,7 +25,7 @@ extension ActionSeed {
         case let entity as any Message1Providing:
             SelectTextAction(text: entity.content)
         case let entity as Comment:
-            SelectTextAction(text: entity.content)
+            SelectTextAction(text: entity.content.string)
         case let entity as Post:
             SelectTextAction(text: entity.selectableContent ?? "")
         case let entity as Person:

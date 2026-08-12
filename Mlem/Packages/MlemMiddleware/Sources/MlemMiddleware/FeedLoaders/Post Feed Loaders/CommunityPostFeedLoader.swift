@@ -17,12 +17,10 @@ class CommunityPostFetcher: PostFetcher {
         super.init(api: community.api, sortType: sortType, pageSize: pageSize)
     }
     
-    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Post> {
         try await community.getPosts(
             sort: sortType,
-            page: page,
-            cursor: cursor,
-            limit: pageSize,
+            pageInfo: pageInfo,
             filter: nil, // TODO:
             showHidden: false // TODO:
         )

@@ -19,13 +19,11 @@ class AggregatePostFetcher: PostFetcher {
         super.init(api: api, sortType: sortType, pageSize: pageSize)
     }
     
-    override func getPosts(page: Int, cursor: String?) async throws -> (posts: [Post], cursor: String?) {
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Post> {
         try await api.getPosts(
             feed: feedType,
+            pageInfo: pageInfo,
             sort: sortType,
-            page: page,
-            cursor: cursor,
-            limit: pageSize,
             filter: contentFilter,
             showHidden: false // TODO:
         )

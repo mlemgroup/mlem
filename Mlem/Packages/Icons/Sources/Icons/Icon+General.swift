@@ -17,6 +17,7 @@ public extension Icon {
         public let warning: Icon = .init("exclamationmark.triangle")
         public let error: Icon = .init("exclamationmark.circle")
         
+        @inlinable public var hidden: Icon { hide }
         public let hide: Icon = .init("eye.slash")
         public let show: Icon = .init("eye")
         
@@ -41,26 +42,16 @@ public extension Icon {
 
         public let settings: Icon = .init("gear")
         public let filter: Icon = .init("line.3.horizontal.decrease.circle")
-        public let filterMenu: Icon = .init(.custom { _ in
-            if #available(iOS 26, *) {
-                "line.3.horizontal.decrease"
-            } else {
-                "line.3.horizontal.decrease.circle"
-            }
-        })
+        public let filterMenu: Icon = .init("line.3.horizontal.decrease")
         public let menu: Icon = .init("ellipsis")
-        public let toolbarMenu: Icon = .init(.custom { _ in
-            if #available(iOS 26, *) {
-                "ellipsis"
-            } else {
-                "ellipsis.circle"
-            }
-        })
+        public let toolbarMenu: Icon = .init("ellipsis")
         public let configure: Icon = .init("slider.horizontal.3")
         public let `import`: Icon = .init("square.and.arrow.down")
         public let export: Icon = .init("square.and.arrow.up")
         public let edit: Icon = .applyCircle("pencil")
-        public let delete: Icon = .init("trash")
+
+        @inlinable public var deleted: Icon { delete }
+        public let delete: Icon = .init("trash") 
         public let undelete: Icon = .init("trash.slash")
         
         public let copy: Icon = .init("doc.on.doc")
@@ -84,6 +75,8 @@ public extension Icon {
         @inlinable public var muted: Icon { mute }
         public let mute: Icon = .init("speaker.slash")
         public let unmute: Icon = .init("speaker.wave.2")
+
+        @inlinable var collapsed: Icon { collapse }
         
         public let collapse: Icon = .custom { variant in
             switch variant {
@@ -117,6 +110,7 @@ public extension Icon {
         public let security: Icon = .init("key")
         public let link: Icon = .init("link")
         public let info: Icon = .init("info.circle")
+        public let translate: Icon = .baseOnly("translate")
         
         public let cloudflare: Icon = .init("cloud.bolt")
     }

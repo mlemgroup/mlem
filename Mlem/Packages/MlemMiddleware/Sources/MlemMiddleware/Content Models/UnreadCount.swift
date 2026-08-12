@@ -13,17 +13,36 @@ public final class UnreadCount {
     let log: Logger = .mlemLogger()
     
     public let api: ApiClient
+
+    struct Count: Hashable {
+        var personal: Int = 0
+        var moderation: Int = 0
+
+        subscript(_ type: InboxItemType) -> Int {
+            get {
+                switch type {
+                case .personal: personal
+                case .moderation: moderation
+                }
+            }
+            set {
+                switch type {
+                case .personal: personal = newValue
+                case .moderation: moderation = newValue
+                }
+            }
+        }
+
+        static func +(lhs: Self, rhs: Self) -> Self {
+            .init(personal: lhs.personal + rhs.personal, moderation: lhs.moderation + rhs.moderation)
+        }
+    }
     
-    var verifiedCount: [InboxItemType: Int] = .init()
-    var unverifiedCount: [InboxItemType: Int] = .init()
+    var verifiedCount: Count = .init()
+    var unverifiedCount: Count = .init()
     
-    public var replies: Int { self[.reply] }
-    public var mentions: Int { self[.mention] }
-    public var messages: Int { self[.message] }
-    public var postReports: Int { self[.postReport] }
-    public var commentReports: Int { self[.commentReport] }
-    public var messageReports: Int { self[.messageReport] }
-    public var registrationApplications: Int { self[.registrationApplication] }
+    public var personal: Int { verifiedCount.personal + unverifiedCount.personal }
+    public var moderation: Int { verifiedCount.moderation + unverifiedCount.moderation }
     
     /// This value is incremented whenever the inbox count changes due to an
     /// updated unread count being fetched from the API. It is not incremented when
@@ -31,36 +50,16 @@ public final class UnreadCount {
     /// refresh the inbox.
     public private(set) var refreshNumber: UInt = 0
     
-    public var personalTotal: Int { replies + mentions + messages }
-    public var reportTotal: Int { postReports + commentReports + messageReports }
-    public var moderationTotal: Int { reportTotal + registrationApplications }
-    public var total: Int { personalTotal + moderationTotal }
-    
     init(api: ApiClient) {
         self.api = api
     }
     
     @MainActor
-    func update(with newValues: [InboxItemType: Int]) {
-        var shouldUpdate = false
-        for (type, value) in newValues {
-            if verifiedCount[type] != value {
-                verifiedCount[type] = value
-                shouldUpdate = true
-            }
-        }
-        if shouldUpdate {
+    func update(with newCounts: Count) {
+        if newCounts != self.verifiedCount {
+            self.verifiedCount = newCounts
             refreshNumber += 1
         }
-    }
-    
-    @MainActor
-    func update(with sources: [any DictionaryConvertible]) {
-        update(
-            with: sources.reduce(into: [InboxItemType: Int]()) {
-                $0.merge($1.unreadCountDictionary) { $1 }
-            }
-        )
     }
     
     func clear() {
@@ -68,35 +67,31 @@ public final class UnreadCount {
         unverifiedCount = .init()
     }
     
-    func clear(_ types: Set<InboxItemType>) {
-        for type in types {
-            verifiedCount[type] = 0
-            unverifiedCount[type] = 0
-        }
+    func clear(_ type: InboxItemType) {
+        self.verifiedCount[type] = 0
+        self.unverifiedCount[type] = 0
     }
-    
+
     func updateUnverifiedItem(itemType: InboxItemType, isRead: Bool) {
         let diff = isRead ? -1 : 1
-        unverifiedCount[itemType, default: 0] += diff
+        unverifiedCount[itemType] += diff
     }
     
     func verifyItem(itemType: InboxItemType, isRead: Bool) {
         let diff = isRead ? -1 : 1
-        verifiedCount[itemType, default: 0] += diff
-        unverifiedCount[itemType, default: 0] -= diff
+        verifiedCount[itemType] += diff
+        unverifiedCount[itemType] -= diff
     }
     
     public subscript(_ type: InboxItemType) -> Int {
-        (verifiedCount[type] ?? 0) + (unverifiedCount[type] ?? 0)
+        verifiedCount[type] + unverifiedCount[type]
     }
     
     public func refresh() async throws {
-        let values: [InboxItemType: Int] = try await withThrowingTaskGroup(
-            of: [InboxItemType: Int].self,
-            returning: [InboxItemType: Int].self
-        ) { taskGroup in
+        let values: Count = try await withThrowingTaskGroup(of: Count.self, returning: Count.self) { taskGroup in
             taskGroup.addTask {
-                try await self.api.repository.getPersonalUnreadCount().unreadCountDictionary
+                let total = try await self.api.repository.getPersonalUnreadCount()
+                return .init(personal: total, moderation: 0)
             }
             if  self.api.username != nil, self.api.myPerson == nil || self.api.myInstance == nil {
                 // The theoretical solution to this is to store the moderated
@@ -108,9 +103,10 @@ public final class UnreadCount {
                 if !(self.api.myPerson?.moderatedCommunities.value_?.isEmpty ?? false) || self.api.isAdmin {
                     taskGroup.addTask {
                         do {
-                            return try await self.api.repository.getReportCount(communityId: nil).unreadCountDictionary
+                            let total = try await self.api.repository.getReportCount(communityId: nil)
+                            return .init(personal: 0, moderation: total)
                         } catch ApiClientError.notModOrAdmin {
-                            return [:]
+                            return .init()
                         }
                     }
                 }
@@ -118,44 +114,38 @@ public final class UnreadCount {
                 if api.myInstance?.administrators.value?.contains(where: { $0.id == api.myPerson?.id }) ?? true {
                     taskGroup.addTask {
                         do {
-                            return try await [.registrationApplication: self.api.getRegistrationApplicationCount()]
+                            let total = try await self.api.getRegistrationApplicationCount()
+                            return .init(personal: 0, moderation: total)
                         } catch ApiClientError.notAdmin {
-                            return [:]
+                            return .init()
                         }
                     }
                 }
             }
-            return try await taskGroup.reduce(into: [:]) { $0.merge($1) { $1 } }
+            return try await taskGroup.reduce(.init(), +)
         }
         await update(with: values)
     }
 }
 
-public enum InboxItemType: Codable {
+public enum InboxItemType: Codable, CaseIterable {
+    case personal, moderation
+}
+
+public enum LegacyInboxItemType: Codable {
     case reply, mention, message
     case postReport, commentReport, messageReport, registrationApplication
 }
 
 public extension Set<InboxItemType> {
-    static var all: Set<InboxItemType> {
-        [.reply, .mention, .message, .postReport, .commentReport, .messageReport, .registrationApplication]
+    init(legacyTypes: Set<LegacyInboxItemType>) {
+        self = switch legacyTypes {
+        case [.reply, .mention, .message]: [.personal]
+        case [.postReport, .commentReport, .messageReport, .registrationApplication]: [.moderation]
+        default: [.personal, .moderation]
+        }
     }
-    
-    static var personal: Set<InboxItemType> {
-        [.reply, .mention, .message]
-    }
-    
-    static var reports: Set<InboxItemType> {
-        [.postReport, .commentReport, .messageReport]
-    }
-    
-    static var moderatorAndAdmin: Set<InboxItemType> {
-        reports.union([.registrationApplication])
-    }
+
+    static var all: Self { Set(InboxItemType.allCases) }
 }
 
-extension UnreadCount {
-    protocol DictionaryConvertible {
-        var unreadCountDictionary: [InboxItemType: Int] { get }
-    }
-}

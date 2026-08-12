@@ -61,7 +61,7 @@ struct UpdateBannerView: View {
             }
         }
         .onChange(of: navigation.path) {
-            if case .post(let post, _, _, _) = navigation.path.last,
+            if case .post(let post, _, _, _) = navigation.path.last?.page,
                post.allResolvableUrls.contains(url) {
                 dismiss()
             }

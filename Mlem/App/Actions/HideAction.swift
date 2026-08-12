@@ -27,26 +27,27 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension HideAction {
-    static let hideLabel: ActionLabel = .init(
-        "Hide",
-        icon: .general.hide,
+    static let hideAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Shown", icon: .general.hidden.representingState(active: false)),
+        stateTransitionLabel: .init("Hide", icon: .general.hide),
         color: .themedColorfulAccent(4)
     )
 
-    static let showLabel: ActionLabel = .init(
-        "Show",
-        icon: .general.show,
-        color: .themedColorfulAccent(4)
+    static let showAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Hidden", icon: .general.hidden.representingState(active: true)),
+        stateTransitionLabel: .init("Show", icon: .general.show),
+        color: .themedColorfulAccent(4),
+        prominent: true
     )
-    
-    static var label: ActionLabel { hideLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let hidden = entity.hidden.value else { return Self.showLabel.withVisibility(.hidden) }
+    static var appearance: ActionAppearance { hideAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let hidden = entity.hidden.value else { return Self.showAppearance.withVisibility(.hidden) }
         if hidden {
-            return Self.showLabel.withVisibility(visibility(environment))
+            return Self.showAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.hideLabel.withVisibility(visibility(environment))
+            return Self.hideAppearance.withVisibility(visibility(environment))
         }
     }
 

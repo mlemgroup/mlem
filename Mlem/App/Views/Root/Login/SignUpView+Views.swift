@@ -219,7 +219,7 @@ extension SignUpView {
             }
             .foregroundStyle(.themedCaution)
             .listRowBackground(
-                RoundedRectangle(cornerRadius: UIDevice.isIos26 ? 26 : 10)
+                RoundedRectangle(cornerRadius: 26)
                     .stroke(.themedCaution, lineWidth: 3)
                     .background(.themedCaution.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 10))

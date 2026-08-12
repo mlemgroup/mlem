@@ -19,7 +19,7 @@ extension SiteSoftwareType {
     var minimumSupportedVersion: SiteVersion {
         switch self {
         case .lemmy: .init("0.19.0")
-        case .pieFed: .init("1.0.0")
+        case .pieFed: .init("1.3.0")
         }
     }
 }

@@ -10,23 +10,36 @@ import SwiftUI
 
 struct SubscriptionListNavigationButton<Content: View>: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.sidebarPresentationMode) var sidebarPresentationMode
+
     let destination: NavigationPage
+    let withPadding: Bool
     @ViewBuilder var label: () -> Content
     
-    init(_ destination: NavigationPage, @ViewBuilder label: @escaping () -> Content) {
+    init(
+        _ destination: NavigationPage,
+        withPadding: Bool,
+        @ViewBuilder label: @escaping () -> Content
+    ) {
         self.destination = destination
+        self.withPadding = withPadding
         self.label = label
     }
     
     var body: some View {
-        MultiplatformView(phone: {
-            NavigationLink(destination, label: label)
-        }, pad: {
-            Button(action: {
-                navigation.path = []
-                navigation.root = destination
-            }, label: label)
-                .buttonStyle(.empty)
-        })
+        Button {
+            navigation.popToRoot()
+            navigation.replace(destination)
+        } label: {
+            Group {
+                if sidebarPresentationMode == .single {
+                    FormChevron { label() }
+                } else {
+                    label()
+                }
+            }
+            .padding(.horizontal, withPadding ? 16 : 0)
+        }
+        .buttonStyle(.empty)
     }
 }

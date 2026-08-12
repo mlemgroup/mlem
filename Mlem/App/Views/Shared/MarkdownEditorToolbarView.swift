@@ -46,41 +46,31 @@ struct MarkdownEditorToolbarView: View {
         self.model = model
         
         self.leftFade = false
-        if #available(iOS 18.0, *) {
-            self.rightFade = true
-        } else {
-            self.rightFade = false
-        }
+        self.rightFade = true
     }
     
     @ViewBuilder
     var body: some View {
-        Group {
-            if #available(iOS 26, *) {
-                content
-                    .compositingGroup()
-                    .glassEffect(.regular.interactive(), in: .capsule)
-                    .padding(.horizontal, 10)
-                    .padding(.bottom, 7)
-            } else {
-                content
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: toolbarHeight, alignment: .bottom)
-        .padding(.top, UIDevice.isIos26 ? 12 : 0)
-        .onChange(of: imageManager.state) {
-            switch imageManager.state {
-            case let .done(upload):
-                if let range = textView.selectedTextRange {
-                    textView.replace(range, withText: "![](\(upload.url.absoluteString))")
-                    uploadHistory.add(upload)
-                    imageManager.clear()
+        content
+            .compositingGroup()
+            .glassEffect(.regular.interactive(), in: .capsule)
+            .padding(.horizontal, 10)
+            .padding(.bottom, 7)
+            .frame(maxWidth: .infinity)
+            .frame(height: toolbarHeight, alignment: .bottom)
+            .padding(.top, 12)
+            .onChange(of: imageManager.state) {
+                switch imageManager.state {
+                case let .done(upload):
+                    if let range = textView.selectedTextRange {
+                        textView.replace(range, withText: "![](\(upload.url.absoluteString))")
+                        uploadHistory.add(upload)
+                        imageManager.clear()
+                    }
+                default:
+                    break
                 }
-            default:
-                break
             }
-        }
     }
 
     @ViewBuilder
@@ -109,9 +99,6 @@ struct MarkdownEditorToolbarView: View {
     
     var maskedToolbarContent: some View {
         ScrollView(.horizontal) {
-            if !UIDevice.isIos26 {
-                Spacer()
-            }
             HStack(spacing: 16) {
                 scrollContent
             }
@@ -120,7 +107,7 @@ struct MarkdownEditorToolbarView: View {
             .foregroundStyle(.secondary)
             .labelStyle(.iconOnly)
             .padding(.horizontal)
-            .padding(UIDevice.isIos26 ? .vertical : .bottom, UIDevice.isIos26 ? 5 : 2)
+            .padding(.vertical, 5)
         }
         .scrollIndicators(.hidden)
         .mask(
@@ -158,7 +145,7 @@ struct MarkdownEditorToolbarView: View {
             Button("Undo", systemImage: "arrow.uturn.backward") {
                 textView.undoManager?.undo()
             }
-            .compatibilityOnScrollVisibilityChange { isVisible in
+            .onScrollVisibilityChange { isVisible in
                 withAnimation {
                     leftFade = !isVisible
                 }
@@ -172,7 +159,7 @@ struct MarkdownEditorToolbarView: View {
         Button("Bold", icon: .markdown.bold) {
             textView.wrapSelectionWithDelimiters("**")
         }
-        .compatibilityOnScrollVisibilityChange { isVisible in
+        .onScrollVisibilityChange { isVisible in
             if UIDevice.isPad {
                 withAnimation {
                     leftFade = !isVisible
@@ -242,21 +229,10 @@ struct MarkdownEditorToolbarView: View {
                 textView.insertText("[\(instance.host)](https://\(instance.host))")
             })
         }
-        .compatibilityOnScrollVisibilityChange { isVisible in
+        .onScrollVisibilityChange { isVisible in
             withAnimation {
                 rightFade = !isVisible
             }
-        }
-    }
-}
-
-private extension View {
-    /// If onScrollVisibilityChange is available, applies it to this view; otherwise has no effect.
-    func compatibilityOnScrollVisibilityChange(_ action: @escaping (Bool) -> Void) -> some View {
-        if #available(iOS 18.0, *) {
-            return onScrollVisibilityChange(action)
-        } else {
-            return self
         }
     }
 }

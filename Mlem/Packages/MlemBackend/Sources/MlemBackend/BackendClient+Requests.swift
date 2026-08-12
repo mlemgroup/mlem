@@ -16,10 +16,10 @@ extension BackendClient {
         try await perform(BackendHealthCheckRequest())
     }
     
-    public func getInstances() async throws -> [InstanceSummary] {
+    public func getInstances(minTotalUsers: Int? = nil, minMonthlyUsers: Int? = nil) async throws -> [InstanceSummary] {
         try await perform(BackendListInstancesRequest(
-            minTotalUsers: 20,
-            minMonthlyUsers: 1
+            minTotalUsers: minTotalUsers,
+            minMonthlyUsers: minMonthlyUsers
         ))
     }
 

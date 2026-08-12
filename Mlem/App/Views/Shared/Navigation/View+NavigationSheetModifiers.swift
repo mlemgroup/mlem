@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Theming
+import Translation
 
 private struct NavigationSheetModifier: ViewModifier {
     @Setting(\.appearance_palette) var colorPalette
@@ -16,17 +17,20 @@ private struct NavigationSheetModifier: ViewModifier {
     let isTopSheet: Bool
     
     @Binding var shareInfo: NavigationModel.ShareInfo?
+    @Binding var translationConfiguration: TranslationConfiguration
     
     init(
         nextLayer: NavigationLayer?,
         isTopSheet: Bool,
         shareInfo: Binding<NavigationModel.ShareInfo?>,
+        translationConfiguration: Binding<TranslationConfiguration>,
         // This tomfoolery exists to prevent this view being subject to NavigationModel view updates, which caused #1492
         contentPickerTracker: @escaping () -> NavigationModel.ContentPickerTracker?
     ) {
         self.nextLayer = nextLayer
         self.isTopSheet = isTopSheet
         self._shareInfo = shareInfo
+        self._translationConfiguration = translationConfiguration
         self.contentPickerTracker_ = contentPickerTracker
     }
     
@@ -79,6 +83,18 @@ private struct NavigationSheetModifier: ViewModifier {
                 }),
                 matching: .images
             )
+            .translationTask(translationConfiguration.sessionConfig) { session in
+                do {
+                    if translationConfiguration.presentationNeeded {
+                        try await session.prepareTranslation()
+                        translationConfiguration.presentationNeeded = false
+                    }
+                } catch {
+                    handleError(error)
+                }
+                // DO NOT set the configuration to `nil` here.
+                // It will prevent the sheet appearing a second time.
+            }
             .fileImporter(
                 isPresented: .init(
                     get: { nextLayer == nil && (contentPickerTracker?.showingFilePicker ?? false) },
@@ -130,7 +146,14 @@ private struct ComputeNextLayerModifier: ViewModifier {
             content.navigationSheetModifiers(
                 nextLayer: nextLayer,
                 isTopSheet: layer.isTopSheet,
-                shareInfo: .init(get: { layer.model?.shareInfo }, set: { layer.model?.shareInfo = $0 }),
+                shareInfo: .init(
+                    get: { layer.model?.shareInfo },
+                    set: { layer.model?.shareInfo = $0 }
+                ),
+                translationConfiguration: .init(
+                    get: { layer.model?.translationConfiguration ?? .init() },
+                    set: { layer.model?.translationConfiguration = $0 }
+                ),
                 contentPickerTracker: layer.model?.contentPickerTracker
             )
         }.onChange(of: computeNextLayer()?.id, initial: true) {
@@ -156,12 +179,14 @@ extension View {
         nextLayer: NavigationLayer?,
         isTopSheet: Bool,
         shareInfo: Binding<NavigationModel.ShareInfo?>,
+        translationConfiguration: Binding<TranslationConfiguration>,
         contentPickerTracker: @autoclosure @escaping () -> NavigationModel.ContentPickerTracker?
     ) -> some View {
         modifier(NavigationSheetModifier(
             nextLayer: nextLayer,
             isTopSheet: isTopSheet,
             shareInfo: shareInfo,
+            translationConfiguration: translationConfiguration,
             contentPickerTracker: contentPickerTracker
         ))
     }

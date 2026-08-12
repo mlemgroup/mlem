@@ -68,7 +68,7 @@ struct ErrorDetails: Hashable {
     }
     
     func errorText(includingLocation: Bool = true) -> String {
-        var output = String(describing: error)
+        var output: String = error.map(String.init(describing:)) ?? "nil"
         if includingLocation, let location {
             output += " (\(location))"
         }

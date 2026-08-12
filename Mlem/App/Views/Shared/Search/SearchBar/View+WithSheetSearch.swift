@@ -12,51 +12,35 @@ private struct SearchSheetViewModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
     
     @Binding var query: String
-    @FocusState var focused: Bool
-    
+    @State var width: CGFloat = 0
+
     func body(content: Content) -> some View {
-        Group {
-            if #available(iOS 26, *) {
-                ios26Body(content: content)
-            } else {
-                ios18Body(content: content)
-            }
-        }
-        .toolbar {
-            CloseButtonToolbarItem(ios18Label: .cancel) {
-                navigation.dismissSheet()
-            }
-        }
-        .onAppear {
-            focused = true
-        }
-    }
-    
-    func ios18Body(content: Content) -> some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    HStack(spacing: 0) {
-                        SearchBar("Search", text: $query, isEditing: .constant(true))
-                            .isInitialFirstResponder(true)
-                            .focused($focused)
-                            .autocorrectionDisabled()
-                    }
-                }
-            }
-    }
-    
-    func ios26Body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     HStack(spacing: 0) {
                         SearchBar("Search", text: $query, isEditing: .constant(true))
                             .isInitialFirstResponder(true)
-                            .focused($focused)
                             .autocorrectionDisabled()
                     }
-                    .padding(-10)
+                    // This weird padding setup is necessary.
+                    // Adding simple padding causes the bubble to
+                    // be a different width than the search bar
+                    // content.
+                    .padding(.horizontal, 5)
+                    .frame(width: width)
+                    .padding(.vertical, -10)
+                    .padding(.horizontal, -15)
+                }
+                CloseButtonToolbarItem {
+                    navigation.dismissSheet()
+                }
+            }
+            .background {
+                GeometryReader { proxy in
+                    Color.clear
+                        .onAppear { width = proxy.size.width }
+                        .onChange(of: proxy.size.width) { width = $1 }
                 }
             }
     }

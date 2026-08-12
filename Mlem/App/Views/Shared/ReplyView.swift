@@ -42,13 +42,11 @@ struct ReplyView: View {
                     FooterLinkView(title: post.title, subtitle: nil)
                 }
                 
-                MarkdownWithLinkList(comment.content)
+                TranslatableMarkdownView(markdown: comment.content)
             }
             .padding([.top, .horizontal], Constants.main.standardSpacing)
             
             InteractionBarView(
-                appState: appState,
-                navigation: navigation,
                 comment: comment,
                 notification: notification,
                 configuration: replyInteractionBar
@@ -58,6 +56,7 @@ struct ReplyView: View {
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
         .onTapGesture {
+            notification.updateRead(true)
             navigation.push(.comment(comment))
         }
         .quickSwipes(notification: notification, configuration: replyInteractionBar)

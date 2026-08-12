@@ -10,14 +10,6 @@ import MlemMiddleware
 import SwiftUI
 
 extension SearchView {
-    var availableTabs: [Tab] {
-        var ret: [Tab] = [.communities, .people, .instances, .posts]
-        if appState.firstApi.supports(.commentSearch, defaultValue: false) || selectedTab == .comments {
-            ret.append(.comments)
-        }
-        return ret
-    }
-    
     func contentChangeTriggerDebouncedRefresh() {
         let stashedQuery = query
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {

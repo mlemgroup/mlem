@@ -12,7 +12,7 @@ import UIKit
 
 extension UIUserInterfaceStyle: @retroactive Codable {}
 extension UIUserInterfaceStyle {
-    var label: String {
+    var label: LocalizedStringResource {
         switch self {
         case .unspecified:
             "System"

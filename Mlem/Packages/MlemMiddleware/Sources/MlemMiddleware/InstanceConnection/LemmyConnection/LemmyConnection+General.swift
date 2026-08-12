@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getVersionFallback() async throws -> SiteVersion {
         let response = try await performingForEndpoint { endpoint in
             LemmyFallbackGetVersionRequest(endpoint: endpoint)
@@ -164,52 +164,75 @@ public extension LemmyConnection {
         return try .init(from: response)
     }
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot]) {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyGetSiteRequest(endpoint: endpoint)
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String]) {
+        let myUser = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                let request = LemmyGetSiteRequest(endpoint: .v3)
+                let response = try await self.perform(request, endpoint: .v3)
+                return response.myUser
+            case .v4:
+                let request = LemmyGetMyUserRequest()
+                let response = try await self.perform(request, endpoint: .v4)
+                return response
+            }
         }
         
-        guard let myUser = response.myUser else { return ([], [], []) }
+        guard let myUser else { return ([], [], []) }
+
+        let instances: [String]
+        if let blocks = myUser.instanceCommunitiesBlocks {
+            instances = blocks.map(\.domain)
+        } else if let blocks = myUser.instanceBlocks {
+            instances = blocks.map(\.instance.domain)
+        } else {
+            throw ApiClientError.responseMissingRequiredData("Lemmy getBlocked instances")
+        }
         
         return try (
             people: myUser.personBlocks.map { try .init(from: $0.person) },
             communities: myUser.communityBlocks.map { try .init(from: $0.community) },
-            instances: myUser.instanceBlocks?.compactMap(\.site).map { try .init(from: $0) } ?? [] // TODO: Lemmy 1.0
+            instances: instances
         )
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntrySnapshot] {
+    ) async throws -> PagedResponse<ModlogEntrySnapshot> {
         let response = try await performingForEndpoint { endpoint in
             LemmyGetModLogRequest(
                 endpoint: endpoint,
                 modPersonId: moderatorId,
                 communityId: communityId,
-                page: page,
-                limit: limit,
-                type_: type?.lemmyApiType,
+                page: pageInfo.cursor.pageNumber,
+                limit: pageInfo.limit,
+                type_: type?.lemmyApiType(endpoint: endpoint),
                 otherPersonId: subjectPersonId,
                 postId: postId,
                 commentId: commentId,
                 listingType: .all,
                 showBulk: nil,
                 bulkActionParentId: nil,
-                pageCursor: nil
+                pageCursor: pageInfo.cursor.cursorString
             )
         }
         switch response {
         case let .lemmyGetModlogResponse(response):
-            return try response.toSnapshots()
+            return try .fromLemmyV3(
+                pageInfo: pageInfo,
+                items: try response.toSnapshots(),
+                nextCursor: nil
+            )
         case let .lemmyPagedResponse(response):
-            return try response.items.compactMap { try .init(from: $0) }
+            return try .compact(from: response) {
+                try .init(from: $0)
+            }
         }
     }
     

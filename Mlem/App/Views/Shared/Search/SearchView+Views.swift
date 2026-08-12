@@ -13,7 +13,8 @@ extension SearchView {
     var tabView: some View {
         HStack {
             BubblePicker(
-                availableTabs, selected: $selectedTab,
+                Tab.allCases,
+                selected: $selectedTab,
                 label: { $0.label }
             )
             .overlay(alignment: .trailing) {
@@ -332,7 +333,7 @@ extension SearchView {
                 }
             }
             .labelStyle(.iconOnly)
-            .foregroundStyle(palette.negative)
+            .foregroundStyle(.themedNegative)
             .padding(.horizontal, Constants.main.halfSpacing)
         }
     }

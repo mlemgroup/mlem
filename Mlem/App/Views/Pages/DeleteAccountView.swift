@@ -46,7 +46,7 @@ struct DeleteAccountView: View {
             
             deleteConfirmation
             
-            CloseButtonView(ios18Label: .cancel)
+            CloseButtonView()
         }
         .multilineTextAlignment(.center)
         .padding(Constants.main.doubleSpacing)

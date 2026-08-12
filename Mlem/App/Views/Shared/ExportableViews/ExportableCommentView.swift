@@ -23,7 +23,7 @@ struct ExportableCommentView: View {
     let appState: AppState
     let colorScheme: ColorScheme
     
-    let infoStackReadouts: [CommentBarConfiguration.ReadoutType] = [.upvote, .downvote, .created, .comment]
+    let infoStackReadouts: [ReadoutType] = [.upvote, .downvote, .created, .comment]
     
     var showBars: Bool { showPost || comments.count > 1 }
     

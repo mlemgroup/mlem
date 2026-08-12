@@ -27,24 +27,25 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension FavoriteAction {
-    static let favoriteLabel: ActionLabel = .init(
-        "Favorite",
-        icon: .lemmy.favorite,
+    static let favoriteAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unfavorited", icon: .lemmy.favorited.representingState(active: false)),
+        stateTransitionLabel: .init("Favorite", icon: .lemmy.favorite),
         color: .themedFavorite
     )
-    static let unfavoriteLabel: ActionLabel = .init(
-        "Unfavorite",
-        icon: .lemmy.unfavorite,
-        color: .themedFavorite
+    static let unfavoriteAppearance: ActionAppearance = .init(
+        currentStateLabel: .init("Favorited", icon: .lemmy.favorited.representingState(active: true)),
+        stateTransitionLabel: .init("Favorite", icon: .lemmy.unfavorite),
+        color: .themedFavorite,
+        prominent: true
     )
-    
-    static var label: ActionLabel { favoriteLabel }
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
+    static var appearance: ActionAppearance { favoriteAppearance }
+
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         if entity.favorited {
-            return Self.unfavoriteLabel.withVisibility(visibility(environment))
+            return Self.unfavoriteAppearance.withVisibility(visibility(environment))
         } else {
-            return Self.favoriteLabel.withVisibility(visibility(environment))
+            return Self.favoriteAppearance.withVisibility(visibility(environment))
         }
     }
 

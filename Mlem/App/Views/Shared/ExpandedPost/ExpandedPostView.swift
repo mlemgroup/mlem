@@ -128,24 +128,21 @@ struct ExpandedPostView<Content: View>: View {
                         if let errorDetails = tracker.errorDetails {
                             ErrorView(errorDetails)
                                 .frame(maxWidth: .infinity)
+                        } else if tracker.loadingState != .done {
+                            ProgressView()
+                                .tint(.themedSecondary)
+                                .padding(.top, 50)
+                                // This prevents the tab bar going transparent whilst the comments are loading
+                                .padding(.bottom, 500)
+                                .frame(maxWidth: .infinity)
                         } else if hasNoComments {
                             noCommentsView
                                 .padding(.top, Constants.main.doubleSpacing)
                         } else {
-                            switch tracker.loadingState {
-                            case .done:
-                                LazyVStack(spacing: 0) {
-                                    commentTree(tracker: tracker, scrollProxy: proxy)
-                                }
-                                .geometryGroup()
-                            default:
-                                ProgressView()
-                                    .tint(.themedSecondary)
-                                    .padding(.top, 50)
-                                    // This prevents the tab bar going transparent whilst the comments are loading
-                                    .padding(.bottom, 500)
-                                    .frame(maxWidth: .infinity)
+                            LazyVStack(spacing: 0) {
+                                commentTree(tracker: tracker, scrollProxy: proxy)
                             }
+                            .geometryGroup()
                         }
                     }
                     .animation(.easeInOut(duration: 0.1), value: tracker.loadingState == .loading)
@@ -205,24 +202,20 @@ struct ExpandedPostView<Content: View>: View {
     @ViewBuilder
     func toolbarContent(post: Post, scrollProxy: ScrollViewProxy) -> some View {
         sortPicker(tracker: tracker)
-        if post.shouldShowLoadingSymbol() {
-            ProgressView()
-        } else {
-            ToolbarEllipsisMenu {
-                ControlGroup {
-                    ActionButtons { _ in
-                        PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
-                    }
+        ToolbarEllipsisMenu {
+            ControlGroup {
+                ActionButtons { _ in
+                    PostBarConfiguration.availableActions.all.compactMap { $0.createAction(post) }
                 }
-                .controlGroupStyle(.compactMenu)
-                if !tapPostsToCollapse {
-                    Section {
-                        Button(
-                            postCollapsed ? "Expand Post" : "Collapse Post",
-                            icon: postCollapsed ? .general.expand : .general.collapse
-                        ) {
-                            togglePostCollapsed(post: post, scrollProxy: scrollProxy)
-                        }
+            }
+            .controlGroupStyle(.compactMenu)
+            if !tapPostsToCollapse {
+                Section {
+                    Button(
+                        postCollapsed ? "Expand Post" : "Collapse Post",
+                        icon: postCollapsed ? .general.expand : .general.collapse
+                    ) {
+                        togglePostCollapsed(post: post, scrollProxy: scrollProxy)
                     }
                 }
             }

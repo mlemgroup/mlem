@@ -16,7 +16,7 @@ struct AppointAdminAction: Actions.Action {
 // MARK: - Configurability
 
 extension ActionSeed {
-    static let appointAdmin = ActionSeed("appointAdmin", label: AppointAdminAction.appointLabel) { entity in
+    static let appointAdmin = ActionSeed("appointAdmin", appearance: AppointAdminAction.appointAppearance) { entity in
         switch entity {
         case let entity as Person:
             AppointAdminAction(entity: entity)
@@ -29,29 +29,22 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension AppointAdminAction {
-    static let appointLabel: ActionLabel = .init(
+    static let appointAppearance: ActionAppearance = .init(
         "Appoint Administrator",
         icon: .lemmy.addAdministrator,
         color: .themedPositive
     )
 
-    static let demoteLabel: ActionLabel = .init(
+    static let demoteAppearance: ActionAppearance = .init(
         "Remove Administrator",
         icon: .lemmy.removeAdministrator,
         color: .themedNegative
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        guard let isAdmin = entity.isAdmin.value else { return Self.demoteLabel.withVisibility(.hidden) }
-        let label: ActionLabel
-
-        if isAdmin {
-            label = Self.demoteLabel
-        } else {
-            label = Self.appointLabel
-        }
-
-        return label.withVisibility(visibility(environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        guard let isAdmin = entity.isAdmin.value else { return Self.demoteAppearance.withVisibility(.hidden) }
+        let base = isAdmin ? Self.demoteAppearance : Self.appointAppearance
+        return base.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {

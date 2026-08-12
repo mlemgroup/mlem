@@ -17,6 +17,7 @@ let package = Package(
         .package(url: "https://github.com/groue/Semaphore.git", .upToNextMajor(from: "0.0.8")),
         .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.6.0")),
         .package(url: "https://github.com/JohnSundell/CollectionConcurrencyKit.git", .upToNextMajor(from: "0.2.0")),
+        .package(url: "https://github.com/mlemgroup/LemmyMarkdownUI", .upToNextMinor(from: "0.13.0")),
         .package(path: "../Rest"),
         .package(path: "../MlemBackend")
     ],
@@ -30,7 +31,8 @@ let package = Package(
                 .product(name: "Nuke", package: "Nuke"),
                 .product(name: "CollectionConcurrencyKit", package: "CollectionConcurrencyKit"),
                 .byName(name: "Rest"),
-                .byName(name: "MlemBackend")
+                .byName(name: "MlemBackend"),
+                .byName(name: "LemmyMarkdownUI")
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),

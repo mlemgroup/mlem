@@ -117,28 +117,26 @@ public extension ApiClient {
         }
     }
     
-    func getBlocked() async throws -> (people: [Person], communities: [Community], instances: [Instance]) {
+    func getBlocked() async throws -> (people: [Person], communities: [Community], instances: [InstanceStub]) {
         let snapshots = try await repository.getBlocked()
         return await (
             people: caches.person.getModels(api: self, from: snapshots.people.map { .person1($0) }),
             communities: caches.community.getModels(api: self, from: snapshots.communities.map { .community1($0) }),
-            instances: caches.instance.getModels(api: self, from: snapshots.instances.map { .instance1($0) })
+            instances: snapshots.instances.map { .init(api: self, actorId: .instance(host: $0)) }
         )
     }
     
     func getModlog(
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         moderatorId: Int? = nil,
         subjectPersonId: Int? = nil,
         postId: Int? = nil,
         commentId: Int? = nil,
         type: ModlogEntryType? = nil
-    ) async throws -> [ModlogEntry] {
-        let snapshots = try await repository.getModlog(
-            page: page,
-            limit: limit,
+    ) async throws -> PagedResponse<ModlogEntry> {
+        let response = try await repository.getModlog(
+            pageInfo: pageInfo,
             communityId: communityId,
             moderatorId: moderatorId,
             subjectPersonId: subjectPersonId,
@@ -146,7 +144,8 @@ public extension ApiClient {
             commentId: commentId,
             type: type
         )
-        return await createModlogEntries(snapshots)
+        let entries = await createModlogEntries(response.items)
+        return .init(items: entries, nextLocation: response.nextLocation)
     }
     
     @MainActor

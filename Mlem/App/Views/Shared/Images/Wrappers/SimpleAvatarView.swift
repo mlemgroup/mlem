@@ -7,7 +7,6 @@
 
 import MlemMiddleware
 import Nuke
-import Rest
 import SwiftUI
 
 struct SimpleAvatarView: View {
@@ -57,8 +56,7 @@ struct SimpleAvatarView: View {
         guard let url else { return }
 
         do {
-            let urlRequest = mlemUrlRequest(url: url)
-            let imageTask = ImagePipeline.shared.imageTask(with: .init(urlRequest: urlRequest))
+            let imageTask = ImagePipeline.shared.imageTask(with: url)
 
             let image = try await imageTask.image
             uiImage = image.circleMasked

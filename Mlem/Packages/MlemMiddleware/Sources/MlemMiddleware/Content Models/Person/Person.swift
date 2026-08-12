@@ -286,7 +286,7 @@ public extension Person {
         .init(
             avatar: avatar,
             banner: banner,
-            displayName: displayName,
+            displayName: displayName != name ? displayName : nil,
             description: description,
             matrixUserId: matrixUserId
         )
@@ -341,25 +341,6 @@ public extension Person {
 // MARK: - Interactions
 
 public extension Person {
-    
-    // Get Content
-    
-    func getContent(
-        community: Community? = nil,
-        sort: PostSortType = .new,
-        page: Int,
-        limit: Int,
-        savedOnly: Bool = false
-    ) async throws -> (person: Person, posts: [Post], comments: [Comment]) {
-        try await api.getContent(
-            authorId: id,
-            sort: sort,
-            page: page,
-            limit: limit,
-            savedOnly: savedOnly,
-            communityId: community?.id
-        )
-    }
     
     // MARK: Ban
     
@@ -440,7 +421,7 @@ public extension Person {
         
         avatar = details.avatar
         banner = details.banner
-        displayName = details.displayName ?? displayName
+        displayName = details.displayName ?? name
         description = details.description
         matrixUserId = details.matrixUserId
         
@@ -450,7 +431,7 @@ public extension Person {
             var properties = properties
             properties.avatar = details.avatar
             properties.banner = details.banner
-            properties.displayName = details.displayName ?? properties.displayName
+            properties.displayName = details.displayName ?? properties.name
             properties.description = details.description
             properties.matrixUserId = details.matrixUserId
             return properties

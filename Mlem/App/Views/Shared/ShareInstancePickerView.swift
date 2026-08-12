@@ -13,7 +13,7 @@ struct ShareInstancePickerView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.dismiss) var dismiss
     
-    let entity: any Sharable
+    let entity: any Sharable & ContentModel
     
     var body: some View {
         VStack(spacing: 16) {
@@ -26,7 +26,7 @@ struct ShareInstancePickerView: View {
                 closeButton
             }
             VStack(spacing: 0) {
-                instanceTargetRow(entity.host, label: "My Instance", url: entity.url())
+                instanceTargetRow(entity.api.host, label: "My Instance", url: entity.url())
                 Divider()
                 instanceTargetRow(entity.actorId.host, label: "Original Instance", url: entity.actorId.url)
                 if let lemmyverseUrl = entity.lemmyverseUrl {
@@ -44,21 +44,17 @@ struct ShareInstancePickerView: View {
     
     @ViewBuilder
     var closeButton: some View {
-        if #available(iOS 26, *) {
-            Button {
-                dismiss()
-            } label: {
-                Label("Close", icon: .general.close)
-                    .padding(10)
-                    .background(.themedSecondaryGroupedBackground, in: .circle)
-                    .foregroundStyle(.themedSecondary)
-            }
-            .labelStyle(.iconOnly)
-            .font(.title)
-            .buttonStyle(.plain)
-        } else {
-            CloseButtonView()
+        Button {
+            dismiss()
+        } label: {
+            Label("Close", icon: .general.close)
+                .padding(10)
+                .background(.themedSecondaryGroupedBackground, in: .circle)
+                .foregroundStyle(.themedSecondary)
         }
+        .labelStyle(.iconOnly)
+        .font(.title)
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder

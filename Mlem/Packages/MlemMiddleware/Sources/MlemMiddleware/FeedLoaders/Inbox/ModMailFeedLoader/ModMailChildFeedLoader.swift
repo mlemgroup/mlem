@@ -14,12 +14,8 @@ public class ModMailChildFeedLoader: ChildFeedLoader<ModMailItem>, InboxFeedLoad
     
     func hideRead() async throws {
         try await loadingActor.activateFilter(.read) {
-            await setItems(loadingActor.filter.reset(with: items))
-            modMailFetcher.hideRead(unreadCount: items.count)
-            
-            if items.isEmpty {
-                try await refresh(clearBeforeRefresh: false)
-            }
+            modMailFetcher.hideRead()
+            try await refresh(clearBeforeRefresh: true)
         }
     }
     

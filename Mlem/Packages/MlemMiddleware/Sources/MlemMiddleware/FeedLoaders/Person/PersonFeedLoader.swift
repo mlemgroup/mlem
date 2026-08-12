@@ -22,19 +22,12 @@ class PersonFetcher: Fetcher<Person> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let communities = try await api.searchPeople(
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Person> {
+        try await api.searchPeople(
             query: query,
-            page: page,
-            limit: pageSize,
+            pageInfo: pageInfo,
             filter: listing,
             sort: sort
-        )
-
-        return .init(
-            items: communities,
-            prevCursor: nil,
-            nextCursor: nil
         )
     }
 }

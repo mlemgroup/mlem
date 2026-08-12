@@ -9,8 +9,6 @@ import MlemMiddleware
 import Foundation
 import os
 
-// swiftlint:disable file_length
-
 // Functions to support the old Action system
 
 extension Post {
@@ -83,7 +81,7 @@ extension Post {
                     content: crossPostContent,
                     type: self.type,
                     nsfw: self.nsfw,
-                    feedLoader: .init(wrappedValue: nil)
+                    feedLoader: nil
                 ))
             }
         )
@@ -97,17 +95,6 @@ extension Post {
             confirmationPrompt: locked ? "Really unlock this post?" : "Really lock this post?",
             callback: { self.toggleLocked(feedback) }
         )
-    }
-    
-    func pinAction(appState: AppState, feedback: Set<FeedbackType> = []) -> ActionGroup {
-        .init(
-            appearance: .pin(isOn: false, isInProgress: pinnedCommunityPending || pinnedInstancePending),
-            prompt: "Pin to Community or Instance?",
-            displayMode: .popup
-        ) {
-            pinToCommunityAction(appState: appState, feedback: feedback, showConfirmation: false)
-            pinToInstanceAction(appState: appState, feedback: feedback, showConfirmation: false)
-        }
     }
     
     func pinToCommunityAction(
@@ -217,47 +204,12 @@ extension Post {
     }
     
     func viewVotesAction(navigation: NavigationLayer) -> BasicAction? {
-        guard canModerate && api.supports(.viewVotes, defaultValue: true) else { return nil }
+        guard canModerate else { return nil }
         return .init(
             id: "viewVotes\(uid)",
             appearance: .viewVotes(),
             callback: { @MainActor in navigation.push(.votesList(.post(self))) }
         )
-    }
-    
-    // swiftlint:disable:next cyclomatic_complexity
-    func action(
-        appState: AppState,
-        navigation: NavigationLayer,
-        type: PostBarConfiguration.ActionType,
-        feedback: Set<FeedbackType> = [.haptic, .toast],
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report? = nil
-    ) -> (any Action)? {
-        switch type {
-        case .upvote: return upvoteAction(appState: appState, feedback: feedback)
-        case .downvote: return downvoteAction(appState: appState, feedback: feedback)
-        case .save: return saveAction(appState: appState, feedback: feedback)
-        case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: return shareAction(navigation: navigation)
-        case .selectText: return selectTextAction()
-        case .hide: return hideAction(appState: appState, feedback: feedback)
-        case .block: return blockAction(appState: appState, feedback: feedback)
-        case .report: return reportAction(appState: appState, communityContext: communityContext)
-        case .crossPost: return crossPostAction()
-        case .lock: return lockAction(appState: appState, feedback: feedback)
-        case .pin: return api.isAdmin ? pinAction(
-                appState: appState,
-                feedback: feedback
-            ) : pinToCommunityAction(
-                appState: appState,
-                feedback: feedback
-            )
-        case .resolve: return reportContext?.resolveAction(appState: appState, feedback: feedback)
-        case .remove: return removeAction(appState: appState, feedback: feedback)
-        case .ban: return reportContext?.contextualBanAction(appState: appState)
-        }
     }
     
     // MARK: - Readouts
@@ -288,7 +240,7 @@ extension Post {
         return nil
     }
     
-    func readout(type: PostBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+    func readout(type: ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
         // swiftlint:disable:next void_function_in_ternary
@@ -304,7 +256,7 @@ extension Post {
     
     func counter(
         appState: AppState,
-        type: PostBarConfiguration.CounterType,
+        type: CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
@@ -409,9 +361,7 @@ extension Post {
                 setNsfwAction
             }
             
-            if let navigation,
-               api.supports(.viewVotes, defaultValue: false),
-               let viewVotesAction = viewVotesAction(navigation: navigation) {
+            if let navigation, let viewVotesAction = viewVotesAction(navigation: navigation) {
                 viewVotesAction
             }
         }
@@ -434,5 +384,3 @@ extension Post {
         }
     }
 }
-
-// swiftlint:enable file_length

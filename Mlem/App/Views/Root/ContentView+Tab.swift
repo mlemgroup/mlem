@@ -59,7 +59,6 @@ extension CustomTabItem {
         imageOverride: UIImage? = nil,
         selectedImageOverride: UIImage? = nil,
         badge: String? = nil,
-        onLongPress: (() -> Void)? = nil,
         @ViewBuilder content: () -> some View
     ) {
         self.init(
@@ -67,7 +66,7 @@ extension CustomTabItem {
             image: imageOverride ?? .init(icon: tab.icon.representingState(active: false)),
             selectedImage: selectedImageOverride ?? .init(icon: tab.icon.representingState(active: true)),
             badge: badge,
-            onLongPress: onLongPress, content: content
+            content: content
         )
     }
 }

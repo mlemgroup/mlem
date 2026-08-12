@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol InstanceConnection {
+internal protocol InstanceConnection {
     static var softwareType: SiteSoftwareType { get }
     
     init(baseUrl: URL, token: String?)
@@ -32,39 +32,32 @@ public protocol InstanceConnection {
     
     func getPosts(
         communityId: Int,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter?,
         showHidden: Bool
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?)
+    ) async throws -> PagedResponse<Post2Snapshot>
     
     func getPosts(
         feed: ListingType,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        cursor: String?,
-        limit: Int,
         filter: GetContentFilter?,
         showHidden: Bool
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?)
+    ) async throws -> PagedResponse<Post2Snapshot>
         
     func getPosts(
         personId: Int,
         communityId: Int?,
+        pageInfo: PageInfo,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
         savedOnly: Bool
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot])
+    ) async throws -> PagedResponse<Post2Snapshot>
         
     func getPostHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (posts: [Post2Snapshot], cursor: String?)
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Post2Snapshot>
 
     func getPost(id: Int) async throws -> Post3Snapshot
     func getPost(url: URL) async throws -> Post2Snapshot
@@ -72,13 +65,12 @@ public protocol InstanceConnection {
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchPosts(
         query: String,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
         sort: PostSortType
-    ) async throws -> [Post2Snapshot]
+    ) async throws -> PagedResponse<Post2Snapshot>
     
     func markPostsAsRead(ids: Set<Int>, read: Bool) async throws
     func markPostAsRead(id: Int, read: Bool) async throws
@@ -148,9 +140,8 @@ public protocol InstanceConnection {
     @discardableResult
     func getPostVotes(
         id: Int,
-        page: Int,
-        limit: Int
-    ) async throws -> [PersonVoteSnapshot]
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot>
 
     @discardableResult
     func voteInPoll(postId: Int, choiceIds: Set<Int>) async throws -> Post2Snapshot 
@@ -161,48 +152,42 @@ public protocol InstanceConnection {
     func getComment(url: URL) async throws -> Comment2Snapshot
 
     func getComments(
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int?,
-        limit: Int,
         filter: GetContentFilter?
-    ) async throws -> [Comment2Snapshot]
+    ) async throws -> PagedResponse<Comment2Snapshot>
     
     func getComments(
         postId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int?,
-        limit: Int,
         filter: GetContentFilter?
-    ) async throws -> [Comment2Snapshot]
+    ) async throws -> PagedResponse<Comment2Snapshot>
     
     func getComments(
         parentId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int?,
-        limit: Int,
         filter: GetContentFilter?
-    ) async throws -> [Comment2Snapshot]
+    ) async throws -> PagedResponse<Comment2Snapshot>
 
     func getCommentHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (comments: [Comment2Snapshot], cursor: String?)
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Comment2Snapshot>
     
     // This method should be removed in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(
         query: String,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         communityId: Int?,
         creatorId: Int?,
         filter: ListingType,
         sort: CommentSortType
-    ) async throws -> [Comment2Snapshot]
+    ) async throws -> PagedResponse<Comment2Snapshot>
     
     @discardableResult
     func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot
@@ -236,23 +221,22 @@ public protocol InstanceConnection {
     @discardableResult
     func getCommentVotes(
         id: Int,
-        page: Int,
-        limit: Int
-    ) async throws -> [PersonVoteSnapshot]
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot>
     
     // MARK: - Person
     
     func getPerson(id: Int) async throws -> Person3Snapshot
     func getPerson(url: URL) async throws -> Person2Snapshot
     func getPerson(username: String) async throws -> Person3Snapshot
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot
     
     func searchPeople(
         query: String,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         filter: ListingType,
         sort: PersonSortType
-    ) async throws -> [Person2Snapshot]
+    ) async throws -> PagedResponse<Person2Snapshot>
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot
@@ -281,11 +265,15 @@ public protocol InstanceConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool?,
         communityId: Int?
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot])
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation)
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot>
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?)
     func deleteAccount(password: String, deleteContent: Bool) async throws
@@ -329,21 +317,23 @@ public protocol InstanceConnection {
 
     func getCommunity(id: Int) async throws -> Community3Snapshot
     func getCommunity(url: URL) async throws -> Community2Snapshot
+    func getCommunity(handle: CommunityHandle) async throws -> Community2Snapshot
 
     func editCommunityDescription(id: Int, newValue: String?) async throws -> Community2Snapshot 
     
     func searchCommunities(
         query: String,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         filter: ListingType,
         sort: CommunitySortType
-    ) async throws -> [Community2Snapshot]
+    ) async throws -> PagedResponse<Community2Snapshot>
     
     @discardableResult
-    func getSubscriptionList(page: Int, limit: Int) async throws -> [Community2Snapshot]
+    func getSubscriptionList(pageInfo: PageInfo) async throws -> PagedResponse<Community2Snapshot>
+
     @discardableResult
     func subscribeToCommunity(id: Int, subscribe: Bool) async throws -> Community2Snapshot
+
     @discardableResult
     func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot
     
@@ -390,18 +380,17 @@ public protocol InstanceConnection {
     
     func resolve(url: URL) async throws -> ResolvedContent
     
-    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [Instance1Snapshot])
+    func getBlocked() async throws -> (people: [Person1Snapshot], communities: [Community1Snapshot], instances: [String])
     
     func getModlog(
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         communityId: Int?,
         moderatorId: Int?,
         subjectPersonId: Int?,
         postId: Int?,
         commentId: Int?,
         type: ModlogEntryType?
-    ) async throws -> [ModlogEntrySnapshot]
+    ) async throws -> PagedResponse<ModlogEntrySnapshot>
     
     func getPostLink(url: URL) async throws -> PostLink
 
@@ -409,31 +398,24 @@ public protocol InstanceConnection {
     
     func getMessages(
         creatorId: Int?,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> [Message2Snapshot]
+    ) async throws -> PagedResponse<Message2Snapshot>
     
     func getReplyNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
+    ) async throws -> PagedResponse<InboxNotificationSnapshot>
 
     func getMentionNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
+    ) async throws -> PagedResponse<InboxNotificationSnapshot>
 
     func getMessageNotifications(
-        page: Int?,
-        cursor: String?,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> (notifications: [InboxNotificationSnapshot], cursor: String?)
+    ) async throws -> PagedResponse<InboxNotificationSnapshot>
 
     func markNotificationAsRead(
         type: InboxNotificationContentType,
@@ -443,7 +425,7 @@ public protocol InstanceConnection {
     ) async throws
         
     func markAllAsRead() async throws
-    func getPersonalUnreadCount() async throws -> PersonalUnreadCountSnapshot
+    func getPersonalUnreadCount() async throws -> Int
     func createMessage(personId: Int, content: String) async throws -> Message2Snapshot
     @discardableResult
     func editMessage(id: Int, content: String) async throws -> Message2Snapshot
@@ -465,10 +447,9 @@ public protocol InstanceConnection {
     func getRegistrationApplicationCount() async throws -> Int
     
     func getRegistrationApplications(
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unreadOnly: Bool
-    ) async throws -> [RegistrationApplicationSnapshot]
+    ) async throws -> PagedResponse<RegistrationApplicationSnapshot>
     
     @discardableResult
     func approveRegistrationApplication(id: Int) async throws -> RegistrationApplicationSnapshot
@@ -477,29 +458,26 @@ public protocol InstanceConnection {
     
     // MARK: - Report
     
-    func getReportCount(communityId: Int?) async throws -> ReportUnreadCountSnapshot
+    func getReportCount(communityId: Int?) async throws -> Int
     
     func getPostReports(
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool,
         communityId: Int?,
         postId: Int?
-    ) async throws -> [ReportSnapshot]
+    ) async throws -> PagedResponse<ReportSnapshot>
     
     func getCommentReports(
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool,
         communityId: Int?,
         commentId: Int?
-    ) async throws -> [ReportSnapshot]
+    ) async throws -> PagedResponse<ReportSnapshot>
     
     func getMessageReports(
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         unresolvedOnly: Bool
-    ) async throws -> [ReportSnapshot]
+    ) async throws -> PagedResponse<ReportSnapshot>
     
     @discardableResult
     func resolvePostReport(id: Int, resolved: Bool) async throws -> ReportSnapshot

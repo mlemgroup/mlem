@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension LemmyConnection {
+internal extension LemmyConnection {
     func getPerson(id: Int) async throws -> Person3Snapshot {
         let response = try await performingForEndpoint { endpoint in
             LemmyReadPersonRequest(
@@ -49,16 +49,43 @@ public extension LemmyConnection {
         }
         return try .init(from: response)
     }
+
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot {
+        if handle.host == self.baseUrl.host() {
+            // Required to fix https://github.com/mlemgroup/mlem/issues/2341
+            let response = try await performingForEndpoint { endpoint in
+                LemmyReadPersonRequest(
+                    endpoint: endpoint,
+                    personId: nil,
+                    username: handle.username,
+                    sort: nil,
+                    page: 1,
+                    limit: 1,
+                    communityId: nil,
+                    savedOnly: nil
+                )
+            }
+            return try .init(from: response.personView)
+        }
+        let response = try await performingForEndpoint { endpoint in
+            LemmyResolveObjectRequest(endpoint: endpoint, q: handle.description(withPrefix: true))
+        }
+        switch try ResolvedContent(from: response) {
+        case let .person(person):
+            return person
+        default:
+            throw ApiClientError.noEntityFound
+        }
+    }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
         sort: PersonSortType
-    ) async throws -> [Person2Snapshot] {
-        let people = try await processingForEndpoint { endpoint in
+    ) async throws -> PagedResponse<Person2Snapshot> {
+        try await processingForEndpoint { endpoint in
             switch endpoint {
             case .v3:
                 guard let sortType = sort.v3ApiType else {
@@ -73,8 +100,8 @@ public extension LemmyConnection {
                     type_: .users,
                     sort: sortType,
                     listingType: filter.apiType,
-                    page: page,
-                    limit: limit,
+                    page: try pageInfo.cursor.requirePageNumber,
+                    limit: pageInfo.limit,
                     postTitleOnly: false,
                     searchTerm: query,
                     creatorUsername: nil,
@@ -84,7 +111,13 @@ public extension LemmyConnection {
                     showNsfw: nil,
                     pageCursor: nil
                 )
-                return try await self.perform(request, endpoint: .v3).users ?? []
+                let response = try await self.perform(request, endpoint: .v3)
+                let persons = (response.persons ?? response.users) ?? []
+                return try PagedResponse.fromLemmyV3(
+                    pageInfo: pageInfo,
+                    items: try persons.map { try .init(from: $0) },
+                    nextCursor: nil
+                )
             case .v4:
                 guard let sortType = sort.v4ApiType else {
                     throw ApiClientError.featureUnsupported
@@ -97,13 +130,13 @@ public extension LemmyConnection {
                     sort: sortType,
                     searchTerm: query,
                     searchTitleOnly: nil,
-                    pageCursor: nil,
-                    limit: limit
+                    pageCursor: try pageInfo.cursor.requireCursorString,
+                    limit: pageInfo.limit
                 )
-                return try await self.perform(request, endpoint: .v4).items
+                let response = try await self.perform(request, endpoint: .v4)
+                return try .init(from: response) { try .init(from: $0) }
             }
         }
-        return try people.map { try .init(from: $0) }
     }
     
     @discardableResult
@@ -195,11 +228,10 @@ public extension LemmyConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let response = try await performingForEndpoint { endpoint in
             if endpoint == .v4 {
                 // TODO: Use LemmyListPersonContentRequest here
@@ -210,17 +242,52 @@ public extension LemmyConnection {
                 personId: id,
                 username: nil,
                 sort: sort.v3ApiType,
-                page: page,
-                limit: limit,
+                page: try pageInfo.cursor.requirePageNumber,
+                limit: pageInfo.limit,
                 communityId: nil,
                 savedOnly: savedOnly
             )
         }
+
+        let posts: [Post2Snapshot] = try response.posts?.map { try .init(from: $0) } ?? []
+        let comments: [Comment2Snapshot] = try response.comments?.map { try .init(from: $0) } ?? []
+
+        let nextLocation: PageLocation
+
+        if posts.count < pageInfo.limit && comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
-            posts: response.posts?.map { try .init(from: $0) } ?? [],
-            comments: response.comments?.map { try .init(from: $0) } ?? []
+            posts: posts,
+            comments: comments,
+            nextLocation: nextLocation
         )
+    }
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot> {
+        let response = try await performingForEndpoint { endpoint in
+            if endpoint == .v3 {
+                throw ApiClientError.featureUnsupported
+            }
+            return LemmyListPersonContentRequest(
+                type_: .all,
+                personId: id,
+                username: nil,
+                communityId: nil,
+                communityName: nil,
+                pageCursor: try pageInfo.cursor.requireCursorString,
+                limit: pageInfo.limit
+            )
+        }
+
+        return try .init(from: response) { try .init(from: $0) }
     }
     
     func getMyPerson() async throws -> (person: Person4Snapshot?, instance: Instance3Snapshot, blocks: BlockListSnapshot?) {
@@ -270,7 +337,7 @@ public extension LemmyConnection {
                 interfaceLanguage: nil,
                 avatar: details.avatar?.absoluteString ?? "",
                 banner: details.banner?.absoluteString ?? "",
-                displayName: details.displayName,
+                displayName: details.displayName ?? "",
                 email: nil,
                 bio: details.description,
                 matrixUserId: details.matrixUserId,
@@ -293,12 +360,13 @@ public extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }
@@ -373,12 +441,13 @@ public extension LemmyConnection {
                 defaultPostTimeRangeSeconds: nil,
                 defaultItemsPerPage: nil,
                 defaultCommentSortType: nil,
+                showMedia: nil,
                 blockingKeywords: nil,
                 animatedImagesEnabled: nil,
                 privateMessagesEnabled: nil,
                 showScore: nil,
                 autoMarkFetchedPostsAsRead: nil,
-                hideMedia: nil,
+                hidePostsWithMedia: nil,
                 showPersonVotes: nil
             )
         }

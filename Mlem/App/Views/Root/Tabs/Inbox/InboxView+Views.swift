@@ -11,7 +11,7 @@ import SwiftUI
 extension InboxView {
     @ViewBuilder
     var inboxFeedView: some View {
-        LazyVStack(spacing: 0, pinnedViews: UIDevice.isIos26 ? [] : [.sectionHeaders]) {
+        LazyVStack(spacing: 0) {
             Section {
                 ForEach(feedLoader.items, id: \.inboxId) { notification in
                     Group {
@@ -34,16 +34,10 @@ extension InboxView {
                 
                 EndOfFeedView(feedLoader: feedLoader, viewType: .cartoon)
             } header: {
-                if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
-                    sectionHeader
-                }
+                sectionHeader
             }
         }
         .animation(.easeOut(duration: 0.1), value: feedLoader.items.isEmpty)
-        .padding(
-            .top,
-            appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) ? 0 : Constants.main.standardSpacing
-        )
     }
     
     @ViewBuilder
@@ -53,18 +47,7 @@ extension InboxView {
                 BubblePicker(
                     ModTab.allCases,
                     selected: $selectedModTab,
-                    label: \.label,
-                    value: { tab in
-                        if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
-                            switch tab {
-                            case .reports:
-                                return unreadCount.reportTotal
-                            case .applications:
-                                return unreadCount.registrationApplications
-                            }
-                        }
-                        return 0
-                    }
+                    label: \.label
                 )
             }
             ForEach(currentModFeedLoader.items, id: \.inboxId) { item in
@@ -96,39 +79,18 @@ extension InboxView {
         BubblePicker(
             Tab.allCases,
             selected: $selectedTab,
-            label: \.label,
-            value: { tab in
-                if let unreadCount = (appState.firstSession as? UserSession)?.unreadCount {
-                    switch tab {
-                    case .all:
-                        return unreadCount.personalTotal
-                    case .replies:
-                        return unreadCount.replies
-                    case .mentions:
-                        return unreadCount.mentions
-                    case .messages:
-                        return unreadCount.messages
-                    }
-                }
-                return 0
-            }
+            label: \.label
         )
-        .background(.themedGroupedBackground.opacity(headerPinned ? 1 : 0))
-        .background(.bar)
     }
     
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if #available(iOS 26, *) {
-                if showRead {
-                    hideReadButton
-                } else {
-                    hideReadButton
-                        .buttonStyle(.glassProminent)
-                }
+            if showRead {
+                hideReadButton
             } else {
                 hideReadButton
+                    .buttonStyle(.glassProminent)
             }
         }
         if selectedFeed == .inbox {
@@ -221,8 +183,8 @@ extension InboxView {
     var showBadge: Bool {
         guard let unreadCount = (appState.firstSession as? UserSession)?.unreadCount else { return false }
         switch selectedFeed {
-        case .inbox: return unreadCount.moderationTotal > 0
-        case .modMail: return unreadCount.personalTotal > 0
+        case .inbox: return unreadCount.moderation > 0
+        case .modMail: return unreadCount.personal > 0
         }
     }
 }

@@ -108,18 +108,29 @@ public extension URL {
         }
         return nil
     }
+
+    func proxiedUrl() -> URL? {
+        if let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
+            let queryItems = components.queryItems,
+            let baseUrlString = queryItems.first(where: { $0.name == "url" })?.value,
+            let baseUrl = URL(string: baseUrlString) {
+            baseUrl
+        } else {
+            nil
+        }
+    }
+
+    func unwrapProxy() -> URL {
+        proxiedUrl() ?? self
+    }
     
     /// Path extension of this URL, taking into account image proxy behavior
     var proxyAwarePathExtension: String? {
         var ret = pathExtension
         
         // image proxies that use url query param don't have pathExtension so we extract it from the embedded url
-        if ret.isEmpty,
-           let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
-           let queryItems = components.queryItems,
-           let baseUrlString = queryItems.first(where: { $0.name == "url" })?.value,
-           let baseUrl = URL(string: baseUrlString) {
-            ret = baseUrl.pathExtension
+        if ret.isEmpty {
+            ret = unwrapProxy().pathExtension
         }
         
         return ret.isEmpty ? nil : ret.lowercased()

@@ -31,7 +31,7 @@ extension Community1Snapshot {
             created: published,
             instanceId: community.instanceId,
             updated: community.updatedAt ?? community.updated,
-            displayName: community.title,
+            displayName: community.title ?? community.name,
             description: description,
             deleted: community.deleted,
             removed: community.removed,

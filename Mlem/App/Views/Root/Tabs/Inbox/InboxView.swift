@@ -20,7 +20,6 @@ struct InboxView: View {
     
     @Setting(\.inbox_showRead) var showRead
     
-    @State var headerPinned: Bool = false
     @State var selectedFeed: Feed = .inbox
     @State var selectedTab: Tab = .all
     @State var selectedModTab: ModTab = .reports
@@ -68,19 +67,15 @@ struct InboxView: View {
     }
     
     var feedLoader: StandardFeedLoader<InboxNotification> {
-        if appState.firstApi.supports(.viewMentionsAndPrivateMessages, defaultValue: false) {
-            switch selectedTab {
-            case .all:
-                inboxFeedLoader
-            case .replies:
-                replyFeedLoader
-            case .mentions:
-                mentionFeedLoader
-            case .messages:
-                messageFeedLoader
-            }
-        } else {
+        switch selectedTab {
+        case .all:
+            inboxFeedLoader
+        case .replies:
             replyFeedLoader
+        case .mentions:
+            mentionFeedLoader
+        case .messages:
+            messageFeedLoader
         }
     }
     
@@ -137,6 +132,7 @@ struct InboxView: View {
                     }
                 }
                 .refreshable {
+                    showRefreshPopup = false
                     _ = await Task {
                         await refresh()
                     }.result
@@ -170,12 +166,6 @@ struct InboxView: View {
                     )
                 }
                 .frame(width: 0, height: 0)
-                .onPreferenceChange(ScrollOffsetKey.self, perform: { value in
-                    if value != headerPinned {
-                        if UIDevice.isIos26, headerPinned { return }
-                        headerPinned = value
-                    }
-                })
                 switch selectedFeed {
                 case .inbox:
                     inboxFeedView

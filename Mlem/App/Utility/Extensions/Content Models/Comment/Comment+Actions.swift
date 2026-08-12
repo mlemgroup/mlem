@@ -13,7 +13,7 @@ import SwiftUI
 extension Comment {
     // MARK: - Readouts
     
-    func readout(type: CommentBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
+    func readout(type: ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
         // swiftlint:disable:next void_function_in_ternary
@@ -25,23 +25,11 @@ extension Comment {
         }
     }
 
-    func readout(type: ReplyBarConfiguration.ReadoutType, showColor: Bool) -> Readout? {
-        switch type {
-        case .created: createdReadout
-        // swiftlint:disable:next void_function_in_ternary
-        case .score: downvotesEnabled ? scoreReadout(showColor: showColor) : upvoteReadout(showColor: showColor)
-        case .upvote: upvoteReadout(showColor: showColor)
-        case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
-        case .comment: commentReadout
-        case .saved: savedReadout(showColor: showColor)
-        }
-    }
-    
     // MARK: - Counters
     
     func counter(
         appState: AppState,
-        type: CommentBarConfiguration.CounterType,
+        type: CounterType,
         commentTreeTracker: CommentTreeTracker? = nil
     ) -> Counter? {
         switch type {
@@ -52,19 +40,6 @@ extension Comment {
         }
     }
 
-    func counter(
-        appState: AppState,
-        type: ReplyBarConfiguration.CounterType,
-        commentTreeTracker: CommentTreeTracker? = nil
-    ) -> Counter? {
-        switch type {
-        case .score: scoreCounter(appState: appState, downvotesEnabled: downvotesEnabled)
-        case .upvote: upvoteCounter(appState: appState)
-        case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
-        case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
-    }
-    
     // MARK: - Actions
     
     func createImageAction(navigation: NavigationLayer, commentTreeTracker: CommentTreeTracker?) -> BasicAction {
@@ -86,7 +61,7 @@ extension Comment {
     }
     
     func viewVotesAction() -> BasicAction {
-        let callback: (@MainActor () -> Void)? = canModerate && api.supports(.viewVotes, defaultValue: true)
+        let callback: (@MainActor () -> Void)? = canModerate
         ? { @MainActor in NavigationModel.main.openSheet(.votesList(.comment(self))) }
         : nil
         return .init(
@@ -108,95 +83,8 @@ extension Comment {
         )
     }
     
-    func collapseAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        .init(
-            id: "collapse\(uid)",
-            appearance: .collapse(),
-            callback: { @MainActor in
-                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.collapsed.toggle()
-                }
-            }
-        )
-    }
-    
-    func collapseParentAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        .init(
-            id: "collapseParent\(uid)",
-            appearance: .collapseParent(),
-            callback: { @MainActor in
-                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                    guard let comment = commentTreeTracker?.nodesKeyedByActorId[self.actorId] else { return }
-                    (comment.parent ?? comment).collapsed.toggle()
-                }
-            }
-        )
-    }
-    
-    func collapseToTopAction(commentTreeTracker: CommentTreeTracker? = nil) -> BasicAction {
-        .init(
-            id: "collapseToTop\(uid)",
-            appearance: .collapseToTop(),
-            callback: { @MainActor in
-                withAnimation(UIAccessibility.isReduceMotionEnabled ? nil : .default) {
-                    commentTreeTracker?.nodesKeyedByActorId[self.actorId]?.topParent.collapsed.toggle()
-                }
-            }
-        )
-    }
-    
     // MARK: - Action Groups
-    
-    // swiftlint:disable:next cyclomatic_complexity
-    func action(
-        appState: AppState,
-        type: CommentBarConfiguration.ActionType,
-        navigation: NavigationLayer?,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report? = nil
-    ) -> (any Action)? {
-        switch type {
-        case .upvote: if let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) { return upvoteAction }
-        case .downvote: if let downvoteAction = downvoteAction(appState: appState, feedback: [.haptic]) { return downvoteAction }
-        case .save: return saveAction(appState: appState, feedback: [.haptic])
-        case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .share: return shareAction(navigation: navigation)
-        case .selectText: return selectTextAction()
-        case .report: return reportAction(appState: appState, communityContext: communityContext)
-        case .resolve: return reportContext?.resolveAction(appState: appState, feedback: [.haptic])
-        case .remove: return removeAction(appState: appState)
-        case .ban: return reportContext?.contextualBanAction(appState: appState)
-        case .collapse: return collapseAction(commentTreeTracker: commentTreeTracker)
-        case .collapseParent: return collapseParentAction(commentTreeTracker: commentTreeTracker)
-        case .collapseToTop: return collapseToTopAction(commentTreeTracker: commentTreeTracker)
-        }
-        return nil
-    }
-    
-    func action(
-        appState: AppState,
-        type: ReplyBarConfiguration.ActionType,
-        navigation: NavigationLayer?,
-        notification: InboxNotification,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        communityContext: Community? = nil,
-        reportContext: Report? = nil
-    ) -> (any Action)? {
-        switch type {
-        case .upvote: if let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) { return upvoteAction }
-        case .downvote: if let downvoteAction = downvoteAction(appState: appState, feedback: [.haptic]) { return downvoteAction }
-        case .save: return saveAction(appState: appState, feedback: [.haptic])
-        case .reply: return replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-        case .selectText: return selectTextAction()
-        case .report: return reportAction(appState: appState, communityContext: communityContext)
-        case .markRead: return markReadAction(appState: appState, notification: notification)
-        }
-        return nil
-    }
-    
-    // MARK: - Action Groups
-    
+
     @ActionBuilder
     func allMenuActions(
         appState: AppState,
@@ -271,9 +159,7 @@ extension Comment {
         showAllActions: Bool = true,
         report: Report? = nil
     ) -> [any Action] {
-        let viewVotesIsPossible = api.supports(.viewVotes, defaultValue: false)
-        
-        if viewVotesIsPossible, showAllActions || Settings.get(\.menus_allModActions) {
+        if showAllActions || Settings.get(\.menus_allModActions) {
             viewVotesAction()
         }
         if !isOwnComment {

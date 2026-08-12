@@ -47,9 +47,7 @@ struct BanAction: SimpleLabelAction {
     }
 
     func canBanFromCommunity(community: Community?) -> Bool {
-        let supportedByApi = entity.api.supports(.banFromCommunity, defaultValue: false) && (
-            entity.apiIsLocal || entity.api.supports(.banFromNonLocalCommunity, defaultValue: false)
-        )
+        let supportedByApi = entity.apiIsLocal || entity.api.supports(.banFromNonLocalCommunity, defaultValue: false)
 
         guard supportedByApi else { return false }
         guard let community else { return entity.api.isAdmin }
@@ -92,40 +90,40 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension BanAction {
-    static let label: ActionLabel = .init(
-        "Ban",
-        icon: .lemmy.banFromCommunity,
+    static let appearance: ActionAppearance = .init(
+        currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromCommunity.representingState(active: false)),
+        stateTransitionLabel: .init("Ban", icon: .lemmy.banFromCommunity),
         color: .themedNegative,
         isDestructive: true
     )
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        let label: ActionLabel
-
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         let appliedBanScopes = getAppliedBanScopes(environment: environment)
         let actionableBanScopes = getActionableBanScopes(environment: environment)
+        let base: ActionAppearance
 
         switch (bannedFrom: appliedBanScopes, canBanFrom: actionableBanScopes) {
         case (bannedFrom: .none, canBanFrom: .both),
              (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
-            label = .init(
-                "Ban",
-                icon: .lemmy.banFromInstance,
+            base = .init(
+                currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromInstance.representingState(active: false)),
+                stateTransitionLabel: .init("Ban", icon: .lemmy.banFromInstance),
                 color: .themedNegative,
                 isDestructive: true
             )
 
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
              (bannedFrom: .both, canBanFrom: .both):
-            label = .init(
-                "Unban",
-                icon: .lemmy.unbanFromInstance,
-                color: .themedPositive
+            base = .init(
+                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromInstance.representingState(active: true)),
+                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromInstance),
+                color: .themedPositive,
+                prominent: true
             )
 
         case (bannedFrom: .instanceOnly, canBanFrom: .both),
              (bannedFrom: .communityOnly, canBanFrom: .both):
-            label = .init(
+            base = .init(
                 "Ban...",
                 icon: .lemmy.banFromInstance,
                 color: .themedNegative,
@@ -133,20 +131,21 @@ extension BanAction {
             )
 
         case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
-            label = .init(
-                "Unban",
-                icon: .lemmy.unbanFromCommunity,
-                color: .themedPositive
+            base = .init(
+                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromCommunity.representingState(active: true)),
+                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromCommunity),
+                color: .themedPositive,
+                prominent: true
             )
 
         case (bannedFrom: .anyNotContaining(.community), canBanFrom: .communityOnly):
-            label = Self.label
+            base = Self.appearance
 
         default:
-            return Self.label.withVisibility(.hidden)
+            return Self.appearance.withVisibility(.hidden)
         }
 
-        return label.withVisibility(visibility(environment))
+        return base.withVisibility(visibility(environment))
     }
 
     /// Get the scopes that the target is current banned within.

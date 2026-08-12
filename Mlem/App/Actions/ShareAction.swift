@@ -27,7 +27,7 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ShareAction {
-    static let label: ActionLabel = .init(
+    static let appearance: ActionAppearance = .init(
         "Share...",
         icon: .general.share,
         color: .themedColorfulAccent(3)
@@ -39,23 +39,23 @@ extension ShareAction {
 extension ShareAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        let url: URL? = switch Settings.get(\.links_shareMode) {
+        guard let navigation = environment.navigation else { return }
+
+        let shareMode = Settings.get(\.links_shareMode)
+
+        if shareMode == .askEveryTime, let entity = entity as? any Sharable & ContentIdentifiable {
+            navigation.openSheet(.shareInstancePicker(entity))
+            return
+        }
+
+        let url: URL = switch shareMode {
         case .myInstance: entity.url()
         case .originalInstance: entity.actorId.url
-        case .lemmyverse: entity.lemmyverseUrl
-        case .askEveryTime: nil
+        case .lemmyverse: entity.lemmyverseUrl ?? entity.url()
+        case .askEveryTime: entity.url()
         }
-        if let url, let navigation = environment.navigation {
-            if case .actionSheet = navigation.root {
-                navigation.dismissSheet()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
-                }
-            } else {
-                navigation.model?.shareInfo = .init(url: url, actions: entity.shareSheetActions())
-            }
-        } else {
-            environment.navigation?.openSheet(.shareInstancePicker(entity))
+        environment.navigation?.dismissingActionSheet {
+            NavigationModel.main.shareInfo = .init(url: url, actions: entity.shareSheetActions())
         }
     }
 }

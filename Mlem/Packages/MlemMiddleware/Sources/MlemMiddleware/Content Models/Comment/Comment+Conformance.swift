@@ -29,7 +29,7 @@ public extension Comment {
 // MARK: SelectableContentProviding
 
 public extension Comment {
-    var selectableContent: String? { content }
+    var selectableContent: String? { content.string }
 }
 
 // MARK: ContentIdentifiable

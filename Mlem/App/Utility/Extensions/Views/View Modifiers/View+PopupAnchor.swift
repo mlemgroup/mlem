@@ -25,27 +25,14 @@ struct PopupAnchor: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        if #available(iOS 26, *) {
-            content
-                .alert(
-                    model.data?.message ?? "",
-                    isPresented: isPresented
-                ) {
-                    buttonsView
-                }
-                .environment(model)
-        } else {
-            content
-                .confirmationDialog(
-                    model.data?.message ?? "",
-                    isPresented: isPresented
-                ) {
-                    buttonsView
-                } message: {
-                    Text(model.data?.message ?? "")
-                }
-                .environment(model)
-        }
+        content
+            .alert(
+                model.data?.message ?? "",
+                isPresented: isPresented
+            ) {
+                buttonsView
+            }
+            .environment(model)
     }
     
     @ViewBuilder

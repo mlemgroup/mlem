@@ -8,16 +8,20 @@
 import UIKit
 
 extension UIDevice {
+    static var isIos27: Bool {
+        if #available(iOS 27, *) {
+            true
+        } else {
+            false
+        }
+    }
+
     static var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
     
     static var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
-    }
-    
-    static var isIos26: Bool {
-        if #available(iOS 26, *) { true } else { false }
     }
 
     static var frameType: DeviceFrameType {

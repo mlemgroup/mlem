@@ -112,7 +112,9 @@ public class RestClient {
             throw .parameterEncoding(error)
         }
         
-        var urlRequest = mlemUrlRequest(url: url)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.addValue("MlemUserAgent", forHTTPHeaderField: "User-Agent")
+
         urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         for header in request.headers {
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)

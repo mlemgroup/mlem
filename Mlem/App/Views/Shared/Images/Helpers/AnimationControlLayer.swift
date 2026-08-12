@@ -64,36 +64,20 @@ private struct AnimationControlLayer: ViewModifier {
     @ViewBuilder
     var muteButton: some View {
         if controlState.audioAvailable {
-            muteButtonContent
-                .padding([.bottom, .trailing], 5)
-                .padding([.top, .leading], 15)
-                .contentShape(.rect)
-                .highPriorityGesture(TapGesture().onEnded {
-                    controlState.muted = !controlState.muted
-                })
-                .contentTransition(.symbolEffect(.replace, options: .speed(2)))
+            SmallOverlayButtonLabel(
+                isOn: controlState.muted,
+                text: (on: "Unmute", off: "Mute"),
+                icons: (on: .general.mute, off: .general.unmute))
+            .symbolVariant(.fill)
+            .glassEffect(.clear.interactive(), in: .circle)
+            .padding([.bottom, .trailing], 5)
+            .padding([.top, .leading], 15)
+            .contentShape(.rect)
+            .highPriorityGesture(TapGesture().onEnded {
+                controlState.muted = !controlState.muted
+            })
+            .contentTransition(.symbolEffect(.replace, options: .speed(2)))
         }
-    }
-    
-    // TODO: iOS 18 deprecation remove
-    @ViewBuilder
-    var muteButtonContent: some View {
-        if #available(iOS 26, *) {
-            muteButtonLabel
-                .glassEffect(.clear.interactive(), in: .circle)
-        } else {
-            muteButtonLabel
-                .background(.ultraThinMaterial, in: .circle)
-        }
-    }
-    
-    // TODO: iOS 18 deprecation remove
-    var muteButtonLabel: some View {
-        SmallOverlayButtonLabel(
-            isOn: controlState.muted,
-            text: (on: "Unmute", off: "Mute"),
-            icons: (on: .general.mute, off: .general.unmute))
-        .symbolVariant(.fill)
     }
 }
 

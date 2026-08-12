@@ -42,7 +42,7 @@ public class Comment:
     public let postId: Int
     public let parentCommentIds: [Int]
     public let created: Date
-    public var content: String
+    public var content: TranslatableMarkdown
     public var updated: Date?
     public var distinguished: Bool
     public var languageId: Int
@@ -71,7 +71,7 @@ public class Comment:
         self.postId = properties.postId
         self.parentCommentIds = properties.parentCommentIds
         self.created = properties.created
-        self.content = properties.content
+        self.content = .init(properties.content)
         self.updated = properties.updated
         self.distinguished = properties.distinguished
         self.languageId = properties.languageId
@@ -112,7 +112,7 @@ public class Comment:
     @MainActor
     public func update(with properties: CommentProperties) {
         if !properties.removed {
-            setIfChanged(\.content, properties.content)
+            setIfChanged(\.content.string, properties.content)
         }
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.distinguished, properties.distinguished)
@@ -271,7 +271,7 @@ public extension Comment {
     // Edit
     
     func edit(content: String, languageId: Int?) async throws {
-        self.content = content
+        self.content.string = content
         if let languageId {
             self.languageId = languageId
         }
@@ -299,11 +299,10 @@ public extension Comment {
         guard let first = parentCommentIds.first else { return [] }
         let comments = try await api.getComments(
             parentId: first,
+            pageInfo: .init(cursor: .first, limit: 1000),
             sort: .new,
-            page: 1,
-            maxDepth: parentCommentIds.count,
-            limit: 1000
-        )
+            maxDepth: parentCommentIds.count
+        ).items
         var i = 0
         return comments.filter { comment in
             if comment.id == parentCommentIds[i] {
@@ -317,40 +316,41 @@ public extension Comment {
     func getChildren(
         sort: CommentSortType = .hot,
         includedParentCount: Int = 0,
-        page: Int,
+        pageInfo: PageInfo,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
+    ) async throws -> PagedResponse<Comment> {
         let parentId: Int
         if includedParentCount <= 0 {
             parentId = id
         } else {
             parentId = parentCommentIds.dropLast(includedParentCount - 1).last ?? parentCommentIds.first ?? id
         }
-        let comments = try await api.getComments(
+        let response = try await api.getComments(
             parentId: parentId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
         if includedParentCount <= 0 {
-            return comments
+            return response
         }
         
-        return comments.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id }
+        return .init(
+            items: response.items.filter { $0.parentCommentIds.contains(id) || self.parentCommentIds.contains($0.id) || $0.id == self.id },
+            nextLocation: response.nextLocation
+        )
     }
     
-    func getVotes(page: Int, limit: Int, communityId: Int) async throws -> [PersonVote] {
-        try await api.getCommentVotes(id: id, communityId: communityId, page: page, limit: limit)
+    func getVotes(pageInfo: PageInfo, communityId: Int) async throws -> PagedResponse<PersonVote> {
+        try await api.getCommentVotes(id: id, communityId: communityId, pageInfo: pageInfo)
     }
 }
 
 extension Comment: CustomDebugStringConvertible {
     public var debugDescription: String {
-        "Comment(\(self.id), \"\(self.content.prefix(25))\")"
+        "Comment(\(self.id), \"\(self.content.string.prefix(25))\")"
     }
 }
 
@@ -381,7 +381,7 @@ public extension Comment {
                     postId: postId,
                     parentCommentIds: parentCommentIds,
                     created: created,
-                    content: content,
+                    content: content.string,
                     updated: updated,
                     distinguished: distinguished,
                     languageId: languageId,

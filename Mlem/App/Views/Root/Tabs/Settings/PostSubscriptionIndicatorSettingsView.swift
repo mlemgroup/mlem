@@ -31,7 +31,7 @@ struct PostSubscriptionIndicatorSettingsView: View {
                 cornerRadii: .init(
                     topLeading: 16,
                     bottomLeading: 0,
-                    bottomTrailing: UIDevice.isIos26 ? 26 : 10,
+                    bottomTrailing: 26,
                     topTrailing: 0
                 )
             )

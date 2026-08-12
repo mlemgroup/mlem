@@ -9,20 +9,8 @@ import MlemMiddleware
 import SwiftUI
 
 extension Post {
-    func shouldShowLoadingSymbol(for barConfiguration: PostBarConfiguration? = nil) -> Bool {
-        if lockedPending, !(barConfiguration?.all.contains(.action(.lock)) ?? false) {
-            return true
-        }
-        if pinnedCommunityPending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
-            return true
-        }
-        if pinnedInstancePending, !(barConfiguration?.all.contains(.action(.pin)) ?? false) {
-            return true
-        }
-        if nsfwPending {
-            return true
-        }
-        return false
+    func shouldShowLoadingSymbol() -> Bool {
+        lockedPending || pinnedCommunityPending || pinnedInstancePending || nsfwPending
     }
     
     var shouldHideInFeed: Bool {

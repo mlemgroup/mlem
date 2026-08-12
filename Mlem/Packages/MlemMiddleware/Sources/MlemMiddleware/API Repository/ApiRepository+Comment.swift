@@ -21,18 +21,16 @@ extension ApiRepository {
     }
     
     func getComments(
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getComments(
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
                 maxDepth: maxDepth,
-                limit: limit,
                 filter: filter
             )
         }
@@ -40,19 +38,17 @@ extension ApiRepository {
     
     func getComments(
         postId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getComments(
                 postId: postId,
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
                 maxDepth: maxDepth,
-                limit: limit,
                 filter: filter
             )
         }
@@ -60,19 +56,17 @@ extension ApiRepository {
     
     func getComments(
         parentId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getComments(
                 parentId: parentId,
+                pageInfo: pageInfo,
                 sort: sort,
-                page: page,
                 maxDepth: maxDepth,
-                limit: limit,
                 filter: filter
             )
         }
@@ -80,16 +74,12 @@ extension ApiRepository {
 
     func getCommentHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (comments: [Comment2Snapshot], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await performingForConnection { connection in
             try await connection.getCommentHistory(
                 type: type,
-                page: page,
-                cursor: cursor,
-                limit: limit
+                pageInfo: pageInfo
             )
         }
     }
@@ -97,18 +87,16 @@ extension ApiRepository {
     // TODO: Remove in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
-    ) async throws -> [Comment2Snapshot] {
+    ) async throws -> PagedResponse<Comment2Snapshot> {
         try await performingForConnection { connection in
             try await connection.searchComments(
                 query: query,
-                page: page,
-                limit: limit,
+                pageInfo: pageInfo,
                 communityId: communityId,
                 creatorId: creatorId,
                 filter: filter,
@@ -192,15 +180,10 @@ extension ApiRepository {
     
     func getCommentVotes(
         id: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVoteSnapshot] {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVoteSnapshot> {
         try await performingForConnection { connection in
-            try await connection.getCommentVotes(
-                id: id,
-                page: page,
-                limit: limit
-            )
+            try await connection.getCommentVotes(id: id, pageInfo: pageInfo)
         }
     }
 }

@@ -46,19 +46,17 @@ struct AccessibilitySettingsView: View {
             } header: {
                 Text("Non-Text Indicators")
             }
-                       
-            if #available(iOS 18, *) {
-                Section {
-                    NavigationLink(
-                        "Animated Avatars",
-                        value: .init(localized: animatedAvatars.label),
-                        fallbackValue: "",
-                        icon: .general.playCircle,
-                        destination: .settings(.animatedAvatars)
-                    )
-                } header: {
-                    Text("Reduce Motion")
-                }
+            
+            Section {
+                NavigationLink(
+                    "Animated Avatars",
+                    value: .init(localized: animatedAvatars.label),
+                    fallbackValue: "",
+                    icon: .general.playCircle,
+                    destination: .settings(.animatedAvatars)
+                )
+            } header: {
+                Text("Reduce Motion")
             }
 
             Section {

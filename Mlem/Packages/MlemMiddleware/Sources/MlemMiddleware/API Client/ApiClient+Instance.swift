@@ -36,13 +36,11 @@ public extension ApiClient {
         
         let response = try await externalApi.getPosts(
             feed: .local,
-            sort: .new,
-            page: 1,
-            cursor: nil,
-            limit: 1
+            pageInfo: .init(cursor: .first, limit: 1),
+            sort: .new
         )
         
-        guard let post = response.posts.first else {
+        guard let post = response.items.first else {
             throw InstanceUpgradeError.noPostReturned
         }
         

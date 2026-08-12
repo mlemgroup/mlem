@@ -97,9 +97,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var safety_blurNsfw: NsfwBlurBehavior
     var safety_enableModlogWarning: Bool
     var safety_enableNsfwCommunityWarning: Bool
-    var tab_gestures_enableLongPress: Bool
     var tab_gestures_enableSwipeUp: Bool
-    var tab_gestures_longPressAction: TabBarLongPressAction
     var tab_profile_labelType: ProfileTabLabel
     var tab_profile_showAvatar: Bool
     var tab_inbox_badgeIncludedTypes: Set<InboxItemType>
@@ -196,28 +194,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
         
-        if let tab_inbox_badgeIncludedTypes = try container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
-            self.tab_inbox_badgeIncludedTypes = tab_inbox_badgeIncludedTypes
+        if let types = try? container.decodeIfPresent(Set<InboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
+            self.tab_inbox_badgeIncludedTypes = types
+        } else if let types = try? container.decodeIfPresent(Set<LegacyInboxItemType>.self, forKey: ._tab_inbox_badgeIncludedTypes) {
+            self._tab_inbox_badgeIncludedTypes = .init(legacyTypes: types)
         } else {
-            let inbox_badge_includeApplications: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeApplications)
-            let inbox_badge_includeMessageReports: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMessageReports)
-            let inbox_badge_includeMod: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includeMod)
-            let inbox_badge_includePersonal: Bool? = try container.decodeIfPresent(Bool.self, forKey: .inbox_badge_includePersonal)
-            var includedTypes: Set<InboxItemType> = []
-            if inbox_badge_includePersonal ?? true {
-                includedTypes.formUnion([.reply, .mention, .message])
-            }
-            if inbox_badge_includeMod ?? true {
-                includedTypes.formUnion([.postReport, .commentReport])
-            }
-            if inbox_badge_includeMessageReports ?? true {
-                includedTypes.formUnion([.messageReport])
-            }
-            if inbox_badge_includeApplications ?? true {
-                includedTypes.insert(.registrationApplication)
-            }
-            self.tab_inbox_badgeIncludedTypes = includedTypes
+            self._tab_inbox_badgeIncludedTypes = .all
         }
+
         self.inbox_showRead = try container.decodeIfPresent(Bool.self, forKey: ._inbox_showRead) ?? true
         self.links_displayMode = try container.decodeIfPresent(TapFriendlyLinksDisplayMode.self, forKey: ._links_displayMode) ?? .contextual
         self.links_openInBrowser = try container.decodeIfPresent(Bool.self, forKey: ._links_openInBrowser) ?? false
@@ -256,9 +240,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_blurNsfw = try container.decodeIfPresent(NsfwBlurBehavior.self, forKey: ._safety_blurNsfw) ?? .always
         self.safety_enableModlogWarning = try container.decodeIfPresent(Bool.self, forKey: ._safety_enableModlogWarning) ?? true
         self.safety_enableNsfwCommunityWarning = try container.decodeIfPresent(Bool.self, forKey: ._safety_enableNsfwCommunityWarning) ?? true
-        self.tab_gestures_enableLongPress = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableLongPress) ?? true
         self.tab_gestures_enableSwipeUp = try container.decodeIfPresent(Bool.self, forKey: ._tab_gestures_enableSwipeUp) ?? true
-        self.tab_gestures_longPressAction = try container.decodeIfPresent(TabBarLongPressAction.self, forKey: ._tab_gestures_longPressAction) ?? .openAccountSwitcher
         self.tab_profile_labelType = try container.decodeIfPresent(ProfileTabLabel.self, forKey: ._tab_profile_labelType) ?? .nickname
         self.tab_profile_showAvatar = try container.decodeIfPresent(Bool.self, forKey: ._tab_profile_showAvatar) ?? true
         self.tab_showNames = try container.decodeIfPresent(Bool.self, forKey: ._tab_showNames) ?? true
@@ -275,14 +257,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
         self.filters_literalFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_literalFilterEnabled) ?? true
         self.filters_literals = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_literals) ?? .init()
-        self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .default
-        self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .default
-        self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .default
+        self.interactionBar_post = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_post) ?? .init()
+        self.interactionBar_comment = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_comment) ?? .init()
+        self.interactionBar_reply = try container.decodeIfPresent(ReplyBarConfiguration.self, forKey: ._interactionBar_reply) ?? .init()
         self.interactionBar_community = try container.decodeIfPresent(CommunityActionConfiguration.self, forKey: ._interactionBar_community) ?? .init()
         self.interactionBar_person = try container.decodeIfPresent(PersonActionConfiguration.self, forKey: ._interactionBar_person) ?? .init()
         self.interactionBar_instance = try container.decodeIfPresent(InstanceActionConfiguration.self, forKey: ._interactionBar_instance) ?? .init()
-        self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .reportDefault_
-        self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .reportDefault_
+        self.interactionBar_postReport = try container.decodeIfPresent(PostBarConfiguration.self, forKey: ._interactionBar_postReport) ?? .init()
+        self.interactionBar_commentReport = try container.decodeIfPresent(CommentBarConfiguration.self, forKey: ._interactionBar_commentReport) ?? .init()
         self.interactionBar_alternateReportLayout = try container.decodeIfPresent(Bool.self, forKey: ._interactionBar_alternateReportLayout) ?? false
 
         self.events_showEvents = try container.decodeIfPresent(Bool.self, forKey: ._events_showEvents) ?? true
@@ -333,7 +315,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.feed_default = .subscribed
         self.feed_markReadOnScroll = false
         self.feed_showRead = true
-        self.tab_inbox_badgeIncludedTypes = [.reply, .mention, .message, .postReport, .commentReport, .messageReport, .registrationApplication]
+        self.tab_inbox_badgeIncludedTypes = [.personal, .moderation]
         self.inbox_showRead = true
         self.links_displayMode = .contextual
         self.links_openInBrowser = false
@@ -371,9 +353,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.safety_blurNsfw = .always
         self.safety_enableModlogWarning = true
         self.safety_enableNsfwCommunityWarning = true
-        self.tab_gestures_enableLongPress = true
         self.tab_gestures_enableSwipeUp = true
-        self.tab_gestures_longPressAction = .openAccountSwitcher
         self.tab_profile_labelType = .nickname
         self.tab_profile_showAvatar = true
         self.tab_showNames = true
@@ -390,14 +370,14 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.filters_keywords = .init()
         self.filters_literalFilterEnabled = true
         self.filters_literals = .init()
-        self.interactionBar_post = .default
-        self.interactionBar_comment = .default
-        self.interactionBar_reply = .default
+        self.interactionBar_post = .init()
+        self.interactionBar_comment = .init()
+        self.interactionBar_reply = .init()
         self.interactionBar_community = .init()
         self.interactionBar_person = .init()
         self.interactionBar_instance = .init()
-        self.interactionBar_postReport = .reportDefault_
-        self.interactionBar_commentReport = .reportDefault_
+        self.interactionBar_postReport = .init()
+        self.interactionBar_commentReport = .init()
         self.interactionBar_alternateReportLayout = false
         self.events_showEvents = true
     }
@@ -481,7 +461,6 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         safety_blurNsfw = otherValues.safety_blurNsfw
         safety_enableModlogWarning = otherValues.safety_enableModlogWarning
         safety_enableNsfwCommunityWarning = otherValues.safety_enableNsfwCommunityWarning
-        tab_gestures_enableLongPress = otherValues.tab_gestures_enableLongPress
         tab_gestures_enableSwipeUp = otherValues.tab_gestures_enableSwipeUp
         tab_profile_labelType = otherValues.tab_profile_labelType
         tab_profile_showAvatar = otherValues.tab_profile_showAvatar
@@ -597,9 +576,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _safety_blurNsfw = "safety_blurNsfw"
         case _safety_enableModlogWarning = "safety_enableModlogWarning"
         case _safety_enableNsfwCommunityWarning = "safety_enableNsfwCommunityWarning"
-        case _tab_gestures_enableLongPress = "tab_gestures_enableLongPress"
         case _tab_gestures_enableSwipeUp = "tab_gestures_enableSwipeUp"
-        case _tab_gestures_longPressAction = "tab_gestures_longPressAction"
         case _tab_profile_labelType = "tab_profile_labelType"
         case _tab_profile_showAvatar = "tab_profile_showAvatar"
         case _tab_inbox_badgeIncludedTypes = "tab_inbox_badgeIncludedTypes"

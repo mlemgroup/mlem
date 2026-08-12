@@ -10,16 +10,6 @@ import QuickSwipes
 import SwiftUI
 
 extension InstanceView {
-    var availableTabs: [Tab] {
-        var result: [Tab] = []
-        result.append(.about)
-        if instance.api.supports(.searchLocalCommunities, defaultValue: true) {
-            result.append(.communities)
-        }
-        result += [.administration, .details, .safety]
-        return result
-    }
-    
     func logVisit(_ instance: Instance) {
         guard let visitContext else { return }
         if let session = (appState.firstSession as? UserSession),

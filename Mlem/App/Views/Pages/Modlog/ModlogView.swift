@@ -97,7 +97,7 @@ struct ModlogView: View {
         }
         .toolbar {
             if navigation.isInsideSheet {
-                CloseButtonToolbarItem(ios18Label: .xmark)
+                CloseButtonToolbarItem()
             }
         }
         .onChange(of: refreshHashValue, initial: true) { oldValue, newValue in

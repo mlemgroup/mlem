@@ -23,7 +23,7 @@ public extension Message1Snapshot {
             recipientId: message.recipientId,
             created: message.published,
             content: message.content,
-            updated: message.updated,
+            updated: nil,
             read: message.read,
             deleted: deleted
         )

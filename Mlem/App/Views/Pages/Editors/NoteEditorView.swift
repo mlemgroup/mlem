@@ -37,13 +37,13 @@ struct NoteEditorView: View {
                 .navigationTitle("Edit Note")
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        CloseButtonView(ios18Label: .cancel)
+                        CloseButtonView()
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Save", icon: .general.success) {
                             Task { await send() }
                         }
-                        .glassProminentButtonStyle()
+                        .buttonStyle(.glassProminent)
                     }
                 }
             }

@@ -33,21 +33,14 @@ public class SearchCommentFetcher: Fetcher<Comment> {
         super.init(api: api, pageSize: pageSize)
     }
     
-    override func fetchPage(_ page: Int) async throws -> FetchResponse {
-        let comments: [Comment] = try await api.searchComments(
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Comment> {
+        try await api.searchComments(
             query: query,
-            page: page,
-            limit: pageSize,
+            pageInfo: pageInfo,
             communityId: communityId,
             creatorId: creatorId,
             filter: listing,
             sort: sort
-        )
-        
-        return .init(
-            items: comments,
-            prevCursor: nil,
-            nextCursor: nil
         )
     }
     

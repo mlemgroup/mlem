@@ -12,33 +12,21 @@ public class PostChildFeedLoader: ChildFeedLoader<PersonContent> {
         init(
             api: ApiClient,
             pageSize: Int,
-            page: Int = 0,
             filter: GetContentFilter
         ) {
             self.filter = filter
-            super.init(api: api, pageSize: pageSize, page: page)
-        }
-        
-        override func fetchPage(_ page: Int) async throws -> FetchResponse {
-            try await internalFetchCursor(page: page, cursor: nil)
+            super.init(api: api, pageSize: pageSize)
         }
 
-        override func fetchCursor(_ cursor: String) async throws -> FetchResponse {
-            try await internalFetchCursor(page: nil, cursor: cursor)
-        }
-
-        private func internalFetchCursor(page: Int?, cursor: String?) async throws -> FetchResponse {
+        override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<PersonContent> {
             let response = try await api.getPostHistory(
                 type: self.filter,
-                page: page,
-                cursor: cursor,
-                limit: pageSize
+                pageInfo: pageInfo
             )
 
             return .init(
-                items: response.posts.map { PersonContent(wrappedValue: .post($0)) },
-                prevCursor: cursor,
-                nextCursor: response.cursor
+                items: response.items.map { PersonContent(wrappedValue: .post($0)) },
+                nextLocation: response.nextLocation
             )
         }
     }

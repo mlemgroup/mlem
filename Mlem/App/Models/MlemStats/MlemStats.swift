@@ -93,4 +93,14 @@ class MlemStats {
             return !blocks.contains(instanceActorId: actorId)
         }
     }
+
+    func findInstances(stubs: [InstanceStub]) -> [InstanceSummary]? {
+        let hosts = Set(stubs.map(\.host))
+
+        let result = self.instances?
+            .filter { hosts.contains($0.host) }
+            .sorted { $0.name < $1.name }
+
+        return result?.count == stubs.count ? result : nil
+    }
 }

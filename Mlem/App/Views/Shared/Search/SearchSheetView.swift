@@ -49,13 +49,12 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
                 let response = try await Item.search(
                     api: api,
                     query: query,
-                    page: 1,
-                    limit: 20,
+                    pageInfo: .init(cursor: .first, limit: 20),
                     filter: filter,
                     hostApi: appState.firstApi
                 )
                 Task { @MainActor in
-                    results = response
+                    results = response.items
                 }
             } catch {
                 handleError(error)

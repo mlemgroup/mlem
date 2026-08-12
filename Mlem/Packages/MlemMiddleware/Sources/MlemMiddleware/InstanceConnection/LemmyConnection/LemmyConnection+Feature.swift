@@ -37,14 +37,15 @@ public extension LemmyConnection {
             version >= timeRange.minimumVersion
         case let .listingType(listingType):
             version >= listingType.minimumVersion
-        case .searchLocalCommunities, .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
-             .logIn, .signUp, .viewCommunityActiveUsers, .uploadImages,
-             .editAccountSettings, .viewMentionsAndPrivateMessages, .viewReports, .editAndDeletePrivateMessages,
-             .reportPrivateMessages, .viewVotes, .purgeContent, .removeCommunity, .banFromInstance,
-             .banFromCommunity, .editModeratorList, .commentSearch, .undeletePrivateMessages, .searchLocalPeople,
-             .hidePosts, .editDisplayName, .editProfile, .autoMarkPostReadOnInteract, .blockInstances,
-             .fetchLinkMetadata, .unbanWithReason, .customPostThumbnail, .banFromNonLocalCommunity, .editCommunityDescription,
-             .searchLocalComments, .viewInstanceBlockList:
+        case .combinedPagedResponses:
+            version >= .v1_0_0
+        case .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
+             .logIn, .signUp, .uploadImages, .editAccountSettings, .viewReports,
+             .reportPrivateMessages, .purgeContent, .removeCommunity, .banFromInstance,
+             .editModeratorList,
+             .hidePosts, .editDisplayName, .fetchLinkMetadata, .unbanWithReason,
+             .customPostThumbnail, .banFromNonLocalCommunity,
+             .searchLocalComments:
             true
         case .moderatorSetNsfw, .userNotes, .toggleNotifications:
             false
@@ -66,6 +67,14 @@ private extension SiteVersion {
     static let v0_19_10: Self = .init("0.19.10")
     static let v0_19_11: Self = .init("0.19.11")
     static let v0_19_12: Self = .init("0.19.12")
+    static let v0_19_13: Self = .init("0.19.13")
+    static let v0_19_14: Self = .init("0.19.14")
+    static let v0_19_15: Self = .init("0.19.15")
+    static let v0_19_16: Self = .init("0.19.16")
+    static let v0_19_17: Self = .init("0.19.17")
+    static let v0_19_18: Self = .init("0.19.18")
+    static let v0_19_19: Self = .init("0.19.19")
+    static let v0_19_20: Self = .init("0.19.20")
     static let v1_0_0: Self = .init("1.0.0")
 }
 

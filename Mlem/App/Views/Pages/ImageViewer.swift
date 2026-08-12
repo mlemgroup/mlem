@@ -163,7 +163,7 @@ struct ImageViewer: View {
             }
         }
         .quickLookPreview($quickLookUrl)
-        .background(ClearBackgroundView())
+        .presentationBackground(.clear)
         .statusBarHidden(!isDismissing)
     }
     
@@ -338,25 +338,6 @@ struct ImageViewer: View {
     func showQuickLook(url: URL) async {
         if let fileUrl = await downloadImageToFileSystem(url: url) {
             quickLookUrl = fileUrl
-        }
-    }
-}
-
-// https://stackoverflow.com/a/75037657
-// .presentationBackground doesn't behave properly on iOS 17, but this does
-// TODO: iOS 17 deprecation: remove this and replace usage with .presentationBackground
-private struct ClearBackgroundView: UIViewRepresentable {
-    func makeUIView(context: Context) -> UIView {
-        InnerView()
-    }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {}
-    
-    private class InnerView: UIView {
-        override func didMoveToWindow() {
-            super.didMoveToWindow()
-            
-            superview?.superview?.backgroundColor = .clear
         }
     }
 }

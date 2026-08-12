@@ -46,37 +46,48 @@ public extension PieFedConnection {
         let response = try await perform(request)
         return try .init(from: response)
     }
+
+    func getPerson(handle: PersonHandle) async throws -> Person2Snapshot {
+        let request = PieFedResolveObjectRequest(q: handle.description(withPrefix: true))
+        let response = try await perform(request)
+        if let person = response.person {
+            return try .init(from: person)
+        }
+        throw ApiClientError.noEntityFound
+    }
     
     /// `filter` can be set to `.local` from 0.19.4 onwards.
     func searchPeople(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         filter: ListingType = .all,
         sort: PersonSortType
-    ) async throws -> [Person2Snapshot] {
+    ) async throws -> PagedResponse<Person2Snapshot> {
         guard let sort = sort.pieFedSearchSortType else {
             throw ApiClientError.featureUnsupported
         }
         let request = PieFedSearchRequest(
             q: query,
             type_: .users,
-            sort: sort,
+            limit: pageInfo.limit,
             listingType: filter.pieFedListingType,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            sort: sort,
             communityName: nil,
             communityId: nil,
             minimumUpvotes: nil,
             nsfw: nil
         )
         let response = try await perform(request)
-        return try response.users.map { try .init(from: $0) }
+        return try .fromPieFed(
+            pageInfo: pageInfo,
+            items: try response.users.map { try .init(from: $0) }
+        )
     }
     
     @discardableResult
     func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
-        let request = PieFedBlockPersonRequest(personId: id, block: block)
+        let request = PieFedUserBlockRequest(block: block, personId: id)
         let response = try await perform(request)
         return try .init(from: response.personView)
     }
@@ -90,25 +101,18 @@ public extension PieFedConnection {
         reason: String?,
         expires: Date? = nil
     ) async throws -> Person1Snapshot {
-        // Explicit check because the endpoint exists before 1.3, but the date
-        // formats are different. Don't want to send a broken ban request.
-        if try await !supports(.banFromCommunity) {
-            throw ApiClientError.featureUnsupported
-        }
-
         if ban {
-            let request = PieFedModerateCommunityBanRequest(
+            let request = PieFedCommunityModerationBanRequest(
                 communityId: communityId,
-                userId: personId,
                 reason: reason ?? "",
-                expiredAt: nil,
+                userId: personId,
                 expiresAt: expires,
                 permanent: expires == nil
             )
             let response = try await perform(request)
             return try .init(from: response.bannedUser)
         } else {
-            let request = PieFedModerateCommunityUnBanRequest(
+            let request = PieFedCommunityModerationUnbanRequest(
                 communityId: communityId,
                 userId: personId
             )
@@ -135,27 +139,42 @@ public extension PieFedConnection {
     func getContent(
         authorId id: Int,
         sort: PostSortType,
-        page: Int,
-        limit: Int,
+        pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
-    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot]) {
+    ) async throws -> (person: Person3Snapshot, posts: [Post2Snapshot], comments: [Comment2Snapshot], nextLocation: PageLocation) {
         let request = PieFedGetPersonDetailsRequest(
             personId: id,
             username: nil,
             sort: .new,
-            page: page,
-            limit: limit,
+            page: try pageInfo.cursor.requirePageNumber,
+            limit: pageInfo.limit,
             communityId: nil,
             savedOnly: nil,
             includeContent: true
         )
         let response = try await perform(request)
+
+        let nextLocation: PageLocation
+        if response.posts.count < pageInfo.limit && response.comments.count < pageInfo.limit {
+            nextLocation = .end
+        } else {
+            nextLocation = .at(try pageInfo.cursor.stepForward())
+        }
+
         return try (
             person: .init(from: response),
             posts: response.posts.map { try .init(from: $0) },
-            comments: response.comments.map { try .init(from: $0) }
+            comments: response.comments.map { try .init(from: $0) },
+            nextLocation: nextLocation
         )
+    }
+
+    func getCombinedContent(
+        authorId id: Int,
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonContentSnapshot> {
+        throw ApiClientError.featureUnsupported
     }
     
     // Returns a raw API type. For use inside PieFedConnection only
@@ -204,16 +223,16 @@ public extension PieFedConnection {
     }
     
     func editProfile(details: ProfileDetails) async throws {
-        let request = PieFedSaveUserSettingsRequest(
-            showNsfw: nil,
-            showReadPosts: nil,
-            bio: details.description,
+        let request = PieFedUserSaveSettingsRequest(
             avatar: details.avatar?.absoluteString ?? "",
+            bio: details.description,
             cover: details.banner?.absoluteString ?? "",
             defaultCommentSortType: nil,
             defaultSortType: nil,
-            showNsfl: nil,
             extraFields: nil,
+            showNsfw: nil,
+            showNsfl: nil,
+            showReadPosts: nil,
             acceptPrivateMessages: nil,
             bot: nil,
             botVisibility: nil,
@@ -231,7 +250,7 @@ public extension PieFedConnection {
             replyCollapseThreshold: nil,
             replyHideThreshold: nil,
             searchable: nil,
-            displayName: nil
+            displayName: details.displayName ?? ""
         )
         try await perform(request)
     }

@@ -40,8 +40,8 @@ struct InboxSettingsView: View {
             Section {
                 NavigationLink(
                     "Notification Badge",
-                    value: tabInboxBadgeIncludedTypes.label(accountType: AccountsTracker.main.highestLevelAccountType),
-                    fallbackValue: .init(localized: "Some"),
+                    value: .init(localized: tabInboxBadgeIncludedTypes.label),
+                    fallbackValue: "",
                     icon: .settings.unreadBadge,
                     destination: .settings(.inboxBadge)
                 )

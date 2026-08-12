@@ -12,7 +12,7 @@ extension PostEditorView {
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CloseButtonView(ios18Label: .cancel, requiresConfirmation: !canDismiss) {
+            CloseButtonView(requiresConfirmation: !canDismiss) {
                 dismiss()
             }
         }
@@ -46,6 +46,6 @@ extension PostEditorView {
             Task { await submit() }
         }
         .disabled(!canSubmit)
-        .glassProminentButtonStyle()
+        .buttonStyle(.glassProminent)
     }
 }

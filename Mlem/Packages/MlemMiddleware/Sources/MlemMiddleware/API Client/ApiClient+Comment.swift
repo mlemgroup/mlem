@@ -19,98 +19,88 @@ public extension ApiClient {
     }
     
     func getComments(
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
-        let snapshots = try await repository.getComments(
+    ) async throws -> PagedResponse<Comment> {
+        let response = try await repository.getComments(
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
-        return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
+        let comments = await caches.comment.getModels(api: self, from: response.items.map { .comment2($0) })
+        return .init(items: comments, nextLocation: response.nextLocation)
     }
-    
+
     func getComments(
         postId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
-        let snapshots = try await repository.getComments(
+    ) async throws -> PagedResponse<Comment> {
+        let response = try await repository.getComments(
             postId: postId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
-        return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
+        let comments = await caches.comment.getModels(api: self, from: response.items.map { .comment2($0) })
+        return .init(items: comments, nextLocation: response.nextLocation)
     }
-    
+
     func getComments(
         parentId: Int,
+        pageInfo: PageInfo,
         sort: CommentSortType,
-        page: Int,
         maxDepth: Int? = nil,
-        limit: Int,
         filter: GetContentFilter? = nil
-    ) async throws -> [Comment] {
-        let snapshots = try await repository.getComments(
+    ) async throws -> PagedResponse<Comment> {
+        let response = try await repository.getComments(
             parentId: parentId,
+            pageInfo: pageInfo,
             sort: sort,
-            page: page,
             maxDepth: maxDepth,
-            limit: limit,
             filter: filter
         )
-        return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
+        let comments = await caches.comment.getModels(api: self, from: response.items.map { .comment2($0) })
+        return .init(items: comments, nextLocation: response.nextLocation)
     }
 
     func getCommentHistory(
         type: GetContentFilter,
-        page: Int?,
-        cursor: String?,
-        limit: Int
-    ) async throws -> (comments: [Comment], cursor: String?) {
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<Comment> {
         let response = try await repository.getCommentHistory(
             type: type,
-            page: page,
-            cursor: cursor,
-            limit: limit
+            pageInfo: pageInfo
         )
-        return await (
-            comments: caches.comment.getModels(api: self, from: response.comments.map { .comment2($0) }),
-            cursor: response.cursor
-        )
+        let comments = await caches.comment.getModels(api: self, from: response.items.map { .comment2($0) })
+        return .init(items: comments, nextLocation: response.nextLocation)
     }
-    
+
     // TODO: Remove in favor of the below method once we drop support for versions before Lemmy 1.0
     func searchComments(
         query: String,
-        page: Int = 1,
-        limit: Int = 20,
+        pageInfo: PageInfo,
         communityId: Int? = nil,
         creatorId: Int? = nil,
         filter: ListingType = .all,
         sort: CommentSortType = .top(.allTime)
-    ) async throws -> [Comment] {
-        let snapshots = try await repository.searchComments(
+    ) async throws -> PagedResponse<Comment> {
+        let response = try await repository.searchComments(
             query: query,
-            page: page,
-            limit: limit,
+            pageInfo: pageInfo,
             communityId: communityId,
             creatorId: creatorId,
             filter: filter,
             sort: sort
         )
-        return await caches.comment.getModels(api: self, from: snapshots.map { .comment2($0) })
+        let comments = await caches.comment.getModels(api: self, from: response.items.map { .comment2($0) })
+        return .init(items: comments, nextLocation: response.nextLocation)
     }
     
     // TODO: UpdateQueue remove (currently needed for Reply)
@@ -165,19 +155,15 @@ public extension ApiClient {
     func getCommentVotes(
         id: Int,
         communityId: Int,
-        page: Int = 1,
-        limit: Int = 20
-    ) async throws -> [PersonVote] {
-        let snapshot = try await repository.getCommentVotes(
-            id: id,
-            page: page,
-            limit: limit
-        )
-        return await caches.personVote.getModels(
+        pageInfo: PageInfo
+    ) async throws -> PagedResponse<PersonVote> {
+        let response = try await repository.getCommentVotes(id: id, pageInfo: pageInfo)
+        let votes = await caches.personVote.getModels(
             api: self,
-            from: snapshot,
+            from: response.items,
             target: .comment(id: id),
             communityId: communityId
         )
+        return .init(items: votes, nextLocation: response.nextLocation)
     }
 }

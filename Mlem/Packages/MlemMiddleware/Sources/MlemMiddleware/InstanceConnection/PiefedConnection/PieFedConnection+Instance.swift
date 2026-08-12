@@ -19,8 +19,8 @@ public extension PieFedConnection {
     
     func blockInstance(instanceId: Int, block: Bool) async throws {
         let request = PieFedBlockInstanceRequest(
-            instanceId: instanceId,
-            block: block
+            block: block,
+            instanceId: instanceId
         )
         try await perform(request)
     }

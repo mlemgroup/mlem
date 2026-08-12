@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 16/08/2024.
 //
 
+import Actions
 import SwiftUI
 import Theming
 
@@ -13,10 +14,14 @@ struct InteractionBarActionLabelView: View {
 
     @Setting(\.a11y_showInteractionBarButtonBackground) var showInteractionBarButtonBackground
         
-    let appearance: ActionAppearance
+    let appearance: LegacyActionAppearance
     
-    init(_ appearance: ActionAppearance) {
+    init(_ appearance: LegacyActionAppearance) {
         self.appearance = appearance
+    }
+
+    init( _ appearance: ActionAppearance) {
+        self.appearance = .init(appearance)
     }
     
     var body: some View {

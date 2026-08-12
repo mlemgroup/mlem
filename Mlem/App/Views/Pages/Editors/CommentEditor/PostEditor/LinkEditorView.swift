@@ -88,27 +88,21 @@ struct LinkEditorView: View {
     
     @ViewBuilder
     var textEditor: some View {
-        Group {
-            if #available(iOS 26.0, *) {
-                TextEditor(text: attributedStringBinding)
-            } else {
-                TextEditor(text: $urlString)
+        TextEditor(text: attributedStringBinding)
+            .focused($focused)
+            .onAppear {
+                focused = true
             }
-        }
-        .focused($focused)
-        .onAppear {
-            focused = true
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .layoutPriority(6)
-        .frame(maxHeight: .infinity)
-        .scrollContentBackground(.hidden)
-        .introspect(.textEditor, on: .iOS(.v26)) {
-            if textView == nil {
-                textView = $0
-                // The text has to be set here; otherwise the textview has a height of 0 for some reason
-                textView?.text = originalUrl.absoluteString
+            .fixedSize(horizontal: false, vertical: true)
+            .layoutPriority(6)
+            .frame(maxHeight: .infinity)
+            .scrollContentBackground(.hidden)
+            .introspect(.textEditor, on: .iOS(.v26)) {
+                if textView == nil {
+                    textView = $0
+                    // The text has to be set here; otherwise the textview has a height of 0 for some reason
+                    textView?.text = originalUrl.absoluteString
+                }
             }
-        }
     }
 }

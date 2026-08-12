@@ -43,17 +43,17 @@ extension ActionSeed {
 // MARK: - Appearance
 
 extension ReplyAction {
-    static let label: ActionLabel = .init("Reply", icon: .lemmy.reply)
+    static let appearance: ActionAppearance = .init("Reply", icon: .lemmy.reply)
 
-    func createLabel(environment: EnvironmentValues) -> ActionLabel {
-        Self.label.withVisibility(visibility(environment))
+    func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
+        Self.appearance.withVisibility(visibility(environment))
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard content.value.api.canInteract(appState: environment.appState) else { return .hidden }
 
         // Don't show the reply action for messages in the message feed
-        if case .message = self.content, case .messageFeed = environment.navigation?.path.last {
+        if case .message = self.content, case .messageFeed = environment.navigation?.path.last?.page {
             return .hidden
         }
 
