@@ -35,3 +35,16 @@ public extension Message {
         }
     }
 }
+
+// MARK: ReportableProviding
+
+public extension Message {
+    func report(reason: String) async throws {
+        try await api.reportMessage(id: id, reason: reason)
+    }
+}
+
+// MARK: SelectableContentProviding
+public extension Message {
+    var selectableContent: String? { content }
+}

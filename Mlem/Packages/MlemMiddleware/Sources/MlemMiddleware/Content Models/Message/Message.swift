@@ -13,13 +13,21 @@ public class Message:
     UnifiedModelProviding,
     OwnershipProviding,
     FeedLoadable,
-    ActorIdentifiable {
+    ActorIdentifiable,
+    DeletableProviding,
+    ReportableProviding,
+    SelectableContentProviding {
     public typealias Properties = MessageProperties
     
     public var api: ApiClient
     private let properties: Properties
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Message> = .init(parent: self, properties: properties)
-
+    
+    // MARK: Custom Properties
+    // Mlem-specific properties that are not reflected in the API
+    
+    public let isOwnMessage: Bool
+    
     // MARK: API Properties
     // Properties that are provided by the API
     
@@ -28,7 +36,6 @@ public class Message:
     public let creatorId: Int
     public let recipientId: Int
     public let created: Date
-    public let isOwnMessage: Bool
     public var content: String
     public var updated: Date?
     public var read: Bool
@@ -40,13 +47,13 @@ public class Message:
     public init(api: ApiClient, properties: MessageProperties) {
         self.api = api
         self.properties = properties
+        self.isOwnMessage = properties.isOwnMessage
         
         self.actorId = properties.actorId
         self.id = properties.id
         self.creatorId = properties.creatorId
         self.recipientId = properties.recipientId
         self.created = properties.created
-        self.isOwnMessage = properties.isOwnMessage
         self.content = properties.content
         self.updated = properties.updated
         self.read = properties.read
@@ -111,6 +118,23 @@ public extension Message {
                     api: self.api,
                     snapshot: .message2(try self.api.repository.editMessage(id: self.id, content: content)),
                     isOwnMessage: self.isOwnMessage)
+            }
+        }
+    }
+    
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        deleted = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deleteMessage(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: .message2(snapshot), isOwnMessage: self.isOwnMessage)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
             }
         }
     }
