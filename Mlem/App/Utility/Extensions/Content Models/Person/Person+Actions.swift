@@ -7,50 +7,7 @@
 
 import MlemMiddleware
 
-extension Person {    
-    @MainActor
-    func showBanSheet(community: Community?, isBannedFromCommunity: Bool, shouldBan: Bool) {
-        NavigationModel.main.openSheet(
-            .ban(self, isBannedFromCommunity: isBannedFromCommunity, shouldBan: shouldBan, community: community)
-        )
-    }
-    
-    func banFromInstanceAction(appState: AppState, withUserLabel: Bool = false) -> BasicAction {
-        .init(
-            id: "banFromInstance\(uid)",
-            appearance: .banFromInstance(isOn: bannedFromInstance, withUserLabel: withUserLabel),
-            callback: api.canInteract(appState: appState) && api.isAdmin ? { @MainActor in
-                self.showBanSheet(
-                    community: nil,
-                    isBannedFromCommunity: false,
-                    shouldBan: !self.bannedFromInstance
-                )
-            } : nil
-        )
-    }
-    
-    func banFromCommunityAction(appState: AppState, community: Community, withUserLabel: Bool = false) -> BasicAction {
-        let isBanned = isBannedFromCommunity(community)
-        let callback: (@MainActor () -> Void)?
-        if let isBanned, api.canInteract(appState: appState), community.canModerate {
-            callback = {
-                self.showBanSheet(
-                    community: community,
-                    isBannedFromCommunity: isBanned,
-                    shouldBan: !isBanned
-                )
-            }
-        } else {
-            callback = nil
-        }
-        
-        return .init(
-            id: "banFromCommunity\(uid)",
-            appearance: .banFromCommunity(isOn: isBanned ?? false, withUserLabel: withUserLabel),
-            callback: callback
-        )
-    }
-    
+extension Person {
     /// Action to add/remove admin
     /// - Parameters:
     ///   - instance: instance to add the admin to
