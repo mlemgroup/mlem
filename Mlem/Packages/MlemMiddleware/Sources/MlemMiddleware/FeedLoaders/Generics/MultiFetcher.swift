@@ -20,6 +20,21 @@ class MultiFetcher<Item: FeedLoadable>: Fetcher<Item> {
     }
     
     override func fetch() async throws -> LoadingResponse<Item> {
+        // preemptively trigger loading on all child feed loaders if they have not loaded anything yet
+        await withTaskGroup(of: Void.self) { taskGroup in
+            for source in sources where source.fetcher.location == .start {
+                taskGroup.addTask {
+                    do {
+                        try await source.loadMoreItems()
+                    } catch {
+                        self.log.error("\(error.localizedDescription)")
+                        // noop - if the error recurs it will be caught by normal error handling below.
+                        // prefetch is not required to succeed for loading to work
+                    }
+                }
+            }
+        }
+        
         var newItems: [Item] = .init()
         
         while newItems.count < pageSize {
