@@ -8,6 +8,7 @@
 import Observation
 import Foundation
 
+@Observable
 public class Message:
     UnifiedModelProviding,
     OwnershipProviding,

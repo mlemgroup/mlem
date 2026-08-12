@@ -75,9 +75,7 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
-        // TODO: NOW ????????????????
-        // .quickSwipes(trailing: [markReadAction], leadingBuffer: .standard)
-        // .quickSwipes(message.swipeActions(notification: notification, appState: appState))
+        .quickSwipes_(leading: [], trailing: trailingSwipes, leadingBuffer: .standard)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(notification: notification, message: message, report: reportContext)
@@ -90,10 +88,12 @@ struct MessageView<EmbeddedContent: View>: View {
         }
     }
     
-    var markReadAction: Actions.BasicAction {
-        .init(message.read ? "Mark Unread" : "Mark Read", icon: Icon.lemmy.markRead) {
-            print("TODO")
+    var trailingSwipes: [Actions.Action] {
+        if let notification,
+           let action = ActionSeed.markRead.createAction(notification) {
+            return [action]
         }
+        return .init()
     }
     
     var otherPerson: Person? {
