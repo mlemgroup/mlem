@@ -53,7 +53,7 @@ enum NavigationPage {
         _ person: Person,
         messageContent: String = "",
         focusTextField: Bool = false,
-        editing: (any Message1Providing)? = nil
+        editing: Message? = nil
     )
     case fediseerInfo
     case instanceUptime(_ instance: Instance, uptimeData: UptimeData)

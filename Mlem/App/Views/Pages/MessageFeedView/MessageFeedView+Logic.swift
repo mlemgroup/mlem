@@ -31,7 +31,7 @@ extension MessageFeedView {
         }
     }
     
-    func editMessage(_ message: any DeprecatedMessage) async {
+    func editMessage(_ message: Message) async {
         do {
             try await message.edit(content: textView.text)
             editing = nil
@@ -42,7 +42,7 @@ extension MessageFeedView {
         }
     }
     
-    func messageIsFirstOfDay(_ message: Message2) -> Bool {
+    func messageIsFirstOfDay(_ message: Message) -> Bool {
         guard let feedLoader else { return false }
         guard let index = feedLoader.items.firstIndex(of: message) else {
             assertionFailure()
@@ -57,7 +57,7 @@ extension MessageFeedView {
         Constants.main.standardSpacing * 2 + UIFont.preferredFont(forTextStyle: .body).lineHeight
     }
     
-    func messageFooterText(for message: Message2) -> String? {
+    func messageFooterText(for message: Message) -> String? {
         var parts: [String] = .init()
         if message == feedLoader?.items.first, Calendar.current.isDateInToday(message.created) {
             parts.append(message.created.formatted(date: .omitted, time: .shortened))

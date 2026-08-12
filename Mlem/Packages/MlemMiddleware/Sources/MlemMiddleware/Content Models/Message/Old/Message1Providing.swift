@@ -78,9 +78,9 @@ public extension Message1Providing {
 public extension Message1Providing {
     private var deletedManager: StateManager<Bool> { message1.deletedManager }
     
-    func reply(content: String) async throws -> Message2 {
-        try await api.createMessage(personId: recipientId, content: content)
-    }
+//    func reply(content: String) async throws -> Message2 {
+//        try await api.createMessage(personId: recipientId, content: content)
+//    }
     
     func report(reason: String) async throws {
         try await api.reportMessage(id: id, reason: reason)
@@ -98,7 +98,7 @@ public extension Message1Providing {
         }
     }
     
-    func edit(content: String) async throws {
-        try await api.editMessage(id: id, content: content)
-    }
+//    func edit(content: String) async throws {
+//        try await api.editMessage(id: id, content: content)
+//    }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class MessageFetcher: Fetcher<Message2> {
+class MessageFetcher: Fetcher<Message> {
     var personId: Int?
     
     init(api: ApiClient, personId: Int?, pageSize: Int) {
@@ -21,13 +21,13 @@ class MessageFetcher: Fetcher<Message2> {
         self.init(api: person.api, personId: person.id, pageSize: pageSize)
     }
     
-    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Message2> {
+    override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<Message> {
         try await api.getMessages(creatorId: personId, pageInfo: pageInfo)
     }
 }
 
 @Observable
-public class MessageFeedLoader: StandardFeedLoader<Message2> {
+public class MessageFeedLoader: StandardFeedLoader<Message> {
     public var api: ApiClient
 
     // force unwrap because this should ALWAYS be a MessageFetcher

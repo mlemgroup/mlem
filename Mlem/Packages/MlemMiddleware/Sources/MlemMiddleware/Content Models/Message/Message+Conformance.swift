@@ -22,3 +22,16 @@ public extension Message {
 public extension Message {
     func isOwnContent(myPersonId: Int) -> Bool { isOwnMessage }
 }
+
+// MARK: FeedLoadable
+
+public extension Message {
+    typealias FilterType = InboxItemFilterType
+    
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new:
+            return .new(created)
+        }
+    }
+}

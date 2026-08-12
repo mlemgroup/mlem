@@ -10,7 +10,9 @@ import Foundation
 
 public class Message:
     UnifiedModelProviding,
-    OwnershipProviding {
+    OwnershipProviding,
+    FeedLoadable,
+    ActorIdentifiable {
     public typealias Properties = MessageProperties
     
     public var api: ApiClient
@@ -93,5 +95,49 @@ public class Message:
     public func fetchUpgraded() async throws -> MessageProperties {
         assertionFailure("Message is not upgradable")
         throw ModelError.notUpgradable
+    }
+}
+
+// MARK: - Interactions
+
+public extension Message {
+    func edit(content: String) async throws {
+        self.content = content
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(
+                    api: self.api,
+                    snapshot: .message2(try self.api.repository.editMessage(id: self.id, content: content)),
+                    isOwnMessage: self.isOwnMessage)
+            }
+        }
+    }
+}
+
+// MARK: - Shim
+
+public extension Message {
+    func takeSnapshot2() -> Message2Snapshot? {
+        guard let creator = self.creator.value_,
+              let recipient = self.recipient.value_ else {
+            assertionFailure("takeSnapshot2() called without high-tier fields available")
+            return nil
+        }
+        
+        return .init(
+            message: .init(
+                actorId: self.actorId,
+                id: self.id,
+                creatorId: self.creatorId,
+                recipientId: self.recipientId,
+                created: self.created,
+                content: self.content,
+                updated: self.updated,
+                read: self.read,
+                deleted: self.deleted),
+            creator: creator.takeSnapshot1(),
+            recipient: recipient.takeSnapshot1()
+        )
     }
 }

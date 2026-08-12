@@ -14,7 +14,6 @@ public struct MessageProperties: UnifiedPropertiesProviding {
     let creatorId: Int
     let recipientId: Int
     let created: Date
-    let isOwnMessage: Bool
     var content: String
     var updated: Date?
     var read: Bool
@@ -23,9 +22,12 @@ public struct MessageProperties: UnifiedPropertiesProviding {
     // From Message2Snapshot
     var creator: Person?
     var recipient: Person?
+    
+    // Synthetic from call point
+    let isOwnMessage: Bool
 
     @MainActor
-    public init(api: ApiClient, snapshot: AnyMessageSnapshot) {
+    public init(api: ApiClient, snapshot: AnyMessageSnapshot, isOwnMessage: Bool) {
         let snapshot1: Message1Snapshot
         let snapshot2: Message2Snapshot?
         switch snapshot {
@@ -42,7 +44,6 @@ public struct MessageProperties: UnifiedPropertiesProviding {
         creatorId = snapshot1.creatorId
         recipientId = snapshot1.recipientId
         created = snapshot1.created
-        isOwnMessage = snapshot1.isOwnMessage
         content = snapshot1.content
         updated = snapshot1.updated
         read = snapshot1.read
@@ -52,6 +53,8 @@ public struct MessageProperties: UnifiedPropertiesProviding {
             creator = api.caches.person.getModel(api: api, from: .person1(snapshot2.creator))
             recipient = api.caches.person.getModel(api: api, from: .person1(snapshot2.recipient))
         }
+        
+        self.isOwnMessage = isOwnMessage
     }
     
     public mutating func merge(_ other: MessageProperties) {

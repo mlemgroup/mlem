@@ -20,7 +20,7 @@ struct MessageFeedView: View {
     
     let person: Person
     let focusTextField: Bool
-    @State var editing: (any DeprecatedMessage)?
+    @State var editing: Message?
     
     /// Tracks whether the text view was firstResponder when a sheet was opened. Nil when no sheet is open.
     @State var textViewWasFirstResponder: Bool?
@@ -35,7 +35,7 @@ struct MessageFeedView: View {
         person: Person,
         messageContent: String = "",
         focusTextField: Bool,
-        editing: (any DeprecatedMessage)?
+        editing: Message?
     ) {
         self.person = person
         self.focusTextField = focusTextField
@@ -142,7 +142,7 @@ struct MessageFeedView: View {
     }
     
     @ViewBuilder
-    func bubbleView(message: Message2, feedLoader: MessageFeedLoader) -> some View {
+    func bubbleView(message: Message, feedLoader: MessageFeedLoader) -> some View {
         if messageIsFirstOfDay(message) {
             Text(message.created.messagesRelativeDate())
                 .font(.footnote)
@@ -296,6 +296,6 @@ struct MessageFeedView: View {
 }
 
 extension EnvironmentValues {
-    @Entry var editMessage: ((Message2) -> Void)?
+    @Entry var editMessage: ((Message) -> Void)?
     @Entry var isInMessageFeed: Bool = false
 }

@@ -280,8 +280,6 @@
 		0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */; };
 		0397D4912C6CE871002C6CDC /* PostEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D48F2C6CE871002C6CDC /* PostEditorView.swift */; };
 		0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */; };
-		0397D49A2C6EA6EE002C6CDC /* InteractionBarEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */; };
-		0397D49C2C6EA73C002C6CDC /* InteractionBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */; };
 		0397D4A22C6EB035002C6CDC /* LegacyActionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A12C6EB035002C6CDC /* LegacyActionAppearance.swift */; };
 		0397D4A42C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A32C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift */; };
 		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
@@ -908,8 +906,6 @@
 		0397D48B2C6BE9A2002C6CDC /* CollapsibleSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSection.swift; sourceTree = "<group>"; };
 		0397D48F2C6CE871002C6CDC /* PostEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorView.swift; sourceTree = "<group>"; };
 		0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorTargetView.swift; sourceTree = "<group>"; };
-		0397D4992C6EA6EE002C6CDC /* InteractionBarEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarEditorView.swift; sourceTree = "<group>"; };
-		0397D49B2C6EA73C002C6CDC /* InteractionBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionBarConfiguration.swift; sourceTree = "<group>"; };
 		0397D4A12C6EB035002C6CDC /* LegacyActionAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyActionAppearance.swift; sourceTree = "<group>"; };
 		0397D4A32C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegacyActionAppearance+StaticValues.swift"; sourceTree = "<group>"; };
 		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
@@ -2417,14 +2413,7 @@
 		CDA8A0052BE43B350022F7ED /* Content Models */ = {
 			isa = PBXGroup;
 			children = (
-				CDADDB222F491D2F00A4214A /* Community */,
-				CD2276D42F369C5F0024AEB1 /* Person */,
-				CD6CD1222F25EC6A00566122 /* Comment */,
-				CD6CD1212F25C36800566122 /* Post */,
-				CD6CD11A2F25BF1300566122 /* Interactable */,
 				032C32032C3439C600595286 /* ActorIdentifiable+Extensions.swift */,
-				030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */,
-				0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */,
 				0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
 				039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */,
@@ -2433,6 +2422,7 @@
 				03D283FF2D26F09500A6659B /* Instance+Extensions.swift */,
 				0389DDC22C38907C0005B808 /* Message1Providing+Extensions.swift */,
 				033F84772D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift */,
+				0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */,
 				03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */,
 				036ED6822D0C483B0018E5EA /* ProfileProviding+Extensions.swift */,
 				033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */,
@@ -2442,10 +2432,16 @@
 				0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */,
 				03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */,
 				032C32072C34469900595286 /* SelectableContentProviding+Extensions.swift */,
-				0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */,
-				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
+				030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */,
 				03ACE7192DFD57CC00FD66C0 /* SiteSoftware+Extensions.swift */,
 				03B045F52E26D64900540EFB /* SiteSoftwareType+Extensions.swift */,
+				0389DDC62C389F840005B808 /* UnreadCount+Extensions.swift */,
+				CD7743882C20EDEE0085BB43 /* VotesModel+Extensions.swift */,
+				CD6CD1222F25EC6A00566122 /* Comment */,
+				CDADDB222F491D2F00A4214A /* Community */,
+				CD6CD11A2F25BF1300566122 /* Interactable */,
+				CD2276D42F369C5F0024AEB1 /* Person */,
+				CD6CD1212F25C36800566122 /* Post */,
 			);
 			path = "Content Models";
 			sourceTree = "<group>";

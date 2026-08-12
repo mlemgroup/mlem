@@ -10,13 +10,13 @@ import Foundation
 public enum InboxNotificationContent {
     case reply(Comment)
     case mention(Comment)
-    case message(Message2)
+    case message(Message)
     
     public var wrappedValue: any ContentModel & ActorIdentifiable {
         switch self {
         case let .reply(comment): comment
         case let .mention(comment): comment
-        case let .message(message2): message2
+        case let .message(message): message
         }
     }
     
@@ -42,7 +42,12 @@ public enum InboxNotificationContent {
             } else {
                 nil
             }
-        case let .message(message): .message(message.takeSnapshot2())
+        case let .message(message):
+            if let snapshot = message.takeSnapshot2() {
+                .message(snapshot)
+            } else {
+                nil
+            }
         }
     }
 }

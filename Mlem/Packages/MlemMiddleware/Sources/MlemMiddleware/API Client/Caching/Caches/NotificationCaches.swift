@@ -28,7 +28,7 @@ class NotificationCache: CoreCache<InboxNotification> {
         case let .mention(commentSnapshot):
                 .mention(api.caches.comment.getModel(api: api, from: .comment2(commentSnapshot)))
         case let .message(messageSnapshot):
-            .message(api.caches.message2.getModel(api: api, from: messageSnapshot, myPersonId: myPersonId))
+                .message(api.caches.message.getModel(api: api, from: .message2(messageSnapshot), myPersonId: myPersonId))
         }
 
         let read: Bool = switch snapshot.content {

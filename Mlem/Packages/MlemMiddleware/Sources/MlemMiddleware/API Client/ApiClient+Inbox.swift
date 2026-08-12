@@ -21,7 +21,7 @@ public extension ApiClient {
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         let messages = await caches.message.getModels(
             api: self,
-            from: response.items,
+            from: response.items.map { .message2($0) },
             myPersonId: myPersonId
         )
         return .init(items: messages, nextLocation: response.nextLocation)
@@ -95,23 +95,12 @@ public extension ApiClient {
     }
 
     @discardableResult
-    func createMessage(personId: Int, content: String) async throws -> Message2 {
+    func createMessage(personId: Int, content: String) async throws -> Message {
         let snapshot = try await repository.createMessage(personId: personId, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
+        return await caches.message.getModel(
             api: self,
-            from: snapshot,
-            myPersonId: myPersonId
-        )
-    }
-    
-    @discardableResult
-    func editMessage(id: Int, content: String) async throws -> Message2 {
-        let snapshot = try await repository.editMessage(id: id, content: content)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
-            api: self,
-            from: snapshot,
+            from: .message2(snapshot),
             myPersonId: myPersonId
         )
     }
