@@ -62,6 +62,7 @@ extension SaveAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
         guard let toggleSaved = entity.toggleSaved else { return }
-        toggleSaved([.haptic])
+        environment.hapticManager.play(haptic: .success, tier: .low)
+        toggleSaved([])
     }
 }

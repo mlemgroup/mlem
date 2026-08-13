@@ -15,12 +15,9 @@ import Theming
 extension InteractableProviding {
     private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
     
-    var toggleVote: ((ScoringOperation, Set<FeedbackType>) -> Void)? {
+    var toggleVote: ((ScoringOperation) -> Void)? {
         if let updateVote, let votes = votes.value {
-            return { operation, feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
+            return { operation in
                 updateVote(operation == votes.myVote ? .none : operation)
                 self.inboxItem?.updateRead(true)
             }
@@ -71,17 +68,5 @@ extension InteractableProviding {
             }
         }
         return nil
-    }
-    
-    func toggleRemoved(reason: String?, feedback: Set<FeedbackType>) {
-        let initialValue = removed
-        if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .success, tier: .low)
-        }
-        toggleRemoved(reason: reason) { status in
-            if case .failure = status {
-                ToastModel.main.add(.failure(initialValue ? "Failed to remove content" : "Failed to restore content"))
-            }
-        }
     }
 }

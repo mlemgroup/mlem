@@ -107,6 +107,7 @@ extension VoteAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
         guard let toggleVote = entity.toggleVote else { return }
-        toggleVote(type, [.haptic])
+        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        toggleVote(type)
     }
 }

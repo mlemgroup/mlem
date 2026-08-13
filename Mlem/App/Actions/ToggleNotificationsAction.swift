@@ -76,8 +76,8 @@ extension ToggleNotificationsAction {
         guard let currentValue = entity.notificationsEnabled.value else { return }
         let newValue = !currentValue
 
-        entity.updateNotificationsEnabled(newValue)
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        entity.updateNotificationsEnabled(newValue)
 
         let toast: ToastType
 

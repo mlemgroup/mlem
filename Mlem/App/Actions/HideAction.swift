@@ -67,8 +67,8 @@ extension HideAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
         guard let hidden = entity.hidden.value, let toggleHidden = entity.toggleHidden else { return }
-        toggleHidden([])
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        toggleHidden([])
         if !hidden {
             environment.toastModel?.add(
                 .undoable(
