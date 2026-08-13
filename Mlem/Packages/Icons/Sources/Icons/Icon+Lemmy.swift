@@ -21,7 +21,7 @@ public extension Icon {
             switch variant {
             case .active: "minus.square.fill"
             case .inactive: "minus.square"
-            default: "arrow.up.slash"
+            default: "minus"
             }
         }
         
@@ -29,7 +29,7 @@ public extension Icon {
             switch variant {
             case .active: "minus.square.fill"
             case .inactive: "minus.square"
-            default: "arrow.down.slash"
+            default: "minus"
             }
         }
         

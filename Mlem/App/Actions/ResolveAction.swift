@@ -49,7 +49,7 @@ extension ResolveAction {
     }
 
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
-        environment.reportContext != nil ? .enabled : .disabled
+        environment.reportContext != nil ? .enabled : .hidden
     }
 
     func execute(environment: EnvironmentValues) {
