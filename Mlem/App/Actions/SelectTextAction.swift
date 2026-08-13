@@ -22,7 +22,7 @@ struct SelectTextAction: Actions.SimpleLabelAction {
 extension ActionSeed {
     static let selectText = ActionSeed("selectText") { entity in
         switch entity {
-        case let entity as any Message1Providing:
+        case let entity as Message:
             SelectTextAction(text: entity.content)
         case let entity as Comment:
             SelectTextAction(text: entity.content.string)

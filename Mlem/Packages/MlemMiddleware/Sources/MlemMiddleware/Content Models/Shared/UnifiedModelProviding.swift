@@ -46,3 +46,7 @@ extension UnifiedModelProviding {
         }
     }
 }
+
+enum ModelError: Error {
+    case notUpgradable, notResolvable, notUpgraded
+}

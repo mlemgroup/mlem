@@ -13,7 +13,7 @@ struct ReplyAction: SimpleLabelAction {
     enum Content {
         case post(Post)
         case comment(Comment)
-        case message(any Message2Providing)
+        case message(Message)
         
         var value: any OwnershipProviding {
             switch self {
@@ -34,7 +34,7 @@ extension ActionSeed {
         switch entity {
         case let entity as Post: ReplyAction(content: .post(entity))
         case let entity as Comment: ReplyAction(content: .comment(entity))
-        case let entity as any Message2Providing: ReplyAction(content: .message(entity))
+        case let entity as Message: ReplyAction(content: .message(entity))
         default: nil
         }
     }
@@ -77,7 +77,19 @@ extension ReplyAction {
         case let .comment(comment):
             navigation.openSheet(.createComment(.comment(comment), commentTreeTracker: environment.commentTreeTracker))
         case let .message(message):
-            navigation.push(.messageFeed(message.creator, focusTextField: true))
+            if message.isOwnMessage {
+                guard let recipient = message.recipient.value_ else {
+                    assertionFailure("Reply called on message with no recipient")
+                    return
+                }
+                navigation.push(.messageFeed(recipient, focusTextField: true))
+            } else {
+                guard let creator = message.creator.value_ else {
+                    assertionFailure("Reply called on message with no creator")
+                    return
+                }
+                navigation.push(.messageFeed(creator, focusTextField: true))
+            }
         }
     }
 }

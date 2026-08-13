@@ -22,7 +22,7 @@ public enum ReportTarget {
     
     case post(Post)
     case comment(Comment)
-    case message(Message2)
+    case message(Message)
     
     var type: ReportType {
         switch self {
@@ -40,15 +40,11 @@ public enum ReportTarget {
         }
     }
     
-    // TODO: UnifiedCommentModel, UnifiedMessageModel remove this shim
     public var creator: ExpectedValue<Person> {
         switch self {
         case let .post(post): post.creator
         case let .comment(comment): comment.creator
-        case let .message(message): .init(
-            value: message.creator,
-            provideValue: { fatalError("This should not be called") }
-        )
+        case let .message(message): message.creator
         }
     }
     
@@ -60,18 +56,20 @@ public enum ReportTarget {
         case let .comment(comment):
             self = .comment(api.caches.comment.getModel(api: api, from: .comment2(comment)))
         case let .message(message):
-            self = .message(api.caches.message2.getModel(api: api, from: message, myPersonId: myPersonId))
+            self = .message(api.caches.message.getModel(api: api, from: .message2(message), myPersonId: myPersonId))
         }
     }
     
-    @MainActor
-    func update(with snapshot: ReportTargetSnapshot) {
-        // TODO: UpdateQueue rework reports to integrate UpdateQueue
+    func attemptDirectUpdate(with snapshot: ReportTargetSnapshot) async {
         switch (self, snapshot) {
-        case (.post, .post), (.comment, .comment):
-            break
-        case let (.message(message), .message(updatedMessage)):
-            message.update(with: updatedMessage)
+        case let (.post(post), .post(snapshot)):
+            await post.updateQueue.attemptDirectUpdate(with: .init(api: post.api, snapshot: .post2(snapshot)))
+        case let (.comment(comment), .comment(snapshot)):
+            await comment.updateQueue.attemptDirectUpdate(with: .init(api: comment.api, snapshot: .comment2(snapshot)))
+        case let (.message(message), .message(snapshot)):
+            await message.updateQueue.attemptDirectUpdate(
+                with: .init(api: message.api, snapshot: .message2(snapshot), isOwnMessage: message.isOwnMessage)
+            )
         default:
             assertionFailure()
         }
