@@ -810,6 +810,7 @@
       }
     },
     "Actions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1662,6 +1663,9 @@
         }
       }
     },
+    "Banned" : {
+
+    },
     "Banned from Community" : {
       "localizations" : {
         "fr" : {
@@ -1759,6 +1763,7 @@
       }
     },
     "Block Instance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2518,6 +2523,9 @@
           }
         }
       }
+    },
+    "Collapsed" : {
+
     },
     "Color Scheme" : {
       "localizations" : {
@@ -4269,6 +4277,9 @@
         }
       }
     },
+    "Expanded" : {
+
+    },
     "Expires:" : {
       "localizations" : {
         "fr" : {
@@ -5932,6 +5943,9 @@
         }
       }
     },
+    "Marked NSFW" : {
+
+    },
     "Matrix Room" : {
       "localizations" : {
         "fr" : {
@@ -6622,6 +6636,12 @@
         }
       }
     },
+    "Not Deleted" : {
+
+    },
+    "Not Downvoted" : {
+
+    },
     "Not Guaranteed" : {
       "localizations" : {
         "fr" : {
@@ -6631,6 +6651,12 @@
           }
         }
       }
+    },
+    "Not Marked NSFW" : {
+
+    },
+    "Not Upvoted" : {
+
     },
     "Note" : {
       "localizations" : {
@@ -7184,6 +7210,7 @@
       }
     },
     "Pin to Community or Instance?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7232,6 +7259,9 @@
           }
         }
       }
+    },
+    "Pinned" : {
+
     },
     "Pinned to Community" : {
       "localizations" : {
@@ -8323,6 +8353,9 @@
         }
       }
     },
+    "Remove Downvote" : {
+
+    },
     "Remove Moderator" : {
       "localizations" : {
         "fr" : {
@@ -8362,6 +8395,9 @@
           }
         }
       }
+    },
+    "Remove Upvote" : {
+
     },
     "Removed" : {
       "localizations" : {
@@ -10557,6 +10593,9 @@
         }
       }
     },
+    "TODO" : {
+
+    },
     "Toggle Developer Tools" : {
       "localizations" : {
         "fr" : {
@@ -10867,6 +10906,9 @@
         }
       }
     },
+    "Unbanned" : {
+
+    },
     "Unbanned: %@\nFrom: %@" : {
       "localizations" : {
         "en" : {
@@ -10904,6 +10946,7 @@
       }
     },
     "Unblock Community" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10914,6 +10957,7 @@
       }
     },
     "Unblock Instance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10924,6 +10968,7 @@
       }
     },
     "Unblock User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10934,6 +10979,7 @@
       }
     },
     "Unblock..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11005,6 +11051,7 @@
       }
     },
     "Unfavorite" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
@@ -11096,6 +11143,9 @@
         }
       }
     },
+    "Unlocked" : {
+
+    },
     "Unmute" : {
       "localizations" : {
         "fr" : {
@@ -11156,6 +11206,9 @@
         }
       }
     },
+    "Unpinned" : {
+
+    },
     "Unread" : {
       "localizations" : {
         "fr" : {
@@ -11165,6 +11218,9 @@
           }
         }
       }
+    },
+    "Unremoved" : {
+
     },
     "Unresolve" : {
       "localizations" : {
@@ -11176,6 +11232,9 @@
         }
       }
     },
+    "Unresolved" : {
+
+    },
     "Unsave" : {
       "localizations" : {
         "fr" : {
@@ -11185,6 +11244,9 @@
           }
         }
       }
+    },
+    "Unsaved" : {
+
     },
     "Unsubscribe" : {
       "localizations" : {
