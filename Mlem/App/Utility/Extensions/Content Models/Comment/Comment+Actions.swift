@@ -12,7 +12,7 @@ import SwiftUI
 
 extension Comment {
     // MARK: - Readouts
-    
+
     func readout(type: ReadoutType, showColor: Bool) -> Readout? {
         switch type {
         case .created: createdReadout
@@ -26,7 +26,7 @@ extension Comment {
     }
 
     // MARK: - Counters
-    
+
     func counter(
         appState: AppState,
         type: CounterType,
@@ -37,148 +37,6 @@ extension Comment {
         case .upvote: upvoteCounter(appState: appState)
         case .downvote: downvotesEnabled ? downvoteCounter(appState: appState, downvotesEnabled: downvotesEnabled) : nil
         case .reply: replyCounter(appState: appState, commentTreeTracker: commentTreeTracker)
-        }
-    }
-
-    // MARK: - Actions
-    
-    func createImageAction(navigation: NavigationLayer, commentTreeTracker: CommentTreeTracker?) -> BasicAction {
-        .init(
-            id: "exportAsImage\(uid)",
-            appearance: .createImage()) {
-                navigation.openSheet(.exportCommentImage(self, tracker: commentTreeTracker))
-            }
-    }
-    
-    func editAction(appState: AppState) -> BasicAction {
-        .init(
-            id: "edit\(uid)",
-            appearance: .edit(),
-            callback: api.canInteract(appState: appState)
-            ? { @MainActor in NavigationModel.main.openSheet(.editComment(self, context: nil)) }
-            : nil
-        )
-    }
-    
-    func viewVotesAction() -> BasicAction {
-        let callback: (@MainActor () -> Void)? = canModerate
-        ? { @MainActor in NavigationModel.main.openSheet(.votesList(.comment(self))) }
-        : nil
-        return .init(
-            id: "viewVotes\(uid)",
-            appearance: .viewVotes(),
-            callback: callback
-        )
-    }
-    
-    func markReadAction(appState: AppState, notification: InboxNotification, feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "markRead\(uid)",
-            appearance: .markRead(isOn: notification.read),
-            callback: api.canInteract(appState: appState) ? {
-                @MainActor in
-                notification.toggleRead()
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-            } : nil
-        )
-    }
-    
-    // MARK: - Action Groups
-
-    @ActionBuilder
-    func allMenuActions(
-        appState: AppState,
-        expanded: Bool = false,
-        feedback: Set<FeedbackType> = [.haptic, .toast],
-        showAllActions: Bool = true,
-        navigation: NavigationLayer?,
-        notification: InboxNotification? = nil,
-        commentTreeTracker: CommentTreeTracker? = nil,
-        report: Report? = nil
-    ) -> [any Action] {
-        basicMenuActions(
-            appState: appState,
-            feedback: feedback,
-            navigation: navigation,
-            notification: notification,
-            commentTreeTracker: commentTreeTracker
-        )
-        if canModerate {
-            ActionGroup(
-                appearance: .init(label: "Moderation...", color: .themedModeration, icon: Icons.moderation),
-                displayMode: Settings.get(\.menus_modActionGrouping) == .combined || expanded ? .section : .disclosure
-            ) {
-                moderatorMenuActions(appState: appState, feedback: feedback, showAllActions: showAllActions, report: report)
-            }
-        }
-    }
-    
-    @ActionBuilder
-    func basicMenuActions(
-        appState: AppState,
-        feedback: Set<FeedbackType> = [.haptic, .toast],
-        navigation: NavigationLayer?,
-        notification: InboxNotification? = nil,
-        commentTreeTracker: CommentTreeTracker? = nil
-    ) -> [any Action] {
-        ActionGroup(displayMode: .compactSection) {
-            if let upvoteAction = upvoteAction(appState: appState, feedback: feedback) { upvoteAction }
-            if let downvoteAction = downvoteAction(
-                appState: appState,
-                feedback: feedback) { downvoteAction }
-            if let saveAction = saveAction(appState: appState, feedback: feedback) { saveAction }
-            replyAction(appState: appState, commentTreeTracker: commentTreeTracker)
-            if let notification {
-                markReadAction(appState: appState, notification: notification, feedback: feedback)
-            }
-            if !deleted {
-                selectTextAction()
-            }
-            shareAction(navigation: navigation)
-            
-            if let navigation, notification == nil {
-                createImageAction(navigation: navigation, commentTreeTracker: commentTreeTracker)
-            }
-            
-            if isOwnComment {
-                editAction(appState: appState)
-                deleteAction(appState: appState, feedback: feedback)
-            } else {
-                if !canModerate, !deleted {
-                    reportAction(appState: appState)
-                }
-                if let blockCreatorAction = blockCreatorAction(appState: appState, feedback: feedback) { blockCreatorAction }
-            }
-        }
-    }
-    
-    @ActionBuilder
-    func moderatorMenuActions(
-        appState: AppState,
-        feedback: Set<FeedbackType> = [.haptic, .toast],
-        showAllActions: Bool = true,
-        report: Report? = nil
-    ) -> [any Action] {
-        if showAllActions || Settings.get(\.menus_allModActions) {
-            viewVotesAction()
-        }
-        if !isOwnComment {
-            removeAction(appState: appState).disabled(!canModerate)
-            if let creator = creator.value, let community = community.value {
-                creator.banActions(appState: appState, community: community, withUserLabel: true)
-            }
-        }
-        if api.isAdmin, api.supports(.purgeContent, defaultValue: false) {
-            purgeAction(appState: appState)
-            if !isOwnComment,
-            let purgeCreatorAction = purgeCreatorAction(appState: appState) {
-                purgeCreatorAction
-            }
-        }
-        if let report {
-            ActionGroup {
-                report.menuActions(appState: appState)
-            }
         }
     }
 }

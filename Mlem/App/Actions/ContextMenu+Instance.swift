@@ -18,8 +18,7 @@ extension View {
             contextMenu {
                 CustomizableActionMenu(
                     entity: instance,
-                    configuration: \.interactionBar_instance,
-                    customizable: true
+                    configuration: \.interactionBar_instance
                 )
             }
         } else {

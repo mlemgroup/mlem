@@ -17,8 +17,7 @@ extension View {
             CustomizableActionMenu(
                 entity: post,
                 configuration: \.interactionBar_post,
-                modMailConfiguration: \.interactionBar_postReport,
-                customizable: true
+                modMailConfiguration: \.interactionBar_postReport
             )
         }
         .popupAnchor()
@@ -51,8 +50,7 @@ extension EllipsisMenu {
         self.content = CustomizableActionMenu(
             entity: post,
             configuration: \.interactionBar_post,
-            modMailConfiguration: \.interactionBar_postReport,
-            customizable: true
+            modMailConfiguration: \.interactionBar_postReport
         ) { seed in
             if seed.isModeratorAction {
                 return type.contains(.moderator)
