@@ -39,6 +39,7 @@ public class InboxNotification: ContentModel, ReadableProviding, Identifiable {
     }
     
     public func updateRead(_ newValue: Bool) {
+        guard read != newValue else { return }
         read = newValue
 
         api.unreadCount?.updateUnverifiedItem(itemType: .personal, isRead: newValue)

@@ -69,6 +69,8 @@ public class Message:
         }
         self.creator = expectedValue(properties.creator)
         self.recipient = expectedValue(properties.recipient)
+        
+        assert(!properties.isOwnMessage || properties.read, "Own message must be read")
     }
     
     public func update(with properties: MessageProperties) {

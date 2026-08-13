@@ -8,6 +8,9 @@
 import Foundation
 
 public struct MessageProperties: UnifiedPropertiesProviding {
+    // Synthetic from call point
+    let isOwnMessage: Bool
+    
     // From Message1Snapshot, guaranteed to always be present
     let actorId: ActorIdentifier
     let id: Int
@@ -22,9 +25,6 @@ public struct MessageProperties: UnifiedPropertiesProviding {
     // From Message2Snapshot
     var creator: Person?
     var recipient: Person?
-    
-    // Synthetic from call point
-    let isOwnMessage: Bool
 
     @MainActor
     public init(api: ApiClient, snapshot: AnyMessageSnapshot, isOwnMessage: Bool) {
@@ -38,6 +38,8 @@ public struct MessageProperties: UnifiedPropertiesProviding {
             snapshot1 = message2Snapshot.message
             snapshot2 = message2Snapshot
         }
+        
+        self.isOwnMessage = isOwnMessage
 
         actorId = snapshot1.actorId
         id = snapshot1.id
@@ -46,15 +48,13 @@ public struct MessageProperties: UnifiedPropertiesProviding {
         created = snapshot1.created
         content = snapshot1.content
         updated = snapshot1.updated
-        read = snapshot1.read
+        read = isOwnMessage ? true : snapshot1.read
         deleted = snapshot1.deleted
 
         if let snapshot2 {
             creator = api.caches.person.getModel(api: api, from: .person1(snapshot2.creator))
             recipient = api.caches.person.getModel(api: api, from: .person1(snapshot2.recipient))
         }
-        
-        self.isOwnMessage = isOwnMessage
     }
     
     public mutating func merge(_ other: MessageProperties) {
