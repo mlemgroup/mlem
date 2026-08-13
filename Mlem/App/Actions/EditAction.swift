@@ -73,10 +73,8 @@ extension EditAction {
             } else {
                 if message.isOwnMessage, let recipient = message.recipient.value {
                     environment.navigation?.push(.messageFeed(recipient, focusTextField: true, editing: message))
-                } else if !message.isOwnMessage, let creator = message.creator.value {
-                    environment.navigation?.push(.messageFeed(creator, focusTextField: true, editing: message))
                 } else {
-                    assertionFailure("Cannot edit message with no other person")
+                    assertionFailure("Invalid edit target")
                 }
             }
         }
