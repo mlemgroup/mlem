@@ -77,11 +77,19 @@ extension ReplyAction {
         case let .comment(comment):
             navigation.openSheet(.createComment(.comment(comment), commentTreeTracker: environment.commentTreeTracker))
         case let .message(message):
-            guard let creator = message.creator.value_ else {
-                assertionFailure("Reply called on Message1")
-                return
+            if message.isOwnMessage {
+                guard let recipient = message.recipient.value_ else {
+                    assertionFailure("Reply called on message with no recipient")
+                    return
+                }
+                navigation.push(.messageFeed(recipient, focusTextField: true))
+            } else {
+                guard let creator = message.creator.value_ else {
+                    assertionFailure("Reply called on message with no creator")
+                    return
+                }
+                navigation.push(.messageFeed(creator, focusTextField: true))
             }
-            navigation.push(.messageFeed(creator, focusTextField: true))
         }
     }
 }
