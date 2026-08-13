@@ -61,15 +61,6 @@ extension View {
             leadingBuffer: leadingBuffer
         ))
     }
-    
-    @ViewBuilder
-    func quickSwipes_(leading: [any Actions.Action], trailing: [any Actions.Action], leadingBuffer: SwipeBuffer) -> some View {
-        modifier(QuickSwipesActionsViewModifier(
-            leadingActions: leading,
-            trailingActions: trailing,
-            leadingBuffer: leadingBuffer
-        ))
-    }
 
     @ViewBuilder
     func quickSwipes(

@@ -75,7 +75,7 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
-        .quickSwipes_(leading: [], trailing: trailingSwipes, leadingBuffer: .standard)
+        .quickSwipes(leading: [], trailing: trailingSwipes, leadingBuffer: .standard)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(notification: notification, message: message, report: reportContext)
