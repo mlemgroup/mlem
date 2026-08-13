@@ -23,8 +23,7 @@ extension View {
         contextMenu {
             CustomizableActionMenu(
                 entity: community,
-                configuration: \.interactionBar_community,
-                customizable: true
+                configuration: \.interactionBar_community
             )
         }
     }

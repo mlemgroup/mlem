@@ -101,9 +101,11 @@ struct TileCommentView: View {
     
     var score: some View {
         Menu {
-            ForEach(comment.allMenuActions(appState: appState, navigation: navigation), id: \.id) { action in
-                MenuButton(action: action)
-            }
+            CustomizableActionMenu(
+                entity: comment,
+                configuration: \.interactionBar_comment,
+                modMailConfiguration: \.interactionBar_commentReport
+            )
         } label: {
             TileScoreView(comment)
         }

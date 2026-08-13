@@ -14,15 +14,12 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
 
     let configurationKeyPathGenerator: (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>
     let createAction: (ActionSeed, EnvironmentValues) -> (any Actions.Action)?
-    let customizable: Bool
 
     fileprivate init(
-        customizable: Bool = true,
         configuration keyPathGenerator: @escaping (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>,
         createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
     ) {
         self.configurationKeyPathGenerator = keyPathGenerator
-        self.customizable = customizable
         self.createAction = createAction
     }
 
@@ -35,18 +32,16 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
             self.createActions(seeds: configuration.contextMenu)
         }
         .environment(\.isContextMenu, true)
-        if customizable {
-            Section {
-                Button("More...", icon: .general.menu) {
-                    UIApplication.shared.firstKeyWindow?.endEditing(true)
-                    navigation.openSheet(.actionSheet(
-                        sheetSections,
-                        environment: environment,
-                        configuration: configurationKeyPathGenerator(environment)
-                    ))
-                }
-                .symbolVariant(.circle)
+        Section {
+            Button("More...", icon: .general.menu) {
+                UIApplication.shared.firstKeyWindow?.endEditing(true)
+                navigation.openSheet(.actionSheet(
+                    sheetSections,
+                    environment: environment,
+                    configuration: configurationKeyPathGenerator(environment)
+                ))
             }
+            .symbolVariant(.circle)
         }
     }
 
@@ -64,21 +59,18 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
 extension CustomizableActionMenu {
     init(
         entity: Any,
-        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        customizable: Bool = true
+        configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>
     ) {
-        self.init(configuration: keyPath, customizable: customizable) { seed, _ in
+        self.init(configuration: keyPath) { seed, _ in
             seed.createAction(entity)
         }
     }
 
     init(
         configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        customizable: Bool = true,
         createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
     ) {
         self.configurationKeyPathGenerator = { _ in keyPath }
-        self.customizable = customizable
         self.createAction = createAction
     }
 
@@ -86,26 +78,24 @@ extension CustomizableActionMenu {
         entity: Any,
         configuration: ReferenceWritableKeyPath<SettingsValues, Configuration>,
         modMailConfiguration: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        customizable: Bool = true,
         _ filter: @escaping (ActionSeed) -> Bool = { _ in true }
     ) {
         self.init(
-        customizable: customizable,
-        configuration: { environment in
-            if environment.reportContext != nil && Settings.get(\.interactionBar_alternateReportLayout) {
-                configuration
-            } else {
-                modMailConfiguration
-            }
-        },
-        createAction: { seed, environment in
-            if !filter(seed) { return nil }
-            if let report = environment.reportContext {
-                if let action = seed.createAction(report) {
-                    return action
+            configuration: { environment in
+                if environment.reportContext != nil && Settings.get(\.interactionBar_alternateReportLayout) {
+                    configuration
+                } else {
+                    modMailConfiguration
                 }
-            }
-            return seed.createAction(entity)
-        })
+            },
+            createAction: { seed, environment in
+                if !filter(seed) { return nil }
+                if let report = environment.reportContext {
+                    if let action = seed.createAction(report) {
+                        return action
+                    }
+                }
+                return seed.createAction(entity)
+            })
     }
 }

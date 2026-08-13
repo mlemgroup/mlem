@@ -118,14 +118,11 @@ struct TilePostView: View {
     
     var score: some View {
         Menu {
-            ForEach(post.allMenuActions(
-                appState: appState,
-                showAllActions: false,
-                navigation: navigation,
-                commentTreeTracker: commentTreeTracker
-            ), id: \.id) { action in
-                MenuButton(action: action)
-            }
+            CustomizableActionMenu(
+                entity: post,
+                configuration: \.interactionBar_post,
+                modMailConfiguration: \.interactionBar_postReport
+            )
         } label: {
             TileScoreView(post)
         }
