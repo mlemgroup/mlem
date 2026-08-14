@@ -13,7 +13,7 @@ struct EditAction: SimpleLabelAction {
     enum Content {
         case post(Post)
         case comment(Comment)
-        case message(any Message1Providing)
+        case message(Message)
         
         var value: any OwnershipProviding {
             switch self {
@@ -32,7 +32,7 @@ struct EditAction: SimpleLabelAction {
 extension ActionSeed {
     static let edit = ActionSeed("edit") { entity in
         switch entity {
-        case let entity as any Message1Providing: EditAction(content: .message(entity))
+        case let entity as Message: EditAction(content: .message(entity))
         case let entity as Comment: EditAction(content: .comment(entity))
         case let entity as Post: EditAction(content: .post(entity))
         default: nil
@@ -68,15 +68,14 @@ extension EditAction {
         case let .post(post):
             environment.navigation?.openSheet(.editPost(post))
         case let .message(message):
-            if let message = message as? any Message2Providing {
-                if let editMessage = environment.editMessage {
-                    editMessage(message.message2)
-                } else {
-                    let otherPerson = message.isOwnMessage ? message.recipient : message.creator
-                    environment.navigation?.push(.messageFeed(otherPerson, focusTextField: true, editing: message))
-                }
+            if let editMessage = environment.editMessage {
+                editMessage(message)
             } else {
-                assertionFailure()
+                if message.isOwnMessage, let recipient = message.recipient.value {
+                    environment.navigation?.push(.messageFeed(recipient, focusTextField: true, editing: message))
+                } else {
+                    assertionFailure("Invalid edit target")
+                }
             }
         }
     }

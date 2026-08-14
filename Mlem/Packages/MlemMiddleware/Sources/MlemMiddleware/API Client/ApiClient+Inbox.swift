@@ -12,16 +12,16 @@ public extension ApiClient {
         creatorId: Int? = nil,
         pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> PagedResponse<Message2> {
+    ) async throws -> PagedResponse<Message> {
         let response = try await repository.getMessages(
             creatorId: creatorId,
             pageInfo: pageInfo,
             unreadOnly: unreadOnly
         )
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        let messages = await caches.message2.getModels(
+        let messages = await caches.message.getModels(
             api: self,
-            from: response.items,
+            from: response.items.map { .message2($0) },
             myPersonId: myPersonId
         )
         return .init(items: messages, nextLocation: response.nextLocation)
@@ -95,23 +95,12 @@ public extension ApiClient {
     }
 
     @discardableResult
-    func createMessage(personId: Int, content: String) async throws -> Message2 {
+    func createMessage(personId: Int, content: String) async throws -> Message {
         let snapshot = try await repository.createMessage(personId: personId, content: content)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
+        return await caches.message.getModel(
             api: self,
-            from: snapshot,
-            myPersonId: myPersonId
-        )
-    }
-    
-    @discardableResult
-    func editMessage(id: Int, content: String) async throws -> Message2 {
-        let snapshot = try await repository.editMessage(id: id, content: content)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
-            api: self,
-            from: snapshot,
+            from: .message2(snapshot),
             myPersonId: myPersonId
         )
     }
@@ -124,18 +113,6 @@ public extension ApiClient {
             api: self,
             from: snapshot,
             myPersonId: myPersonId
-        )
-    }
-    
-    @discardableResult
-    func deleteMessage(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Message2 {
-        let snapshot = try await repository.deleteMessage(id: id, delete: delete)
-        guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
-        return await caches.message2.getModel(
-            api: self,
-            from: snapshot,
-            myPersonId: myPersonId,
-            semaphore: semaphore
         )
     }
 }

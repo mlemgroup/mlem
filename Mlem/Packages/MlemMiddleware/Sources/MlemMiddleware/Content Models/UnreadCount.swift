@@ -41,7 +41,11 @@ public final class UnreadCount {
     var verifiedCount: Count = .init()
     var unverifiedCount: Count = .init()
     
-    public var personal: Int { verifiedCount.personal + unverifiedCount.personal }
+    public var personal: Int {
+        assert(verifiedCount.personal >= 0, "Invalid verifiedCount.personal \(verifiedCount.personal)")
+        assert(unverifiedCount.personal >= 0, "Invalid unverifiedCount.personal \(unverifiedCount.personal)")
+        return verifiedCount.personal + unverifiedCount.personal
+    }
     public var moderation: Int { verifiedCount.moderation + unverifiedCount.moderation }
     
     /// This value is incremented whenever the inbox count changes due to an

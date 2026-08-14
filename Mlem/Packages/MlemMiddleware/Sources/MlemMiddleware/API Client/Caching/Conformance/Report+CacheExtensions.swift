@@ -22,8 +22,9 @@ extension Report {
         setIfChanged(\.resolver, api.caches.person.getOptionalModel(api: api, from: .person1(snapshot.resolver)))
         resolvedManager.updateWithReceivedValue(snapshot.resolved, semaphore: semaphore)
         
-        target.update(with: snapshot.target)
-        
+        Task {
+            await target.attemptDirectUpdate(with: snapshot.target)
+        }
         Task {
             await creator.updateQueue.attemptDirectUpdate(with: .init(api: api, snapshot: .person1(snapshot.creator)))
         }

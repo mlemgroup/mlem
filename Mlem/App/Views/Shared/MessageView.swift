@@ -8,6 +8,8 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Actions
+import Icons
 
 struct MessageView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState
@@ -15,13 +17,13 @@ struct MessageView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) private var reportContext
     
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
-
-    let message: any Message
+    
+    let message: Message
     let notification: InboxNotification?
     let embeddedContent: EmbeddedContent
     
     init(
-        message: any Message,
+        message: Message,
         notification: InboxNotification?,
         @ViewBuilder embeddedContent: () -> EmbeddedContent = { EmptyView() }
     ) {
@@ -33,7 +35,9 @@ struct MessageView<EmbeddedContent: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             HStack {
-                FullyQualifiedLinkView(message.creator_, labelStyle: .small)
+                ExpectedView(message.creator) { creator in
+                    FullyQualifiedLinkView(creator, labelStyle: .small)
+                }
                 Spacer()
                 if let notification {
                     Image(icon: message.isOwnMessage ? .lemmy.send : .lemmy.message)
@@ -71,7 +75,7 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
-        .quickSwipes(message.swipeActions(notification: notification, appState: appState))
+        .quickSwipes(leading: [], trailing: trailingSwipes, leadingBuffer: .standard)
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(notification: notification, message: message, report: reportContext)
@@ -84,8 +88,16 @@ struct MessageView<EmbeddedContent: View>: View {
         }
     }
     
+    var trailingSwipes: [Actions.Action] {
+        if let notification,
+           let action = ActionSeed.markRead.createAction(notification) {
+            return [action]
+        }
+        return .init()
+    }
+    
     var otherPerson: Person? {
-        message.isOwnMessage ? message.recipient_ : message.creator_
+        message.isOwnMessage ? message.recipient.value : message.creator.value
     }
     
     @MainActor

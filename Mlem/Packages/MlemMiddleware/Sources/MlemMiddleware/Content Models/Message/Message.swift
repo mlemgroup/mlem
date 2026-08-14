@@ -1,0 +1,170 @@
+//
+//  Message.swift
+//  MlemMiddleware
+//
+//  Created by Eric Andrews on 2026-06-15.
+//
+
+import Observation
+import Foundation
+
+@Observable
+public class Message:
+    UnifiedModelProviding,
+    OwnershipProviding,
+    FeedLoadable,
+    ActorIdentifiable,
+    DeletableProviding,
+    ReportableProviding,
+    SelectableContentProviding {
+    public typealias Properties = MessageProperties
+    
+    public var api: ApiClient
+    private let properties: Properties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Message> = .init(parent: self, properties: properties)
+    
+    // MARK: Custom Properties
+    // Mlem-specific properties that are not reflected in the API
+    
+    public let isOwnMessage: Bool
+    
+    // MARK: API Properties
+    // Properties that are provided by the API
+    
+    public let actorId: ActorIdentifier
+    public let id: Int
+    public let creatorId: Int
+    public let recipientId: Int
+    public let created: Date
+    public var content: String
+    public var updated: Date?
+    public var read: Bool
+    public var deleted: Bool
+    
+    public var creator: ExpectedValue<Person>
+    public var recipient: ExpectedValue<Person>
+    
+    public init(api: ApiClient, properties: MessageProperties) {
+        self.api = api
+        self.properties = properties
+        self.isOwnMessage = properties.isOwnMessage
+        
+        self.actorId = properties.actorId
+        self.id = properties.id
+        self.creatorId = properties.creatorId
+        self.recipientId = properties.recipientId
+        self.created = properties.created
+        self.content = properties.content
+        self.updated = properties.updated
+        self.read = properties.read
+        self.deleted = properties.deleted
+        
+        self.creator = dummyExpectedValue(properties.creator)
+        self.recipient = dummyExpectedValue(properties.recipient)
+        
+        func expectedValue<T>(_ value: T?) -> ExpectedValue<T> {
+            .init(
+                value: value,
+                provideValue: { try await self.upgrade() })
+        }
+        self.creator = expectedValue(properties.creator)
+        self.recipient = expectedValue(properties.recipient)
+        
+        assert(!properties.isOwnMessage || properties.read, "Own message must be read")
+    }
+    
+    public func update(with properties: MessageProperties) {
+        setIfChanged(\.content, properties.content)
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.read, properties.read)
+        setIfChanged(\.deleted, properties.deleted)
+        
+        // creator and recipient are not expected to change, just need to be assigned if absent
+        setIfNil(\.creator.value_, properties.creator)
+        setIfNil(\.recipient.value_, properties.recipient)
+    }
+    
+    public func softUpdate(with properties: MessageProperties) {
+        setIfNil(\.creator.value_, properties.creator)
+        setIfNil(\.recipient.value_, properties.recipient)
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        // doesn't make sense to reload a message with a different account
+        assertionFailure("Message is not resolvable")
+        throw ModelError.notResolvable
+    }
+    
+    // MARK: Upgrades
+    
+    public func upgrade() async throws {
+        assertionFailure("Message is not upgradable")
+        throw ModelError.notUpgradable
+    }
+    
+    public func fetchUpgraded() async throws -> MessageProperties {
+        assertionFailure("Message is not upgradable")
+        throw ModelError.notUpgradable
+    }
+}
+
+// MARK: - Interactions
+
+public extension Message {
+    func edit(content: String) async throws {
+        self.content = content
+        
+        Task {
+            await updateQueue.addItem {
+                await .init(
+                    api: self.api,
+                    snapshot: .message2(try self.api.repository.editMessage(id: self.id, content: content)),
+                    isOwnMessage: self.isOwnMessage)
+            }
+        }
+    }
+    
+    func updateDeleted(_ newValue: Bool, callback: ((UpdateStatus) -> Void)?) {
+        deleted = newValue
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.deleteMessage(id: self.id, delete: newValue)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: .message2(snapshot), isOwnMessage: self.isOwnMessage)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Shim
+
+public extension Message {
+    func takeSnapshot2() -> Message2Snapshot? {
+        guard let creator = self.creator.value_,
+              let recipient = self.recipient.value_ else {
+            assertionFailure("takeSnapshot2() called without high-tier fields available")
+            return nil
+        }
+        
+        return .init(
+            message: .init(
+                actorId: self.actorId,
+                id: self.id,
+                creatorId: self.creatorId,
+                recipientId: self.recipientId,
+                created: self.created,
+                content: self.content,
+                updated: self.updated,
+                read: self.read,
+                deleted: self.deleted),
+            creator: creator.takeSnapshot1(),
+            recipient: recipient.takeSnapshot1()
+        )
+    }
+}

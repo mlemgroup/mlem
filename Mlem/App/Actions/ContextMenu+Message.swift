@@ -18,7 +18,7 @@ private let seeds: [ActionSeed] = [
 ]
 
 extension View {
-    func contextMenu(message: any Message1Providing) -> some View {
+    func contextMenu(message: Message) -> some View {
         contextMenu {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(message) }
