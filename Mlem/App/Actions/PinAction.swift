@@ -112,6 +112,7 @@ extension PinAction {
 
     @MainActor
     func togglePinnedCommunity(environment: EnvironmentValues) {
+        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         let shouldPin = entity.pinnedCommunity
         entity.togglePinnedCommunity { status in
             handleResult(
@@ -124,6 +125,7 @@ extension PinAction {
 
     @MainActor
     func togglePinnedInstance(environment: EnvironmentValues) {
+        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         let shouldPin = entity.pinnedInstance
         entity.togglePinnedInstance { status in
             handleResult(
@@ -142,8 +144,8 @@ extension PinAction {
     ) {
         switch status {
         case .success:
-            environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-        case .failure: 
+            break
+        case .failure:
             environment.toastModel?.add(
                 .failure(shouldPin ? "Failed to pin post" : "Failed to unpin post")
             )

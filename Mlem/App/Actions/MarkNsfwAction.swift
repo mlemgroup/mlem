@@ -72,11 +72,12 @@ extension MarkNsfwAction {
             message: entity.nsfw ? "Really remove NSFW tag?" : "Really add NSFW tag?",
             [
             .init(title: "Yes", isDestructive: true) {
+                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                 entity.toggleNsfw { status in
                     switch status {
                     case .success:
-                        environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-                    case .failure: 
+                        break
+                    case .failure:
                         environment.toastModel?.add(.failure("Failed to set NSFW status"))
                     }
                 }

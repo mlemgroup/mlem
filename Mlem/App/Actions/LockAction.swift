@@ -68,6 +68,7 @@ extension LockAction {
             message: entity.locked ? "Really unlock this post?" : "Really lock this post?",
             [
             .init(title: "Yes", isDestructive: true) {
+                environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                 let shouldLock = !entity.locked
                 entity.toggleLocked([]) { status in
                     self.handleResult(
@@ -88,8 +89,8 @@ extension LockAction {
     ) {
         switch status {
         case .success:
-            environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
-        case .failure: 
+            break
+        case .failure:
             environment.toastModel?.add(
                 .failure(shouldLock ? "Failed to lock post" : "Failed to unlock post")
             )
