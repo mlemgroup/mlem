@@ -31,6 +31,18 @@
       },
       "shouldTranslate" : false
     },
+    "CFBundleShortVersionString" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2.5.1"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "NSHumanReadableCopyright" : {
       "comment" : "Copyright (human-readable)",
       "extractionState" : "extracted_with_value",
