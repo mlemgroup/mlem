@@ -38,12 +38,16 @@ public final class UnreadCount {
         }
     }
     
+    /// A best guess at the unread count on the backend.
     var verifiedCount: Count = .init()
+
+    /// A delta to apply to verifiedCount for state-faking. For example,
+    /// if the state-faked count contains one less personal inbox item than
+    /// the verified count, this will be (personal: -1, moderation: 0).
     var unverifiedCount: Count = .init()
     
     public var personal: Int {
         assert(verifiedCount.personal >= 0, "Invalid verifiedCount.personal \(verifiedCount.personal)")
-        assert(unverifiedCount.personal >= 0, "Invalid unverifiedCount.personal \(unverifiedCount.personal)")
         return verifiedCount.personal + unverifiedCount.personal
     }
     public var moderation: Int { verifiedCount.moderation + unverifiedCount.moderation }
