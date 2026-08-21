@@ -111,15 +111,17 @@ struct CommunityDescriptionEditorView: View {
     func send() async {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
         community.updateDescription(textView.text) { status in
-            switch status {
-            case .success:
-                textView.resignFirstResponder()
-                textView.isEditable = false
-                hapticManager.play(haptic: .success, tier: .low)
-                dismiss()
-            case let .failure(error):
-                sending = false
-                handleError(error)
+            Task { @MainActor in
+                switch status {
+                case .success:
+                    textView.resignFirstResponder()
+                    textView.isEditable = false
+                    hapticManager.play(haptic: .success, tier: .low)
+                    dismiss()
+                case let .failure(error):
+                    sending = false
+                    handleError(error)
+                }
             }
         }
     }
