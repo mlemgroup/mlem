@@ -82,7 +82,7 @@ private func getFileName(url: URL, data: Data) throws(FileDownloadError) -> Stri
     let url = url.unwrapProxy()
 
     if !url.pathExtension.isEmpty {
-        return url.pathExtension
+        return url.lastPathComponent
     }
 
     // Infer file type from the image data
