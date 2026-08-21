@@ -65,7 +65,7 @@ extension MarkReadAction {
 extension MarkReadAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        notification.toggleRead()
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
+        notification.toggleRead()
     }
 }

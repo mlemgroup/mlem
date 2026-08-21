@@ -4411,6 +4411,7 @@
       }
     },
     "Failed to remove content" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
