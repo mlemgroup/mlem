@@ -17,6 +17,7 @@ struct MessageView<EmbeddedContent: View>: View {
     @Environment(\.reportContext) private var reportContext
     
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
+    @Setting(\.inbox_markReadOnVisit) var markReadOnVisit
     
     let message: Message
     let notification: InboxNotification?
@@ -82,7 +83,9 @@ struct MessageView<EmbeddedContent: View>: View {
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .onTapGesture {
             if let otherPerson, message.api.canInteract(appState: appState) {
-                notification?.updateRead(true)
+                if markReadOnVisit {
+                    notification?.updateRead(true)
+                }
                 navigation.push(.messageFeed(otherPerson))
             }
         }
