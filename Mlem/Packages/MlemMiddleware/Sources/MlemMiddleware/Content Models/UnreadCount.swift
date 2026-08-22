@@ -47,8 +47,9 @@ public final class UnreadCount {
     var unverifiedCount: Count = .init()
     
     public var personal: Int {
-        assert(verifiedCount.personal >= 0, "Invalid verifiedCount.personal \(verifiedCount.personal)")
-        return verifiedCount.personal + unverifiedCount.personal
+        var total = verifiedCount.personal + unverifiedCount.personal
+        assert(total >= 0, "Invalid personal count \(total) (v: \(verifiedCount.personal), u: \(unverifiedCount.personal))")
+        return total
     }
     public var moderation: Int { verifiedCount.moderation + unverifiedCount.moderation }
     
