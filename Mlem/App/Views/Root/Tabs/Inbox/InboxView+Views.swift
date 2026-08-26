@@ -94,7 +94,11 @@ extension InboxView {
             }
         }
         if selectedFeed == .inbox {
-            MarkAllAsReadButton()
+            MarkAllAsReadButton {
+                if !showRead {
+                    await refresh()
+                }
+            }
         }
     }
     

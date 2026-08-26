@@ -15,6 +15,12 @@ struct MarkAllAsReadButton: ToolbarContent {
     @State var animationPlaying: Bool = false
     @State var phaseAnimatorTrigger: Bool = false
     
+    let callback: (() async -> Void)?
+    
+    init(callback: (() async -> Void)? = nil) {
+        self.callback = callback
+    }
+    
     var body: some ToolbarContent {
         Group {
             if newMessagesExist || animationPlaying {
@@ -28,6 +34,7 @@ struct MarkAllAsReadButton: ToolbarContent {
                                 do {
                                     try await appState.firstApi.markAllAsRead()
                                     try await Task.sleep(for: .seconds(0.25))
+                                    await callback?()
                                 } catch {
                                     handleError(error)
                                 }

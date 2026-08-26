@@ -1743,6 +1743,7 @@
       }
     },
     "Block Community" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1753,6 +1754,7 @@
       }
     },
     "Block community or user?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1794,6 +1796,7 @@
       }
     },
     "Block..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5934,6 +5937,9 @@
         }
       }
     },
+    "Mark Read on Visit" : {
+
+    },
     "Mark Unread" : {
       "localizations" : {
         "fr" : {
@@ -6162,6 +6168,7 @@
       }
     },
     "Moderation..." : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7982,6 +7989,7 @@
       }
     },
     "Really pin this post to %@?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7992,6 +8000,7 @@
       }
     },
     "Really pin this post to the community?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8084,6 +8093,7 @@
       }
     },
     "Really unpin this post from %@?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8094,6 +8104,7 @@
       }
     },
     "Really unpin this post from the community?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10616,9 +10627,6 @@
           }
         }
       }
-    },
-    "Toggle Notifications" : {
-
     },
     "Too many items" : {
       "localizations" : {
