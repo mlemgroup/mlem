@@ -33,8 +33,8 @@ struct MarkAllAsReadButton: ToolbarContent {
                             Task {
                                 do {
                                     try await appState.firstApi.markAllAsRead()
-                                    try await Task.sleep(for: .seconds(0.25))
                                     await callback?()
+                                    try await Task.sleep(for: .seconds(0.25))
                                 } catch {
                                     handleError(error)
                                 }
