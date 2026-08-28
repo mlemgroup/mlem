@@ -177,7 +177,7 @@ struct InboxView: View {
         .coordinateSpace(name: "inboxScrollView")
     }
     
-    private func refresh() async {
+    func refresh() async {
         do {
             if selectedFeed == .modMail, !appState.isModOrAdmin {
                 selectedFeed = .inbox
