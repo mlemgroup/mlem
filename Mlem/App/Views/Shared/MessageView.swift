@@ -8,7 +8,6 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
-import Actions
 import Icons
 
 struct MessageView<EmbeddedContent: View>: View {
@@ -18,6 +17,7 @@ struct MessageView<EmbeddedContent: View>: View {
     
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping
     @Setting(\.inbox_markReadOnVisit) var markReadOnVisit
+    @Setting(\.interactionBar_reply) var replyInteractionBar
     
     let message: Message
     let notification: InboxNotification?
@@ -76,7 +76,12 @@ struct MessageView<EmbeddedContent: View>: View {
         .clipped()
         .background(.themedSecondaryGroupedBackground)
         .contentShape(.rect)
-        .quickSwipes(leading: [], trailing: trailingSwipes, leadingBuffer: .standard)
+        .quickSwipes(
+            notification: notification,
+            message: message,
+            report: reportContext,
+            configuration: replyInteractionBar
+        )
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .contextMenu(notification: notification, message: message, report: reportContext)
@@ -89,14 +94,6 @@ struct MessageView<EmbeddedContent: View>: View {
                 navigation.push(.messageFeed(otherPerson))
             }
         }
-    }
-    
-    var trailingSwipes: [Actions.Action] {
-        if let notification,
-           let action = ActionSeed.markRead.createAction(notification) {
-            return [action]
-        }
-        return .init()
     }
     
     var otherPerson: Person? {
