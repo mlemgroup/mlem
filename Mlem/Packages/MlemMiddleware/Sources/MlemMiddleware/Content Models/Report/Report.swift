@@ -9,7 +9,8 @@ import Foundation
 import Observation
 
 @Observable
-public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
+public class Report: CacheIdentifiable, UnifiedModelProviding, FeedLoadable {
+    public typealias Properties = ReportProperties
     public typealias FilterType = ModMailItemFilterType
     
     public var api: ApiClient
