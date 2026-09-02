@@ -45,6 +45,33 @@ extension View {
             leadingBuffer: .standard
         )
     }
+
+    @ViewBuilder
+    func quickSwipes(
+        notification: InboxNotification?,
+        message: Message,
+        report: Report?,
+        configuration: ReplyBarConfiguration
+    ) -> some View {
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { seed in
+                seed.createAction(notification: notification, message: message, report: report)
+            },
+            trailing: configuration.swipes.trailing.compactMap { seed in
+                seed.createAction(notification: notification, message: message, report: report)
+            },
+            leadingBuffer: .standard
+        )
+    }
+}
+
+private extension ActionSeed {
+    /// Resolves a seed against a message row, which may also carry a notification and/or report context.
+    func createAction(notification: InboxNotification?, message: Message, report: Report?) -> (any Actions.Action)? {
+        if let notification, let action = createAction(notification) { return action }
+        if let report, let action = createAction(report) { return action }
+        return createAction(message)
+    }
 }
 
 private extension InboxNotificationContent {
