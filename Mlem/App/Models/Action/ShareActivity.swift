@@ -7,25 +7,26 @@
 
 import Actions
 import Icons
-import UIKit
+import SwiftUI
 
 class ShareActivity: UIActivity {
     let title: String
     let icon: Icon
 
-    let action: @MainActor () -> Void
+    let callback: @MainActor () -> Void
     
     init(appearance: LegacyActionAppearance, performAction: @escaping @MainActor () -> Void) {
         self.title = appearance.label
         self.icon = .init(appearance.menuIcon)
-        self.action = performAction
+        self.callback = performAction
         super.init()
     }
 
-    init(action: Actions.Action) {
-        self.title = "TEMP"
-        self.icon = .general.settings
-        self.action = {}
+    init(action: Actions.Action, environment: EnvironmentValues) {
+        let label = action.createAppearance(environment: environment).label(describing: .stateTransition)
+        self.title = label.title
+        self.icon = label.icon
+        self.callback = { action.execute(environment: environment) }
         super.init()
     }
     
@@ -49,7 +50,7 @@ class ShareActivity: UIActivity {
     
     @MainActor
     override func perform() {
-        action()
+        callback()
         activityDidFinish(true)
     }
 }

@@ -10,6 +10,7 @@ import Theming
 import Translation
 
 private struct NavigationSheetModifier: ViewModifier {
+    @Environment(\.self) var environment
     @Setting(\.appearance_palette) var colorPalette
     
     let nextLayer: NavigationLayer?
@@ -115,7 +116,7 @@ private struct NavigationSheetModifier: ViewModifier {
     var activityViewController: UIActivityViewController {
         let activityView = UIActivityViewController(
             activityItems: [shareInfo?.url ?? URL(string: "www.apple.com")!],
-            applicationActivities: shareInfo?.activities
+            applicationActivities: shareInfo?.activities(environment: environment)
         )
         
         if UIDevice.isPad {

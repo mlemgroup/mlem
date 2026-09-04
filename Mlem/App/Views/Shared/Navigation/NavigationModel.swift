@@ -26,7 +26,7 @@ class NavigationModel {
         }
 
         func activities(environment: EnvironmentValues) -> [ShareActivity] {
-            actions.compactMap { .init(action: $0) }
+            actions.compactMap { .init(action: $0, environment: environment) }
         }
     }
 
