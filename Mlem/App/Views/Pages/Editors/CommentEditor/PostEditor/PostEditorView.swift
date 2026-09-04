@@ -11,6 +11,7 @@ import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct PostEditorView: View {
     enum Field { case title, content }
     enum LinkState: Hashable {
