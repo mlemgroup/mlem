@@ -183,9 +183,13 @@ struct CommentEditorView: View {
                         maxHeight: .infinity,
                         alignment: .topLeading
                     )
-                    LanguagePickerView(api: account.api, selected: $language)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.horizontal, Constants.main.standardSpacing)
+
+                    if !(account.api.myPerson?.discussionLanguageIds.value?.isEmpty ?? true) {
+                        LanguagePickerView(api: account.api, selected: $language)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.horizontal, Constants.main.standardSpacing)
+                    }
+
                     if let slurMatch {
                         FilterViolationWarning(failures: [account.host: slurMatch])
                             .padding(.horizontal, Constants.main.standardSpacing)
