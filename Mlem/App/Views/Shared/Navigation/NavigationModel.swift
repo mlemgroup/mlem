@@ -18,16 +18,15 @@ class NavigationModel {
     
     struct ShareInfo {
         let url: URL
-        let activities: [ShareActivity]
-        
-        init(url: URL, activities: [ShareActivity]) {
-            self.url = url
-            self.activities = activities
-        }
+        let actions: [Actions.Action]
         
         init(url: URL, actions: [Actions.Action] = []) {
             self.url = url
-            self.activities = actions.compactMap { .init(action: $0) }
+            self.actions = actions
+        }
+
+        func activities(environment: EnvironmentValues) -> [ShareActivity] {
+            actions.compactMap { .init(action: $0) }
         }
     }
 
