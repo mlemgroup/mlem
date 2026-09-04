@@ -8,7 +8,10 @@
 import Foundation
 
 public extension ApiClient {
-    func getMyInstance() async throws -> Instance {
+    func getMyInstance(cachedValueAcceptable: Bool = false) async throws -> Instance {
+        if cachedValueAcceptable, let myInstance {
+            return myInstance
+        }
         let snapshot = try await repository.getMyInstance()
         let model = await caches.instance.getModel(api: self, from: .instance3(snapshot))
         model.local = true
@@ -16,6 +19,16 @@ public extension ApiClient {
             myInstance = model
         }.result
         return model
+    }
+
+    func getLanguageId(language: Locale.Language?) async throws -> Int {
+        guard let language else { return 0 } // 0 is the ID for "undefined"
+        let instance = try await self.getMyInstance(cachedValueAcceptable: true)
+        if let languageId = instance.getLanguageId(for: language) {
+            return languageId
+        } else {
+            throw ApiClientError.noToken
+        }
     }
     
     /// Returns `true` if federated, `false` if not federated, or `nil` if the status could not be determined.

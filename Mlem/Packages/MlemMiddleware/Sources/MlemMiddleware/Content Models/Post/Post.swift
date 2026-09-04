@@ -311,8 +311,13 @@ public extension Post {
 
     // Reply
 
-    func reply(content: String, languageId: Int?) async throws -> Comment {
-        try await self.api.replyToPost(id: id, content: content, languageId: languageId)
+    func reply(content: String, language: Locale.Language?) async throws -> Comment {
+        let languageId = try await api.getLanguageId(language: language)
+        return try await self.api.replyToPost(
+            id: id,
+            content: content,
+            languageId: languageId
+        )
     }
     
     // Hide
