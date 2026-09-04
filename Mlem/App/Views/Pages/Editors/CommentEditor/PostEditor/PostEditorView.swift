@@ -263,7 +263,7 @@ struct PostEditorView: View {
                         if targets.count == 1,
                             let first = targets.first,
                             let ids = first.account.api.myPerson?.discussionLanguageIds.value,
-                            !ids.isEmpty {
+                            ids.count > 1 {
                             LanguagePickerView(api: first.account.api, selected: $language)
                                 .frame(maxWidth: .infinity, alignment: .trailing)
                                 .padding(.horizontal, Constants.main.standardSpacing)

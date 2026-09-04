@@ -184,7 +184,7 @@ struct CommentEditorView: View {
                         alignment: .topLeading
                     )
 
-                    if let ids = account.api.myPerson?.discussionLanguageIds.value, !ids.isEmpty {
+                    if let ids = account.api.myPerson?.discussionLanguageIds.value, ids.count > 1 {
                         LanguagePickerView(api: account.api, selected: $language)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .padding(.horizontal, Constants.main.standardSpacing)
