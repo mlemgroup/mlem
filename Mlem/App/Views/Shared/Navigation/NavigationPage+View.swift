@@ -256,6 +256,11 @@ extension NavigationPage {
                 openedFromInAppBrowser: false,
                 defaultAccount: defaultAccount
             )
+        case .dummy:
+            {
+                assertionFailure()
+                return EmptyView()
+            }()
         }
     }
 }
