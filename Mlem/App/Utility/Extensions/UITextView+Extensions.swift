@@ -68,11 +68,13 @@ extension UITextView {
     
     private func insertBlock(prefix: String, suffix: String) {
         if let range = selectedTextRange, let text = text(in: range) {
-//            let atStart = range.start == beginningOfDocument
+            // A block delimiter is only valid at the start of a line, so break out of the current one if needed
+            let atLineStart = isAtStartOfLine(range.start)
             let atEnd = range.end == endOfDocument
-            let newText = "\(prefix)\n\(text)\n\(suffix)\(atEnd ? "" : "\n")"
+            let newText = "\(atLineStart ? "" : "\n")\(prefix)\n\(text)\n\(suffix)\(atEnd ? "" : "\n")"
             replace(range, withText: newText)
-            if let newPosition = position(from: range.start, offset: prefix.count + 1 + text.count) {
+            let offset = (atLineStart ? 0 : 1) + prefix.count + 1 + text.count
+            if let newPosition = position(from: range.start, offset: offset) {
                 selectedTextRange = textRange(from: newPosition, to: newPosition)
             }
         }
@@ -174,6 +176,14 @@ extension UITextView {
     }
     
     // MARK: Helper functions
+    
+    private func isAtStartOfLine(_ textPosition: UITextPosition) -> Bool {
+        guard let previous = position(from: textPosition, offset: -1),
+              let range = textRange(from: previous, to: textPosition) else {
+            return true
+        }
+        return text(in: range) == "\n"
+    }
     
     private func findLastNewlineIndex() -> String.Index? {
         if let start = selectedTextRange?.start, let lookBehindRange = textRange(from: beginningOfDocument, to: start),
