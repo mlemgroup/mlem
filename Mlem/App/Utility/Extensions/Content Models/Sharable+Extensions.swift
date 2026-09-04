@@ -16,22 +16,6 @@ extension Sharable {
             .appendingPathComponent(actorId.url.path()))
     }
     
-    func shareAction(navigation: NavigationLayer?) -> BasicAction {
-        .init(id: "share\(actorId)", appearance: .share(), callback: {
-            let url: URL? = switch Settings.get(\.links_shareMode) {
-            case .myInstance: self.url()
-            case .originalInstance: self.actorId.url
-            case .lemmyverse: self.lemmyverseUrl
-            case .askEveryTime: nil
-            }
-            if let url, let navigation {
-                navigation.model?.shareInfo = .init(url: url, actions: self.shareSheetActions())
-            } else if let self = self as? Sharable & ContentModel {
-                navigation?.openSheet(.shareInstancePicker(self))
-            }
-        })
-    }
-    
     func shareSheetActions() -> [BasicAction] {
         var shareActions: [BasicAction] = [sendLinkInPrivateMessageAction()]
         if let post = self as? Post {
