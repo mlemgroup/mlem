@@ -20,9 +20,7 @@ struct LanguagePickerView: View {
                 Text("None")
                     .tag(nil as Locale.Language?)
                 ForEach(languages, id: \.languageCode) { language in
-                    let code = language.languageCode?.identifier ?? ""
-                    let locale = Locale(languageCode: language.languageCode)
-                    Text(locale.localizedString(forLanguageCode: code)?.capitalized ?? "")
+                    Text(language.endonym)
                         .tag(language)
                 }
             }
