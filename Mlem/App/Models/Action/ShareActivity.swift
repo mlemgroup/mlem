@@ -6,23 +6,25 @@
 //
 
 import UIKit
+import Icons
 
 class ShareActivity: UIActivity {
-    let appearance: LegacyActionAppearance
+    let title: String
+    let icon: Icon
+
     let action: @MainActor () -> Void
     
     init(appearance: LegacyActionAppearance, performAction: @escaping @MainActor () -> Void) {
-        self.appearance = appearance
+        self.title = appearance.label
+        self.icon = .init(appearance.menuIcon)
         self.action = performAction
         super.init()
     }
     
-    override var activityTitle: String? {
-        appearance.label
-    }
+    override var activityTitle: String? { title }
 
     override var activityImage: UIImage? {
-        .init(systemName: appearance.menuIcon)
+        .init(systemName: icon.computeImageName())
     }
     
     override var activityType: UIActivity.ActivityType {
