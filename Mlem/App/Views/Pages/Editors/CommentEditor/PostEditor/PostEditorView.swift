@@ -44,6 +44,7 @@ struct PostEditorView: View {
     @State var thumbnailManager: ImageUploadManager = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
+    @State var language: Locale.Language?
     @State var sending: Bool = false
         
     @State var targets: [PostEditorTarget]
@@ -257,6 +258,14 @@ struct PostEditorView: View {
                             maxHeight: .infinity,
                             alignment: .topLeading
                         )
+
+                        if targets.count == 1,
+                            let first = targets.first,
+                            !(first.account.api.myPerson?.discussionLanguageIds.value?.isEmpty ?? true) {
+                            LanguagePickerView(api: first.account.api, selected: $language)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .padding(.horizontal, Constants.main.standardSpacing)
+                        }
   
                         if !bodySlurMatches.isEmpty {
                             FilterViolationWarning(failures: bodySlurMatches)

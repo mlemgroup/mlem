@@ -74,13 +74,15 @@ extension PostEditorView {
     }
     
     private func send() async {
+        let language = targets.count == 1 ? self.language : nil
+
         let validTargets = targets.filter { $0.sendState != .sent }
         let posts = await withTaskGroup(
             of: (target: PostEditorTarget, post: Post?).self,
             returning: [Post].self
         ) { taskGroup in
             for target in validTargets {
-                if let community = target.community as? Community {
+                if let community = target.community {
                     taskGroup.addTask { @MainActor in
                         let post: Post?
                         do {
@@ -94,7 +96,8 @@ extension PostEditorView {
                                 content: contentTextView.text,
                                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                                 thumbnail: thumbnailManager.image?.url,
-                                nsfw: hasNsfwTag
+                                nsfw: hasNsfwTag,
+                                languageId: community.api.getLanguageId(language: language)
                             )
                         } catch {
                             handleError(error, silent: true)
