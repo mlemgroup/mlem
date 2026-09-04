@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 27/04/2024.
 //
 
+import Actions
 import PhotosUI
 import SwiftUI
 import Translation
@@ -24,15 +25,9 @@ class NavigationModel {
             self.activities = activities
         }
         
-        init(url: URL, actions: [BasicAction] = []) {
+        init(url: URL, actions: [Actions.Action] = []) {
             self.url = url
-            self.activities = actions.compactMap { action in
-                if let callback = action.callback {
-                    .init(appearance: action.appearance, performAction: callback)
-                } else {
-                    nil
-                }
-            }
+            self.activities = actions.compactMap { .init(action: $0) }
         }
     }
 

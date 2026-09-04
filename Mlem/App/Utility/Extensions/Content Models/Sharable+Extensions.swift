@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-03-09.
 //
 
+import Actions
 import Foundation
 import MlemMiddleware
 import SwiftUI
@@ -16,29 +17,11 @@ extension Sharable {
             .appendingPathComponent(actorId.url.path()))
     }
     
-    func shareSheetActions() -> [BasicAction] {
-        var shareActions: [BasicAction] = [sendLinkInPrivateMessageAction()]
+    func shareSheetActions() -> [Actions.Action] {
+        var shareActions: [Actions.Action] = [SendLinkInMessageAction(url: self.actorId.url)]
         if let post = self as? Post {
-            shareActions.prepend(post.crossPostAction())
+            shareActions.prepend(CrosspostAction(entity: post))
         }
         return shareActions
-    }
-        
-    func sendLinkInPrivateMessageAction() -> BasicAction {
-        .init(
-            id: "sendLinkInPrivateMessage\(actorId)",
-            appearance: .init(
-                label: "Send to Lemmy User",
-                color: .themedAccent,
-                icon: Icons.personCircle
-            ),
-            callback: {
-                NavigationModel.main.openSheet(.personPicker(callback: { person, navigation in
-                    navigation.push(
-                        .messageFeed(person, messageContent: String(describing: self.actorId), focusTextField: true)
-                    )
-                }))
-            }
-        )
     }
 }

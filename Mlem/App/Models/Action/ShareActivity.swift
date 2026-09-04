@@ -5,8 +5,9 @@
 //  Created by Sjmarf on 30/09/2024.
 //
 
-import UIKit
+import Actions
 import Icons
+import UIKit
 
 class ShareActivity: UIActivity {
     let title: String
@@ -18,6 +19,13 @@ class ShareActivity: UIActivity {
         self.title = appearance.label
         self.icon = .init(appearance.menuIcon)
         self.action = performAction
+        super.init()
+    }
+
+    init(action: Actions.Action) {
+        self.title = "TEMP"
+        self.icon = .general.settings
+        self.action = {}
         super.init()
     }
     
