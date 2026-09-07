@@ -21,7 +21,7 @@ public extension LemmyConnection {
         let response: LemmyPictrsUploadResponse
 
         do throws(RestError) {
-            response = try await restClient.upload(baseUrl: baseUrl, request, token: token)
+            response = try await restClient.upload(baseUrl: baseUrl, request, token: token, onProgress: progressCallback)
         } catch {
             if case let .decoding(data, _) = error,
                String(decoding: data, as: UTF8.self).contains("413 Request Entity Too Large") {
