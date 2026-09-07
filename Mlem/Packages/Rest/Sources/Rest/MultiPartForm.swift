@@ -6,6 +6,7 @@
 //  
 
 import Foundation
+import UniformTypeIdentifiers
 
 public struct MultipartFormData {
     public let boundary = "Boundary-\(UUID().uuidString)"
@@ -13,12 +14,25 @@ public struct MultipartFormData {
 
     public init() {}
     
-    public mutating func addFile(name: String, filename: String, mimeType: String, data: Data) {
+    public mutating func addFile(fieldName: String, filename: String, mimeType: String, data: Data) {
         body.append("--\(boundary)\r\n")
-        body.append("Content-Disposition: form-data; name=\"\(name)\"; filename=\"\(filename)\"\r\n")
+        body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(filename)\"\r\n")
         body.append("Content-Type: \(mimeType)\r\n\r\n")
         body.append(data)
         body.append("\r\n")
+    }
+
+    public mutating func addFile(fieldName: String, filenameWithoutExtension: String, type: UTType?, data: Data) {
+        var filename = filenameWithoutExtension
+        if let fileExtension = type?.preferredFilenameExtension {
+            filename += ".\(fileExtension)"
+        }
+        self.addFile(
+            fieldName: fieldName,
+            filename: filename,
+            mimeType: type?.preferredMIMEType ?? "application/octet-stream",
+            data: data
+        )
     }
     
     public func finalize() -> Data {

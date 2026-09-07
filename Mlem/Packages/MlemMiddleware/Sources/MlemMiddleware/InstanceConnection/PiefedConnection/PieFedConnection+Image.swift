@@ -24,7 +24,7 @@ public extension PieFedConnection {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(form.boundary)", forHTTPHeaderField: "Content-Type")
 
-        form.addFile(name: "file", filename: "image.\(fileExtension)", mimeType: "application/octet-stream", data: imageData)
+        form.addFile(fieldName: "file", filenameWithoutExtension: "image", type: fileType, data: imageData)
         
         let (data, _) = try await restClient.urlSession.upload(
             for: request,

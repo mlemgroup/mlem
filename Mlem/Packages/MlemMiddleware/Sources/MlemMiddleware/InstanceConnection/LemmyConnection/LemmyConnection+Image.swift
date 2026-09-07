@@ -24,7 +24,7 @@ public extension LemmyConnection {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(form.boundary)", forHTTPHeaderField: "Content-Type")
         
-        form.addFile(name: "images[]", filename: "image.\(fileExtension)", mimeType: "image/png", data: imageData)
+        form.addFile(fieldName: "images[]", filenameWithoutExtension: "image", type: fileType, data: imageData)
 
         let (data, httpResponse) = try await restClient.urlSession.upload(
             for: request,
