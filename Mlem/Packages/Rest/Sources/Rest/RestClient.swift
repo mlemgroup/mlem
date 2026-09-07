@@ -18,7 +18,7 @@ public class RestClient {
     public var convertParamsToSnakeCase: Bool = true
     
     // This should really be internal, but for now the image upload system needs to access this
-    public let urlSession: URLSession = .init(configuration: .default)
+    public let urlSession: URLSession = .init(configuration: .mlem)
 
     public var errorProcessor: (ErrorProcessorContext) throws(RestError) -> Void
     
@@ -113,7 +113,6 @@ public class RestClient {
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.addValue("MlemUserAgent", forHTTPHeaderField: "User-Agent")
 
         urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         for header in request.headers {

@@ -16,7 +16,6 @@ public extension LemmyConnection {
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
         var request = URLRequest(url: baseUrl.appending(path: "pictrs/image"))
-        request.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
         request.httpMethod = "POST"
         
         let boundary = UUID().uuidString
