@@ -94,6 +94,37 @@ public class RestClient {
             }
         }
     }
+
+    public func upload<Request: UploadRequest>(
+        baseUrl: URL,
+        _ request: Request,
+        token: String?,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
+    ) async throws(RestError) -> Request.Response {
+        let urlRequest = try urlRequest(
+            baseUrl: baseUrl,
+            request: request,
+            token: token,
+            encoderUserInfo: encoderUserInfo
+        )
+
+        do {
+            let (data, _) = try await urlSession.upload(
+                for: urlRequest,
+                from: request.form.finalize(),
+                delegate: ImageUploadDelegate(callback: progressCallback)
+            )
+
+            return try decode(Request.Response.self, from: data)
+        } catch {
+            if case URLError.cancelled = error as NSError {
+                throw .cancelled
+            } else {
+                throw .networking(error)
+            }
+        }
+    }
     
     func urlRequest(
         baseUrl: URL,
@@ -124,6 +155,9 @@ public class RestClient {
         } else if let postDefinition = request as? any RequestWithBody {
             urlRequest.httpMethod = postDefinition.method.stringValue
             urlRequest.httpBody = try createBodyData(for: postDefinition, encoderUserInfo: encoderUserInfo)
+        } else if request is any UploadRequest {
+            urlRequest.httpMethod = "POST"
+            // Body is attached higher up call stack
         }
         
         if let token {

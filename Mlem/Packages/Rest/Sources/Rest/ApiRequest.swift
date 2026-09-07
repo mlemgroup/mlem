@@ -24,9 +24,7 @@ public protocol RestRequest {
 }
 
 public extension RestRequest {
-    var headers: [String: String] { defaultHeaders }
-
-    var defaultHeaders: [String: String] {
+    var headers: [String: String] {
         ["Content-Type": "application/json"]
     }
 
@@ -65,6 +63,18 @@ public extension GetRequest {
             base
                 .appending(path: path)
         }
+    }
+}
+
+// MARK: - UploadRequest
+
+public protocol UploadRequest: RestRequest {
+    var form: MultipartFormData { get }
+}
+
+public extension UploadRequest {
+    var headers: [String: String] {
+        ["Content-Type": "multipart/form-data; boundary=\(form.boundary)"]
     }
 }
 
