@@ -110,11 +110,25 @@ public class RestClient {
         )
 
         do {
-            let (data, _) = try await urlSession.upload(
+            let (data, response) = try await urlSession.upload(
                 for: urlRequest,
                 from: request.form.finalize(),
                 delegate: ImageUploadDelegate(callback: progressCallback)
             )
+
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode >= 500 || response.statusCode == 404 {
+                    throw RestError.serverError(statusCode: response.statusCode)
+                }
+
+                try errorProcessor(
+                    .init(
+                        decoder: decoder,
+                        data: data,
+                        response: response
+                    )
+                )
+            }
 
             return try decode(Request.Response.self, from: data)
         } catch {
