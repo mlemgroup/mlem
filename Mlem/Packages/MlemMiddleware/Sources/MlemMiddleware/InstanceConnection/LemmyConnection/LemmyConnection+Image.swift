@@ -15,25 +15,19 @@ public extension LemmyConnection {
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
+
+        var form = MultipartFormData()
+
         var request = URLRequest(url: baseUrl.appending(path: "pictrs/image"))
         request.httpMethod = "POST"
-        
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("multipart/form-data; boundary=\(form.boundary)", forHTTPHeaderField: "Content-Type")
         
-        let encodedData = createMultiPartForm(
-            boundary: boundary,
-            contentType: "image/png",
-            name: "images[]",
-            fileName: "image.\(fileExtension)",
-            imageData: imageData,
-            auth: token
-        )
-        
+        form.addFile(name: "images[]", filename: "image.\(fileExtension)", mimeType: "image/png", data: imageData)
+
         let (data, httpResponse) = try await restClient.urlSession.upload(
             for: request,
-            from: encodedData,
+            from: form.finalize(),
             delegate: ImageUploadDelegate(callback: progressCallback)
         )
 

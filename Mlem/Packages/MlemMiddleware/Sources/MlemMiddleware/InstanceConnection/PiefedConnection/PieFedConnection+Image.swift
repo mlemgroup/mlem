@@ -16,25 +16,18 @@ public extension PieFedConnection {
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
 
+        var form = MultipartFormData()
+
         var request = URLRequest(url: baseUrl.appending(path: "api/alpha/upload/image"))
         request.httpMethod = "POST"
-        
-        let boundary = UUID().uuidString
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        let encodedData = createMultiPartForm(
-            boundary: boundary,
-            contentType: "application/octet-stream",
-            name: "file",
-            fileName: "image.\(fileExtension)",
-            imageData: imageData,
-            auth: token
-        )
+        request.setValue("multipart/form-data; boundary=\(form.boundary)", forHTTPHeaderField: "Content-Type")
+
+        form.addFile(name: "file", filename: "image.\(fileExtension)", mimeType: "application/octet-stream", data: imageData)
         
         let (data, _) = try await restClient.urlSession.upload(
             for: request,
-            from: encodedData,
+            from: form.finalize(),
             delegate: ImageUploadDelegate(callback: progressCallback)
         )
         
