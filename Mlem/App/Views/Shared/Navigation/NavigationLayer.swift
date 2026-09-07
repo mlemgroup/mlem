@@ -165,18 +165,19 @@ class NavigationLayer: Identifiable {
                     guard let data = try await photo.loadTransferable(type: Data.self) else {
                         throw ApiClientError.unsuccessful
                     }
-                    guard let fileExtension = photo.supportedContentTypes.first?.preferredFilenameExtension else {
-                        throw ApiClientError.unsuccessful
-                    }
                     if Settings.get(\.behavior_confirmImageUploads) {
                         self.openSheet(.confirmUpload(
                             imageData: data,
-                            fileExtension: fileExtension,
+                            fileType: photo.supportedContentTypes.first,
                             imageManager: imageUploadManager,
                             uploadApi: api
                         ))
                     } else {
-                        try await imageUploadManager.upload(data: data, fileExtension: fileExtension, api: api)
+                        try await imageUploadManager.upload(
+                            data: data,
+                            fileType: photo.supportedContentTypes.first,
+                            api: api
+                        )
                     }
                 } catch {
                     handleError(error)
@@ -200,12 +201,16 @@ class NavigationLayer: Identifiable {
                     if Settings.get(\.behavior_confirmImageUploads) {
                         self.openSheet(.confirmUpload(
                             imageData: data,
-                            fileExtension: url.pathExtension,
+                            fileType: .init(filenameExtension: url.pathExtension),
                             imageManager: imageUploadManager,
                             uploadApi: api
                         ))
                     } else {
-                        try await imageUploadManager.upload(data: data, fileExtension: url.pathExtension, api: api)
+                        try await imageUploadManager.upload(
+                            data: data,
+                            fileType: .init(filenameExtension: url.pathExtension),
+                            api: api
+                        )
                     }
                 } catch {
                     url.stopAccessingSecurityScopedResource()
@@ -243,14 +248,14 @@ class NavigationLayer: Identifiable {
                 if Settings.get(\.behavior_confirmImageUploads) {
                     openSheet(.confirmUpload(
                         imageData: data,
-                        fileExtension: "png",
+                        fileType: nil,
                         imageManager: imageUploadManager,
                         uploadApi: api
                     ))
                 } else {
                     Task {
                         do {
-                            try await imageUploadManager.upload(data: data, fileExtension: "png", api: api)
+                            try await imageUploadManager.upload(data: data, fileType: nil, api: api)
                         } catch {
                             handleError(error)
                         }

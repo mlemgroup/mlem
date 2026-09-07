@@ -11,10 +11,10 @@ import Rest
 public extension ApiClient {
     func uploadImage(
         _ imageData: Data,
-        fileExtension: String,
+        fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1 {
-        let file = try await repository.uploadImage(imageData, fileExtension: fileExtension, onProgress: progressCallback)
+        let file = try await repository.uploadImage(imageData, fileType: fileType, onProgress: progressCallback)
         return caches.imageUpload1.getModel(api: self, from: file)
     }
     

@@ -7,11 +7,12 @@
 
 import Foundation
 import Rest
+import UniformTypeIdentifiers
 
 public extension PieFedConnection {
     func uploadImage(
         _ imageData: Data,
-        fileExtension: String,
+        fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
         guard let token else { throw ApiClientError.notLoggedIn }
