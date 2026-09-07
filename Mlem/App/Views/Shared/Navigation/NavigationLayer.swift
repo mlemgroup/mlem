@@ -248,14 +248,14 @@ class NavigationLayer: Identifiable {
                 if Settings.get(\.behavior_confirmImageUploads) {
                     openSheet(.confirmUpload(
                         imageData: data,
-                        fileType: nil,
+                        fileType: .png,
                         imageManager: imageUploadManager,
                         uploadApi: api
                     ))
                 } else {
                     Task {
                         do {
-                            try await imageUploadManager.upload(data: data, fileType: nil, api: api)
+                            try await imageUploadManager.upload(data: data, fileType: .png, api: api)
                         } catch {
                             handleError(error)
                         }
