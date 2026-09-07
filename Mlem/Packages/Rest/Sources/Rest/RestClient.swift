@@ -109,28 +109,15 @@ public class RestClient {
             encoderUserInfo: encoderUserInfo
         )
 
+        let data: Data
+        let response: URLResponse
         do {
-            let (data, response) = try await urlSession.upload(
+            (data, response) = try await urlSession.upload(
                 for: urlRequest,
                 from: request.form.finalize(),
                 delegate: ImageUploadDelegate(callback: progressCallback)
             )
 
-            if let response = response as? HTTPURLResponse {
-                if response.statusCode >= 500 || response.statusCode == 404 {
-                    throw RestError.serverError(statusCode: response.statusCode)
-                }
-
-                try errorProcessor(
-                    .init(
-                        decoder: decoder,
-                        data: data,
-                        response: response
-                    )
-                )
-            }
-
-            return try decode(Request.Response.self, from: data)
         } catch {
             if case URLError.cancelled = error as NSError {
                 throw .cancelled
@@ -138,6 +125,22 @@ public class RestClient {
                 throw .networking(error)
             }
         }
+        if let response = response as? HTTPURLResponse {
+            if response.statusCode >= 500 || response.statusCode == 404 {
+                throw RestError.serverError(statusCode: response.statusCode)
+            }
+
+            try errorProcessor(
+                .init(
+                    decoder: decoder,
+                    data: data,
+                    response: response
+                )
+            )
+        }
+
+        return try decode(Request.Response.self, from: data)
+
     }
     
     func urlRequest(
