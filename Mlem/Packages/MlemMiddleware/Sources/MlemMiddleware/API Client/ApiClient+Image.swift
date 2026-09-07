@@ -7,6 +7,7 @@
 
 import Foundation
 import Rest
+import UniformTypeIdentifiers
 
 public extension ApiClient {
     func uploadImage(

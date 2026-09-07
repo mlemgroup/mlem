@@ -63,7 +63,6 @@ public extension LemmyConnection {
     func deleteImage(alias: String, deleteToken: String) async throws {
         guard let token else { throw ApiClientError.notLoggedIn }
         var request = URLRequest(url: baseUrl.appending(path: "pictrs/image/delete/\(deleteToken)/\(alias)"))
-        request.addValue(URLSession.mlemUserAgent, forHTTPHeaderField: "User-Agent")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let response = try await restClient.execute(request)
         if let response = response.1 as? HTTPURLResponse {
