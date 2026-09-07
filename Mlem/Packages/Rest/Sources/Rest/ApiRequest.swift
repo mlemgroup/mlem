@@ -29,16 +29,7 @@ public extension RestRequest {
     var defaultHeaders: [String: String] {
         ["Content-Type": "application/json"]
     }
-}
 
-// MARK: - GetRequest
-
-public protocol GetRequest: RestRequest {
-    associatedtype Parameters: Encodable
-    var parameters: Parameters? { get }
-}
-
-public extension RestRequest {
     func endpoint(
         base: URL,
         encoderUserInfo: [CodingUserInfoKey: any Sendable],
@@ -47,6 +38,13 @@ public extension RestRequest {
         base
             .appending(path: path)
     }
+}
+
+// MARK: - GetRequest
+
+public protocol GetRequest: RestRequest {
+    associatedtype Parameters: Encodable
+    var parameters: Parameters? { get }
 }
 
 public extension GetRequest {
