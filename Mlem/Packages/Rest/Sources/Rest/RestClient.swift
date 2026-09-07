@@ -17,8 +17,7 @@ public class RestClient {
     public var decoder: JSONDecoder
     public var convertParamsToSnakeCase: Bool = true
     
-    // This should really be internal, but for now the image upload system needs to access this
-    public let urlSession: URLSession = .init(configuration: .mlem)
+    private let urlSession: URLSession = .init(configuration: .mlem)
 
     public var errorProcessor: (ErrorProcessorContext) throws(RestError) -> Void
     
