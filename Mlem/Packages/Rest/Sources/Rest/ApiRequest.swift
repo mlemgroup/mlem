@@ -107,3 +107,8 @@ public protocol DeleteRequest: RequestWithBody { }
 public extension DeleteRequest {
     var method: RequestWithBodyMethod { .delete }
 }
+
+public struct EmptyResponse: Decodable {
+    public init() {}
+    public init(from decoder: any Decoder) throws {}
+}

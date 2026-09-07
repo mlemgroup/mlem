@@ -150,6 +150,9 @@ public class RestClient {
     
     private func decode<T: Decodable>(_ model: T.Type, from data: Data) throws(RestError) -> T {
         do {
+            if let model = model as? EmptyResponse.Type {
+                return model.init() as! T // swiftlint:disable:this force_cast
+            }
             return try decoder.decode(model, from: data)
         } catch {
             throw .decoding(data, error)
