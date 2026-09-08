@@ -22,7 +22,7 @@ public extension ApiClient {
     }
 
     func getLanguageId(language: Locale.Language?) async throws -> Int {
-        guard let language else { return 0 } // 0 is the ID for "undefined"
+        guard let language else { return .undefinedLanguageId }
         let instance = try await self.getMyInstance(cachedValueAcceptable: true)
         if let languageId = instance.getLanguageId(for: language) {
             return languageId
