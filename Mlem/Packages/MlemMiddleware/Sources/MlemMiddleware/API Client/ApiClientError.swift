@@ -34,6 +34,7 @@ public enum ApiClientError: Error {
     case noToken
     case responseMissingRequiredData(_ message: String)
     case unableToDetermineSoftware
+    case unsupportedLanguage
 
     case notLoggedIn
     case missingTotp
@@ -115,6 +116,8 @@ extension ApiClientError: CustomStringConvertible {
             return "An API response was missing required data: \(message)"
         case .unableToDetermineSoftware:
             return "Unable to determine software"
+        case .unsupportedLanguage:
+            return "Unsupported language"
         case .missingTotp:
             return "Missing 2FA token"
         case .instanceIsPrivate:

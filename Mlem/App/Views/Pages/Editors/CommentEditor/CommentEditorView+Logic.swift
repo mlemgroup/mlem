@@ -66,16 +66,16 @@ extension CommentEditorView {
         uploadHistory.deleteWhereNotPresent(in: textView.text)
         do {
             if let commentToEdit {
-                try await commentToEdit.edit(content: textView.text, languageId: nil)
+                try await commentToEdit.edit(content: textView.text, language: language)
             } else if let resolvedContext {
                 let result: Comment
                 let parent: Comment?
                 switch resolvedContext {
                 case let .post(post):
-                    result = try await post.reply(content: textView.text, languageId: nil)
+                    result = try await post.reply(content: textView.text, language: language)
                     parent = nil
                 case let .comment(comment):
-                    result = try await comment.reply(content: textView.text)
+                    result = try await comment.reply(content: textView.text, language: language)
                     parent = comment
                 }
                 commentTreeTracker?.insertCreatedComment(result, parent: parent)

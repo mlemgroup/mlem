@@ -80,27 +80,9 @@ extension PostEditorView {
             returning: [Post].self
         ) { taskGroup in
             for target in validTargets {
-                if let community = target.community as? Community {
+                if let community = target.community {
                     taskGroup.addTask { @MainActor in
-                        let post: Post?
-                        do {
-                            guard community.api === target.account.api else {
-                                assertionFailure()
-                                throw PostEditorViewError.mismatchingTargetApi
-                            }
-                            post = try await community.api.createPost(
-                                communityId: community.id,
-                                title: titleTextView.text,
-                                content: contentTextView.text,
-                                linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
-                                thumbnail: thumbnailManager.image?.url,
-                                nsfw: hasNsfwTag
-                            )
-                        } catch {
-                            handleError(error, silent: true)
-                            post = nil
-                        }
-                        return (target, post)
+                        await send(forTarget: target, community: community)
                     }
                 }
             }
@@ -126,6 +108,31 @@ extension PostEditorView {
         } else {
             sending = false
         }
+    }
+
+    private func send(forTarget target: PostEditorTarget, community: Community) async -> (target: PostEditorTarget, post: Post?) {
+        let language = targets.count == 1 ? self.language : nil
+
+        let post: Post?
+        do {
+            guard community.api === target.account.api else {
+                assertionFailure()
+                throw PostEditorViewError.mismatchingTargetApi
+            }
+            post = try await community.api.createPost(
+                communityId: community.id,
+                title: titleTextView.text,
+                content: contentTextView.text,
+                linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
+                thumbnail: thumbnailManager.image?.url,
+                nsfw: hasNsfwTag,
+                languageId: community.api.getLanguageId(language: language)
+            )
+        } catch {
+            handleError(error, silent: true)
+            post = nil
+        }
+        return (target, post)
     }
     
     var animationHashValue: Int {

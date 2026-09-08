@@ -58,7 +58,7 @@ public class ApiClient {
             try await repository.getConnection().myPersonId
         }
     }
-    
+
     public var software: SiteSoftware {
         get async throws {
             let connection = try await repository.getConnection()
