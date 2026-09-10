@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 28/04/2024.
 //
 
+import ComponentViews
 import SwiftUI
 import Theming
 import Translation
@@ -42,11 +43,7 @@ private struct NavigationSheetModifier: ViewModifier {
     // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content
-            // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
-            .background(SharingViewController(
-                isPresenting: Binding(get: { shareInfo != nil && isTopSheet }, set: { if !$0 { shareInfo = nil }})
-            ) { activityViewController }
-            )
+            .background(sharingViewController)
             .sheet(item: Binding(
                 get: {
                     if let nextLayer, !nextLayer.isFullScreenCover { nextLayer } else { nil }
@@ -111,11 +108,23 @@ private struct NavigationSheetModifier: ViewModifier {
             )
             .accentColor(ThemedColor.themedAccent.resolve(with: colorPalette.palette)) // deprecated, but .tint colors menu buttons
     }
+
+    var sharingViewController: some View {
+        // https://stackoverflow.com/questions/69693871/how-to-open-share-sheet-from-presented-sheet
+        EnvironmentReader { environment in
+            SharingViewController(
+                isPresenting: Binding(get: { shareInfo != nil && isTopSheet }, set: { if !$0 { shareInfo = nil }})
+            ) {
+                activityViewController(environment: environment)
+            }
+        }
+        .environment(NavigationLayer(root: .dummy, model: NavigationModel.main))
+    }
     
-    var activityViewController: UIActivityViewController {
+    func activityViewController(environment: EnvironmentValues) -> UIActivityViewController {
         let activityView = UIActivityViewController(
             activityItems: [shareInfo?.url ?? URL(string: "www.apple.com")!],
-            applicationActivities: shareInfo?.activities
+            applicationActivities: shareInfo?.activities(environment: environment)
         )
         
         if UIDevice.isPad {
