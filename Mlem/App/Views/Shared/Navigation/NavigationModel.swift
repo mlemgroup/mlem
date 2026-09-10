@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 27/04/2024.
 //
 
+import Actions
 import PhotosUI
 import SwiftUI
 import Translation
@@ -17,22 +18,15 @@ class NavigationModel {
     
     struct ShareInfo {
         let url: URL
-        let activities: [ShareActivity]
+        let actions: [Actions.Action]
         
-        init(url: URL, activities: [ShareActivity]) {
+        init(url: URL, actions: [Actions.Action] = []) {
             self.url = url
-            self.activities = activities
+            self.actions = actions
         }
-        
-        init(url: URL, actions: [BasicAction] = []) {
-            self.url = url
-            self.activities = actions.compactMap { action in
-                if let callback = action.callback {
-                    .init(appearance: action.appearance, performAction: callback)
-                } else {
-                    nil
-                }
-            }
+
+        func activities(environment: EnvironmentValues) -> [ShareActivity] {
+            actions.compactMap { .init(action: $0, environment: environment) }
         }
     }
 

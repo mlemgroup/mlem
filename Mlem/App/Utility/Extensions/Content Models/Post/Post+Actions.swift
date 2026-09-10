@@ -12,30 +12,6 @@ import os
 // Functions to support the old Action system
 
 extension Post {
-    func crossPostAction() -> BasicAction {
-        .init(
-            id: "crosspost\(uid)",
-            appearance: .crossPost(),
-            callback: {
-                var crossPostContent: String
-                let crossPostedLabel = String(localized: "Crossposted from \(self.actorId.description)")
-                if let content = self.content, !content.isEmpty {
-                    crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
-                } else {
-                    crossPostContent = crossPostedLabel
-                }
-                NavigationModel.main.openSheet(.createPost(
-                    community: nil,
-                    title: self.title,
-                    content: crossPostContent,
-                    type: self.type,
-                    nsfw: self.nsfw,
-                    feedLoader: nil
-                ))
-            }
-        )
-    }
-
     // MARK: - Readouts
 
     func upvoteReadout(showColor: Bool) -> Readout? {

@@ -108,6 +108,7 @@ enum NavigationPage {
     case unsupportedVersion(_ account: any Account)
     case postDetails(_ post: Post)
     case authHandoff(session: String, personHandle: PersonHandle, defaultAccount: UserAccount)
+    case dummy
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.
