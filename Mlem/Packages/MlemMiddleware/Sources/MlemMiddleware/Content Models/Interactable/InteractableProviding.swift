@@ -27,7 +27,7 @@ public protocol InteractableProviding:
     
     var updateVote: ((ScoringOperation) -> Void)? { get }
     func updateSaved(_ newValue: Bool)
-    func reply(content: String, languageId: Int?) async throws -> Comment
+    func reply(content: String, language: Locale.Language?) async throws -> Comment
     
     var downvotesEnabled: Bool { get }
 }

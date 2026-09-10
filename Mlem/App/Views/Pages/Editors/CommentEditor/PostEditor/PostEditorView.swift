@@ -11,6 +11,7 @@ import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct PostEditorView: View {
     enum Field { case title, content }
     enum LinkState: Hashable {
@@ -44,6 +45,7 @@ struct PostEditorView: View {
     @State var thumbnailManager: ImageUploadManager = .init()
     @State var uploadHistory: ImageUploadHistoryManager = .init()
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
+    @State var language: Locale.Language?
     @State var sending: Bool = false
         
     @State var targets: [PostEditorTarget]
@@ -257,6 +259,15 @@ struct PostEditorView: View {
                             maxHeight: .infinity,
                             alignment: .topLeading
                         )
+
+                        if targets.count == 1,
+                            let first = targets.first,
+                            let ids = first.account.api.myPerson?.discussionLanguageIds.value,
+                            ids.count > 1 {
+                            LanguagePickerView(api: first.account.api, selected: $language)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .padding(.horizontal, Constants.main.standardSpacing)
+                        }
   
                         if !bodySlurMatches.isEmpty {
                             FilterViolationWarning(failures: bodySlurMatches)

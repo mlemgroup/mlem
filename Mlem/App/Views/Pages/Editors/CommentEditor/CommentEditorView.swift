@@ -13,6 +13,7 @@ import os
 import SwiftUI
 import Theming
 
+// swiftlint:disable:next type_body_length
 struct CommentEditorView: View {
     private let log: Logger = .mlemLogger()
     
@@ -40,6 +41,7 @@ struct CommentEditorView: View {
 
     @State var account: UserAccount
     @State var presentationSelection: PresentationDetent = .large
+    @State var language: Locale.Language?
     
     @State var textIsEmpty: Bool = true
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
@@ -105,8 +107,8 @@ struct CommentEditorView: View {
                         }
                     }
                     .background(.themedGroupedBackground)
-                    .presentationBackground(.themedGroupedBackground)
             }
+            .presentationBackground(.themedGroupedBackground)
             .task(id: account) { await resolveContext() }
         }
         .onDisappear {
@@ -175,18 +177,24 @@ struct CommentEditorView: View {
                     .onChange(of: account.api, initial: true) {
                         markdownToolbarEditorModel.imageUploadApi = account.api
                     }
-                    
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: minTextEditorHeight,
+                        maxHeight: .infinity,
+                        alignment: .topLeading
+                    )
+
+                    if let ids = account.api.myPerson?.discussionLanguageIds.value, ids.count > 1 {
+                        LanguagePickerView(api: account.api, selected: $language)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.horizontal, Constants.main.standardSpacing)
+                    }
+
                     if let slurMatch {
                         FilterViolationWarning(failures: [account.host: slurMatch])
                             .padding(.horizontal, Constants.main.standardSpacing)
                     }
                 }
-                .frame(
-                    maxWidth: .infinity,
-                    minHeight: minTextEditorHeight,
-                    maxHeight: .infinity,
-                    alignment: .topLeading
-                )
                 .padding(.vertical, Constants.main.standardSpacing)
                 .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .paletteBorder(cornerRadius: Constants.main.standardSpacing)

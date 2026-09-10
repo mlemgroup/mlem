@@ -13,11 +13,9 @@ struct LanguageListRowBody: View {
     let language: Locale.Language
     
     var body: some View {
-        let code = language.languageCode?.identifier ?? ""
-        let locale = Locale(languageCode: language.languageCode)
         VStack(alignment: .leading) {
-            Text(locale.localizedString(forLanguageCode: code)?.capitalized ?? "")
-            Text(userLocale.localizedString(forLanguageCode: code) ?? "")
+            Text(language.endonym)
+            Text(language.exonym(locale: userLocale))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
