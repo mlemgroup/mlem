@@ -42,7 +42,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var comment_behaviors_collapseChildren: Bool
     var comment_compact: Bool
     var comment_tallerCollapsed: Bool
-    var comment_defaultSort: LemmyCommentSortType
+    var comment_defaultSort: SettingsCommentSortType
     var comment_gestures_tapToCollapse: Bool
     var comment_jumpButton: CommentJumpButtonLocation
     var comment_showCreatorInstance: Bool
@@ -169,7 +169,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_behaviors_collapseChildren = try container.decodeIfPresent(Bool.self, forKey: ._comment_behaviors_collapseChildren) ?? false
         self.comment_compact = try container.decodeIfPresent(Bool.self, forKey: ._comment_compact) ?? false
         self.comment_tallerCollapsed = try container.decodeIfPresent(Bool.self, forKey: ._comment_tallerCollapsed) ?? false
-        self.comment_defaultSort = try container.decodeIfPresent(LemmyCommentSortType.self, forKey: ._comment_defaultSort) ?? .hot
+        self.comment_defaultSort = try container.decodeIfPresent(SettingsCommentSortType.self, forKey: ._comment_defaultSort) ?? .hot
         self.comment_gestures_tapToCollapse = try container.decodeIfPresent(Bool.self, forKey: ._comment_gestures_tapToCollapse) ?? true
         self.comment_jumpButton = try container.decodeIfPresent(CommentJumpButtonLocation.self, forKey: ._comment_jumpButton) ?? .bottomTrailing
         self.comment_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: ._comment_showCreatorInstance) ?? true

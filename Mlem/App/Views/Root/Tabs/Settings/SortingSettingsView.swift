@@ -26,7 +26,7 @@ struct SortingSettingsView: View {
     
     var defaultCommentSort: CommentSortType {
         get { .init(legacyDefaultCommentSort) }
-        nonmutating set { legacyDefaultCommentSort = newValue.v3CommentApiType }
+        nonmutating set { legacyDefaultCommentSort = .init(newValue) }
     }
     
     var body: some View {
