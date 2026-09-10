@@ -13,27 +13,6 @@ import os
 
 extension InteractableProviding {
         
-    // MARK: Actions
-    
-    func upvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleUpvoted, let votes = votes.value else { return nil }
-        return .init(id: "upvote\(uid)",
-                     appearance: .upvote(isOn: votes.myVote == .upvote),
-                     callback: api.canInteract(appState: appState) ? { @MainActor in toggleUpvoted(feedback) } : nil
-        )
-    }
-    
-    func downvoteAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction? {
-        guard let toggleDownvoted, let votes = votes.value else { return nil }
-        return .init(
-            id: "downvote\(uid)",
-            appearance: .downvote(isOn: votes.myVote == .downvote),
-            callback: api.canInteract(appState: appState) && downvotesEnabled
-            ? { @MainActor in toggleDownvoted(feedback) }
-            : nil
-        )
-    }
-    
     // MARK: Readouts
     
     var createdReadout: Readout {
@@ -124,8 +103,7 @@ extension InteractableProviding {
     // MARK: Counters
     
     func upvoteCounter(appState: AppState) -> Counter? {
-        guard let votes = votes.value,
-              let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) else { return nil }
+        guard let votes = votes.value else { return nil }
         return .init(
             value: votes.upvotes,
             leadingAction: .upvote,
@@ -134,10 +112,7 @@ extension InteractableProviding {
     }
     
     func downvoteCounter(appState: AppState, downvotesEnabled: Bool) -> Counter? {
-        guard let votes = votes.value,
-              let downvoteAction = downvoteAction(
-                appState: appState,
-                feedback: [.haptic]) else { return nil }
+        guard let votes = votes.value else { return nil }
         return .init(
             value: votes.downvotes,
             leadingAction: .downvote,
@@ -149,8 +124,7 @@ extension InteractableProviding {
         appState: AppState,
         downvotesEnabled: Bool
     ) -> Counter? {
-        guard let votes = votes.value,
-              let upvoteAction = upvoteAction(appState: appState, feedback: [.haptic]) else { return nil }
+        guard let votes = votes.value else { return nil }
         return .init(
             value: votes.total,
             leadingAction: .upvote,
