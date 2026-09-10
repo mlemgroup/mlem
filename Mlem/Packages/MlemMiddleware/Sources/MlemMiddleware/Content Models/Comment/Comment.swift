@@ -240,8 +240,14 @@ public extension Comment {
     
     // Reply
     
-    func reply(content: String, languageId: Int? = nil) async throws -> Comment {
-        try await api.replyToComment(postId: postId, parentId: id, content: content, languageId: languageId)
+    func reply(content: String, language: Locale.Language?) async throws -> Comment {
+        let languageId = try await api.getLanguageId(language: language)
+        return try await api.replyToComment(
+            postId: postId,
+            parentId: id,
+            content: content,
+            languageId: languageId
+        )
     }
     
     // Purge
@@ -270,16 +276,14 @@ public extension Comment {
     
     // Edit
     
-    func edit(content: String, languageId: Int?) async throws {
+    func edit(content: String, language: Locale.Language?) async throws {
         self.content.string = content
-        if let languageId {
-            self.languageId = languageId
-        }
+        self.languageId = try await api.getLanguageId(language: language)
         Task {
             await updateQueue.addItem {
                 try await .init(
                     api: self.api,
-                    snapshot: .comment2(self.api.repository.editComment(id: self.id, content: content, languageId: languageId)))
+                    snapshot: .comment2(self.api.repository.editComment(id: self.id, content: content, languageId: self.languageId)))
             }
         }
     }

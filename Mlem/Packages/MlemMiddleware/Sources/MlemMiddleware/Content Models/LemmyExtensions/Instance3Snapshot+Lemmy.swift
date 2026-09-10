@@ -35,7 +35,7 @@ extension Instance3Snapshot {
             instance: .init(from: site.siteView),
             allLanguages: languages,
             software: .init(type: .lemmy, version: .init(site.version)),
-            allowedLanguageIds: Set(site.discussionLanguages).subtracting([0]),
+            allowedLanguageIds: Set(site.discussionLanguages).subtracting([.undefinedLanguageId]),
             blockedUrls: blockedUrls,
             administrators: administrators
         )
