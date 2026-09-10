@@ -10,7 +10,6 @@
 		0300309D2C4163C9009A65FF /* CommentTreeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */; };
 		030030A12C416B0B009A65FF /* RefreshPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030030A02C416B0B009A65FF /* RefreshPopupView.swift */; };
 		030050D32D109B7E002B1E99 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030050D22D109B7E002B1E99 /* ReportView.swift */; };
-		030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030050D42D10AE30002B1E99 /* Report+Extensions.swift */; };
 		030056A42D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */; };
 		030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */; };
 		030056BB2D7E137800EB0BA3 /* ShareInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */; };
@@ -645,7 +644,6 @@
 		0300309C2C4163C9009A65FF /* CommentTreeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeTracker.swift; sourceTree = "<group>"; };
 		030030A02C416B0B009A65FF /* RefreshPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshPopupView.swift; sourceTree = "<group>"; };
 		030050D22D109B7E002B1E99 /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
-		030050D42D10AE30002B1E99 /* Report+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Report+Extensions.swift"; sourceTree = "<group>"; };
 		030056A32D7DB05A00EB0BA3 /* SharingLinksSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingLinksSettingsView.swift; sourceTree = "<group>"; };
 		030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sharable+Extensions.swift"; sourceTree = "<group>"; };
 		030056BA2D7E137800EB0BA3 /* ShareInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareInstancePickerView.swift; sourceTree = "<group>"; };
@@ -2431,7 +2429,6 @@
 				033171772CCE89E3002DA370 /* PurgableProviding+Extensions.swift */,
 				0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */,
 				034690922D0F4D720073E664 /* RemovableProviding+Extensions.swift */,
-				030050D42D10AE30002B1E99 /* Report+Extensions.swift */,
 				0397D4852C6A24D2002C6CDC /* ReportableProviding+Extensions.swift */,
 				03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */,
 				032C32072C34469900595286 /* SelectableContentProviding+Extensions.swift */,
@@ -3144,7 +3141,6 @@
 				03F6BDB12D52AA00006A425E /* CommunityMockType+Realistic.swift in Sources */,
 				0311ADC12E4F693B00EC3120 /* TopInstancesListView.swift in Sources */,
 				033F84492D18D1F400D87A9E /* MessageFeedView.swift in Sources */,
-				030050D52D10AE30002B1E99 /* Report+Extensions.swift in Sources */,
 				0369B3562BFA6824001EFEDF /* InboxView.swift in Sources */,
 				CD4D59162B87B38C00B82964 /* UIApplication+Extensions.swift in Sources */,
 				038E5E8B2F6D6C3800C54DEB /* ImageViewerDismissSettingsView.swift in Sources */,
