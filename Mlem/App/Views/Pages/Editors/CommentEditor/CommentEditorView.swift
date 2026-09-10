@@ -107,8 +107,8 @@ struct CommentEditorView: View {
                         }
                     }
                     .background(.themedGroupedBackground)
-                    .presentationBackground(.themedGroupedBackground)
             }
+            .presentationBackground(.themedGroupedBackground)
             .task(id: account) { await resolveContext() }
         }
         .onDisappear {
