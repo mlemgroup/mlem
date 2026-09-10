@@ -74,8 +74,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
-    var post_defaultSort: LemmySortType
-    var post_fallbackSort: LemmySortType
+    var post_defaultSort: SettingsPostSortType
+    var post_fallbackSort: SettingsPostSortType
     var post_limitImageHeight: Bool
     var post_showCreator: Bool
     var post_showCreatorInstance: Bool
@@ -218,8 +218,8 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
-        self.post_defaultSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_defaultSort) ?? .hot
-        self.post_fallbackSort = try container.decodeIfPresent(LemmySortType.self, forKey: ._post_fallbackSort) ?? .hot
+        self.post_defaultSort = try container.decodeIfPresent(SettingsPostSortType.self, forKey: ._post_defaultSort) ?? .hot
+        self.post_fallbackSort = try container.decodeIfPresent(SettingsPostSortType.self, forKey: ._post_fallbackSort) ?? .hot
         self.post_limitImageHeight = try container.decodeIfPresent(Bool.self, forKey: ._post_limitImageHeight) ?? true
         self.post_showCreator = try container.decodeIfPresent(Bool.self, forKey: ._post_showCreator) ?? true
         self.post_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: ._post_showCreatorInstance) ?? true
