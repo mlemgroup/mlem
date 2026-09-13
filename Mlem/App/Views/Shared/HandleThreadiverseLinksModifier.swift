@@ -61,7 +61,6 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     @MainActor func didReceiveURL(_ url: URL) -> OpenURLAction.Result {
         // TODO: Consider handling links to alternative frontends such as `old.lemmy.world` or `oldsh.itjust.works`.
         
@@ -116,20 +115,15 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             return .handled
         }
         
-        let components = url.pathComponents.dropFirst()
-        
         // Super-small instances may not appear in the threadiverse domain list, in which case we show a
         // "Loading..." toast whilst we attempt to work out if it's actually a threadiverse link
-        if ["u", "c", "post", "comment"].contains(components.first) {
-            // The "@" check ensures that KBin links are excluded
-            if !host.contains("reddit.com"), components.count == 2, components[1].first != "@" {
-                Task {
-                    await showToastAndResolve(url: url) { url in
-                        openLinkAsWebsite(url: url)
-                    }
+        if isProbableThreadiverseLink(url: url) {
+            Task {
+                await showToastAndResolve(url: url) { url in
+                    openLinkAsWebsite(url: url)
                 }
-                return .handled
             }
+            return .handled
         }
         
         // If all else fails, fallback to opening in browser
@@ -266,6 +260,21 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             fallback(url)
         }
         ToastModel.main.removeToast(id: toastId)
+    }
+
+    func isProbableThreadiverseLink(url: URL) -> Bool {
+        guard let host = url.host else { return false }
+        if host.hasSuffix("reddit.com") { return false }
+
+        let components = url.pathComponents.dropFirst()
+
+        guard components.count > 2 else { return false }
+        guard ["u", "c", "post", "comment"].contains(components[0]) else { return false }
+
+        // Ensure that KBin links are excluded
+        guard components[1].first != "@" else { return false }
+
+        return true
     }
     
     func isThreadiverseHost(_ host: String) -> Bool {
