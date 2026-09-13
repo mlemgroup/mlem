@@ -10,7 +10,7 @@ import Foundation
 public struct PersonStub: Hashable {
     public var api: ApiClient
 
-    private enum Reference: Hashable {
+    internal enum Reference: Hashable {
         case url(URL)
         case handle(PersonHandle)
 
@@ -22,7 +22,7 @@ public struct PersonStub: Hashable {
         }
     }
 
-    private let reference: Reference
+    internal let reference: Reference
 
     public func asLocal() -> Self {
         .init(

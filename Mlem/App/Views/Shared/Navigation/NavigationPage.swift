@@ -118,6 +118,21 @@ enum NavigationPage {
         configuration: ContextMenuSettingsPage?
     )
 
+    static func stub(_ stub: ContentStub) -> NavigationPage {
+        switch stub {
+        case let .post(postStub):
+            .postStub(postStub)
+        case let .comment(commentStub):
+            .commentStub(commentStub)
+        case let .community(communityStub):
+            .communityStub(communityStub)
+        case let .person(personStub):
+            .personStub(personStub)
+        case let .instance(instanceStub):
+            .instanceStub(instanceStub)
+        }
+    }
+
     static func modlog(
         community: Community,
         targetPerson: Person? = nil,

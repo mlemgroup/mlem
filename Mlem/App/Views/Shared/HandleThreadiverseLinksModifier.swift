@@ -16,7 +16,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     
     @State private var showingEmailAlert = false
     @State private var pendingMailtoURL: URL?
-    
+
     // If a link in the `user@example.com` format is clicked, it opens in the Mail app
     // immediately for these domains. For all other domains, Mlem will attempt to
     // resolve it as a Lemmy link first.
@@ -71,8 +71,8 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             // Later, it might be better to move that into LemmyMarkdownUI, but I think we'd need to modify the core
             // cmark code rather than just the extensions, which isn't ideal.
             
-            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), let page = createNavigationPage(url: newUrl) {
-                navigation.push(page)
+            if let newUrl = createLemmyUrlFromShortcut(parts: url.pathComponents), let stub = createStub(url: newUrl) {
+                navigation.push(.stub(stub))
                 return .handled
             }
             
@@ -103,15 +103,15 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             components.scheme = "https"
             components.host = url.pathComponents[1]
             components.path = "/" + url.pathComponents.dropFirst(2).joined(separator: "/")
-            if let newUrl = components.url, let page = createNavigationPage(url: newUrl) {
-                navigation.push(page)
+            if let newUrl = components.url, let stub = createStub(url: newUrl) {
+                navigation.push(.stub(stub))
                 return .handled
             }
         }
         
         // If the link is in our threadiverse domain list, push a page to the NavigationStack straight away
-        if isThreadiverseHost(host), let page = createNavigationPage(url: url) {
-            navigation.push(page)
+        if isThreadiverseHost(host), let stub = createStub(url: url) {
+            navigation.push(.stub(stub))
             return .handled
         }
         
@@ -154,37 +154,39 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         return components.url
     }
     
-    func createNavigationPage(url: URL) -> NavigationPage? {
+    func createStub(url: URL) -> ContentStub? {
         let components = Array(url.pathComponents.dropFirst())
         if components.isEmpty, let host = url.host() {
-            return .instanceStub(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
+            return .instance(InstanceStub(api: appState.firstApi, actorId: .instance(host: host)))
         }
         switch components.first {
         case "u":
-            return .personStub(PersonStub(api: appState.firstApi, url: url))
+            return .person(PersonStub(api: appState.firstApi, url: url))
         case "c":
             // Handle links that look like this:
             // https://piefed.social/c/politics/p/1385905/will-the-supreme-court-hand-government-contractors-blanket-immunity
             if components.count > 4, components[2] == "p" {
                 let newUrl = url.removingPathComponents().appendingPathComponent("post/\(components[3])")
-                return .postStub(PostStub(api: appState.firstApi, url: newUrl))
+                return .post(PostStub(api: appState.firstApi, url: newUrl))
             } else {
-                return .communityStub(CommunityStub(api: appState.firstApi, url: url))
+                return .community(CommunityStub(api: appState.firstApi, url: url))
             }
         case "post":
+            // Handles links that look like this:
+            // https://piefed.social/post/2376868#comment_12898985
             if let fragment = url.fragment()?.trimmingPrefix("comment_") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(fragment)")
-                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
             } else if components.count == 2 {
-                return .postStub(PostStub(api: appState.firstApi, url: url))
+                return .post(PostStub(api: appState.firstApi, url: url))
             } else if components.count == 3 || (components.count == 4 && components[2] == "comment") {
                 let newUrl = url.removingPathComponents().appendingPathComponent("comment/\(url.lastPathComponent)")
-                return .commentStub(CommentStub(api: appState.firstApi, url: newUrl))
+                return .comment(CommentStub(api: appState.firstApi, url: newUrl))
             } else {
                 return nil
             }
         case "comment":
-            return .commentStub(CommentStub(api: appState.firstApi, url: url))
+            return .comment(CommentStub(api: appState.firstApi, url: url))
         default:
             return nil
         }
@@ -232,10 +234,15 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
     }
     
     func showToastAndResolve(url: URL, fallback: @escaping (URL) -> Void) async {
+        guard let sanitizedUrl = createStub(url: url)?.url else {
+            assertionFailure()
+            return
+        }
+
         let toastId = ToastModel.main.add(.loading())
         var output: (any Sharable)?
         do {
-            output = try await appState.firstApi.resolve(url: url)
+            output = try await appState.firstApi.resolve(url: sanitizedUrl)
         } catch {
             output = nil
             handleError(error, silent: true)
