@@ -288,7 +288,7 @@ internal extension LemmyConnection {
                 endpoint: endpoint,
                 commentId: id,
                 content: content,
-                languageId: languageId
+                languageId: languageId == .undefinedLanguageId ? nil : languageId
             )
         }
         return try .init(from: response.commentView)
@@ -301,7 +301,7 @@ internal extension LemmyConnection {
                 content: content,
                 postId: postId,
                 parentId: parentId,
-                languageId: languageId
+                languageId: languageId == .undefinedLanguageId ? nil : languageId
             )
         }
         return try .init(from: response.commentView)
