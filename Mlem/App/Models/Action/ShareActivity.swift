@@ -5,24 +5,35 @@
 //  Created by Sjmarf on 30/09/2024.
 //
 
-import UIKit
+import Actions
+import Icons
+import SwiftUI
 
 class ShareActivity: UIActivity {
-    let appearance: LegacyActionAppearance
-    let action: @MainActor () -> Void
+    let title: String
+    let icon: Icon
+
+    let callback: @MainActor () -> Void
     
     init(appearance: LegacyActionAppearance, performAction: @escaping @MainActor () -> Void) {
-        self.appearance = appearance
-        self.action = performAction
+        self.title = appearance.label
+        self.icon = .init(appearance.menuIcon)
+        self.callback = performAction
+        super.init()
+    }
+
+    init(action: Actions.Action, environment: EnvironmentValues) {
+        let label = action.createAppearance(environment: environment).label(describing: .stateTransition)
+        self.title = label.title
+        self.icon = label.icon
+        self.callback = { action.execute(environment: environment) }
         super.init()
     }
     
-    override var activityTitle: String? {
-        appearance.label
-    }
+    override var activityTitle: String? { title }
 
     override var activityImage: UIImage? {
-        .init(systemName: appearance.menuIcon)
+        .init(systemName: icon.computeImageName())
     }
     
     override var activityType: UIActivity.ActivityType {
@@ -39,7 +50,7 @@ class ShareActivity: UIActivity {
     
     @MainActor
     override func perform() {
-        action()
+        callback()
         activityDidFinish(true)
     }
 }

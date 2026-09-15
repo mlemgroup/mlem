@@ -9,6 +9,7 @@ import Actions
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
+import UniformTypeIdentifiers
 
 enum NavigationPage {
     case settings(_ page: SettingsPage = .root)
@@ -95,7 +96,7 @@ enum NavigationPage {
     case editPost(_ post: Post)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: () -> Void)
-    case confirmUpload(imageData: Data, fileExtension: String, imageManager: ImageUploadManager, uploadApi: ApiClient)
+    case confirmUpload(imageData: Data, fileType: UTType?, imageManager: ImageUploadManager, uploadApi: ApiClient)
     case rulesList(_ model: any ProfileProviding, callback: (String) -> Void)
     case blockList
     case advancedSorting(_ sort: Binding<PostSortType>)
@@ -108,6 +109,7 @@ enum NavigationPage {
     case unsupportedVersion(_ account: any Account)
     case postDetails(_ post: Post)
     case authHandoff(session: String, personHandle: PersonHandle, defaultAccount: UserAccount)
+    case dummy
 
     // If `configuration` is specified, show a "customise" button in the sheet for editing that configuration.
     // Otherwise, no "customise" button is shown.

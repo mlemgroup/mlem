@@ -42,6 +42,7 @@ public class Post:
     // Mlem-specific properties that are not reflected in the API
     
     public var readQueued: Bool = false
+    public var readMocked: Bool = false
     public var pinnedCommunityPending: Bool = false
     public var pinnedInstancePending: Bool = false
     public var lockedPending: Bool = false
@@ -88,7 +89,7 @@ public class Post:
     public var readStatus: ExpectedValue<Bool>
     public var read: ExpectedValue<Bool> {
         .init(
-            value: readStatus.value?.or(readQueued),
+            value: readStatus.value?.or(readQueued || readMocked),
             provideValue: { try await self.upgrade() })
     }
     public var hidden: ExpectedValue<Bool>
@@ -339,6 +340,11 @@ public extension Post {
     // Read
     
     func updateRead(_ newValue: Bool, shouldQueue: Bool = false) {
+        guard api.willSendToken else {
+            readMocked = newValue
+            return
+        }
+        
         if shouldQueue {
             readQueued = newValue
             Task {

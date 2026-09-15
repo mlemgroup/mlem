@@ -209,10 +209,10 @@ extension NavigationPage {
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):
             BypassProxyWarningSheet(callback: callback)
-        case let .confirmUpload(imageData: imageData, fileExtension: fileExtension, imageManager: imageManager, uploadApi: uploadApi):
+        case let .confirmUpload(imageData: imageData, fileType: fileType, imageManager: imageManager, uploadApi: uploadApi):
             UploadConfirmationView(
                 imageData: imageData,
-                fileExtension: fileExtension,
+                fileType: fileType,
                 imageManager: imageManager,
                 uploadApi: uploadApi
             )
@@ -256,6 +256,11 @@ extension NavigationPage {
                 openedFromInAppBrowser: false,
                 defaultAccount: defaultAccount
             )
+        case .dummy:
+            {
+                assertionFailure()
+                return EmptyView()
+            }()
         }
     }
 }

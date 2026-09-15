@@ -48,10 +48,7 @@ class ImageUploadManager: Hashable {
             guard let data = try await photo.loadTransferable(type: Data.self) else {
                 throw ApiClientError.unsuccessful
             }
-            guard let fileExtension = photo.supportedContentTypes.first?.preferredFilenameExtension else {
-                throw ApiClientError.unsuccessful
-            }
-            try await upload(data: data, fileExtension: fileExtension, api: api)
+            try await upload(data: data, fileType: photo.supportedContentTypes.first, api: api)
         } catch {
             Task { @MainActor in
                 state = .idle
@@ -67,7 +64,8 @@ class ImageUploadManager: Hashable {
             }
             let data = try Data(contentsOf: url)
             url.stopAccessingSecurityScopedResource()
-            try await upload(data: data, fileExtension: url.pathExtension, api: api)
+            var type = UTType(filenameExtension: url.pathExtension)
+            try await upload(data: data, fileType: type, api: api)
             
         } catch {
             url.stopAccessingSecurityScopedResource()
@@ -82,7 +80,7 @@ class ImageUploadManager: Hashable {
         do {
             if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
                 if let data = content.pngData() {
-                    try await upload(data: data, fileExtension: "png", api: api)
+                    try await upload(data: data, fileType: .png, api: api)
                 }
             }
         } catch {
@@ -93,9 +91,9 @@ class ImageUploadManager: Hashable {
         }
     }
     
-    func upload(data: Data, fileExtension: String, api: ApiClient) async throws {
+    func upload(data: Data, fileType: UTType?, api: ApiClient) async throws {
         do {
-            let image = try await api.uploadImage(data, fileExtension: fileExtension, onProgress: { value in
+            let image = try await api.uploadImage(data, fileType: fileType, onProgress: { value in
                 Task { @MainActor in
                     self.state = .uploading(progress: value)
                 }
