@@ -10,6 +10,20 @@ import Icons
 import MlemMiddleware
 
 extension PostSortType {
+    init(_ settingsPostSortType: SettingsPostSortType) {
+        self = switch settingsPostSortType {
+        case .active: .active
+        case .hot: .hot
+        case .new: .new
+        case .old: .old
+        case .mostComments: .mostComments
+        case .newComments: .newComments
+        case .controversial: .controversial
+        case .scaled: .scaled
+        case let .top(timeRange): .top(.init(timeRange))
+        }
+    }
+
     func label(timeRangeFormat: SortTimeRange.FormatStyle = .timescaleFull) -> String {
         switch self {
         case .active:

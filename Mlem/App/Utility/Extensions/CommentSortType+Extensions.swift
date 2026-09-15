@@ -10,6 +10,16 @@ import Icons
 import MlemMiddleware
 
 extension CommentSortType {
+    init(_ settingsCommentSortType: SettingsCommentSortType) {
+        self = switch settingsCommentSortType {
+        case .hot: .hot
+        case .new: .new
+        case .old: .old
+        case .controversial: .controversial
+        case let .top(timeRange): .top(.init(timeRange))
+        }
+    }
+
     func label(timeRangeFormat: SortTimeRange.FormatStyle = .timescaleFull) -> String {
         switch self {
         case .new:

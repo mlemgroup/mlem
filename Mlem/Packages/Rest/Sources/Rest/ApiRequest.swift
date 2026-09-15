@@ -24,21 +24,10 @@ public protocol RestRequest {
 }
 
 public extension RestRequest {
-    var headers: [String: String] { defaultHeaders }
-
-    var defaultHeaders: [String: String] {
+    var headers: [String: String] {
         ["Content-Type": "application/json"]
     }
-}
 
-// MARK: - GetRequest
-
-public protocol GetRequest: RestRequest {
-    associatedtype Parameters: Encodable
-    var parameters: Parameters? { get }
-}
-
-public extension RestRequest {
     func endpoint(
         base: URL,
         encoderUserInfo: [CodingUserInfoKey: any Sendable],
@@ -47,6 +36,13 @@ public extension RestRequest {
         base
             .appending(path: path)
     }
+}
+
+// MARK: - GetRequest
+
+public protocol GetRequest: RestRequest {
+    associatedtype Parameters: Encodable
+    var parameters: Parameters? { get }
 }
 
 public extension GetRequest {
@@ -67,6 +63,18 @@ public extension GetRequest {
             base
                 .appending(path: path)
         }
+    }
+}
+
+// MARK: - UploadRequest
+
+public protocol UploadRequest: RestRequest {
+    var form: MultipartFormData { get }
+}
+
+public extension UploadRequest {
+    var headers: [String: String] {
+        ["Content-Type": "multipart/form-data; boundary=\(form.boundary)"]
     }
 }
 
@@ -106,4 +114,9 @@ public protocol DeleteRequest: RequestWithBody { }
 
 public extension DeleteRequest {
     var method: RequestWithBodyMethod { .delete }
+}
+
+public struct EmptyResponse: Decodable {
+    public init() {}
+    public init(from decoder: any Decoder) throws {}
 }
