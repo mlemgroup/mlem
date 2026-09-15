@@ -5,11 +5,13 @@
 //  Created by Sjmarf on 2024-12-16.
 //
 
+import Haptics
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 
 struct ReportView: View {
+    @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     
     let report: Report
@@ -98,7 +100,8 @@ struct ReportView: View {
                 report.resolved ? "Resolved" : "Resolve",
                 systemImage: Icons.success
             ) {
-                report.toggleResolved(feedback: [.haptic])
+                hapticManager.play(haptic: .success, tier: .low)
+                report.toggleResolved()
             }
             .foregroundStyle(report.resolved ? .themedContrastingLabel : .themedPrimary)
             .padding(.vertical, 3)
