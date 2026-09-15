@@ -6,21 +6,46 @@
 //  
 
 import Foundation
+import UniformTypeIdentifiers
 
-// swiftlint:disable:next function_parameter_count
-public func createMultiPartForm(
-    boundary: String,
-    contentType: String,
-    name: String,
-    fileName: String,
-    imageData: Data,
-    auth: String
-) -> Data {
-    var data = Data()
-    data.append(Data("--\(boundary)\r\n".utf8))
-    data.append(Data("Content-Disposition: form-data; name=\"\(name)\"; filename=\"\(fileName)\"\r\n".utf8))
-    data.append(Data("Content-Type: \(contentType)\r\n\r\n".utf8))
-    data.append(imageData)
-    data.append(Data("\r\n--\(boundary)--\r\n".utf8))
-    return data
+public struct MultipartFormData {
+    public let boundary = "Boundary-\(UUID().uuidString)"
+    private var body = Data()
+
+    public init() {}
+    
+    public mutating func addFile(fieldName: String, filename: String, mimeType: String, data: Data) {
+        body.append("--\(boundary)\r\n")
+        body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(filename)\"\r\n")
+        body.append("Content-Type: \(mimeType)\r\n\r\n")
+        body.append(data)
+        body.append("\r\n")
+    }
+
+    public mutating func addFile(fieldName: String, filenameWithoutExtension: String, type: UTType?, data: Data) {
+        var filename = filenameWithoutExtension
+        if let fileExtension = type?.preferredFilenameExtension {
+            filename += ".\(fileExtension)"
+        }
+        self.addFile(
+            fieldName: fieldName,
+            filename: filename,
+            mimeType: type?.preferredMIMEType ?? "application/octet-stream",
+            data: data
+        )
+    }
+    
+    public func finalize() -> Data {
+        var finalBody = body
+        finalBody.append("--\(boundary)--\r\n")
+        return finalBody
+    }
+}
+
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
+    }
 }
