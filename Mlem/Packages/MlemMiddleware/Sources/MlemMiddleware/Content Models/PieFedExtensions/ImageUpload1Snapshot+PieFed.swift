@@ -11,8 +11,7 @@ public extension ImageUpload1Snapshot {
     init(from response: PieFedImageUploadResponse) {
         self.init(
             url: response.url,
-            alias: nil,
-            deleteToken: nil
+            deleteToken: .init(wrappedValue: response.url)
         )
     }
 }

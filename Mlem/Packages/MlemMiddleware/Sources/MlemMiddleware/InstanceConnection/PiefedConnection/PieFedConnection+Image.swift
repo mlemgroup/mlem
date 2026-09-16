@@ -22,7 +22,7 @@ public extension PieFedConnection {
         return .init(from: response)
     }
     
-    func deleteImage(alias: String, deleteToken: String) async throws {
+    func deleteImage(token: ImageDeleteToken) async throws {
         throw ApiClientError.featureUnsupported
     }
 }
