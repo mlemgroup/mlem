@@ -104,6 +104,7 @@ extension BanAction {
         isDestructive: true
     )
 
+    // swiftlint:disable:next function_body_length
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         let appliedBanScopes = getAppliedBanScopes(environment: environment)
         let actionableBanScopes = getActionableBanScopes(environment: environment)
