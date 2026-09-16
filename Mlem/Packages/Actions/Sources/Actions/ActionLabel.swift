@@ -26,4 +26,10 @@ public struct ActionLabel {
         self.icon = icon
         self.color = color
     }
+
+    internal init(_ label: ActionLabelWithoutColor, color: ThemedColor) {
+        self.title = label.title
+        self.icon = label.icon
+        self.color = color
+    }
 }

@@ -28,29 +28,15 @@ extension ActionSeed {
 
 extension HideAction {
     static let hideAppearance: ActionAppearance = .init(
-        currentStateLabel: .init(
-            "Shown",
-            icon: .general.hidden.representingState(active: false),
-            color: .themedColorfulAccent(4)
-        ),
-        stateTransitionLabel: .init(
-            "Hide",
-            icon: .general.hide,
-            color: .themedColorfulAccent(4)
-        ),
+        currentStateLabel: .init("Shown", icon: .general.hidden.representingState(active: false)),
+        stateTransitionLabel: .init("Hide", icon: .general.hide),
+        color: .themedColorfulAccent(4)
     )
 
     static let showAppearance: ActionAppearance = .init(
-        currentStateLabel: .init(
-            "Hidden",
-            icon: .general.hidden.representingState(active: true),
-            color: .themedColorfulAccent(4)
-        ),
-        stateTransitionLabel: .init(
-            "Show",
-            icon: .general.show,
-            color: .themedColorfulAccent(4)
-        ),
+        currentStateLabel: .init("Hidden", icon: .general.hidden.representingState(active: true)),
+        stateTransitionLabel: .init("Show", icon: .general.show),
+        color: .themedColorfulAccent(4),
         prominent: true
     )
 

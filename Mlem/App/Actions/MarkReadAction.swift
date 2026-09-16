@@ -28,28 +28,14 @@ extension ActionSeed {
 
 extension MarkReadAction {
     static let markReadAppearance: ActionAppearance = .init(
-        currentStateLabel: .init(
-            "Unread",
-            icon: .lemmy.markedRead.representingState(active: false),
-            color: .themedRead
-        ),
-        stateTransitionLabel: .init(
-            "Mark Read",
-            icon: .lemmy.markRead,
-            color: .themedRead
-        ),
+        currentStateLabel: .init("Unread", icon: .lemmy.markedRead.representingState(active: false)),
+        stateTransitionLabel: .init("Mark Read", icon: .lemmy.markRead),
+        color: .themedRead
     )
     static let markUnreadAppearance: ActionAppearance = .init(
-        currentStateLabel: .init(
-            "Read",
-            icon: .lemmy.markedRead.representingState(active: true),
-            color: .themedRead
-        ),
-        stateTransitionLabel: .init(
-            "Mark Unread",
-            icon: .lemmy.markUnread,
-            color: .themedRead
-        ),
+        currentStateLabel: .init("Read", icon: .lemmy.markedRead.representingState(active: true)),
+        stateTransitionLabel: .init("Mark Unread", icon: .lemmy.markUnread),
+        color: .themedRead,
         prominent: true
     )
 
