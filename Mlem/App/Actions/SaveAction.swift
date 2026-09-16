@@ -28,14 +28,28 @@ extension ActionSeed {
 
 extension SaveAction {
     static let saveAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Unsaved", icon: .lemmy.saved.representingState(active: false)),
-        stateTransitionLabel: .init("Save", icon: .lemmy.addSave),
-        color: .themedSave
+        currentStateLabel: .init(
+            "Unsaved",
+            icon: .lemmy.saved.representingState(active: false),
+            color: .themedSave
+        ),
+        stateTransitionLabel: .init(
+            "Save",
+            icon: .lemmy.addSave,
+            color: .themedSave
+        )
     )
     static let unsaveAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Saved", icon: .lemmy.saved.representingState(active: true)),
-        stateTransitionLabel: .init("Unsave", icon: .lemmy.removeSave),
-        color: .themedSave,
+        currentStateLabel: .init(
+            "Saved",
+            icon: .lemmy.saved.representingState(active: true),
+            color: .themedSave
+        ),
+        stateTransitionLabel: .init(
+            "Unsave",
+            icon: .lemmy.removeSave,
+            color: .themedSave
+        ),
         prominent: true
     )
 

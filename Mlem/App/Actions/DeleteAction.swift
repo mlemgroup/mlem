@@ -28,15 +28,29 @@ extension ActionSeed {
 
 extension DeleteAction {
     static let deleteAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Not Deleted", icon: .general.deleted.representingState(active: false)),
-        stateTransitionLabel: .init("Delete", icon: .general.delete),
-        color: .themedNegative,
+        currentStateLabel: .init(
+            "Not Deleted",
+            icon: .general.deleted.representingState(active: false),
+            color: .themedPositive
+        ),
+        stateTransitionLabel: .init(
+            "Delete",
+            icon: .general.delete,
+            color: .themedNegative
+        ),
         isDestructive: true
     )
     static let restoreAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Deleted", icon: .general.deleted.representingState(active: true)),
-        stateTransitionLabel: .init("Restore", icon: .lemmy.restore),
-        color: .themedPositive,
+        currentStateLabel: .init(
+            "Deleted",
+            icon: .general.deleted.representingState(active: true),
+            color: .themedNegative
+        ),
+        stateTransitionLabel: .init(
+            "Restore",
+            icon: .lemmy.restore,
+            color: .themedPositive
+        ),
         prominent: true
     )
 

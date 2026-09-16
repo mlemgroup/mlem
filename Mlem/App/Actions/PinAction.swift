@@ -28,15 +28,29 @@ extension ActionSeed {
 
 extension PinAction {
     static let pinAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Unpinned", icon: .lemmy.pinned.representingState(active: false)),
-        stateTransitionLabel: .init("Pin", icon: .lemmy.addPin),
-        color: .themedModeration
+        currentStateLabel: .init(
+            "Unpinned",
+            icon: .lemmy.pinned.representingState(active: false),
+            color: .themedModeration
+        ),
+        stateTransitionLabel: .init(
+            "Pin",
+            icon: .lemmy.addPin,
+            color: .themedModeration
+        )
     )
 
     static let unpinAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Pinned", icon: .lemmy.pinned.representingState(active: true)),
-        stateTransitionLabel: .init("Unpin", icon: .lemmy.removePin),
-        color: .themedModeration,
+        currentStateLabel: .init(
+            "Pinned",
+            icon: .lemmy.pinned.representingState(active: true),
+            color: .themedModeration
+        ),
+        stateTransitionLabel: .init(
+            "Unpin",
+            icon: .lemmy.removePin,
+            color: .themedModeration
+        ),
         prominent: true
     )
 

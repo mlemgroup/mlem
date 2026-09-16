@@ -11,7 +11,6 @@ import Theming
 
 public struct ActionAppearance {
     public var labels: ActionLabels
-    public var color: ThemedColor
     public var isDestructive: Bool
     public var visibility: ActionVisiblity
     public var prominent: Bool
@@ -24,8 +23,7 @@ public struct ActionAppearance {
         visibility: ActionVisiblity = .enabled,
         prominent: Bool = false
     ) {
-        self.labels = .basic(.init(title, icon: icon))
-        self.color = color
+        self.labels = .basic(.init(title, icon: icon, color: color))
         self.isDestructive = isDestructive
         self.visibility = visibility
         self.prominent = prominent 
@@ -40,8 +38,7 @@ public struct ActionAppearance {
         visibility: ActionVisiblity = .enabled,
         prominent: Bool = false
     ) {
-        self.labels = .basic(.init(title, icon: icon))
-        self.color = color
+        self.labels = .basic(.init(title, icon: icon, color: color))
         self.isDestructive = isDestructive
         self.visibility = visibility
         self.prominent = prominent
@@ -50,7 +47,6 @@ public struct ActionAppearance {
     public init(
         currentStateLabel: ActionLabel,
         stateTransitionLabel: ActionLabel,
-        color: ThemedColor = .themedAccent,
         isDestructive: Bool = false,
         visibility: ActionVisiblity = .enabled,
         prominent: Bool = false
@@ -59,7 +55,6 @@ public struct ActionAppearance {
             currentState: currentStateLabel,
             transition: stateTransitionLabel
         )
-        self.color = color
         self.isDestructive = isDestructive
         self.visibility = visibility
         self.prominent = prominent 
