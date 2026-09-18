@@ -79,6 +79,30 @@ public class LemmyConnection: InstanceConnection {
         tokenOverride: String? = nil,
         endpoint: LemmyEndpointVersion
     ) async throws -> Request.Response {
+        try await self.performInternal(
+            request,
+            tokenOverride: tokenOverride,
+            endpoint: endpoint
+        )
+    }
+
+    @discardableResult
+    func performWithoutEndpoint<Request: RestRequest>(
+        _ request: Request,
+        tokenOverride: String? = nil,
+    ) async throws -> Request.Response {
+        try await self.performInternal(
+            request,
+            tokenOverride: tokenOverride,
+            endpoint: nil
+        )
+    }
+
+    private func performInternal<Request: RestRequest>(
+        _ request: Request,
+        tokenOverride: String? = nil,
+        endpoint: LemmyEndpointVersion?
+    ) async throws -> Request.Response {
         let token = tokenOverride ?? token
         do throws(RestError) {
             return try await restClient.perform(

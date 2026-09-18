@@ -18,7 +18,7 @@ struct UploadConfirmationView: View {
     @Setting(\.behavior_confirmImageUploads) var confirmImageUploads
     
     var imageData: Data
-    var fileExtension: String
+    var fileType: UTType?
     var imageManager: ImageUploadManager
     var uploadApi: ApiClient
     
@@ -68,7 +68,7 @@ struct UploadConfirmationView: View {
                                 do {
                                     try await imageManager.upload(
                                         data: imageData,
-                                        fileExtension: fileExtension,
+                                        fileType: fileType,
                                         api: uploadApi
                                     )
                                     hapticManager.play(haptic: .success, tier: .low)
