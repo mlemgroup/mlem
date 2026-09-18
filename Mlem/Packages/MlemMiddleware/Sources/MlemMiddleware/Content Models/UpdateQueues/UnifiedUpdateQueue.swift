@@ -115,7 +115,7 @@ public actor UnifiedUpdateQueue<Model: UnifiedModelProviding> {
                 
                 self.lastVerifiedProperties.merge(newProperties)
             } catch {
-                log.error("\(error.localizedDescription)")
+                log.error("\(String(describing: error))")
             }
             queue.dequeue()
         }
