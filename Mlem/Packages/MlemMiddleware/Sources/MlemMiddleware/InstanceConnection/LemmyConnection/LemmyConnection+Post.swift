@@ -365,7 +365,7 @@ internal extension LemmyConnection {
                 body: content,
                 honeypot: nil,
                 nsfw: nsfw,
-                languageId: languageId,
+                languageId: languageId == .undefinedLanguageId ? nil : languageId,
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
                 tags: nil,
@@ -394,7 +394,7 @@ internal extension LemmyConnection {
                 url: linkUrl,
                 body: content,
                 nsfw: nsfw,
-                languageId: languageId,
+                languageId: languageId == .undefinedLanguageId ? nil : languageId,
                 altText: altText,
                 customThumbnail: thumbnail?.absoluteString,
                 scheduledPublishTimeAt: nil,
@@ -415,7 +415,7 @@ internal extension LemmyConnection {
                 content: content,
                 postId: id,
                 parentId: nil,
-                languageId: languageId
+                languageId: languageId == .undefinedLanguageId ? nil : languageId
             )
         }
         return try .init(from: response.commentView)

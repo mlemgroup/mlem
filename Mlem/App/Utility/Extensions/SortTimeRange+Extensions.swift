@@ -67,4 +67,11 @@ extension SortTimeRange {
         formatter.allowedUnits = [.year, .month, .weekOfMonth, .day, .hour, .minute, .second]
         return formatter
     }
+
+    init(_ settingsTimeRange: SettingsSortTimeRange) {
+        self = switch settingsTimeRange {
+        case .allTime: .allTime
+        case let .limited(duration): .limited(duration)
+        }
+    }
 }

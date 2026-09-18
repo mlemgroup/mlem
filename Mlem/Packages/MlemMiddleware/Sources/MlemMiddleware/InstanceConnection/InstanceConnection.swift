@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UniformTypeIdentifiers
 
 internal protocol InstanceConnection {
     static var softwareType: SiteSoftwareType { get }
@@ -490,7 +491,7 @@ internal protocol InstanceConnection {
     
     func uploadImage(
         _ imageData: Data,
-        fileExtension: String,
+        fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void
     ) async throws -> ImageUpload1Snapshot
     

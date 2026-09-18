@@ -17,8 +17,7 @@ public class RestClient {
     public var decoder: JSONDecoder
     public var convertParamsToSnakeCase: Bool = true
     
-    // This should really be internal, but for now the image upload system needs to access this
-    public let urlSession: URLSession = .init(configuration: .default)
+    private let urlSession: URLSession = .init(configuration: .mlem)
 
     public var errorProcessor: (ErrorProcessorContext) throws(RestError) -> Void
     
@@ -94,6 +93,54 @@ public class RestClient {
             }
         }
     }
+
+    public func upload<Request: UploadRequest>(
+        baseUrl: URL,
+        _ request: Request,
+        token: String?,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
+    ) async throws(RestError) -> Request.Response {
+        let urlRequest = try urlRequest(
+            baseUrl: baseUrl,
+            request: request,
+            token: token,
+            encoderUserInfo: encoderUserInfo
+        )
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await urlSession.upload(
+                for: urlRequest,
+                from: request.form.finalize(),
+                delegate: ImageUploadDelegate(callback: progressCallback)
+            )
+
+        } catch {
+            if case URLError.cancelled = error as NSError {
+                throw .cancelled
+            } else {
+                throw .networking(error)
+            }
+        }
+        if let response = response as? HTTPURLResponse {
+            if response.statusCode >= 500 || response.statusCode == 404 {
+                throw RestError.serverError(statusCode: response.statusCode)
+            }
+
+            try errorProcessor(
+                .init(
+                    decoder: decoder,
+                    data: data,
+                    response: response
+                )
+            )
+        }
+
+        return try decode(Request.Response.self, from: data)
+
+    }
     
     func urlRequest(
         baseUrl: URL,
@@ -113,7 +160,6 @@ public class RestClient {
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.addValue("MlemUserAgent", forHTTPHeaderField: "User-Agent")
 
         urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         for header in request.headers {
@@ -125,6 +171,9 @@ public class RestClient {
         } else if let postDefinition = request as? any RequestWithBody {
             urlRequest.httpMethod = postDefinition.method.stringValue
             urlRequest.httpBody = try createBodyData(for: postDefinition, encoderUserInfo: encoderUserInfo)
+        } else if request is any UploadRequest {
+            urlRequest.httpMethod = "POST"
+            // Body is attached higher up call stack
         }
         
         if let token {
@@ -151,6 +200,9 @@ public class RestClient {
     
     private func decode<T: Decodable>(_ model: T.Type, from data: Data) throws(RestError) -> T {
         do {
+            if let model = model as? EmptyResponse.Type {
+                return model.init() as! T // swiftlint:disable:this force_cast
+            }
             return try decoder.decode(model, from: data)
         } catch {
             throw .decoding(data, error)
