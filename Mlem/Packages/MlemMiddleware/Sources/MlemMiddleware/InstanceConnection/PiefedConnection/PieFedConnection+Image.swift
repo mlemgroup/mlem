@@ -32,3 +32,5 @@ public extension PieFedConnection {
         try await perform(request)
     }
 }
+
+extension URL: ImageDeleteTokenContent {}

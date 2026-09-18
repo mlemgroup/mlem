@@ -7,5 +7,7 @@
 
 public struct ImageDeleteToken {
     // This contains whatever data the InstanceConnection needs in order to delete the image.
-    internal let wrappedValue: Any
+    internal let wrappedValue: any ImageDeleteTokenContent
 }
+
+internal protocol ImageDeleteTokenContent {} 
