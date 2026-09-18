@@ -159,15 +159,29 @@ extension BlockAction {
 
         return switch mode {
         case .block: .init(
-            currentStateLabel: .init(titles.currentState, icon: .lemmy.blocked.representingState(active: false)),
-            stateTransitionLabel: .init(titles.stateTransition, icon: .lemmy.block),
-            color: .themedNegative,
+            currentStateLabel: .init(
+                titles.currentState,
+                icon: .lemmy.blocked.representingState(active: false),
+                color: .themedPositive
+            ),
+            stateTransitionLabel: .init(
+                titles.stateTransition,
+                icon: .lemmy.block,
+                color: .themedNegative
+            ),
             isDestructive: true
         )
         case .unblock: .init(
-            currentStateLabel: .init(titles.currentState, icon: .lemmy.blocked.representingState(active: true)),
-            stateTransitionLabel: .init(titles.stateTransition, icon: .lemmy.unblock),
-            color: .themedPositive,
+            currentStateLabel: .init(
+                titles.currentState,
+                icon: .lemmy.blocked.representingState(active: true),
+                color: .themedNegative
+            ),
+            stateTransitionLabel: .init(
+                titles.stateTransition,
+                icon: .lemmy.unblock,
+                color: .themedPositive
+            ),
             prominent: true
         )
         }

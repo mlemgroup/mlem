@@ -91,12 +91,20 @@ extension ActionSeed {
 
 extension BanAction {
     static let appearance: ActionAppearance = .init(
-        currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromCommunity.representingState(active: false)),
-        stateTransitionLabel: .init("Ban", icon: .lemmy.banFromCommunity),
-        color: .themedNegative,
+        currentStateLabel: .init(
+            "Unbanned",
+            icon: .lemmy.bannedFromCommunity.representingState(active: false),
+            color: .themedPositive
+        ),
+        stateTransitionLabel: .init(
+            "Ban",
+            icon: .lemmy.banFromCommunity,
+            color: .themedNegative
+        ),
         isDestructive: true
     )
 
+    // swiftlint:disable:next function_body_length
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         let appliedBanScopes = getAppliedBanScopes(environment: environment)
         let actionableBanScopes = getActionableBanScopes(environment: environment)
@@ -106,18 +114,32 @@ extension BanAction {
         case (bannedFrom: .none, canBanFrom: .both),
              (bannedFrom: .anyNotContaining(.instance), canBanFrom: .instanceOnly):
             base = .init(
-                currentStateLabel: .init("Unbanned", icon: .lemmy.bannedFromInstance.representingState(active: false)),
-                stateTransitionLabel: .init("Ban", icon: .lemmy.banFromInstance),
-                color: .themedNegative,
+                currentStateLabel: .init(
+                    "Unbanned",
+                    icon: .lemmy.bannedFromInstance.representingState(active: false),
+                    color: .themedPositive
+                ),
+                stateTransitionLabel: .init(
+                    "Ban",
+                    icon: .lemmy.banFromInstance,
+                    color: .themedNegative
+                ),
                 isDestructive: true
             )
 
         case (bannedFrom: .anyContaining(.instance), canBanFrom: .instanceOnly),
              (bannedFrom: .both, canBanFrom: .both):
             base = .init(
-                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromInstance.representingState(active: true)),
-                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromInstance),
-                color: .themedPositive,
+                currentStateLabel: .init(
+                    "Banned",
+                    icon: .lemmy.bannedFromInstance.representingState(active: true),
+                    color: .themedNegative
+                ),
+                stateTransitionLabel: .init(
+                    "Unban",
+                    icon: .lemmy.unbanFromInstance,
+                    color: .themedPositive
+                ),
                 prominent: true
             )
 
@@ -132,9 +154,16 @@ extension BanAction {
 
         case (bannedFrom: .anyContaining(.community), canBanFrom: .communityOnly):
             base = .init(
-                currentStateLabel: .init("Banned", icon: .lemmy.bannedFromCommunity.representingState(active: true)),
-                stateTransitionLabel: .init("Unban", icon: .lemmy.unbanFromCommunity),
-                color: .themedPositive,
+                currentStateLabel: .init(
+                    "Banned",
+                    icon: .lemmy.bannedFromCommunity.representingState(active: true),
+                    color: .themedNegative
+                ),
+                stateTransitionLabel: .init(
+                    "Unban",
+                    icon: .lemmy.unbanFromCommunity,
+                    color: .themedPositive
+                ),
                 prominent: true
             )
 

@@ -35,7 +35,11 @@ extension GoToInstanceAction {
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {
         var appearance = Self.appearance
-        appearance.labels = .basic(.init(entity.host, icon: .lemmy.instance))
+        appearance.labels = .basic(.init(
+            entity.host,
+            icon: .lemmy.instance,
+            color: .themedAccent
+        ))
         return appearance
     }
 }

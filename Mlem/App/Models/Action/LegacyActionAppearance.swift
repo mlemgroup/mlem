@@ -75,7 +75,7 @@ struct LegacyActionAppearance {
         self.init(
             label: label.title,
             isOn: appearance.prominent,
-            color: appearance.color,
+            color: label.color,
             icon: label.icon.computeImageName()
         )
     }

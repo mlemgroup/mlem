@@ -87,9 +87,10 @@ private struct ActionListView: View {
         Section(title) {
             ForEach(actions, id: \.hashValue) { action in
                 HStack {
-                    Label(action.appearance, describing: .stateTransition)
+                    let label = action.appearance.label(describing: .stateTransition)
+                    Label(label)
                         .symbolVariant(.fill)
-                        .gradientTint(action.appearance.color)
+                        .gradientTint(label.color)
                     Spacer()
                 }
                 .tag(action)
