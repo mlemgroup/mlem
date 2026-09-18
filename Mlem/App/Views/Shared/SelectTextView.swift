@@ -38,7 +38,7 @@ struct SelectTextView: View {
     func textEditor(withBackground: Bool) -> some View {
         TextEditor(text: .constant(text))
             .scrollContentBackground(.hidden)
-            .introspect(.textEditor, on: .iOS(.v26)) { textEditor in
+            .introspect(.textEditor, on: .iOS(.v26, .v27)) { textEditor in
                 textEditor.isEditable = false
                 textEditor.textContainerInset = .init(top: 0, left: 10, bottom: 10, right: 10)
                 if withBackground {

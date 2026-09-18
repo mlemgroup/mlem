@@ -97,7 +97,7 @@ struct LinkEditorView: View {
             .layoutPriority(6)
             .frame(maxHeight: .infinity)
             .scrollContentBackground(.hidden)
-            .introspect(.textEditor, on: .iOS(.v26)) {
+            .introspect(.textEditor, on: .iOS(.v26, .v27)) {
                 if textView == nil {
                     textView = $0
                     // The text has to be set here; otherwise the textview has a height of 0 for some reason
