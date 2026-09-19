@@ -21,6 +21,7 @@ public class MediaTracker {
 
     private var controlStates: [URL: WeakMediaControlState] = .init()
     
+    // These must not be observable. See https://github.com/mlemgroup/mlem/issues/2974
     @ObservationIgnored private var lastCleaned: Date = .init()
     @ObservationIgnored private let cleanInterval: TimeInterval = 60
     
