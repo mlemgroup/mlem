@@ -495,5 +495,5 @@ internal protocol InstanceConnection {
         onProgress progressCallback: @escaping (_ progress: Double) -> Void
     ) async throws -> ImageUpload1Snapshot
     
-    func deleteImage(alias: String, deleteToken: String) async throws
+    func deleteImage(token: ImageDeleteToken) async throws
 }

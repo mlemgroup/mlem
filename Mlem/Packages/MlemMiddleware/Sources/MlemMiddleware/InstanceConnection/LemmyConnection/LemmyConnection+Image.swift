@@ -38,8 +38,12 @@ public extension LemmyConnection {
         return .init(from: file, baseUrl: baseUrl)
     }
     
-    func deleteImage(alias: String, deleteToken: String) async throws {
-        let request = LemmyDeleteImageRequest(deleteToken: deleteToken, alias: alias)
+    func deleteImage(token: ImageDeleteToken) async throws {
+        guard let token = token.wrappedValue as? LemmyImageDeleteToken else {
+            throw ApiClientError.invalidInput
+        }
+
+        let request = LemmyDeleteImageRequest(deleteToken: token.token, alias: token.alias)
         try await self.performWithoutEndpoint(request)
     }
 }

@@ -11,8 +11,10 @@ extension ImageUpload1Snapshot {
     init(from file: LemmyPictrsFile, baseUrl: URL) {
         self.init(
             url: baseUrl.appending(path: "pictrs/image/\(file.file)"),
-            alias: file.file,
-            deleteToken: file.deleteToken
+            deleteToken: .init(wrappedValue: LemmyImageDeleteToken(
+                alias: file.file,
+                token: file.deleteToken
+            ))
         )
     }
 }

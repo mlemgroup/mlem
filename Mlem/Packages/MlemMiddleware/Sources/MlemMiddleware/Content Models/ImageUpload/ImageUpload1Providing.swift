@@ -16,10 +16,7 @@ public protocol ImageUpload1Providing: ContentModel, Hashable {
 public extension ImageUpload1Providing {
     /// Delete the image. Doesn't state-fake. Can't be undone.
     func delete() async throws {
-        guard let alias = mediaUpload1.alias, let deleteToken = mediaUpload1.deleteToken else {
-            throw ApiClientError.featureUnsupported
-        }
-        try await api.deleteImage(alias: alias, deleteToken: deleteToken)
+        try await api.deleteImage(token: mediaUpload1.deleteToken)
         mediaUpload1.deleted = true
     }
     
