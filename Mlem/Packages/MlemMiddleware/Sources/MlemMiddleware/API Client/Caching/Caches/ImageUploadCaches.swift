@@ -14,7 +14,6 @@ class ImageUpload1Cache: CoreCache<ImageUpload1> {
         let newItem: ImageUpload1 = .init(
             api: api,
             url: snapshot.url,
-            alias: snapshot.alias,
             deleteToken: snapshot.deleteToken
         )
 

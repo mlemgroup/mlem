@@ -19,7 +19,7 @@ public extension ApiClient {
         return caches.imageUpload1.getModel(api: self, from: file)
     }
     
-    func deleteImage(alias: String, deleteToken: String) async throws {
-        try await repository.deleteImage(alias: alias, deleteToken: deleteToken)
+    func deleteImage(token: ImageDeleteToken) async throws {
+        try await repository.deleteImage(token: token)
     }
 }

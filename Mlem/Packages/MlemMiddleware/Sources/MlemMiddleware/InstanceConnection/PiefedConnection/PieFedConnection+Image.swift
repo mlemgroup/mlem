@@ -22,7 +22,15 @@ public extension PieFedConnection {
         return .init(from: response)
     }
     
-    func deleteImage(alias: String, deleteToken: String) async throws {
-        throw ApiClientError.featureUnsupported
+    func deleteImage(token: ImageDeleteToken) async throws {
+        guard let url = token.wrappedValue as? URL else {
+            throw ApiClientError.invalidInput
+        }
+        let request = PieFedImageDeleteRequest(file: url.absoluteString)
+        // The `result` field of the response is always "ok", so we don't need to decode it
+        // https://codeberg.org/rimu/pyfedi/src/commit/dd2e9f9603be016f768b45ede0a71f1f0abd0cbd/app/api/alpha/utils/upload.py#L56
+        try await perform(request)
     }
 }
+
+extension URL: ImageDeleteTokenContent {}

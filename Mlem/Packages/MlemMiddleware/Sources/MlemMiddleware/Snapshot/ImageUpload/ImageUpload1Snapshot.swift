@@ -10,16 +10,13 @@ import Foundation
 public struct ImageUpload1Snapshot: CacheIdentifiable {
     public let url: URL
     
-    public let alias: String?
-    public let deleteToken: String?
+    public let deleteToken: ImageDeleteToken
     
     public init(
         url: URL,
-        alias: String?,
-        deleteToken: String?
+        deleteToken: ImageDeleteToken
     ) {
         self.url = url
-        self.alias = alias
         self.deleteToken = deleteToken
     }
     
