@@ -70,7 +70,7 @@ struct PostEditorView: View {
             nsfw: postToEdit.nsfw,
             feedLoader: nil
         )
-        self.postToEdit = postToEdit
+        self._postToEdit = .init(wrappedValue: postToEdit)
     }
     
     /// Initializer for creating a post

@@ -253,9 +253,6 @@ public extension PieFedConnection {
         nsfw: Bool,
         languageId: Int? = nil
     ) async throws -> Post2Snapshot {
-        if thumbnail != nil || altText != nil {
-            throw ApiClientError.featureUnsupported
-        }
         let request = PieFedEditPostRequest(
             postId: id,
             title: title,

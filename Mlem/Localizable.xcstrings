@@ -8942,6 +8942,9 @@
         }
       }
     },
+    "Send Message in Mlem" : {
+
+    },
     "Send Notifications to Email" : {
       "localizations" : {
         "fr" : {
@@ -8953,6 +8956,7 @@
       }
     },
     "Send to Lemmy User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

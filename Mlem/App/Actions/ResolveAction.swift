@@ -28,15 +28,29 @@ extension ActionSeed {
 
 extension ResolveAction {
     static let resolveAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Unresolved", icon: .lemmy.resolved.representingState(active: false)),
-        stateTransitionLabel: .init("Resolve", icon: .lemmy.resolve),
-        color: .themedPositive
+        currentStateLabel: .init(
+            "Unresolved",
+            icon: .lemmy.resolved.representingState(active: false),
+            color: .themedNegative
+        ),
+        stateTransitionLabel: .init(
+            "Resolve",
+            icon: .lemmy.resolve,
+            color: .themedPositive
+        )
     )
 
     static let unresolveAppearance: ActionAppearance = .init(
-        currentStateLabel: .init("Resolved", icon: .lemmy.resolved.representingState(active: true)),
-        stateTransitionLabel: .init("Unresolve", icon: .lemmy.unresolve),
-        color: .themedNegative,
+        currentStateLabel: .init(
+            "Resolved",
+            icon: .lemmy.resolved.representingState(active: true),
+            color: .themedPositive
+        ),
+        stateTransitionLabel: .init(
+            "Unresolve",
+            icon: .lemmy.unresolve,
+            color: .themedNegative
+        ),
         prominent: true
     )
 

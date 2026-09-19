@@ -16,7 +16,7 @@ private extension QuickSwipeAction {
         let label = appearance.label(describing: .stateTransition)
         self.init(
             icon: label.icon,
-            color: appearance.color,
+            color: label.color,
             enabled: appearance.visibility == .enabled,
             confirmationPrompt: nil,
             callback: callback
