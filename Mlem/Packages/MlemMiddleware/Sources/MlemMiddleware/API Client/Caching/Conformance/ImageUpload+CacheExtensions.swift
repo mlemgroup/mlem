@@ -8,5 +8,5 @@
 import Foundation
 
 extension ImageUpload1: CacheIdentifiable {
-    public var cacheId: Int { alias.hashValue }
+    public var cacheId: Int { url.hashValue }
 }

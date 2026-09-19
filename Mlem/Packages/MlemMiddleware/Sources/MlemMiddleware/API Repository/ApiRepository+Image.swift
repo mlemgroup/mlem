@@ -18,7 +18,7 @@ extension ApiRepository {
         try await self.getConnection().uploadImage(imageData, fileType: fileType, onProgress: progressCallback)
     }
     
-    func deleteImage(alias: String, deleteToken: String) async throws {
-        try await self.getConnection().deleteImage(alias: alias, deleteToken: deleteToken)
+    func deleteImage(token: ImageDeleteToken) async throws {
+        try await self.getConnection().deleteImage(token: token)
     }
 }
