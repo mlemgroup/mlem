@@ -11067,7 +11067,6 @@
       }
     },
     "Unfavorite" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en-GB" : {
           "stringUnit" : {
