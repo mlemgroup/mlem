@@ -12,12 +12,4 @@ extension RemovableProviding {
     func showRemoveSheet() {
         NavigationModel.main.openSheet(.remove(self))
     }
-    
-    func removeAction(appState: AppState, feedback: Set<FeedbackType> = []) -> BasicAction {
-        .init(
-            id: "remove\(uid)",
-            appearance: .remove(isOn: removed, isInProgress: removedPending),
-            callback: api.canInteract(appState: appState) ? showRemoveSheet : nil
-        )
-    }
 }

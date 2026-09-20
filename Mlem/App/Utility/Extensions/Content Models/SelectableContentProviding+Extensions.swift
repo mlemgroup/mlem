@@ -12,12 +12,4 @@ extension SelectableContentProviding {
     func showTextSelectionSheet() {
         NavigationModel.main.openSheet(.selectText(selectableContent ?? ""))
     }
-    
-    func selectTextAction() -> BasicAction {
-        .init(
-            id: "selectText\(actorId.description)",
-            appearance: .selectText(),
-            callback: selectableContent == nil ? nil : showTextSelectionSheet
-        )
-    }
 }
