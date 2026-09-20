@@ -8,28 +8,7 @@
 import Foundation
 
 extension LegacyActionAppearance {
-    static func report() -> Self {
-        .init(
-            label: "Report",
-            isOn: false,
-            isDestructive: true,
-            color: .themedNegative,
-            icon: Icons.moderationReport,
-            swipeIcon2: Icons.moderationReportFill
-        )
-    }
-    
-    static func markRead(isOn: Bool) -> Self {
-        .init(
-            label: isOn ? "Mark Unread" : "Mark Read",
-            isOn: isOn,
-            color: .themedRead,
-            icon: isOn ? Icons.markUnread : Icons.markRead,
-            swipeIcon1: isOn ? Icons.markRead : Icons.markUnread,
-            swipeIcon2: isOn ? Icons.markUnreadFill : Icons.markReadFill
-        )
-    }
-    
+
     /// Adds or removes a user as administrator
     /// - Parameter isOn: true when user is admin, false otherwise
     static func addAdmin(isOn: Bool) -> Self {

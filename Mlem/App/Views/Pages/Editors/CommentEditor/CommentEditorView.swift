@@ -268,7 +268,9 @@ struct CommentEditorView: View {
             Task { @MainActor in
                 textView.resignFirstResponder()
             }
-            originalContext?.item.showTextSelectionSheet()
+            if let content = originalContext?.item.selectableContent {
+                navigation.openSheet(.selectText(content))
+            }
         }
         .labelStyle(.iconOnly)
     }
