@@ -124,6 +124,9 @@ import SwiftUI
                     uiViewController.searchController = searchController
                 }
             
+                // Without this, the search bar is placed in the navigation bar in the regular size class
+                uiViewController.preferredSearchBarPlacement = .stacked
+            
                 if let obscuresBackgroundDuringPresentation = base.obscuresBackgroundDuringPresentation {
                     searchController.obscuresBackgroundDuringPresentation = obscuresBackgroundDuringPresentation
                 } else {
@@ -267,6 +270,14 @@ import SwiftUI
                 navigationItem.hidesSearchBarWhenScrolling
             } set {
                 navigationItem.hidesSearchBarWhenScrolling = newValue
+            }
+        }
+    
+        var preferredSearchBarPlacement: UINavigationItem.SearchBarPlacement {
+            get {
+                navigationItem.preferredSearchBarPlacement
+            } set {
+                navigationItem.preferredSearchBarPlacement = newValue
             }
         }
     

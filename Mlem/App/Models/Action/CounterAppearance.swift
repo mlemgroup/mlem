@@ -5,12 +5,13 @@
 //  Created by Sjmarf on 17/08/2024.
 //
 
+import Actions
 import Foundation
 
 struct CounterAppearance {
     let value: Int?
-    let leading: LegacyActionAppearance?
-    let trailing: LegacyActionAppearance?
+    let leading: ActionAppearance?
+    let trailing: ActionAppearance?
     let label: LocalizedStringResource
     let singleIcon: String
 }
