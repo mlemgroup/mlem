@@ -34,7 +34,23 @@ class UserAccount: Account, CommunityOrPerson {
         self.api = person.api
         self.id = person.id
         self.name = person.name
-        self.actorId = person.actorId
+
+        // Use instance link for the actor ID host. These can be different when testing with a local instance
+        if var components = URLComponents(url: person.actorId.url, resolvingAgainstBaseURL: false) {
+            components.host = person.api.host
+            components.port = person.api.baseUrl.port
+            components.scheme = person.api.baseUrl.scheme
+            if let actorId = components.url.map(ActorIdentifier.init(url:)) ?? nil {
+                self.actorId = actorId
+            } else {
+                assertionFailure()
+                self.actorId = person.actorId
+            }
+        } else {
+            assertionFailure()
+            self.actorId = person.actorId
+        }
+
         self.storedNickname = nil
         self.siteSoftware = siteSoftware
         self.avatar = person.avatar
