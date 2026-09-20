@@ -40,6 +40,10 @@ extension ReportAction {
     
     private func visibility(_ environment: EnvironmentValues) -> ActionVisiblity {
         guard entity.api.canInteract(appState: environment.appState) else { return .hidden }
+
+        if entity is Message, !entity.api.supports(.reportPrivateMessages, defaultValue: false) {
+            return .hidden
+        }
         
         guard let myPersonId = entity.api.myPerson?.id else { return .hidden }
         if entity.isOwnContent(myPersonId: myPersonId) { return .hidden }

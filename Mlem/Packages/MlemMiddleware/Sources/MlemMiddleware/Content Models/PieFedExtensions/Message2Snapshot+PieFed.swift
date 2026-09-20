@@ -15,4 +15,13 @@ public extension Message2Snapshot {
             recipient: .init(from: message.recipient)
         )
     }
+
+    init(from report: PieFedPrivateMessageReportView) throws(ApiClientError) {
+        assert(report.creator.id == report.privateMessage.recipientId)
+        try self.init(
+            message: .init(from: report.privateMessage),
+            creator: .init(from: report.creator),
+            recipient: .init(from: report.creator)
+        )
+    }
 }

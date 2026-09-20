@@ -45,6 +45,9 @@ public extension PieFedConnection {
         case .editDisplayName:
             // Support may have been added earlier, but I only tested this on 1.6.27
             version >= .v1_6_27
+        case .reportPrivateMessages:
+            // Support may have been added earlier, but I only tested this on 1.7.17
+            version >= .v1_7_17
         default: false
         }
     }
@@ -55,6 +58,7 @@ private extension SiteVersion {
     static let v1_4_0: Self = .init("1.4.0")
     static let v1_6_10: Self = .init("1.6.10")
     static let v1_6_27: Self = .init("1.6.27")
+    static let v1_7_17: Self = .init("1.7.17")
 }
 
 private extension PostSortType {
