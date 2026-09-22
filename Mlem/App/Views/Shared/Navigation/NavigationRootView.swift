@@ -30,6 +30,7 @@ struct NavigationSplitRootView: View {
             preferredCompactColumn: $preferredColumn,
             sidebar: {
                 sidebar.view()
+                    .navigationSplitViewColumnWidth(min: 200, ideal: 300, max: 500)
                     .environment(\.sidebarPresentationMode, preferredColumn == .sidebar ? .single : .double)
             },
             detail: {
