@@ -273,13 +273,13 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         guard let host = url.host else { return false }
         if host.hasSuffix("reddit.com") { return false }
 
-        let components = url.pathComponents.dropFirst()
+        let components = url.pathComponents
 
-        guard components.count > 2 else { return false }
-        guard ["u", "c", "post", "comment"].contains(components[0]) else { return false }
+        guard components.count > 3 else { return false }
+        guard ["u", "c", "post", "comment"].contains(components[1]) else { return false }
 
         // Ensure that KBin links are excluded
-        guard components[1].first != "@" else { return false }
+        guard components[2].first != "@" else { return false }
 
         return true
     }
