@@ -49,7 +49,7 @@ private func _handleError(
         }
         let statement = """
         ☠️ ERROR ☠️
-        📝 -> \(String(describing: error.localizedDescription))
+        📝 -> \(error.localizedDescription)
         \(descriptiveString)📂 -> \(file) | \(function) | line: \(line)
         """
         Logger.universal.error("\(statement)")
