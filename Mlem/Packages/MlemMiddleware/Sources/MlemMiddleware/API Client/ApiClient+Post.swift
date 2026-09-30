@@ -137,7 +137,6 @@ public extension ApiClient {
         
         do {
             try await repository.markPostsAsRead(ids: idsToSend)
-            print("MARKED READ", idsToSend)
             await markReadQueue.subtract(ids)
         } catch {
             await markReadQueue.union(markReadQueueCopy)
