@@ -27,6 +27,7 @@ struct ExpandedPostView<Content: View>: View {
     @Setting(\.comment_jumpButton) var jumpButton
     @Setting(\.comment_compact) var compactComments
     @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
+    @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
     @Setting(\.comment_gestures_tapToCollapse) var tapCommentsToCollapse
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.interactionBar_comment) var commentInteractionBar
@@ -78,6 +79,13 @@ struct ExpandedPostView<Content: View>: View {
                     await tracker.load(ensuringPresenceOf: scrollTargetedComment)
                     if post.api == appState.firstApi {
                         post.updateRead(true)
+                        if markCrosspostsRead {
+                            do {
+                                try await post.markCrosspostsRead()
+                            } catch {
+                                handleError(error)
+                            }
+                        }
                     }
                 }
         }

@@ -73,7 +73,7 @@ struct GeneralSettingsView: View {
             Section {
                 Toggle("Mark Crossposts Read", icon: .lemmy.crosspost, isOn: $markCrosspostsRead)
             } footer: {
-                Text("When a post is read, also mark its crossposts as read.")
+                Text("When a post is read, also mark its crossposts as read. Crossposts are not read when using \"Mark read on scroll\".")
             }
             
             Section {

@@ -64,5 +64,17 @@ extension SaveAction {
         guard let toggleSaved = entity.toggleSaved else { return }
         environment.hapticManager.play(haptic: .success, tier: .low)
         toggleSaved([])
+
+        @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
+
+        if markCrosspostsRead, let post = entity as? Post {
+            Task {
+                do {
+                    try await post.markCrosspostsRead()
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
     }
 }
