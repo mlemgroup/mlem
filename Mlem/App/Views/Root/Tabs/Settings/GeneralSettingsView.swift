@@ -18,6 +18,7 @@ struct GeneralSettingsView: View {
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.markdown_wrapCodeBlockLines) var wrapCodeBlockLines
     @Setting(\.events_showEvents) var showEvents
+    @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
 
     // gestures
     @Setting(\.behavior_enableQuickSwipes) var swipeActionsEnabled
@@ -67,6 +68,12 @@ struct GeneralSettingsView: View {
                         }
                     )
                 )
+            }
+
+            Section {
+                Toggle("Mark Crossposts Read", icon: .lemmy.crosspost, isOn: $markCrosspostsRead)
+            } footer: {
+                Text("When a post is read, also mark its crossposts as read.")
             }
             
             Section {
