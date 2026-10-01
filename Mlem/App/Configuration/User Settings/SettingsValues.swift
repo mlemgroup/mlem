@@ -76,6 +76,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var menus_modActionGrouping: ModeratorActionGrouping
     var post_defaultSort: SettingsPostSortType
     var post_fallbackSort: SettingsPostSortType
+    var post_markCrosspostsRead: Bool
     var post_limitImageHeight: Bool
     var post_showCreator: Bool
     var post_showCreatorInstance: Bool
@@ -220,6 +221,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
         self.post_defaultSort = try container.decodeIfPresent(SettingsPostSortType.self, forKey: ._post_defaultSort) ?? .hot
         self.post_fallbackSort = try container.decodeIfPresent(SettingsPostSortType.self, forKey: ._post_fallbackSort) ?? .hot
+        self.post_markCrosspostsRead = try container.decodeIfPresent(Bool.self, forKey: ._post_markCrosspostsRead) ?? false
         self.post_limitImageHeight = try container.decodeIfPresent(Bool.self, forKey: ._post_limitImageHeight) ?? true
         self.post_showCreator = try container.decodeIfPresent(Bool.self, forKey: ._post_showCreator) ?? true
         self.post_showCreatorInstance = try container.decodeIfPresent(Bool.self, forKey: ._post_showCreatorInstance) ?? true
@@ -334,6 +336,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.menus_modActionGrouping = .combined
         self.post_defaultSort = .hot
         self.post_fallbackSort = .hot
+        self.post_markCrosspostsRead = false
         self.post_limitImageHeight = true
         self.post_showCreator = true
         self.post_showCreatorInstance = true
@@ -443,6 +446,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         menus_modActionGrouping = otherValues.menus_modActionGrouping
         post_defaultSort = otherValues.post_defaultSort
         post_fallbackSort = otherValues.post_fallbackSort
+        post_markCrosspostsRead = otherValues.post_markCrosspostsRead
         post_limitImageHeight = otherValues.post_limitImageHeight
         post_showCreator = otherValues.post_showCreator
         post_showCreatorInstance = otherValues.post_showCreatorInstance
@@ -559,6 +563,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _menus_modActionGrouping = "menus_modActionGrouping"
         case _post_defaultSort = "post_defaultSort"
         case _post_fallbackSort = "post_fallbackSort"
+        case _post_markCrosspostsRead = "post_markCrosspostsRead"
         case _post_limitImageHeight = "post_limitImageHeight"
         case _post_showCreator = "post_showCreator"
         case _post_showCreatorInstance = "post_showCreatorInstance"
