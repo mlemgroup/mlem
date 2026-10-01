@@ -150,7 +150,19 @@ public extension PieFedConnection {
     
     @discardableResult
     func reportMessage(id: Int, reason: String) async throws -> ReportSnapshot {
-        throw ApiClientError.featureUnsupported
+        guard try await self.supports(.reportPrivateMessages) else {
+            throw ApiClientError.featureUnsupported
+        }
+
+        let request = PieFedReportPrivateMessageRequest(privateMessageId: id, reason: reason)
+        let response = try await perform(request)
+        switch response {
+        case .pieFedPrivateMessageResponse:
+            assertionFailure()
+            throw ApiClientError.responseMissingRequiredData("Expected PieFedPrivateMessageReportResponse, got PieFedPrivateMessageResponse")
+        case let .pieFedPrivateMessageReportResponse(response):
+            return try .init(from: response.privateMessageReportView)
+        }
     }
     
     @discardableResult
