@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 2025-01-18.
 //
 
+import Actions
 import SwiftUI
 
 struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfiguration>: View {
@@ -23,12 +24,10 @@ struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfigurat
                             .frame(width: 24, height: 24)
                     case let .counter(counter):
                         if let appearance = counter.appearance.leading {
-                            Image(systemName: appearance.barIcon)
-                                .frame(width: 24, height: 24)
+                            actionLabel(appearance)
                         }
                         if let appearance = counter.appearance.trailing {
-                            Image(systemName: appearance.barIcon)
-                                .frame(width: 24, height: 24)
+                            actionLabel(appearance)
                         }
                     }
                 }
@@ -40,5 +39,12 @@ struct SettingsInteractionBarSummaryView<Configuration: InteractionBarConfigurat
             .foregroundStyle(.themedSecondary)
             .lineLimit(1)
         }
+    }
+
+    @ViewBuilder
+    func actionLabel(_ appearance: ActionAppearance) -> some View {
+        let label = appearance.label(describing: .currentState)
+        Image(icon: label.icon)
+            .frame(width: 24, height: 24)
     }
 }
