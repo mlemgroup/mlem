@@ -33,4 +33,17 @@ extension ReportSnapshot {
             target: .post(.init(from: report))
         )
     }
+
+    init(from report: PieFedPrivateMessageReportView) throws(ApiClientError) {
+        try self.init(
+            creator: .init(from: report.creator),
+            id: report.privateMessageReport.id,
+            created: report.privateMessageReport.published,
+            resolver: nil,
+            updated: nil,
+            resolved: report.privateMessageReport.resolved,
+            reason: report.privateMessageReport.reason ?? "",
+            target: .message(.init(from: report))
+        )
+    }
 }
