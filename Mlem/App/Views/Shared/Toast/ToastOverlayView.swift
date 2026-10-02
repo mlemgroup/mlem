@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ToastOverlayView: View {
+    @Environment(ToastModel.self) var toastModel
+
     let shouldDisplayNewToasts: Bool
     let location: ToastLocation
     
@@ -84,7 +86,7 @@ struct ToastOverlayView: View {
 #Preview {
     VStack {
         Button(String("Test")) {
-            ToastModel.main.add(.success())
+            toastModel.add(.success())
         }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

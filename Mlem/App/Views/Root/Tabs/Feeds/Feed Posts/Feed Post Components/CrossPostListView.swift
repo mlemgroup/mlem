@@ -12,6 +12,7 @@ import SwiftUI
 struct CrossPostListView: View {
     @Environment(AppState.self) private var appState
     @Environment(HapticManager.self) var hapticManager
+    @Environment(ToastModel.self) var toastModel
     @Environment(NavigationLayer.self) private var navigation
     
     let post: Post
@@ -100,7 +101,7 @@ struct CrossPostListView: View {
     func markAllAsRead(_ crossPosts: [Post]) async {
         do {
             try await post.api.markPostsAsRead(ids: Set(crossPosts.map(\.id)))
-            ToastModel.main.add(.success("Read \(crossPosts.count) posts"))
+            toastModel.add(.success("Read \(crossPosts.count) posts"))
         } catch {
             handleError(error)
         }
