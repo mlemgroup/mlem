@@ -14,6 +14,7 @@ class ToastModel {
     
     private var toasts: [Toast] = .init()
     
+    @available(*, deprecated, message: "Access the ToastModel from the environment instead.")
     static let main: ToastModel = .init()
     
     func activeToasts(location: ToastLocation) -> [Toast] {

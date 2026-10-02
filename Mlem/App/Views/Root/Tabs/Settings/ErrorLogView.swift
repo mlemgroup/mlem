@@ -11,6 +11,7 @@ import Theming
 struct ErrorLogView: View {
     @Environment(ErrorsTracker.self) var errorsTracker
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     
     var body: some View {
         FancyScrollView {
@@ -38,7 +39,7 @@ struct ErrorLogView: View {
                             ) {
                                 navigation.model?.shareInfo = .init(url: url)
                             } else {
-                                ToastModel.main.add(.failure("Failed to share error log"))
+                                toastModel.add(.failure("Failed to share error log"))
                             }
                         }
                     } label: {
@@ -60,7 +61,7 @@ struct ErrorLogView: View {
                 
                 Button {
                     UIPasteboard.general.string = details.errorText()
-                    ToastModel.main.add(.success("Copied"))
+                    toastModel.add(.success("Copied"))
                 } label: {
                     Text(Image(icon: .general.copy))
                         .font(.subheadline)

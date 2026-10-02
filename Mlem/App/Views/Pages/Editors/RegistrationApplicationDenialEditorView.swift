@@ -12,6 +12,7 @@ import SwiftUI
 
 struct RegistrationApplicationDenialEditorView: View {
     @Environment(HapticManager.self) var hapticManager
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
     let application: RegistrationApplication
@@ -53,7 +54,7 @@ struct RegistrationApplicationDenialEditorView: View {
             hapticManager.play(haptic: .success, tier: .low)
             dismiss()
         case .failed:
-            ToastModel.main.add(.failure())
+            toastModel.add(.failure())
         default:
             break
         }

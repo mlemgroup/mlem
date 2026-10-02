@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ToastOverlayView: View {
+    @Environment(ToastModel.self) var toastModel
+
     let shouldDisplayNewToasts: Bool
     let location: ToastLocation
     
     @State var activeToasts: [Toast] = []
-    
-    var toastModel: ToastModel { .main }
     
     var body: some View {
         VStack {
@@ -82,9 +82,11 @@ struct ToastOverlayView: View {
 }
 
 #Preview {
+    let toastModel = ToastModel()
+
     VStack {
         Button(String("Test")) {
-            ToastModel.main.add(.success())
+            toastModel.add(.success())
         }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -94,4 +96,5 @@ struct ToastOverlayView: View {
     .overlay(alignment: .bottom) {
         ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
+    .environment(toastModel)
 }
