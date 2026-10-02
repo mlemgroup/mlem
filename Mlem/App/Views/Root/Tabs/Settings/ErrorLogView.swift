@@ -61,7 +61,7 @@ struct ErrorLogView: View {
                 
                 Button {
                     UIPasteboard.general.string = details.errorText()
-                    ToastModel.main.add(.success("Copied"))
+                    toastModel.add(.success("Copied"))
                 } label: {
                     Text(Image(icon: .general.copy))
                         .font(.subheadline)

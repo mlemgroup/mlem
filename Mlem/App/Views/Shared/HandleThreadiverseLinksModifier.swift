@@ -267,7 +267,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         } else {
             fallback(url)
         }
-        ToastModel.main.removeToast(id: toastId)
+        toastModel.removeToast(id: toastId)
     }
 
     func isProbableThreadiverseLink(url: URL) -> Bool {
