@@ -15,8 +15,6 @@ struct ToastOverlayView: View {
     
     @State var activeToasts: [Toast] = []
     
-    var toastModel: ToastModel { .main }
-    
     var body: some View {
         VStack {
             ForEach(location == .top ? activeToasts : activeToasts.reversed(), id: \.id) { toast in
@@ -84,6 +82,8 @@ struct ToastOverlayView: View {
 }
 
 #Preview {
+    let toastModel = ToastModel()
+
     VStack {
         Button(String("Test")) {
             toastModel.add(.success())
@@ -96,4 +96,5 @@ struct ToastOverlayView: View {
     .overlay(alignment: .bottom) {
         ToastOverlayView(shouldDisplayNewToasts: true, location: .bottom)
     }
+    .environment(toastModel)
 }

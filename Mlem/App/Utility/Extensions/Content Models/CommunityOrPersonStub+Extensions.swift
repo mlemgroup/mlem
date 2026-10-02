@@ -10,26 +10,6 @@ import SwiftUI
 import Theming
 
 extension CommunityOrPerson {
-    func copyFullNameWithPrefix(feedback: Set<FeedbackType> = [.toast]) {
-        if feedback.contains(.toast) {
-            ToastModel.main.add(.success("Copied"))
-        }
-        UIPasteboard.general.string = fullNameWithPrefix
-    }
-    
-    func copyNameAction(feedback: Set<FeedbackType> = [.toast]) -> BasicAction {
-        .init(
-            id: "copyName\(actorId)",
-            appearance: .init(
-                label: "Copy Name",
-                color: .themedNeutralAccent,
-                icon: Icons.copy,
-                swipeIcon2: Icons.copyFill
-            ),
-            callback: { self.copyFullNameWithPrefix(feedback: feedback) }
-        )
-    }
-    
     func attributedName(
         showInstance: Bool = true,
         font: Font = .body,
