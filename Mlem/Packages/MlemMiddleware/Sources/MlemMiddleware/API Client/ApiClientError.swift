@@ -47,6 +47,8 @@ public enum ApiClientError: Error {
     
     init(from error: RestError) {
         self = switch error {
+        case .serverError(statusCode: 413):
+            .imageTooLarge
         case let .serverError(statusCode):
             .serverError(statusCode: statusCode)
         case let .response(string, statusCode):
