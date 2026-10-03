@@ -15,7 +15,7 @@ public extension LemmyConnection {
         fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
-        let request = LemmyUploadImageRequest(data: data, fileType: fileType)
+        let request = LemmyV3UploadImageRequest(data: data, fileType: fileType)
         let response = try await self.upload(request, onProgress: progressCallback)
 
         guard let file = response.files?.first else {
