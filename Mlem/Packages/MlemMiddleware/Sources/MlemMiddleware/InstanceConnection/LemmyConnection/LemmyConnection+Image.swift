@@ -53,6 +53,9 @@ public extension LemmyConnection {
         if let token = token.wrappedValue as? LemmyV3ImageDeleteToken {
             let request = LemmyV3DeleteImageRequest(deleteToken: token.token, alias: token.alias)
             try await self.performWithoutEndpoint(request)
+        } else if let token = token.wrappedValue as? LemmyV4ImageDeleteToken {
+            let request = LemmyV4DeleteImageRequest(filename: token.filename)
+            try await self.performWithoutEndpoint(request)
         } else {
             throw ApiClientError.invalidInput
         }
