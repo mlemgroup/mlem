@@ -11,3 +11,10 @@ struct LemmyV4ImageUploadResponse: Codable {
     let imageUrl: URL
     let filename: String
 }
+
+extension LemmyV4ImageUploadResponse {
+    enum CodingKeys: String, CodingKey {
+        case imageUrl = "image_url"
+        case filename = "filename"
+    }
+}

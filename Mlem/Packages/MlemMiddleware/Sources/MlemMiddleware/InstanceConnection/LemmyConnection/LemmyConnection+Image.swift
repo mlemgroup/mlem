@@ -15,7 +15,7 @@ public extension LemmyConnection {
         fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
-        if try await self.version > .init("1.0.0") {
+        if try await self.version >= .init("1.0.0") {
             try await self.uploadImageV4(data, fileType: fileType, onProgress: progressCallback)
         } else {
             try await self.uploadImageV3(data, fileType: fileType, onProgress: progressCallback)
