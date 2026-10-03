@@ -125,7 +125,7 @@ public class RestClient {
             }
         }
         if let response = response as? HTTPURLResponse {
-            if response.statusCode >= 500 || response.statusCode == 404 {
+            if response.statusCode >= 500 || response.statusCode == 404 || response.statusCode == 413 {
                 throw RestError.serverError(statusCode: response.statusCode)
             }
 

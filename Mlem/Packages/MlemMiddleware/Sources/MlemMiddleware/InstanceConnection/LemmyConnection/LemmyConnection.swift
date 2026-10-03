@@ -148,6 +148,32 @@ public class LemmyConnection: InstanceConnection {
             throw ApiClientError.serverError(statusCode: 404)
         }
     }
+
+    public func upload<Request: UploadRequest>(
+        baseUrl: URL,
+        _ request: Request,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
+    ) async throws(ApiClientError) -> Request.Response {
+        guard let token else { throw ApiClientError.notLoggedIn }
+
+        do throws(RestError) {
+            return try await restClient.upload(
+                baseUrl: baseUrl,
+                request,
+                token: token,
+                encoderUserInfo: encoderUserInfo,
+                onProgress: progressCallback
+            )
+        } catch {
+            switch error {
+            case let RestError.response(response, statusCode: code):
+                throw ApiClientError(lemmyMessage: response, statusCode: code)
+            default:
+                throw ApiClientError(from: error)
+            }
+        }
+    }
     
     #if DEBUG
         func setMockContext(_ context: Context) {
