@@ -96,7 +96,7 @@ public class RestClient {
 
     public func upload<Request: UploadRequest>(
         baseUrl: URL,
-        _ request: Request,
+        request: Request,
         token: String?,
         encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }

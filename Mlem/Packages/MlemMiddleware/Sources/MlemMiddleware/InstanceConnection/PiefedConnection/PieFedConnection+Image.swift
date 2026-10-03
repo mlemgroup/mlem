@@ -16,7 +16,7 @@ public extension PieFedConnection {
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
         let request = PieFedUploadImageRequest(data: data, fileType: fileType)
-        let response = try await self.upload(baseUrl: baseUrl, request, onProgress: progressCallback)
+        let response = try await self.upload(request, onProgress: progressCallback)
         return .init(from: response)
     }
     

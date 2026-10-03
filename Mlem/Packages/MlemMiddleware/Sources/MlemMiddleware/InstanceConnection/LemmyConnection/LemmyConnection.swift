@@ -150,7 +150,6 @@ public class LemmyConnection: InstanceConnection {
     }
 
     internal func upload<Request: UploadRequest>(
-        baseUrl: URL,
         _ request: Request,
         encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
@@ -160,7 +159,7 @@ public class LemmyConnection: InstanceConnection {
         do throws(RestError) {
             return try await restClient.upload(
                 baseUrl: baseUrl,
-                request,
+                request: request,
                 token: token,
                 encoderUserInfo: encoderUserInfo,
                 onProgress: progressCallback
