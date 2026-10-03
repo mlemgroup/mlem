@@ -8,14 +8,10 @@
 import Rest
 
 struct LemmyV4DeleteImageRequest: DeleteRequest {
-    struct Body: Encodable {
-        let filename: String
-    }
-
     typealias Response = LemmySuccessResponse
 
     let path: String
-    let body: Body?
+    let body: LemmyDeleteImageParams?
 
     init(filename: String) {
         self.path = "api/v4/account/media"
