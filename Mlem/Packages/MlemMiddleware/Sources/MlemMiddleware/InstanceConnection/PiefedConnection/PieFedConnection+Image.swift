@@ -15,10 +15,8 @@ public extension PieFedConnection {
         fileType: UTType?,
         onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
     ) async throws -> ImageUpload1Snapshot {
-        guard let token else { throw ApiClientError.notLoggedIn }
-
         let request = PieFedUploadImageRequest(data: data, fileType: fileType)
-        let response = try await restClient.upload(baseUrl: baseUrl, request, token: token, onProgress: progressCallback)
+        let response = try await self.upload(baseUrl: baseUrl, request, onProgress: progressCallback)
         return .init(from: response)
     }
     

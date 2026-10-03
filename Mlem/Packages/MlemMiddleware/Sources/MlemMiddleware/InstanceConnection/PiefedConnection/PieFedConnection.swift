@@ -81,4 +81,30 @@ public class PieFedConnection: InstanceConnection {
             }
         }
     }
+
+    internal func upload<Request: UploadRequest>(
+        baseUrl: URL,
+        _ request: Request,
+        encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
+        onProgress progressCallback: @escaping (_ progress: Double) -> Void = { _ in }
+    ) async throws(ApiClientError) -> Request.Response {
+        guard let token else { throw ApiClientError.notLoggedIn }
+
+        do throws(RestError) {
+            return try await restClient.upload(
+                baseUrl: baseUrl,
+                request,
+                token: token,
+                encoderUserInfo: encoderUserInfo,
+                onProgress: progressCallback
+            )
+        } catch {
+            switch error {
+            case let RestError.response(response, statusCode: code):
+                throw ApiClientError(piefedMessage: response, statusCode: code)
+            default:
+                throw ApiClientError(from: error)
+            }
+        }
+    }
 }

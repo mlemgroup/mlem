@@ -149,7 +149,7 @@ public class LemmyConnection: InstanceConnection {
         }
     }
 
-    public func upload<Request: UploadRequest>(
+    internal func upload<Request: UploadRequest>(
         baseUrl: URL,
         _ request: Request,
         encoderUserInfo: [CodingUserInfoKey: any Sendable] = [:],
