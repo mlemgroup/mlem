@@ -22,7 +22,7 @@ class UserSession: Session {
     private(set) var unreadCount: UnreadCount?
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
     private(set) var ongoingInstanceBlockRequests: Set<ActorIdentifier> = []
-    private(set) var visitHistory: VisitHistory?
+    var visitHistory: VisitHistory?
     
     private(set) var subscriptionListErrorDetails: ErrorDetails?
 
@@ -97,12 +97,6 @@ class UserSession: Session {
             try await account.update(person: person, software: api.software)
         }
     }
-    
-    func saveVisitHistory() async throws {
-        if let visitHistory {
-            try await PersistenceRepository.liveValue.saveVisitHistory(visitHistory, for: account)
-        }
-    }
 
     func updateInstanceBlock(actorId: ActorIdentifier, shouldBlock: Bool, callback: ((Bool) -> Void)? = nil) {
         Task {
@@ -128,18 +122,5 @@ class UserSession: Session {
                 callback?(false)
             }
         }
-    }
-    
-    @MainActor
-    func setVisitHistoryEnabled(_ newValue: Bool) async throws {
-        guard newValue != account.visitHistoryEnabled else { return }
-        account.visitHistoryEnabled = newValue
-        if newValue {
-            visitHistory = .init()
-        } else {
-            visitHistory = nil
-            try await PersistenceRepository.liveValue.saveVisitHistory(.init(), for: account)
-        }
-        AccountsTracker.main.saveAccounts(ofType: .user)
     }
 }

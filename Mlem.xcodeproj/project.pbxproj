@@ -374,11 +374,8 @@
 		03D284002D26F09500A6659B /* Instance+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D283FF2D26F09500A6659B /* Instance+Extensions.swift */; };
 		03D284022D29E03C00A6659B /* FeedFilterButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */; };
 		03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */; };
-		03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6362C00F92400ED4FF2 /* Session.swift */; };
 		03D2A6392C00FAE000ED4FF2 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */; };
 		03D2A63B2C010B7500ED4FF2 /* GuestAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */; };
-		03D2A63D2C010CD400ED4FF2 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63C2C010CD400ED4FF2 /* UserSession.swift */; };
-		03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */; };
 		03D2A6422C011F4A00ED4FF2 /* AccountListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2A6412C011F4A00ED4FF2 /* AccountListRowBody.swift */; };
 		03D3A1D42BB88EF1009DE55E /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1D32BB88EF1009DE55E /* Action.swift */; };
 		03D3A1E52BB8B7A3009DE55E /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D3A1E42BB8B7A3009DE55E /* ActionType.swift */; };
@@ -991,11 +988,8 @@
 		03D283FF2D26F09500A6659B /* Instance+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Instance+Extensions.swift"; sourceTree = "<group>"; };
 		03D284012D29E03C00A6659B /* FeedFilterButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFilterButtonStyle.swift; sourceTree = "<group>"; };
 		03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarSettingsView.swift; sourceTree = "<group>"; };
-		03D2A6362C00F92400ED4FF2 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		03D2A6382C00FAE000ED4FF2 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		03D2A63A2C010B7500ED4FF2 /* GuestAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestAccount.swift; sourceTree = "<group>"; };
-		03D2A63C2C010CD400ED4FF2 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
-		03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestSession.swift; sourceTree = "<group>"; };
 		03D2A6412C011F4A00ED4FF2 /* AccountListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListRowBody.swift; sourceTree = "<group>"; };
 		03D3A1D32BB88EF1009DE55E /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		03D3A1E42BB8B7A3009DE55E /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
@@ -1207,6 +1201,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		031DBA6A2F9A8D6500B4BAE4 /* Events */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Events; sourceTree = "<group>"; };
 		0381D0D23013A14000F9F3E0 /* InteractionBarEditor */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = InteractionBarEditor; sourceTree = "<group>"; };
+		03A5D04C307284440077BC32 /* Session */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Session; sourceTree = "<group>"; };
 		03C9FD6430530398003E256D /* User Settings */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "User Settings"; sourceTree = "<group>"; };
 		03DA26AC2D79F29700E66267 /* Packages */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Packages; sourceTree = "<group>"; };
 		03EC85ED2E9D925B004698BB /* Actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Actions; sourceTree = "<group>"; };
@@ -1764,16 +1759,6 @@
 			path = ExpandedPost;
 			sourceTree = "<group>";
 		};
-		03D2A6352C00F91A00ED4FF2 /* Session */ = {
-			isa = PBXGroup;
-			children = (
-				03D2A6362C00F92400ED4FF2 /* Session.swift */,
-				03D2A63C2C010CD400ED4FF2 /* UserSession.swift */,
-				03D2A63E2C010DBF00ED4FF2 /* GuestSession.swift */,
-			);
-			path = Session;
-			sourceTree = "<group>";
-		};
 		03D2A6402C011F3E00ED4FF2 /* ListRow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1814,7 +1799,7 @@
 		6318EDC427EE4E0500BFCAE8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				03D2A6352C00F91A00ED4FF2 /* Session */,
+				03A5D04C307284440077BC32 /* Session */,
 				03D3A1EB2BB8CDFB009DE55E /* Action */,
 				0369B3592BFB86C6001EFEDF /* Account */,
 				CD4D58CC2B86DDC300B82964 /* Settings */,
@@ -2546,6 +2531,7 @@
 			fileSystemSynchronizedGroups = (
 				031DBA6A2F9A8D6500B4BAE4 /* Events */,
 				0381D0D23013A14000F9F3E0 /* InteractionBarEditor */,
+				03A5D04C307284440077BC32 /* Session */,
 				03C9FD6430530398003E256D /* User Settings */,
 				03DA26AC2D79F29700E66267 /* Packages */,
 				03EC85ED2E9D925B004698BB /* Actions */,
@@ -2882,7 +2868,6 @@
 				037F78432D3C129B00D4E180 /* PostThumbnailSettingsView.swift in Sources */,
 				039F58952C7B618F00C61658 /* InboxSettingsView.swift in Sources */,
 				CD4D58CF2B86DDEC00B82964 /* AccountSortMode.swift in Sources */,
-				03D2A6372C00F92400ED4FF2 /* Session.swift in Sources */,
 				03AF91DD2C1B23E500E56644 /* ImageViewer.swift in Sources */,
 				CD13CC592C583C7A001AF428 /* WebsitePreviewView.swift in Sources */,
 				CDA67A9F2D9B32A100E5D17B /* CGPoint+Extensions.swift in Sources */,
@@ -3202,7 +3187,6 @@
 				035394952CA1AE6300795AA5 /* InstanceUptimeView.swift in Sources */,
 				CDB2EC862BFADD7C00DBC0EF /* FullyQualifiedLabelView.swift in Sources */,
 				CD7DB9712C49C17200DCC542 /* PersonContentGridView.swift in Sources */,
-				03D2A63D2C010CD400ED4FF2 /* UserSession.swift in Sources */,
 				03AFD0E12C3B30390054B8AD /* InstanceListRow.swift in Sources */,
 				CD0E06F72C0E739F00445849 /* PostType+Extensions.swift in Sources */,
 				CD635E1B2C94DACD00864F75 /* BypassProxyWarningSheet.swift in Sources */,
@@ -3284,7 +3268,6 @@
 				0370299D2D6B70F400B749DF /* MockApiClient+Realistic.swift in Sources */,
 				03AB48522CBC042E00567FF9 /* AccountContentSettingsView.swift in Sources */,
 				0377BE072DE645E100E38593 /* OnboardingRecommendInstanceView.swift in Sources */,
-				03D2A63F2C010DBF00ED4FF2 /* GuestSession.swift in Sources */,
 				CDD99C3E2C73F4380010367F /* WarningView.swift in Sources */,
 				030FF6812BC859FD00F6BFAC /* CustomTabViewHostingController.swift in Sources */,
 				035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */,
