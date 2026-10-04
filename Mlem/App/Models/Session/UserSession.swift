@@ -21,7 +21,7 @@ class UserSession: Session {
     private(set) var blocks: BlockList?
     private(set) var unreadCount: UnreadCount?
     /// This **only** includes requests made by calling `toggleInstanceBlock` on this `UserSession`.
-    private(set) var ongoingInstanceBlockRequests: Set<ActorIdentifier> = []
+    var ongoingInstanceBlockRequests: Set<ActorIdentifier> = []
     var visitHistory: VisitHistory?
     
     private(set) var subscriptionListErrorDetails: ErrorDetails?
@@ -95,32 +95,6 @@ class UserSession: Session {
     func updateAccount() async throws {
         if let person, let instance {
             try await account.update(person: person, software: api.software)
-        }
-    }
-
-    func updateInstanceBlock(actorId: ActorIdentifier, shouldBlock: Bool, callback: ((Bool) -> Void)? = nil) {
-        Task {
-            guard !ongoingInstanceBlockRequests.contains(actorId) else {
-                callback?(false)
-                return
-            }
-            
-            ongoingInstanceBlockRequests.insert(actorId)
-            do {
-                let instanceId: Int
-                if let id = self.blocks?.instanceIdOfBlockedInstance(actorId: actorId) {
-                    instanceId = id
-                } else {
-                    instanceId = try await api.getInstanceId(actorId: actorId)
-                }
-                try await api.blockInstance(url: actorId.url, instanceId: instanceId, block: shouldBlock)
-                ongoingInstanceBlockRequests.remove(actorId)
-                callback?(true)
-            } catch {
-                handleError(error)
-                ongoingInstanceBlockRequests.remove(actorId)
-                callback?(false)
-            }
         }
     }
 }
