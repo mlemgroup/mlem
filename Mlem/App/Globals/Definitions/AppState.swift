@@ -94,8 +94,8 @@ class AppState {
         
         if let account = account as? UserAccount {
             let activeAccount = UserSession(account: account)
-            Task { @MainActor in
-                activeAccount.activate()
+            Task { 
+                await activeAccount.activate()
             }
             if activeSessions.isEmpty {
                 guestSession.deactivate()

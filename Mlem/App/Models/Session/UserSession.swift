@@ -40,6 +40,15 @@ class UserSession: Session {
 
     @MainActor
     func activate() async {
+        async let data = loadData()
+        async let unreadCount = loadUnreadCount()
+        async let subscriptionList = loadSubscriptionList()
+        async let visitHistory = loadVisitHistory()
+        _ = await (data, unreadCount, subscriptionList, visitHistory)
+    }
+
+    @MainActor
+    private func loadData() async {
         do {
             let (person, instance, blocks) = try await self.api.getMyPerson()
             let software = try await self.api.software
@@ -55,19 +64,28 @@ class UserSession: Session {
             }
             handleError(error)
         }
-            
+    }
+
+    @MainActor
+    private func loadUnreadCount() async {
         do {
             self.unreadCount = try await api.getUnreadCount()
         } catch {
             handleError(error)
         }
-            
+    }
+
+    @MainActor
+    private func loadSubscriptionList() async {
         do {
             try await self.api.getSubscriptionList()
         } catch {
             self.subscriptionListErrorDetails = handleErrorWithDetails(error)
         }
-            
+    }
+
+    @MainActor
+    private func loadVisitHistory() async {
         if account.visitHistoryEnabled {
             do {
                 self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
