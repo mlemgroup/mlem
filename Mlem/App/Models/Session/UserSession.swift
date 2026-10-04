@@ -36,44 +36,45 @@ class UserSession: Session {
                 AccountsTracker.main.saveAccounts(ofType: .user)
             }
         )
-        
-        Task { @MainActor in
-            do {
-                let (person, instance, blocks) = try await self.api.getMyPerson()
-                let software = try await self.api.software
-                if let person {
-                    self.account.update(person: person, software: software)
-                    self.person = person
-                }
-                self.blocks = blocks
-                self.instance = instance
-            } catch {
-                if let software = try? await self.api.getSoftwareFallback() {
-                    self.account.updateSoftware(software)
-                }
-                handleError(error)
+    }
+
+    @MainActor
+    func activate() async {
+        do {
+            let (person, instance, blocks) = try await self.api.getMyPerson()
+            let software = try await self.api.software
+            if let person {
+                self.account.update(person: person, software: software)
+                self.person = person
             }
-            
-            do {
-                self.unreadCount = try await api.getUnreadCount()
-            } catch {
-                handleError(error)
+            self.blocks = blocks
+            self.instance = instance
+        } catch {
+            if let software = try? await self.api.getSoftwareFallback() {
+                self.account.updateSoftware(software)
             }
+            handleError(error)
+        }
             
+        do {
+            self.unreadCount = try await api.getUnreadCount()
+        } catch {
+            handleError(error)
+        }
+            
+        do {
+            try await self.api.getSubscriptionList()
+        } catch {
+            self.subscriptionListErrorDetails = handleErrorWithDetails(error)
+        }
+            
+        if account.visitHistoryEnabled {
             do {
-                try await self.api.getSubscriptionList()
+                self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
             } catch {
-                self.subscriptionListErrorDetails = handleErrorWithDetails(error)
-            }
-            
-            if account.visitHistoryEnabled {
-                do {
-                    self.visitHistory = try await PersistenceRepository.liveValue.loadVisitHistory(for: account)
-                } catch {
-                    self.visitHistory = .init()
-                    try? await saveVisitHistory()
-                    handleError(error, silent: true)
-                }
+                self.visitHistory = .init()
+                try? await saveVisitHistory()
+                handleError(error, silent: true)
             }
         }
     }
