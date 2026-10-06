@@ -274,7 +274,6 @@
 		0397D4932C6CE87E002C6CDC /* PostEditorTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */; };
 		0397D4A22C6EB035002C6CDC /* LegacyActionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A12C6EB035002C6CDC /* LegacyActionAppearance.swift */; };
 		0397D4A42C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D4A32C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift */; };
-		039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */; };
 		039EFEC32BEEBEE0003AC372 /* LoginInstancePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */; };
 		039F58812C7A7E5900C61658 /* JumpButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039F58802C7A7E5900C61658 /* JumpButtonView.swift */; };
 		039F58822C7A7EF300C61658 /* ToolbarEllipsisMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E07002C12707700445849 /* ToolbarEllipsisMenu.swift */; };
@@ -891,7 +890,6 @@
 		0397D4922C6CE87E002C6CDC /* PostEditorTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorTargetView.swift; sourceTree = "<group>"; };
 		0397D4A12C6EB035002C6CDC /* LegacyActionAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyActionAppearance.swift; sourceTree = "<group>"; };
 		0397D4A32C6FBC04002C6CDC /* LegacyActionAppearance+StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LegacyActionAppearance+StaticValues.swift"; sourceTree = "<group>"; };
-		039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DeletableProviding+Extensions.swift"; sourceTree = "<group>"; };
 		039EFEC22BEEBEE0003AC372 /* LoginInstancePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInstancePickerView.swift; sourceTree = "<group>"; };
 		039F58802C7A7E5900C61658 /* JumpButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpButtonView.swift; sourceTree = "<group>"; };
 		039F58832C7A7F2C00C61658 /* CommentJumpButtonLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentJumpButtonLocation.swift; sourceTree = "<group>"; };
@@ -2401,7 +2399,6 @@
 				032C32032C3439C600595286 /* ActorIdentifiable+Extensions.swift */,
 				0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */,
 				034B94802C09306D00039AF4 /* CommunityOrPersonStub+Extensions.swift */,
-				039D75632C4EEE69004F24C2 /* DeletableProviding+Extensions.swift */,
 				0325B93B2D3AA62500E28B97 /* InboxItemType+Extensions.swift */,
 				03D283FF2D26F09500A6659B /* Instance+Extensions.swift */,
 				033F84772D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift */,
@@ -3154,7 +3151,6 @@
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
 				036A84552D98253400E95D50 /* UpdateBannerView.swift in Sources */,
-				039D75642C4EEE69004F24C2 /* DeletableProviding+Extensions.swift in Sources */,
 				0391E0FE2D05B2DF0040CCA8 /* AdvancedSortView.swift in Sources */,
 				031CA0D92E4FBFD800CF0C0F /* MarkAllAsReadButton.swift in Sources */,
 				CDB2EC882BFAE14800DBC0EF /* FullyQualifiedNameView.swift in Sources */,
@@ -3524,7 +3520,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3571,7 +3567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3683,14 +3679,14 @@
 				INFOPLIST_FILE = OpenInMlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenUrlInMlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3723,14 +3719,14 @@
 				INFOPLIST_FILE = OpenInMlem/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Open in Mlem";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hanners.Mlem.OpenUrlInMlem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
