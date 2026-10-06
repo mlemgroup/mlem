@@ -14,6 +14,7 @@ struct FiltersSettingsView: View {
     @Setting(\.filters_literalFilterEnabled) var literalFilterEnabled
     
     @Environment(FiltersTracker.self) var filtersTracker
+    @Environment(ToastModel.self) var toastModel
     @Environment(NavigationLayer.self) var navigation
     
     @State var newKeyword: String = ""
@@ -197,7 +198,7 @@ struct FiltersSettingsView: View {
                     text: jsonString) {
                     navigation.model?.shareInfo = .init(url: url)
                 } else {
-                    ToastModel.main.add(.failure())
+                    toastModel.add(.failure())
                 }
             }
         } catch {

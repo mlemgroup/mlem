@@ -205,7 +205,10 @@ struct CommunityView: View {
                 ForEach(community.moderators.value ?? []) { person in
                     if personActionConfiguration.swipes.trailing.isEmpty {
                         PersonListRow(person)
-                            .quickSwipes(moderatorQuickSwipes(community: community, person: person))
+                            .quickSwipes(
+                                trailing: [AppointModeratorAction(entity: person)],
+                                leadingBuffer: .standard
+                            )
                     } else {
                         PersonListRow(person)
                     }

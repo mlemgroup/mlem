@@ -37,7 +37,7 @@ extension InstanceView {
             return
         }
         guard newAdmin.apiIsLocal else {
-            ToastModel.main.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
+            toastModel.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
             return
         }
         guard instance.local || instance.host == "localhost" else {
@@ -46,18 +46,6 @@ extension InstanceView {
         }
         
         instance.addAdmin(personId: newAdmin.id, added: true)
-    }
-    
-    func administratorQuickSwipes(person: Person) -> SwipeConfiguration {
-        guard let myPerson = appState.firstPerson,
-              myPerson.api.isHigherAdmin(than: person),
-              let myInstance = appState.firstApi.myInstance,
-              let isAdmin = person.isAdmin.value else {
-            return .init()
-        }
-        
-        // If this is extended to add leading actions, make leadingBuffer a parameter
-        return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)], leadingBuffer: .standard)
     }
     
     func attemptToLoadFediseerData() {
