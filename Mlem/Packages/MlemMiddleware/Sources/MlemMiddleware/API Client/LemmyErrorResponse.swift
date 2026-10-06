@@ -11,6 +11,8 @@ import Foundation
 
 public struct LemmyErrorResponse: Decodable, CustomStringConvertible {
     public let error: String
+    public let message: String?
+    public let cause: String?
     
     public var description: String { error }
 }
