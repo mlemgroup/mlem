@@ -42,18 +42,6 @@ extension CommunityView {
         }
     }
     
-    func moderatorQuickSwipes(community: Community, person: Person) -> SwipeConfiguration {
-        guard let communityModerators = community.moderators.value,
-              canEditModeratorList(community),
-              let myPerson = appState.firstPerson,
-              myPerson.canModerate(person, communityModerators: communityModerators) else {
-            return .init()
-        }
-        
-        // If this is extended to add leading actions, make leadingBuffer a parameter
-        return .init(trailingActions: [person.addModAction(community: community, isOn: true)], leadingBuffer: .standard)
-    }
-    
     func setupFeedLoader(community: Community) {
         if postFeedLoader == nil {
             Task { @MainActor in
