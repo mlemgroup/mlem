@@ -48,18 +48,6 @@ extension InstanceView {
         instance.addAdmin(personId: newAdmin.id, added: true)
     }
     
-    func administratorQuickSwipes(person: Person) -> SwipeConfiguration {
-        guard let myPerson = appState.firstPerson,
-              myPerson.api.isHigherAdmin(than: person),
-              let myInstance = appState.firstApi.myInstance,
-              let isAdmin = person.isAdmin.value else {
-            return .init()
-        }
-        
-        // If this is extended to add leading actions, make leadingBuffer a parameter
-        return .init(trailingActions: [person.addAdminAction(instance: myInstance, isOn: isAdmin)], leadingBuffer: .standard)
-    }
-    
     func attemptToLoadFediseerData() {
         if fediseerData == nil {
             let host = instance.host
