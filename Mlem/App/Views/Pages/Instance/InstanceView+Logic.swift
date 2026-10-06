@@ -37,7 +37,7 @@ extension InstanceView {
             return
         }
         guard newAdmin.apiIsLocal else {
-            ToastModel.main.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
+            toastModel.add(.error(.init(title: "Cannot appoint non-local user as administrator")))
             return
         }
         guard instance.local || instance.host == "localhost" else {

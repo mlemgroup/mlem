@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ExportableViewControlOverlay: View {
+    @Environment(ToastModel.self) var toastModel
+
     // let snapshot: UIImage?
     let createSnapshot: () -> UIImage?
     
@@ -34,12 +36,12 @@ struct ExportableViewControlOverlay: View {
             Task {
                 guard let imageData = createSnapshot()?.pngData() else {
                     assertionFailure("Rendering failed")
-                    ToastModel.main.add(.failure("Failed"))
+                    toastModel.add(.failure("Failed"))
                     return
                 }
                 do {
                     try await ImageSaver().writeImageToPhotoAlbum(imageData: imageData)
-                    ToastModel.main.add(.success("Image Saved"))
+                    toastModel.add(.success("Image Saved"))
                 } catch {
                     handleError(error)
                 }

@@ -30,6 +30,7 @@ struct InstanceView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
 

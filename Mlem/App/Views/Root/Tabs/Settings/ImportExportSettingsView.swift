@@ -14,6 +14,7 @@ struct ImportExportSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     
     @State var importingSettingsFile: Bool = false
     
@@ -35,10 +36,10 @@ struct ImportExportSettingsView: View {
                     if let fileData = readSettings(from: fileUrl) {
                         let importedSettings = try JSONDecoder().decode(SettingsValues.self, from: fileData)
                         Settings.reinit(with: importedSettings)
-                        ToastModel.main.add(.success("Imported Settings"))
+                        toastModel.add(.success("Imported Settings"))
                     } else {
                         assertionFailure("Failed to import settings")
-                        ToastModel.main.add(.failure("Failed to import settings"))
+                        toastModel.add(.failure("Failed to import settings"))
                     }
                 } catch {
                     handleError(error)
