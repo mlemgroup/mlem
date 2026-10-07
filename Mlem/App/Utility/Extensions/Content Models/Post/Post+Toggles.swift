@@ -20,10 +20,7 @@ extension Post {
         }
     }
 
-    func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) {
-        if feedback.contains(.haptic) {
-            HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-        }
+    func toggleLocked(callback: ((UpdateStatus) -> Void)? = nil) {
         updateLocked(!locked, callback: callback)
     }
     
