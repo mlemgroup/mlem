@@ -112,7 +112,7 @@ struct PostEditorView: View {
         case let .value(value):
             contentUiTextView.text = value
         case let .callback(callback):
-            self.contentTask = .waitingToStart(callback)
+            self._contentTask = .init(wrappedValue: .waitingToStart(callback))
         }
 
         self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
@@ -147,14 +147,15 @@ struct PostEditorView: View {
         .onAppear {
             targets.first?.onAccountChange = checkSlurFilters
         }
+        .onChange(of: primaryApi, initial: true) {
+            markdownToolbarEditorModel.imageUploadApi = primaryApi
+        }
         .task {
             switch self.contentTask {
             case let .waitingToStart(callback):
                 self.contentTask = .started
-                Task { @MainActor in
-                    self.contentUiTextView.text = await callback()
-                    self.contentTask = .finished
-                }
+                self.contentUiTextView.text = await callback()
+                self.contentTask = .finished
             default:
                 break
             }
@@ -227,13 +228,14 @@ struct PostEditorView: View {
                             .transition(attachmentTransition)
                     }
                     
+                    attachmentPickerView
+
                     switch self.contentTask {
                     case .finished, nil:
-                        attachmentPickerView
+                        contentTextView
                     case .waitingToStart, .started:
                         ProgressView()
                     }
-                    contentTextView
                 }
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)

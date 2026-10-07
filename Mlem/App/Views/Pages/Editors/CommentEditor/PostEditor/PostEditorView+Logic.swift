@@ -34,7 +34,16 @@ extension PostEditorView {
             link == .waiting ||
             !titleSlurMatches.isEmpty ||
             !bodySlurMatches.isEmpty { return false }
+
+        switch self.contentTask {
+        case .waitingToStart, .started:
+            return false
+        case nil, .finished:
+            break
+        }
+
         if postToEdit != nil { return true }
+
         return !titleIsEmpty && targets.allSatisfy { $0.community != nil && $0.resolutionState == .success }
     }
     

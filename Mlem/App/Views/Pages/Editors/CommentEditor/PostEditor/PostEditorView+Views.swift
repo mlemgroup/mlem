@@ -155,6 +155,7 @@ extension PostEditorView {
                 },
                 prompt: "Optional Description",
                 textView: contentUiTextView,
+                firstResponder: false,
                 content: {
                     MarkdownEditorToolbarView(
                         textView: contentUiTextView,
@@ -163,9 +164,6 @@ extension PostEditorView {
                     )
                 }
             )
-            .onChange(of: primaryApi, initial: true) {
-                markdownToolbarEditorModel.imageUploadApi = primaryApi
-            }
             .frame(
                 maxWidth: .infinity,
                 minHeight: minTextEditorHeight,
