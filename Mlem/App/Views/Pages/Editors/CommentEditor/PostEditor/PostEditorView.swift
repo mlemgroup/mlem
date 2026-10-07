@@ -11,7 +11,6 @@ import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct PostEditorView: View {
     enum Field { case title, content }
     enum LinkState: Hashable {
@@ -231,61 +230,7 @@ struct PostEditorView: View {
                     }
                     
                     attachmentPickerView
-                    
-                    VStack {
-                        MarkdownTextEditor(
-                            onChange: { newValue in
-                                // Avoid unnecessary view update
-                                if contentIsEmpty != newValue.isEmpty {
-                                    contentIsEmpty = newValue.isEmpty
-                                }
-                                checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
-                            },
-                            prompt: "Optional Description",
-                            textView: contentUiTextView,
-                            content: {
-                                MarkdownEditorToolbarView(
-                                    textView: contentUiTextView,
-                                    uploadHistory: uploadHistory,
-                                    model: markdownToolbarEditorModel
-                                )
-                            }
-                        )
-                        .onChange(of: primaryApi, initial: true) {
-                            markdownToolbarEditorModel.imageUploadApi = primaryApi
-                        }
-                        .frame(
-                            maxWidth: .infinity,
-                            minHeight: minTextEditorHeight,
-                            maxHeight: .infinity,
-                            alignment: .topLeading
-                        )
-
-                        if targets.count == 1,
-                            let first = targets.first,
-                            let ids = first.account.api.myPerson?.discussionLanguageIds.value,
-                            ids.count > 1 {
-                            LanguagePickerView(api: first.account.api, selected: $language)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                        }
-  
-                        if !bodySlurMatches.isEmpty {
-                            FilterViolationWarning(failures: bodySlurMatches)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                                .padding(.bottom, Constants.main.standardSpacing)
-                        }
-                    }
-                    .padding([.vertical, .bottom], Constants.main.standardSpacing)
-                    .background(
-                        .themedSecondaryGroupedBackground,
-                        in: UnevenRoundedRectangle(cornerRadii: .init(
-                            topLeading: Constants.main.standardSpacing,
-                            bottomLeading: Constants.main.standardSpacing,
-                            bottomTrailing: Constants.main.standardSpacing,
-                            topTrailing: Constants.main.standardSpacing
-                        ))
-                    )
+                    contentTextView
                 }
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
