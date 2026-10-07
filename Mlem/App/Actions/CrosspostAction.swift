@@ -62,7 +62,20 @@ extension CrosspostAction {
     }
 
     private func createCrosspostContent() async -> String {
-        let crossPostedLabel = String(localized: "Crossposted from \(entity.actorId.description)")
+        var url: URL
+
+        do {
+            try await entity.upgrade()
+            let communityActorId = try entity.community.tryValue.actorId
+            let api = ApiClient.getApiClient(url: communityActorId.url.removingPathComponents(), username: nil)
+            let community = try await api.getCommunity(url: communityActorId.url)
+            url = community.resolvableUrl(from: .provider)
+        } catch {
+            handleError(error, silent: true)
+            url = entity.resolvableUrl(from: .provider)
+        }
+
+        let crossPostedLabel = String(localized: "Crossposted from \(url.description)")
         if let content = entity.content, !content.isEmpty {
             return "\(crossPostedLabel)\n-----\n\(content)"
         } else {
