@@ -187,41 +187,7 @@ struct PostEditorView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                    VStack(spacing: Constants.main.standardSpacing) {
-                        MarkdownTextEditor(
-                            onChange: {
-                                // Avoid unnecessary view update
-                                if titleIsEmpty != $0.isEmpty {
-                                    titleIsEmpty = $0.isEmpty
-                                }
-                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
-                            },
-                            prompt: "Title",
-                            textView: titleUiTextView,
-                            font: .preferredFont(forTextStyle: .title2),
-                            content: {
-                                MarkdownEditorToolbarView(
-                                    showing: .inlineOnly,
-                                    textView: titleUiTextView,
-                                    model: .init()
-                                )
-                            }
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            minHeight: minTitleEditorHeight,
-                            maxHeight: .infinity,
-                            alignment: .topLeading
-                        )
-  
-                        if !titleSlurMatches.isEmpty {
-                            FilterViolationWarning(failures: titleSlurMatches)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                                .padding(.bottom, Constants.main.standardSpacing)
-                        }
-                    }
-                    .padding(.top, Constants.main.halfSpacing)
-                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    titleTextView
                     
                     if hasNsfwTag {
                         nsfwTagView
