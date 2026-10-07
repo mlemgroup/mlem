@@ -13,25 +13,9 @@ import Foundation
 // Convenience methods for toggling statuses with feedback
 
 extension Post {
-    var toggleHidden: ((Set<FeedbackType>) -> Void)? {
+    var toggleHidden: (() -> Void)? {
         guard let hidden = hidden.value else { return nil }
-        return { feedback in
-            if feedback.contains(.haptic) {
-                HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-            }
-            if feedback.contains(.toast) {
-                if hidden {
-                    ToastModel.main.add(.success("Shown"))
-                } else {
-                    ToastModel.main.add(
-                        .undoable(
-                            "Hidden",
-                            icon: .general.hide,
-                            callback: { self.updateHidden(false) }
-                        )
-                    )
-                }
-            }
+        return {
             self.updateHidden(!hidden)
         }
     }
