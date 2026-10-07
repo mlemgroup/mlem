@@ -31,8 +31,8 @@ struct PostEditorView: View {
     @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
-    @State var titleTextView: UITextView
-    @State var contentTextView: UITextView
+    @State var titleUiTextView: UITextView
+    @State var contentUiTextView: UITextView
     
     @State var postToEdit: Post?
     @State var presentationSelection: PresentationDetent = .large
@@ -89,13 +89,13 @@ struct PostEditorView: View {
             return nil
         }
         self.feedLoader = feedLoader
-        self.titleTextView = .init()
-        self.contentTextView = .init()
-        titleTextView.tag = 0
-        contentTextView.tag = 1
+        self.titleUiTextView = .init()
+        self.contentUiTextView = .init()
+        titleUiTextView.tag = 0
+        contentUiTextView.tag = 1
         
-        titleTextView.text = title
-        contentTextView.text = content ?? ""
+        titleUiTextView.text = title
+        contentUiTextView.text = content ?? ""
         self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
         self._hasNsfwTag = .init(wrappedValue: nsfw)
         
@@ -121,8 +121,8 @@ struct PostEditorView: View {
             }
             .presentationBackground(.themedGroupedBackground)
             .onAppear {
-                contentTextView.resignFirstResponder()
-                titleTextView.becomeFirstResponder()
+                contentUiTextView.resignFirstResponder()
+                titleUiTextView.becomeFirstResponder()
             }
         }
         .onAppear {
@@ -147,13 +147,13 @@ struct PostEditorView: View {
         }
         .onChange(of: sending) {
             if sending {
-                titleTextView.resignFirstResponder()
-                titleTextView.isEditable = false
-                contentTextView.resignFirstResponder()
-                contentTextView.isEditable = false
+                titleUiTextView.resignFirstResponder()
+                titleUiTextView.isEditable = false
+                contentUiTextView.resignFirstResponder()
+                contentUiTextView.isEditable = false
             } else {
-                titleTextView.isEditable = true
-                contentTextView.isEditable = true
+                titleUiTextView.isEditable = true
+                contentUiTextView.isEditable = true
             }
         }
         .onDisappear {
@@ -198,12 +198,12 @@ struct PostEditorView: View {
                                 checkSlurFilter(text: $0, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
                             },
                             prompt: "Title",
-                            textView: titleTextView,
+                            textView: titleUiTextView,
                             font: .preferredFont(forTextStyle: .title2),
                             content: {
                                 MarkdownEditorToolbarView(
                                     showing: .inlineOnly,
-                                    textView: titleTextView,
+                                    textView: titleUiTextView,
                                     model: .init()
                                 )
                             }
@@ -242,10 +242,10 @@ struct PostEditorView: View {
                                 checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
                             },
                             prompt: "Optional Description",
-                            textView: contentTextView,
+                            textView: contentUiTextView,
                             content: {
                                 MarkdownEditorToolbarView(
-                                    textView: contentTextView,
+                                    textView: contentUiTextView,
                                     uploadHistory: uploadHistory,
                                     model: markdownToolbarEditorModel
                                 )

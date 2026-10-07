@@ -45,7 +45,7 @@ extension PostEditorView {
     
     @MainActor
     func submit() async {
-        uploadHistory.deleteWhereNotPresent(in: contentTextView.text)
+        uploadHistory.deleteWhereNotPresent(in: contentUiTextView.text)
         if postToEdit != nil {
             editPost()
         } else {
@@ -57,8 +57,8 @@ extension PostEditorView {
         guard let post = postToEdit else { return }
         do {
             try post.edit(
-                title: titleTextView.text,
-                content: contentTextView.text,
+                title: titleUiTextView.text,
+                content: contentUiTextView.text,
                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                 altText: post.altText,
                 thumbnail: thumbnailManager.image?.url,
@@ -121,8 +121,8 @@ extension PostEditorView {
             }
             post = try await community.api.createPost(
                 communityId: community.id,
-                title: titleTextView.text,
-                content: contentTextView.text,
+                title: titleUiTextView.text,
+                content: contentUiTextView.text,
                 linkUrl: imageManager?.image?.url ?? link.url ?? imageUrl,
                 thumbnail: thumbnailManager.image?.url,
                 nsfw: hasNsfwTag,
@@ -146,18 +146,18 @@ extension PostEditorView {
     func restoreFocusState() {
         switch lastFocusedField {
         case .title:
-            titleTextView.becomeFirstResponder()
+            titleUiTextView.becomeFirstResponder()
         case .content:
-            contentTextView.becomeFirstResponder()
+            contentUiTextView.becomeFirstResponder()
         case nil:
             break
         }
     }
     
     func saveFocusState() {
-        if contentTextView.isFirstResponder {
+        if contentUiTextView.isFirstResponder {
             lastFocusedField = .content
-        } else if titleTextView.isFirstResponder {
+        } else if titleUiTextView.isFirstResponder {
             lastFocusedField = .title
         } else {
             lastFocusedField = nil
@@ -177,8 +177,8 @@ extension PostEditorView {
     }
 
     func checkSlurFilters() {
-        checkSlurFilter(text: contentTextView.text, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
-        checkSlurFilter(text: titleTextView.text, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
+        checkSlurFilter(text: contentUiTextView.text, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
+        checkSlurFilter(text: titleUiTextView.text, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
     }
     
     /// Checks if the given text fails `slurRegex` and updates the given `String?` binding to the current
