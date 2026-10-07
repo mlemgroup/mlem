@@ -35,20 +35,7 @@ extension Post {
             self.updateHidden(!hidden)
         }
     }
-    
-    func togglePinnedCommunity(feedback: Set<FeedbackType>) {
-        let shouldPin = !pinnedCommunity
-        togglePinnedCommunity { status in
-            Task {
-                await self.handleModerationActionCompletion(
-                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
-                    result: status,
-                    feedback: feedback
-                )
-            }
-        }
-    }
-    
+
     func toggleLocked(_ feedback: Set<FeedbackType>, callback: ((UpdateStatus) -> Void)? = nil) {
         if feedback.contains(.haptic) {
             HapticManager.main.play(haptic: .lightSuccess, tier: .low)
@@ -60,19 +47,6 @@ extension Post {
     /// - Parameter callback: if present, when the repository call completes, is called with `.success` if the operation succeeded and `.failure` otherwise.
     func togglePinnedCommunity(callback: ((UpdateStatus) -> Void)? = nil) {
         updatePinnedCommunity(!pinnedCommunity, callback: callback)
-    }
-    
-    func togglePinnedInstance(feedback: Set<FeedbackType>) {
-        let shouldPin = !pinnedInstance
-        togglePinnedInstance { status in
-            Task {
-                await self.handleModerationActionCompletion(
-                    message: shouldPin ? "Failed to pin post" : "Failed to unpin post",
-                    result: status,
-                    feedback: feedback
-                )
-            }
-        }
     }
     
     /// Toggles the instance pinned status of this post
