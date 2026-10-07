@@ -23,6 +23,17 @@ struct PostEditorView: View {
             }
         }
     }
+
+    enum DeferredContent {
+        case value(String)
+        case callback(() async -> String)
+    }
+
+    enum ContentTask {
+        case waitingToStart(() async -> String)
+        case started
+        case finished
+    }
     
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
@@ -54,6 +65,8 @@ struct PostEditorView: View {
     @State var bodySlurMatches: [String: String] = .init()
     @State var titleSlurTask: Task<Void, Never>?
     @State var bodySlurTask: Task<Void, Never>?
+
+    @State var contentTask: ContentTask?
     
     var feedLoader: (any FeedLoading)?
     
@@ -65,7 +78,7 @@ struct PostEditorView: View {
         self.init(
             community: community,
             title: postToEdit.title,
-            content: postToEdit.content,
+            content: .value(postToEdit.content ?? ""),
             type: postToEdit.type,
             nsfw: postToEdit.nsfw,
             feedLoader: nil
@@ -77,7 +90,7 @@ struct PostEditorView: View {
     init?(
         community: Community?,
         title: String = "",
-        content: String? = nil,
+        content: DeferredContent,
         type: PostType? = nil,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)?
@@ -94,7 +107,14 @@ struct PostEditorView: View {
         contentUiTextView.tag = 1
         
         titleUiTextView.text = title
-        contentUiTextView.text = content ?? ""
+
+        switch content {
+        case let .value(value):
+            contentUiTextView.text = value
+        case let .callback(callback):
+            self.contentTask = .waitingToStart(callback)
+        }
+
         self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
         self._hasNsfwTag = .init(wrappedValue: nsfw)
         
@@ -126,6 +146,18 @@ struct PostEditorView: View {
         }
         .onAppear {
             targets.first?.onAccountChange = checkSlurFilters
+        }
+        .task {
+            switch self.contentTask {
+            case let .waitingToStart(callback):
+                self.contentTask = .started
+                Task { @MainActor in
+                    self.contentUiTextView.text = await callback()
+                    self.contentTask = .finished
+                }
+            default:
+                break
+            }
         }
         .onChange(of: imageManager?.image) {
             imageUrl = imageManager?.image?.url
@@ -195,7 +227,12 @@ struct PostEditorView: View {
                             .transition(attachmentTransition)
                     }
                     
-                    attachmentPickerView
+                    switch self.contentTask {
+                    case .finished, nil:
+                        attachmentPickerView
+                    case .waitingToStart, .started:
+                        ProgressView()
+                    }
                     contentTextView
                 }
             }

@@ -88,7 +88,7 @@ enum NavigationPage {
     case createPost(
         community: Community? = nil,
         title: String = "",
-        content: String? = nil,
+        content: PostEditorView.DeferredContent = .value(""),
         type: PostType? = nil,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)? = nil

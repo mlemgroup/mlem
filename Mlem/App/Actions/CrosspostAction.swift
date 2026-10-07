@@ -61,7 +61,7 @@ extension CrosspostAction {
         environment.navigation?.openSheet(.createPost(
             community: nil,
             title: entity.title,
-            content: crossPostContent,
+            content: .value(crossPostContent),
             type: entity.type,
             nsfw: entity.nsfw,
             feedLoader: nil
