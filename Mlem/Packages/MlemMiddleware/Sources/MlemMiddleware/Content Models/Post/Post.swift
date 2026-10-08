@@ -366,9 +366,27 @@ public extension Post {
             }
         }
     }
+
+    func markCrosspostsRead() async throws {
+        if self.crossPosts.value_ == nil {
+            try await self.updateQueue.refresh()
+        }
+        let crossPosts = try self.crossPosts.tryValue
+
+        if !api.willSendToken {
+            for post in crossPosts {
+                post.readMocked = true
+            }
+            return
+        }
+
+        let ids = crossPosts.map(\.id)
+
+        try await self.api.markPostsAsRead(ids: Set(ids))
+    }
     
     /// Update the post when its queued mark read operation completes.
-    func queuedMarkReadCompleted() {
+    internal func queuedMarkReadCompleted() {
         // sending this through the updateQueue ensures queue.lastVerifiedSnapshot receives the correct read value
         Task {
             await updateQueue.addItem { properties in
