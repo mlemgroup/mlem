@@ -37,9 +37,7 @@ struct RegistrationApplicationView: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu {
-            application.menuActions()
-        }
+        .contextMenu(application: application)
     }
     
     @ViewBuilder
