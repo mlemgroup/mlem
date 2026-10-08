@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ProfileHeaderView: View {
     @Environment(AppState.self) var appState
+    @Environment(\.self) var environment
     
     var profilable: (any ProfileProviding)?
     var fallback: MediaView.Fallback
@@ -38,7 +39,10 @@ struct ProfileHeaderView: View {
         VStack(spacing: Constants.main.standardSpacing) {
             AvatarBannerView(profilable, fallback: fallback)
             Button {
-                (profilable as? any CommunityOrPerson)?.copyFullNameWithPrefix()
+                if let profilable = profilable as? any CommunityOrPerson {
+                    CopyNameAction(text: profilable.fullNameWithPrefix, relationship: .identity)
+                        .execute(environment: environment)
+                }
             } label: {
                 VStack(spacing: Constants.main.halfSpacing) {
                     HStack {

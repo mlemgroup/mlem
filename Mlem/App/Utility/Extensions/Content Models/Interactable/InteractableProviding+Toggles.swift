@@ -25,12 +25,9 @@ extension InteractableProviding {
         return nil
     }
     
-    var toggleUpvoted: ((Set<FeedbackType>) -> Void)? {
+    var toggleUpvoted: (() -> Void)? {
         if let updateVote, let votes = votes.value {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
+            return {
                 updateVote(votes.myVote == .upvote ? .none : .upvote)
                 self.inboxItem?.updateRead(true)
             }
@@ -38,12 +35,9 @@ extension InteractableProviding {
         return nil
     }
     
-    var toggleDownvoted: ((Set<FeedbackType>) -> Void)? {
+    var toggleDownvoted: (() -> Void)? {
         if let updateVote, let votes = votes.value {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .lightSuccess, tier: .low)
-                }
+            return {
                 updateVote(votes.myVote == .downvote ? .none : .downvote)
                 self.inboxItem?.updateRead(true)
             }
@@ -51,15 +45,11 @@ extension InteractableProviding {
         return nil
     }
     
-    var toggleSaved: ((Set<FeedbackType>) -> Void)? {
+    var toggleSaved: (() -> Void)? {
         if let saved = saved.value,
            let votes = votes.value,
            let updateVote {
-            return { feedback in
-                if feedback.contains(.haptic) {
-                    HapticManager.main.play(haptic: .success, tier: .low)
-                }
-                
+            return { 
                 @Setting(\.behavior_upvoteOnSave) var upvoteOnSave
                 if upvoteOnSave, !saved, votes.myVote != .upvote {
                     updateVote(.upvote)

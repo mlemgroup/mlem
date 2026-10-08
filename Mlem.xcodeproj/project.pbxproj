@@ -108,7 +108,6 @@
 		033F84742D1C784600D87A9E /* ModlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84712D1C784600D87A9E /* ModlogView.swift */; };
 		033F84782D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84772D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift */; };
 		033F84AD2C298466002E3EDF /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */; };
-		033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84B02C29907F002E3EDF /* FeedbackType.swift */; };
 		033F84BB2C2ACB96002E3EDF /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BA2C2ACB96002E3EDF /* CommentView.swift */; };
 		033F84BD2C2ACC5F002E3EDF /* CommentBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */; };
 		033F84C12C2AD072002E3EDF /* CommentTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */; };
@@ -727,7 +726,6 @@
 		033F84712D1C784600D87A9E /* ModlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModlogView.swift; sourceTree = "<group>"; };
 		033F84772D1D68D200D87A9E /* ModlogEntryContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModlogEntryContent+Extensions.swift"; sourceTree = "<group>"; };
 		033F84AC2C298466002E3EDF /* SectionIndexTitles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIndexTitles.swift; sourceTree = "<group>"; };
-		033F84B02C29907F002E3EDF /* FeedbackType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		033F84BA2C2ACB96002E3EDF /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		033F84BC2C2ACC5F002E3EDF /* CommentBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarConfiguration.swift; sourceTree = "<group>"; };
 		033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTreeNode.swift; sourceTree = "<group>"; };
@@ -1803,7 +1801,6 @@
 				CD4D58CC2B86DDC300B82964 /* Settings */,
 				03FE14032BF93FDD00A8377F /* ErrorDetails.swift */,
 				033F84C62C2B192F002E3EDF /* MlemStats */,
-				033F84B02C29907F002E3EDF /* FeedbackType.swift */,
 				031EC52F2E5F77D7003408B7 /* FeedContext.swift */,
 				033F84C02C2AD072002E3EDF /* CommentTreeNode.swift */,
 				03ECD71E2C864DB700D48BF6 /* ImageUploadManager.swift */,
@@ -2970,7 +2967,6 @@
 				CD9CFA2C2C2E1EF300739BBC /* FeedIconView.swift in Sources */,
 				038188992D43E0F30073E88D /* SafetySettingsView.swift in Sources */,
 				CD1446252A5B357900610EF1 /* Document.swift in Sources */,
-				033F84B12C29907F002E3EDF /* FeedbackType.swift in Sources */,
 				0377BD752DE219A400E38593 /* OnboardingUsernameView.swift in Sources */,
 				CDB2EC812BFADADF00DBC0EF /* LargePostView.swift in Sources */,
 				CD03B5BE2F3BA16400AEF786 /* Blockable+Extensions.swift in Sources */,
