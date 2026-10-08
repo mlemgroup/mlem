@@ -12,7 +12,8 @@ import Theming
 
 struct RegistrationApplicationView: View {
     @Environment(\.palette) var palette
-    
+    @Environment(\.self) var environment
+
     let application: RegistrationApplication
     
     var body: some View {
@@ -76,7 +77,7 @@ struct RegistrationApplicationView: View {
     var resolutionButtonsView: some View {
         HStack(spacing: Constants.main.standardSpacing) {
             Button {
-                application.showDenialSheet()
+                DenyApplicationAction(application: application).execute(environment: environment)
             } label: {
                 Image(icon: .general.failure)
                     .frame(maxWidth: .infinity)
