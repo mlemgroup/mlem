@@ -63,7 +63,7 @@ extension SaveAction {
     func execute(environment: EnvironmentValues) {
         guard let toggleSaved = entity.toggleSaved else { return }
         environment.hapticManager.play(haptic: .success, tier: .low)
-        toggleSaved([])
+        toggleSaved()
 
         @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
 

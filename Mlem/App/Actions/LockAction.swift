@@ -70,7 +70,7 @@ extension LockAction {
             .init(title: "Yes", isDestructive: true) {
                 environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
                 let shouldLock = !entity.locked
-                entity.toggleLocked([]) { status in
+                entity.toggleLocked { status in
                     self.handleResult(
                         status: status,
                         shouldLock: shouldLock,

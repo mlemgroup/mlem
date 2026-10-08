@@ -10,13 +10,6 @@ import SwiftUI
 import Theming
 
 extension CommunityOrPerson {
-    func copyFullNameWithPrefix(feedback: Set<FeedbackType> = [.toast]) {
-        if feedback.contains(.toast) {
-            ToastModel.main.add(.success("Copied"))
-        }
-        UIPasteboard.general.string = fullNameWithPrefix
-    }
-    
     func attributedName(
         showInstance: Bool = true,
         font: Font = .body,
