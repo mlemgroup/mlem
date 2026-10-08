@@ -16,24 +16,9 @@ extension RegistrationApplication {
     
     @ActionBuilder
     func menuActions() -> [any Action] {
-        if resolution != .approved {
-            approveAction()
-        }
         if !resolution.isDenied {
             denyAction()
         }
-    }
-    
-    func approveAction() -> BasicAction {
-        .init(
-            id: "approveApplication\(id)",
-            appearance: .init(
-                label: "Approve",
-                color: .themedPositive,
-                icon: Icons.successCircle
-            ),
-            callback: { self.approve() }
-        )
     }
     
     func denyAction() -> BasicAction {
