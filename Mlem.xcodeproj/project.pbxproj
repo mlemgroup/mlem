@@ -195,7 +195,6 @@
 		0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */; };
 		037029A12D6B9A3900B749DF /* View+TabBarPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037029A02D6B9A3900B749DF /* View+TabBarPreview.swift */; };
 		037029A32D6B9B8400B749DF /* ContentView+Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037029A22D6B9B8400B749DF /* ContentView+Tab.swift */; };
-		0372EBCE2D36FBCF00257095 /* RegistrationApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */; };
 		0372EC202D370F0200257095 /* RegistrationApplicationDenialEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */; };
 		037331A42C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */; };
 		037352332F27A83900341673 /* PostPollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037352322F27A83900341673 /* PostPollView.swift */; };
@@ -810,7 +809,6 @@
 		0370299E2D6B743B00B749DF /* PostMockType+Realistic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostMockType+Realistic.swift"; sourceTree = "<group>"; };
 		037029A02D6B9A3900B749DF /* View+TabBarPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TabBarPreview.swift"; sourceTree = "<group>"; };
 		037029A22D6B9B8400B749DF /* ContentView+Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+Tab.swift"; sourceTree = "<group>"; };
-		0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegistrationApplication+Extensions.swift"; sourceTree = "<group>"; };
 		0372EC1F2D370F0200257095 /* RegistrationApplicationDenialEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationApplicationDenialEditorView.swift; sourceTree = "<group>"; };
 		037331A32C9CB12D00C826E1 /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		037352322F27A83900341673 /* PostPollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPollView.swift; sourceTree = "<group>"; };
@@ -2387,7 +2385,6 @@
 				0305EBAB2D32C9300066E5AD /* ModlogEntryType+Extensions.swift */,
 				03D0273B2CD3BA5100984519 /* PersonContent+Extensions.swift */,
 				036ED6822D0C483B0018E5EA /* ProfileProviding+Extensions.swift */,
-				0372EBCD2D36FBCF00257095 /* RegistrationApplication+Extensions.swift */,
 				03E46AD32D130728002589DB /* ScoringOperation+Extensions.swift */,
 				030056A52D7DBD4F00EB0BA3 /* Sharable+Extensions.swift */,
 				03ACE7192DFD57CC00FD66C0 /* SiteSoftware+Extensions.swift */,
@@ -2978,7 +2975,6 @@
 				0397D4722C68078F002C6CDC /* PrefetchingConfiguration+Extensions.swift in Sources */,
 				038E5E892F6D694500C54DEB /* ImageViewerShowControlsSettingsView.swift in Sources */,
 				03B431B42C4481C3001A1EB5 /* MarkdownTextEditor.swift in Sources */,
-				0372EBCE2D36FBCF00257095 /* RegistrationApplication+Extensions.swift in Sources */,
 				038028FD2CB72A2A0091A8A2 /* ContentRemovalEditorView.swift in Sources */,
 				03B431C42C45BA45001A1EB5 /* AccountPickerMenu.swift in Sources */,
 				039F58812C7A7E5900C61658 /* JumpButtonView.swift in Sources */,
