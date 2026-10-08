@@ -21,9 +21,7 @@ struct RegistrationApplicationView: View {
             HStack {
                 FullyQualifiedLinkView(application.creator, labelStyle: .medium)
                 Spacer()
-                EllipsisMenu(size: 24) {
-                    application.menuActions()
-                }
+                EllipsisMenu(size: 24, application: application)
             }
             Markdown(application.questionResponse, configuration: .default(palette: palette))
             switch application.resolution {
