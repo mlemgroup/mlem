@@ -102,4 +102,99 @@ extension PostEditorView {
             .background(.themedWarning, in: .capsule)
         }
     }
+
+    @ViewBuilder
+    var titleTextView: some View {
+        VStack(spacing: Constants.main.standardSpacing) {
+            MarkdownTextEditor(
+                onChange: {
+                    // Avoid unnecessary view update
+                    if titleIsEmpty != $0.isEmpty {
+                        titleIsEmpty = $0.isEmpty
+                    }
+                    checkSlurFilter(text: $0, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
+                },
+                prompt: "Title",
+                textView: titleUiTextView,
+                font: .preferredFont(forTextStyle: .title2),
+                content: {
+                    MarkdownEditorToolbarView(
+                        showing: .inlineOnly,
+                        textView: titleUiTextView,
+                        model: .init()
+                    )
+                }
+            )
+            .frame(
+                maxWidth: .infinity,
+                minHeight: minTitleEditorHeight,
+                maxHeight: .infinity,
+                alignment: .topLeading
+            )
+  
+            if !titleSlurMatches.isEmpty {
+                FilterViolationWarning(failures: titleSlurMatches)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.bottom, Constants.main.standardSpacing)
+            }
+        }
+        .padding(.top, Constants.main.halfSpacing)
+        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+    }
+
+    @ViewBuilder
+    var contentTextView: some View {
+        VStack {
+            MarkdownTextEditor(
+                onChange: { newValue in
+                    // Avoid unnecessary view update
+                    if contentIsEmpty != newValue.isEmpty {
+                        contentIsEmpty = newValue.isEmpty
+                    }
+                    checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
+                },
+                prompt: "Optional Description",
+                textView: contentUiTextView,
+                firstResponder: false,
+                content: {
+                    MarkdownEditorToolbarView(
+                        textView: contentUiTextView,
+                        uploadHistory: uploadHistory,
+                        model: markdownToolbarEditorModel
+                    )
+                }
+            )
+            .frame(
+                maxWidth: .infinity,
+                minHeight: minTextEditorHeight,
+                maxHeight: .infinity,
+                alignment: .topLeading
+            )
+
+            if targets.count == 1,
+                let first = targets.first,
+                let ids = first.account.api.myPerson?.discussionLanguageIds.value,
+                ids.count > 1 {
+                LanguagePickerView(api: first.account.api, selected: $language)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+            }
+  
+            if !bodySlurMatches.isEmpty {
+                FilterViolationWarning(failures: bodySlurMatches)
+                    .padding(.horizontal, Constants.main.standardSpacing)
+                    .padding(.bottom, Constants.main.standardSpacing)
+            }
+        }
+        .padding([.vertical, .bottom], Constants.main.standardSpacing)
+        .background(
+            .themedSecondaryGroupedBackground,
+            in: UnevenRoundedRectangle(cornerRadii: .init(
+                topLeading: Constants.main.standardSpacing,
+                bottomLeading: Constants.main.standardSpacing,
+                bottomTrailing: Constants.main.standardSpacing,
+                topTrailing: Constants.main.standardSpacing
+            ))
+        )
+    }
 }

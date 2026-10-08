@@ -109,5 +109,17 @@ extension VoteAction {
         guard let toggleVote = entity.toggleVote else { return }
         environment.hapticManager.play(haptic: .lightSuccess, tier: .low)
         toggleVote(type)
+
+        @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
+
+        if markCrosspostsRead, let post = entity as? Post {
+            Task {
+                do {
+                    try await post.markCrosspostsRead()
+                } catch {
+                    handleError(error)
+                }
+            }
+        }
     }
 }

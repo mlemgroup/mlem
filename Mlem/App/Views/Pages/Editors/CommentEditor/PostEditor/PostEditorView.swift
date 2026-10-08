@@ -11,7 +11,6 @@ import MlemMiddleware
 import PhotosUI
 import SwiftUI
 
-// swiftlint:disable:next type_body_length
 struct PostEditorView: View {
     enum Field { case title, content }
     enum LinkState: Hashable {
@@ -24,6 +23,17 @@ struct PostEditorView: View {
             }
         }
     }
+
+    enum DeferredContent {
+        case value(String)
+        case callback(() async -> String)
+    }
+
+    enum ContentTask {
+        case waitingToStart(() async -> String)
+        case started
+        case finished
+    }
     
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
@@ -31,8 +41,8 @@ struct PostEditorView: View {
     @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
-    @State var titleTextView: UITextView
-    @State var contentTextView: UITextView
+    @State var titleUiTextView: UITextView
+    @State var contentUiTextView: UITextView
     
     @State var postToEdit: Post?
     @State var presentationSelection: PresentationDetent = .large
@@ -55,6 +65,8 @@ struct PostEditorView: View {
     @State var bodySlurMatches: [String: String] = .init()
     @State var titleSlurTask: Task<Void, Never>?
     @State var bodySlurTask: Task<Void, Never>?
+
+    @State var contentTask: ContentTask?
     
     var feedLoader: (any FeedLoading)?
     
@@ -66,7 +78,7 @@ struct PostEditorView: View {
         self.init(
             community: community,
             title: postToEdit.title,
-            content: postToEdit.content,
+            content: .value(postToEdit.content ?? ""),
             type: postToEdit.type,
             nsfw: postToEdit.nsfw,
             feedLoader: nil
@@ -78,7 +90,7 @@ struct PostEditorView: View {
     init?(
         community: Community?,
         title: String = "",
-        content: String? = nil,
+        content: DeferredContent,
         type: PostType? = nil,
         nsfw: Bool = false,
         feedLoader: (any FeedLoading)?
@@ -89,13 +101,20 @@ struct PostEditorView: View {
             return nil
         }
         self.feedLoader = feedLoader
-        self.titleTextView = .init()
-        self.contentTextView = .init()
-        titleTextView.tag = 0
-        contentTextView.tag = 1
+        self.titleUiTextView = .init()
+        self.contentUiTextView = .init()
+        titleUiTextView.tag = 0
+        contentUiTextView.tag = 1
         
-        titleTextView.text = title
-        contentTextView.text = content ?? ""
+        titleUiTextView.text = title
+
+        switch content {
+        case let .value(value):
+            contentUiTextView.text = value
+        case let .callback(callback):
+            self._contentTask = .init(wrappedValue: .waitingToStart(callback))
+        }
+
         self._titleIsEmpty = .init(wrappedValue: title.isEmpty)
         self._hasNsfwTag = .init(wrappedValue: nsfw)
         
@@ -121,12 +140,25 @@ struct PostEditorView: View {
             }
             .presentationBackground(.themedGroupedBackground)
             .onAppear {
-                contentTextView.resignFirstResponder()
-                titleTextView.becomeFirstResponder()
+                contentUiTextView.resignFirstResponder()
+                titleUiTextView.becomeFirstResponder()
             }
         }
         .onAppear {
             targets.first?.onAccountChange = checkSlurFilters
+        }
+        .onChange(of: primaryApi, initial: true) {
+            markdownToolbarEditorModel.imageUploadApi = primaryApi
+        }
+        .task {
+            switch self.contentTask {
+            case let .waitingToStart(callback):
+                self.contentTask = .started
+                self.contentUiTextView.text = await callback()
+                self.contentTask = .finished
+            default:
+                break
+            }
         }
         .onChange(of: imageManager?.image) {
             imageUrl = imageManager?.image?.url
@@ -147,13 +179,13 @@ struct PostEditorView: View {
         }
         .onChange(of: sending) {
             if sending {
-                titleTextView.resignFirstResponder()
-                titleTextView.isEditable = false
-                contentTextView.resignFirstResponder()
-                contentTextView.isEditable = false
+                titleUiTextView.resignFirstResponder()
+                titleUiTextView.isEditable = false
+                contentUiTextView.resignFirstResponder()
+                contentUiTextView.isEditable = false
             } else {
-                titleTextView.isEditable = true
-                contentTextView.isEditable = true
+                titleUiTextView.isEditable = true
+                contentUiTextView.isEditable = true
             }
         }
         .onDisappear {
@@ -188,41 +220,7 @@ struct PostEditorView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
-                    VStack(spacing: Constants.main.standardSpacing) {
-                        MarkdownTextEditor(
-                            onChange: {
-                                // Avoid unnecessary view update
-                                if titleIsEmpty != $0.isEmpty {
-                                    titleIsEmpty = $0.isEmpty
-                                }
-                                checkSlurFilter(text: $0, slurMatches: $titleSlurMatches, pendingTask: $titleSlurTask)
-                            },
-                            prompt: "Title",
-                            textView: titleTextView,
-                            font: .preferredFont(forTextStyle: .title2),
-                            content: {
-                                MarkdownEditorToolbarView(
-                                    showing: .inlineOnly,
-                                    textView: titleTextView,
-                                    model: .init()
-                                )
-                            }
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            minHeight: minTitleEditorHeight,
-                            maxHeight: .infinity,
-                            alignment: .topLeading
-                        )
-  
-                        if !titleSlurMatches.isEmpty {
-                            FilterViolationWarning(failures: titleSlurMatches)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                                .padding(.bottom, Constants.main.standardSpacing)
-                        }
-                    }
-                    .padding(.top, Constants.main.halfSpacing)
-                    .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                    titleTextView
                     
                     if hasNsfwTag {
                         nsfwTagView
@@ -231,61 +229,13 @@ struct PostEditorView: View {
                     }
                     
                     attachmentPickerView
-                    
-                    VStack {
-                        MarkdownTextEditor(
-                            onChange: { newValue in
-                                // Avoid unnecessary view update
-                                if contentIsEmpty != newValue.isEmpty {
-                                    contentIsEmpty = newValue.isEmpty
-                                }
-                                checkSlurFilter(text: newValue, slurMatches: $bodySlurMatches, pendingTask: $bodySlurTask)
-                            },
-                            prompt: "Optional Description",
-                            textView: contentTextView,
-                            content: {
-                                MarkdownEditorToolbarView(
-                                    textView: contentTextView,
-                                    uploadHistory: uploadHistory,
-                                    model: markdownToolbarEditorModel
-                                )
-                            }
-                        )
-                        .onChange(of: primaryApi, initial: true) {
-                            markdownToolbarEditorModel.imageUploadApi = primaryApi
-                        }
-                        .frame(
-                            maxWidth: .infinity,
-                            minHeight: minTextEditorHeight,
-                            maxHeight: .infinity,
-                            alignment: .topLeading
-                        )
 
-                        if targets.count == 1,
-                            let first = targets.first,
-                            let ids = first.account.api.myPerson?.discussionLanguageIds.value,
-                            ids.count > 1 {
-                            LanguagePickerView(api: first.account.api, selected: $language)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                        }
-  
-                        if !bodySlurMatches.isEmpty {
-                            FilterViolationWarning(failures: bodySlurMatches)
-                                .padding(.horizontal, Constants.main.standardSpacing)
-                                .padding(.bottom, Constants.main.standardSpacing)
-                        }
+                    switch self.contentTask {
+                    case .finished, nil:
+                        contentTextView
+                    case .waitingToStart, .started:
+                        ProgressView()
                     }
-                    .padding([.vertical, .bottom], Constants.main.standardSpacing)
-                    .background(
-                        .themedSecondaryGroupedBackground,
-                        in: UnevenRoundedRectangle(cornerRadii: .init(
-                            topLeading: Constants.main.standardSpacing,
-                            bottomLeading: Constants.main.standardSpacing,
-                            bottomTrailing: Constants.main.standardSpacing,
-                            topTrailing: Constants.main.standardSpacing
-                        ))
-                    )
                 }
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)

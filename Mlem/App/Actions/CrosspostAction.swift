@@ -51,20 +51,35 @@ extension CrosspostAction {
 extension CrosspostAction {
     @MainActor
     func execute(environment: EnvironmentValues) {
-        var crossPostContent: String
-        let crossPostedLabel = String(localized: "Crossposted from \(entity.actorId.description)")
-        if let content = entity.content, !content.isEmpty {
-            crossPostContent = "\(crossPostedLabel)\n-----\n\(content)"
-        } else {
-            crossPostContent = crossPostedLabel
-        }
         environment.navigation?.openSheet(.createPost(
             community: nil,
             title: entity.title,
-            content: crossPostContent,
+            content: .callback(createCrosspostContent),
             type: entity.type,
             nsfw: entity.nsfw,
             feedLoader: nil
         ))
+    }
+
+    private func createCrosspostContent() async -> String {
+        var url: URL
+
+        do {
+            try await entity.upgrade()
+            let communityActorId = try entity.community.tryValue.actorId
+            let api = ApiClient.getApiClient(url: communityActorId.url.removingPathComponents(), username: nil)
+            let community = try await api.getCommunity(url: communityActorId.url)
+            url = community.resolvableUrl(from: .provider)
+        } catch {
+            handleError(error, silent: true)
+            url = entity.resolvableUrl(from: .provider)
+        }
+
+        let crossPostedLabel = String(localized: "Crossposted from \(url.description)")
+        if let content = entity.content, !content.isEmpty {
+            return "\(crossPostedLabel)\n-----\n\(content)"
+        } else {
+            return crossPostedLabel
+        }
     }
 }
