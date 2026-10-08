@@ -36,7 +36,7 @@ extension PostEditorView {
         } else if let pastedString = UIPasteboard.general.string, pastedString.starts(with: "http") {
             url = URL(string: pastedString, encodingInvalidCharacters: false)
         } else {
-            ToastModel.main.add(.urlCopyError)
+            toastModel.add(.urlCopyError)
             return
         }
         if let url {

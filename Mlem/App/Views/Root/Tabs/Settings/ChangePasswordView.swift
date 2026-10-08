@@ -16,6 +16,7 @@ struct ChangePasswordView: View {
     
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
 
     @State private var viewState: ViewState = .initial
@@ -114,10 +115,10 @@ struct ChangePasswordView: View {
                     dismiss()
                     // Catch separately to prevent the token expiry sheet opening in this view
                 } catch ApiClientError.invalidSession {
-                    ToastModel.main.add(.failure("Current password is incorrect"))
+                    toastModel.add(.failure("Current password is incorrect"))
                     viewState = .initial
                 } catch ApiClientError.newPasswordInvalid { 
-                    ToastModel.main.add(.failure("New password is invalid"))
+                    toastModel.add(.failure("New password is invalid"))
                     viewState = .initial
                 } catch {
                     handleError(error)

@@ -12,6 +12,7 @@ import SwiftUI
 /// Modifier that overrides the `openURL` environment variable and attempts to open threadiverse links in-app.
 struct HandleThreadiverseLinksModifier: ViewModifier {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     @Environment(AppState.self) var appState
     
     @State private var showingEmailAlert = false
@@ -239,7 +240,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
             return
         }
 
-        let toastId = ToastModel.main.add(.loading())
+        let toastId = toastModel.add(.loading())
         var output: (any Sharable)?
         do {
             output = try await appState.firstApi.resolve(url: sanitizedUrl)
@@ -266,7 +267,7 @@ struct HandleThreadiverseLinksModifier: ViewModifier {
         } else {
             fallback(url)
         }
-        ToastModel.main.removeToast(id: toastId)
+        toastModel.removeToast(id: toastId)
     }
 
     func isProbableThreadiverseLink(url: URL) -> Bool {

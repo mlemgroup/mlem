@@ -9,6 +9,8 @@ import Nuke
 import SwiftUI
 
 struct CacheSettingsView: View {
+    @Environment(ToastModel.self) var toastModel
+
     var body: some View {
         Form {
             SettingsHeaderView(
@@ -31,7 +33,7 @@ struct CacheSettingsView: View {
             Button("Clear Cache") {
                 URLCache.shared.removeAllCachedResponses()
                 ImagePipeline.shared.cache.removeAll()
-                ToastModel.main.add(.success("Cache Cleared"))
+                toastModel.add(.success("Cache Cleared"))
             }
         }
         .withConditionalLabelStyle()

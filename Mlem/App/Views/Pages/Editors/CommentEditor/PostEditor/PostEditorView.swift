@@ -28,6 +28,7 @@ struct PostEditorView: View {
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
     @State var titleTextView: UITextView

@@ -54,7 +54,11 @@ private struct QuickSwipesActionsViewModifier: ViewModifier {
 
 extension View {
     @ViewBuilder
-    func quickSwipes(leading: [any Actions.Action], trailing: [any Actions.Action], leadingBuffer: SwipeBuffer) -> some View {
+    func quickSwipes(
+        leading: [any Actions.Action] = [],
+        trailing: [any Actions.Action] = [],
+        leadingBuffer: SwipeBuffer
+    ) -> some View {
         modifier(QuickSwipesActionsViewModifier(
             leadingActions: leading,
             trailingActions: trailing,

@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ShareInstancePickerView: View {
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
     let entity: any Sharable & ContentModel
@@ -122,7 +123,7 @@ struct ShareInstancePickerView: View {
     }
     
     func resolveEntity(url: URL, model: NavigationModel) async {
-        let toastId = ToastModel.main.add(.loading("Resolving..."), location: .bottom)
+        let toastId = toastModel.add(.loading("Resolving..."), location: .bottom)
         do {
             let client = ApiClient.getApiClient(url: url, username: nil)
             let resolvedEntity = try await client.resolve(url: entity.actorId.url)
@@ -130,9 +131,9 @@ struct ShareInstancePickerView: View {
                 url: resolvedEntity.url(),
                 actions: entity.shareSheetActions()
             )
-            ToastModel.main.removeToast(id: toastId)
+            toastModel.removeToast(id: toastId)
         } catch {
-            ToastModel.main.removeToast(id: toastId)
+            toastModel.removeToast(id: toastId)
             handleError(error)
         }
     }

@@ -11,6 +11,8 @@ import Media
 struct MediaView: View {
     @Environment(NavigationLayer.self) var navigation: NavigationLayer?
     @Environment(MediaTracker.self) var mediaTracker: MediaTracker
+    @Environment(ToastModel.self) var toastModel
+
     @Environment(\.palette) var palette
     @Environment(\.openURL) var openURL
     

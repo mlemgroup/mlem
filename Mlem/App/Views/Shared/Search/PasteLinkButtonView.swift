@@ -13,6 +13,7 @@ struct PasteLinkButtonView: View {
     @Environment(\.openURL) private var openURL
     @Environment(AppState.self) private var appState
     @Environment(NavigationLayer.self) private var navigation
+    @Environment(ToastModel.self) var toastModel
     
     var body: some View {
         Button("Open URL from Clipboard", icon: .general.paste) {
@@ -36,7 +37,7 @@ struct PasteLinkButtonView: View {
                 }
             }
 
-            ToastModel.main.add(.failure("Couldn't read URL"))
+            toastModel.add(.failure("Couldn't read URL"))
         }
     }
 }

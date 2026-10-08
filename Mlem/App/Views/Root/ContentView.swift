@@ -27,7 +27,7 @@ struct ContentView: View {
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
 
-    let cacheCleanTimer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    let cacheCleanTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
     
     // globals
