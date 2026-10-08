@@ -53,6 +53,7 @@ struct SubscriptionListItemView: View {
                     Text(verbatim: "@\(community.host)")
                         .foregroundStyle(.secondary)
                         .font(.footnote)
+                        .lineLimit(1)
                 }
             case .disabled:
                 CircleCroppedImageView(community, frame: 28)

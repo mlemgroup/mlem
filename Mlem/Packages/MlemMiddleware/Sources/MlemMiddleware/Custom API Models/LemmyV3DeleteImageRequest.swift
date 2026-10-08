@@ -9,7 +9,7 @@ import Rest
 
 // Yes, this is a GET request. Allegedly DELETE is also accepted,
 // but I couldn't get that to work. https://crates.io/crates/pict-rs
-struct LemmyDeleteImageRequest: GetRequest {
+struct LemmyV3DeleteImageRequest: GetRequest {
     typealias Parameters = Never
 
     // The body is an empty string

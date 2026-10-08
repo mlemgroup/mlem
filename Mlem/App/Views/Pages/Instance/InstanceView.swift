@@ -30,8 +30,11 @@ struct InstanceView: View {
     
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(ToastModel.self) var toastModel
     @Environment(\.palette) var palette
     @Environment(\.colorScheme) var colorScheme
+
+    @Setting(\.interactionBar_person) var personActionConfiguration
     
     let visitContext: VisitHistory.VisitContext?
 
@@ -119,8 +122,15 @@ struct InstanceView: View {
             ExpectedView(instance.administrators) { administrators in
                 VStack(spacing: Constants.main.halfSpacing) {
                     ForEach(administrators) { person in
-                        PersonListRow(person)
-                            .quickSwipes(administratorQuickSwipes(person: person))
+                        if personActionConfiguration.swipes.trailing.isEmpty {
+                            PersonListRow(person)
+                                .quickSwipes(
+                                    trailing: [AppointAdminAction(entity: person)],
+                                    leadingBuffer: .standard
+                                )
+                        } else {
+                            PersonListRow(person)
+                        }
                     }
                 }
             }

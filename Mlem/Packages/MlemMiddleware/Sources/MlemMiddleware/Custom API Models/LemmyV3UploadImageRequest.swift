@@ -8,7 +8,7 @@
 import Rest
 import UniformTypeIdentifiers
 
-struct LemmyUploadImageRequest: UploadRequest {
+struct LemmyV3UploadImageRequest: UploadRequest {
     typealias Response = LemmyPictrsUploadResponse
 
     var form: MultipartFormData
