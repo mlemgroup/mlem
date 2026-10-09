@@ -36,13 +36,13 @@ extension Instance2Snapshot {
                 day: counts.usersActiveDay
             )
         } else {
-            guard let users = site.localSite.users else { throw .responseMissingRequiredData("LemmySiteView users") }
+            guard let users = site.localSite.localUsers else { throw .responseMissingRequiredData("LemmySiteView users") }
             userCount = users
-            guard let posts = site.localSite.posts else { throw .responseMissingRequiredData("LemmySiteView posts") }
+            guard let posts = site.localSite.localPosts else { throw .responseMissingRequiredData("LemmySiteView posts") }
             postCount = posts
-            guard let comments = site.localSite.comments else { throw .responseMissingRequiredData("LemmySiteView comments") }
+            guard let comments = site.localSite.localComments else { throw .responseMissingRequiredData("LemmySiteView comments") }
             commentCount = comments
-            guard let communities = site.localSite.communities else { throw .responseMissingRequiredData("LemmySiteView communities") }
+            guard let communities = site.localSite.localCommunities else { throw .responseMissingRequiredData("LemmySiteView communities") }
             communityCount = communities
             guard let sixMonths = site.localSite.usersActiveHalfYear else {
                 throw .responseMissingRequiredData("LemmySiteView active users")
