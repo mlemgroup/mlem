@@ -164,11 +164,6 @@
 		035DF9132EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DF9122EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift */; };
 		035DFA232EB3F7240021DE8C /* CommunityAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DFA222EB3F7240021DE8C /* CommunityAboutView.swift */; };
 		035DFA252EB3FB550021DE8C /* CommunityDescriptionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035DFA242EB3FB550021DE8C /* CommunityDescriptionEditorView.swift */; };
-		035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEED2C2DE94B00F51144 /* DefaultTextInputType.swift */; };
-		035EDEF22C2DE94B00F51144 /* _assignIfNotEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEEC2C2DE94B00F51144 /* _assignIfNotEqual.swift */; };
-		035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEEE2C2DE94B00F51144 /* SearchBar.swift */; };
-		035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */; };
-		035EDEF52C2DE94B00F51144 /* SearchBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */; };
 		035EDEFB2C2DF98700F51144 /* CommunityListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */; };
 		035EDF012C2ECFE000F51144 /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF002C2ECFE000F51144 /* Searchable.swift */; };
 		035EDF032C2ED0DE00F51144 /* PersonListRowBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */; };
@@ -779,11 +774,6 @@
 		035DF9122EB2AF8E0021DE8C /* GetContentFilter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GetContentFilter+Extensions.swift"; sourceTree = "<group>"; };
 		035DFA222EB3F7240021DE8C /* CommunityAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAboutView.swift; sourceTree = "<group>"; };
 		035DFA242EB3FB550021DE8C /* CommunityDescriptionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDescriptionEditorView.swift; sourceTree = "<group>"; };
-		035EDEEC2C2DE94B00F51144 /* _assignIfNotEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _assignIfNotEqual.swift; sourceTree = "<group>"; };
-		035EDEED2C2DE94B00F51144 /* DefaultTextInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTextInputType.swift; sourceTree = "<group>"; };
-		035EDEEE2C2DE94B00F51144 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBar+NavigationView.swift"; sourceTree = "<group>"; };
-		035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarExtensions.swift; sourceTree = "<group>"; };
 		035EDEFA2C2DF98700F51144 /* CommunityListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityListRowBody.swift; sourceTree = "<group>"; };
 		035EDF002C2ECFE000F51144 /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		035EDF022C2ED0DE00F51144 /* PersonListRowBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListRowBody.swift; sourceTree = "<group>"; };
@@ -1517,7 +1507,6 @@
 			children = (
 				0311ADB52E4DF49100EC3120 /* Home */,
 				035EDEF72C2DF93C00F51144 /* Results */,
-				035EDEEB2C2DE93E00F51144 /* SearchBar */,
 				0389DDCE2C39CB0E0005B808 /* SearchView.swift */,
 				03D283FD2D25EEC500A6659B /* SearchView+Views.swift */,
 				0320B6602C8DFCF100D38548 /* SearchView+FiltersView.swift */,
@@ -1555,19 +1544,6 @@
 				03CCDA9F2BF2795300C0C851 /* LoginPage.swift */,
 			);
 			path = Navigation;
-			sourceTree = "<group>";
-		};
-		035EDEEB2C2DE93E00F51144 /* SearchBar */ = {
-			isa = PBXGroup;
-			children = (
-				035EDEEC2C2DE94B00F51144 /* _assignIfNotEqual.swift */,
-				035EDEED2C2DE94B00F51144 /* DefaultTextInputType.swift */,
-				035EDEEE2C2DE94B00F51144 /* SearchBar.swift */,
-				031CA4AD2E58A84E00CF0C0F /* View+WithSheetSearch.swift */,
-				035EDEEF2C2DE94B00F51144 /* SearchBar+NavigationView.swift */,
-				035EDEF02C2DE94B00F51144 /* SearchBarExtensions.swift */,
-			);
-			path = SearchBar;
 			sourceTree = "<group>";
 		};
 		035EDEF72C2DF93C00F51144 /* Results */ = {
@@ -2866,7 +2842,6 @@
 				03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */,
 				03B2F09D2FC9958600C36011 /* PersonSettingsView.swift in Sources */,
 				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
-				035EDEF12C2DE94B00F51144 /* DefaultTextInputType.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
 				03250CEA2FD71303006F8394 /* CacheSettingsView.swift in Sources */,
 				CDDA49A82F7044D2004A5AFF /* InstanceStubResolutionPage.swift in Sources */,
@@ -2875,15 +2850,11 @@
 				03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */,
 				814CEF632F44577A0090F812 /* HiddenReadBannerView.swift in Sources */,
 				039F58882C7B531800C61658 /* SquircleLabelStyle.swift in Sources */,
-				035EDEF22C2DE94B00F51144 /* _assignIfNotEqual.swift in Sources */,
-				035EDEF32C2DE94B00F51144 /* SearchBar.swift in Sources */,
 				03049A1A2C6502F300FF6889 /* FormSection.swift in Sources */,
-				035EDEF42C2DE94B00F51144 /* SearchBar+NavigationView.swift in Sources */,
 				0381D3B43014ABBE00F9F3E0 /* LegacyInteractionBarItem.swift in Sources */,
 				0381F7282F6724D3008A7731 /* ReplyBarConfiguration+Types.swift in Sources */,
 				CD5581DE2C7B8B820043FAC3 /* ImageFunctions.swift in Sources */,
 				034065C32D83742900637308 /* View+NavigtionStackPreview.swift in Sources */,
-				035EDEF52C2DE94B00F51144 /* SearchBarExtensions.swift in Sources */,
 				03134A522BEAD69F002662CC /* SettingsPage.swift in Sources */,
 				03049A1C2C65039400FF6889 /* ActiveUserCountView.swift in Sources */,
 				03A9FD202D7D0072007A734D /* PaletteOption.swift in Sources */,

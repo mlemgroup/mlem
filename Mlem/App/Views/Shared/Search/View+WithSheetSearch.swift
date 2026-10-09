@@ -28,6 +28,9 @@ private struct SearchSheetViewModifier: ViewModifier {
                     .glassEffect()
                     .padding([.horizontal, .bottom], 16)
             }
+            .onAppear {
+                focused = true
+            }
     }
 }
 
