@@ -99,7 +99,7 @@ struct MessageFeedView: View {
                     }
                 }
             }
-            .safeAreaBar_(edge: .bottom) {
+            .safeAreaBar(edge: .bottom) {
                 textInput(scrollProxy)
                     .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 24))
                     .padding(.horizontal, textView.isFirstResponder ? Constants.main.standardSpacing : Constants.main.doubleSpacing)
