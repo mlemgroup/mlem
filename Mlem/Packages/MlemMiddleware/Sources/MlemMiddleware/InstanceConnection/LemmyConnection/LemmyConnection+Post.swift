@@ -189,7 +189,7 @@ internal extension LemmyConnection {
         switch type {
         case .saved:
             let request = LemmyListPersonSavedRequest(
-                type_: .all,
+                type_: .posts,
                 searchTerm: nil,
                 pageCursor: cursorString,
                 limit: pageInfo.limit
@@ -197,7 +197,7 @@ internal extension LemmyConnection {
             return try await self.perform(request, endpoint: .v4)
         case .upvoted, .downvoted:
             let request = LemmyListPersonLikedRequest(
-                type_: .all,
+                type_: .posts,
                 likeType: type == .upvoted ? .likedOnly : .dislikedOnly,
                 pageCursor: cursorString,
                 limit: pageInfo.limit
