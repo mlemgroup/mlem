@@ -19,7 +19,7 @@ extension View {
         }
     }
 
-    func contextMenu(notification: InboxNotification?, message: Message, report: Report?) -> some View {
+    func contextMenu(notification: InboxNotification?, message: Message, report: DeprecatedReport?) -> some View {
         contextMenu {
             CustomizableActionMenu(configuration: \.interactionBar_reply) { seed, _ in
                 if let notification {
@@ -50,7 +50,7 @@ extension View {
     func quickSwipes(
         notification: InboxNotification?,
         message: Message,
-        report: Report?,
+        report: DeprecatedReport?,
         configuration: ReplyBarConfiguration
     ) -> some View {
         quickSwipes(
@@ -67,7 +67,7 @@ extension View {
 
 private extension ActionSeed {
     /// Resolves a seed against a message row, which may also carry a notification and/or report context.
-    func createAction(notification: InboxNotification?, message: Message, report: Report?) -> (any Actions.Action)? {
+    func createAction(notification: InboxNotification?, message: Message, report: DeprecatedReport?) -> (any Actions.Action)? {
         if let notification, let action = createAction(notification) { return action }
         if let report, let action = createAction(report) { return action }
         return createAction(message)
@@ -110,7 +110,7 @@ extension EllipsisMenu {
         icon: Icon = .general.menu,
         size: CGFloat,
         message: Message,
-        report: Report,
+        report: DeprecatedReport,
         type: Set<EllipsisMenuType> = [.basic, .moderator]
     ) where Content == CustomizableActionMenu<ReplyBarConfiguration> {
         self.icon = icon

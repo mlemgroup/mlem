@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Report {
+extension DeprecatedReport {
     public var cacheId: Int {
         var hasher = Hasher()
         hasher.combine(target.type)

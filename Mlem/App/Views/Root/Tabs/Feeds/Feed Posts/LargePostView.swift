@@ -24,7 +24,7 @@ struct LargePostView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) private var communityContext
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    @Environment(\.reportContext) private var reportContext: Report?
+    @Environment(\.reportContext) private var reportContext: DeprecatedReport?
 
     let post: Post
     let isPostPage: Bool

@@ -271,7 +271,7 @@ extension [EnrichedWidget] {
         items: [InteractionBarItem],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: Community?,
-        reportContext: Report?
+        reportContext: DeprecatedReport?
     ) {
         switch content {
         case let .post(post):
@@ -312,7 +312,7 @@ extension [EnrichedWidget] {
         items: [InteractionBarItem],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: Community?,
-        reportContext: Report?
+        reportContext: DeprecatedReport?
     ) {
         self = items.compactMap { item in
             switch item {
@@ -338,7 +338,7 @@ extension [EnrichedWidget] {
         items: [InteractionBarItem],
         commentTreeTracker: CommentTreeTracker?,
         communityContext: Community?,
-        reportContext: Report?
+        reportContext: DeprecatedReport?
     ) {
         self = items.compactMap { item in
             switch item {

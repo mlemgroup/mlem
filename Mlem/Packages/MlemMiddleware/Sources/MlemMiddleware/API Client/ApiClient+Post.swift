@@ -184,7 +184,7 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func reportPost(id: Int, reason: String) async throws -> Report {
+    func reportPost(id: Int, reason: String) async throws -> DeprecatedReport {
         let snapshot = try await repository.reportPost(id: id, reason: reason)
         guard let myPersonId = try await myPersonId else { throw ApiClientError.notLoggedIn }
         return await caches.report.getModel(

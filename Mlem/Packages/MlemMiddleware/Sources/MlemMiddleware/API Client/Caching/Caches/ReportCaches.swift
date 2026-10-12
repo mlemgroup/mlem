@@ -8,20 +8,20 @@
 import Foundation
 
 // Report can be created from any ReportApiBacker, so we can't use ApiTypeBackedCache
-class ReportCache: CoreCache<Report> {
+class ReportCache: CoreCache<DeprecatedReport> {
     @MainActor
     func getModel(
         api: ApiClient,
         from snapshot: ReportSnapshot,
         myPersonId: Int,
         semaphore: UInt? = nil
-    ) -> Report {
+    ) -> DeprecatedReport {
         if let item = retrieveModel(cacheId: snapshot.cacheId) {
             item.update(with: snapshot, semaphore: semaphore)
             return item
         }
         
-        let newItem: Report = .init(
+        let newItem: DeprecatedReport = .init(
             api: api,
             id: snapshot.id,
             creator: api.caches.person.getModel(api: api, from: .person1(snapshot.creator), semaphore: semaphore),
@@ -42,7 +42,7 @@ class ReportCache: CoreCache<Report> {
         from snapshots: [ReportSnapshot],
         myPersonId: Int,
         semaphore: UInt? = nil
-    ) -> [Report] {
+    ) -> [DeprecatedReport] {
         snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
     }
 }

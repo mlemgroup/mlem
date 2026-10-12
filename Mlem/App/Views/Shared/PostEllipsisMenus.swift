@@ -14,7 +14,7 @@ struct PostEllipsisMenus: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) private var navigation
-    @Environment(\.reportContext) private var reportContext: Report?
+    @Environment(\.reportContext) private var reportContext: DeprecatedReport?
     
     @Setting(\.interactionBar_post) var postInteractionBar
     @Setting(\.menus_modActionGrouping) var moderatorActionGrouping

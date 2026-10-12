@@ -23,7 +23,7 @@ struct HeadlinePostView<EmbeddedContent: View>: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    @Environment(\.reportContext) private var reportContext: Report?
+    @Environment(\.reportContext) private var reportContext: DeprecatedReport?
 
     let post: Post
     let embeddedContent: EmbeddedContent
