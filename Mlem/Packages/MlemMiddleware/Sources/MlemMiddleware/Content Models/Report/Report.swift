@@ -8,6 +8,8 @@
 import Observation
 import Foundation
 
+import os
+
 @Observable
 public class Report: UnifiedModelProviding, FeedLoadable {
     public typealias Properties = ReportProperties
@@ -46,10 +48,10 @@ public class Report: UnifiedModelProviding, FeedLoadable {
     
     @MainActor
     public func update(with properties: ReportProperties) {
-        setIfChanged(\.resolver, resolver)
-        setIfChanged(\.updated, updated)
-        setIfChanged(\.resolved, resolved)
-        setIfChanged(\.reason, reason)
+        setIfChanged(\.resolver, properties.resolver)
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.resolved, properties.resolved)
+        setIfChanged(\.reason, properties.reason)
     }
     
     public func softUpdate(with properties: ReportProperties) {
