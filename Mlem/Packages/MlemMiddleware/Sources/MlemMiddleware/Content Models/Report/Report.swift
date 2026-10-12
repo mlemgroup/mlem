@@ -70,7 +70,7 @@ public class Report: UnifiedModelProviding, FeedLoadable {
 // MARK: - Computed
 
 public extension Report {
-    var modMailid: Int {
+    var modMailId: Int {
         var hasher: Hasher = .init()
         hasher.combine("report")
         hasher.combine(target.case)
@@ -102,5 +102,9 @@ public extension Report {
                 }
             }
         }
+    }
+    
+    func toggleResolved() {
+        updateResolved(!resolved)
     }
 }

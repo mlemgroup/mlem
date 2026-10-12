@@ -1644,6 +1644,7 @@
       }
     },
     "Ban User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1786,6 +1787,7 @@
       }
     },
     "Block User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4354,6 +4356,7 @@
       }
     },
     "Failed to delete post!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4485,6 +4488,7 @@
       }
     },
     "Failed to unpin post" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5917,6 +5921,9 @@
         }
       }
     },
+    "Mark Crossposts Read" : {
+
+    },
     "Mark Read" : {
       "localizations" : {
         "fr" : {
@@ -7208,6 +7215,7 @@
       }
     },
     "Pin to Community" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7239,6 +7247,7 @@
       }
     },
     "Pin to Instance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10913,6 +10922,7 @@
       }
     },
     "Unban User" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11037,6 +11047,7 @@
       }
     },
     "Undo Downvote" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11047,6 +11058,7 @@
       }
     },
     "Undo Upvote" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11192,6 +11204,7 @@
       }
     },
     "Unpin From Community" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11212,6 +11225,7 @@
       }
     },
     "Unpin From Instance" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -11814,6 +11828,9 @@
           }
         }
       }
+    },
+    "When a post is read, also mark its crossposts as read. Crossposts are not read when using \"Mark read on scroll\"." : {
+
     },
     "When disabled, some moderator actions will only be accessible from the post page." : {
       "localizations" : {

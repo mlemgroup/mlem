@@ -13,7 +13,7 @@ extension EnvironmentValues {
     @Entry var postContext: Post?
     @Entry var commentContext: Comment?
     @Entry var communityContext: Community?
-    @Entry var reportContext: DeprecatedReport?
+    @Entry var reportContext: Report?
     @Entry var feedContext: FeedContext?
     @Entry var feedLoader: (any FeedLoading)?
     

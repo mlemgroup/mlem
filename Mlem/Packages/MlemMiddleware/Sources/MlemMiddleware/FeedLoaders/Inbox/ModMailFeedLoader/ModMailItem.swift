@@ -8,7 +8,7 @@
 public enum ModMailItem: FeedLoadable, ReadableProviding, InboxIdentifiable {
     public typealias FilterType = ModMailItemFilterType
     
-    case report(DeprecatedReport)
+    case report(Report)
     case application(RegistrationApplication)
     
     var baseValue: any FeedLoadable {

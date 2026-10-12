@@ -13,7 +13,7 @@ struct FeedCommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) private var appState
     @Environment(CommentTreeTracker.self) private var commentTreeTracker: CommentTreeTracker?
     @Environment(NavigationLayer.self) var navigation
-    @Environment(\.reportContext) var reportContext: DeprecatedReport?
+    @Environment(\.reportContext) var reportContext: Report?
     
     @Setting(\.post_size) var settingsPostSize
     @Setting(\.comment_compact) var compactComments
