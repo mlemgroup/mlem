@@ -137,6 +137,9 @@ public extension Icon {
         
         @inlinable public var addAdministrator: Icon { administration }
         public let removeAdministrator: Icon = .init("arrowshape.down")
+
+        public let approveApplication: Icon = .init("checkmark.circle")
+        public let denyApplication: Icon = .init("xmark.circle")
         
         // MARK: - Inbox
         
