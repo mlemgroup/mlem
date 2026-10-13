@@ -12,7 +12,8 @@ import Theming
 
 struct RegistrationApplicationView: View {
     @Environment(\.palette) var palette
-    
+    @Environment(\.self) var environment
+
     let application: RegistrationApplication
     
     var body: some View {
@@ -20,9 +21,7 @@ struct RegistrationApplicationView: View {
             HStack {
                 FullyQualifiedLinkView(application.creator, labelStyle: .medium)
                 Spacer()
-                EllipsisMenu(size: 24) {
-                    application.menuActions()
-                }
+                EllipsisMenu(size: 24, application: application)
             }
             Markdown(application.questionResponse, configuration: .default(palette: palette))
             switch application.resolution {
@@ -36,9 +35,7 @@ struct RegistrationApplicationView: View {
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
-        .contextMenu {
-            application.menuActions()
-        }
+        .contextMenu(application: application)
     }
     
     @ViewBuilder
@@ -76,7 +73,7 @@ struct RegistrationApplicationView: View {
     var resolutionButtonsView: some View {
         HStack(spacing: Constants.main.standardSpacing) {
             Button {
-                application.showDenialSheet()
+                DenyApplicationAction(application: application).execute(environment: environment)
             } label: {
                 Image(icon: .general.failure)
                     .frame(maxWidth: .infinity)
