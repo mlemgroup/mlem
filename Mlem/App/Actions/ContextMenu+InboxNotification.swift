@@ -67,7 +67,7 @@ extension View {
 
 private extension ActionSeed {
     /// Resolves a seed against a message row, which may also carry a notification and/or report context.
-    func createAction(notification: InboxNotification?, message: Message, report: Report?) -> (any Actions.Action)? {
+    func createAction(notification: InboxNotification?, message: Message, report: Report?) -> (any Action)? {
         if let notification, let action = createAction(notification) { return action }
         if let report, let action = createAction(report) { return action }
         return createAction(message)

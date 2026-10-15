@@ -28,19 +28,15 @@ extension View {
 
     @ViewBuilder
     func quickSwipes(
-        instance: (any InstanceActionProviding)?,
+        instance: any InstanceActionProviding,
         configuration: InstanceActionConfiguration,
         leadingBuffer: SwipeBuffer
     ) -> some View {
-        if let instance {
-            quickSwipes(
-                leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
-                trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
-                leadingBuffer: leadingBuffer
-            )
-        } else {
-            quickSwipes(.init())
-        }
+        quickSwipes(
+            leading: configuration.swipes.leading.compactMap { $0.createAction(instance) },
+            trailing: configuration.swipes.trailing.compactMap { $0.createAction(instance) },
+            leadingBuffer: leadingBuffer
+        )
     }
 }
 

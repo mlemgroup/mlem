@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 import MlemBackend
 
-struct BlockAction: Actions.Action {
+struct BlockAction: Action {
     enum Relationship { case direct, indirect }
 
     enum ContentType {

@@ -18,9 +18,9 @@ class NavigationModel {
     
     struct ShareInfo {
         let url: URL
-        let actions: [Actions.Action]
+        let actions: [Action]
         
-        init(url: URL, actions: [Actions.Action] = []) {
+        init(url: URL, actions: [Action] = []) {
             self.url = url
             self.actions = actions
         }

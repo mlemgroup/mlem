@@ -61,21 +61,3 @@ class PopupAnchorModel {
         data = nil
     }
 }
-
-extension PopupAnchorModel {
-    func showPopup(_ actionGroup: ActionGroup) {
-        let children: [PopupAnchorModel.Action] = actionGroup.children.map { child in
-            .init(title: child.appearance.label, isDestructive: child.appearance.isDestructive) { @MainActor in
-                if let child = child as? BasicAction {
-                    child.callbackWithConfirmation(popupModel: self)
-                } else {
-                    assertionFailure("Not implemented")
-                }
-            }
-        }
-        showPopup(
-            message: actionGroup.prompt ?? actionGroup.appearance.label,
-            children
-        )
-    }
-}
