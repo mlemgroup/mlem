@@ -34,16 +34,3 @@ struct EllipsisMenu<Content: View>: View {
         .onTapGesture {} // prevent NavigationLink from disabling menu (thanks Swift)
     }
 }
-
-extension EllipsisMenu {
-    init(
-        icon: Icon = .general.menu,
-        size: CGFloat,
-        @ActionBuilder actions: @escaping () -> [any Action]
-    ) where Content == MenuButtons {
-        self.icon = icon
-        self.size = size
-
-        self.content = MenuButtons(actions: actions)
-    }
-}

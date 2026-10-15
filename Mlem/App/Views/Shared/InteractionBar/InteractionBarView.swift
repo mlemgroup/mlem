@@ -29,7 +29,7 @@ struct InteractionBarView: View {
         case comment(Comment)
         case notification(Comment, InboxNotification)
 
-        func createAction(seed: ActionSeed) -> Actions.Action? {
+        func createAction(seed: ActionSeed) -> Action? {
             switch self {
             case let .post(post):
                 seed.createAction(post)
@@ -195,7 +195,7 @@ struct InteractionBarView: View {
     }
     
     @ViewBuilder
-    private func actionView(_ action: Actions.Action) -> some View {
+    private func actionView(_ action: Action) -> some View {
         let appearance = action.createAppearance(environment: environment)
         let label = appearance.label(describing: .currentState)
         InteractionBarBasicButton(action: action)
@@ -213,7 +213,7 @@ struct InteractionBarView: View {
 private struct InteractionBarBasicButton: View {
     @Environment(\.self) var environment
     
-    let action: Actions.Action
+    let action: Action
     
     var body: some View {
         Button {
@@ -233,7 +233,7 @@ private struct EnrichedWidgetWrapper {
 }
 
 private enum EnrichedWidget {
-    case action(Actions.Action)
+    case action(Action)
     case counter(Counter)
     
     func viewId(entityId: Int, environment: EnvironmentValues) -> Int {

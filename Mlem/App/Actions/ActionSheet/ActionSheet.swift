@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct ActionSheetSection {
-    let actions: [any Actions.Action]
+    let actions: [any Action]
 }
 
 struct ActionSheet: View {
@@ -64,7 +64,7 @@ struct ActionSheet: View {
         }
     }
 
-    private func frames(for actions: [any Actions.Action]) -> [ActionFrame] {
+    private func frames(for actions: [any Action]) -> [ActionFrame] {
         actions.compactMap {
             let appearance = $0.createAppearance(environment: environment)
             if appearance.visibility == .hidden { return nil }
@@ -91,7 +91,7 @@ private struct ActionSheetButton: View {
     @Environment(PopupAnchorModel.self) var popupAnchorModel
     @Environment(\.self) var environment
 
-    let action: any Actions.Action
+    let action: any Action
 
     // Appearance passed separately for performance reasons
     let appearance: ActionAppearance
@@ -110,7 +110,7 @@ private struct ActionSheetButton: View {
 }
 
 private struct ActionFrame {
-    let action: any Actions.Action
+    let action: any Action
     let appearance: ActionAppearance
 }
 

@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct OpenModlogAction: Actions.Action {
+struct OpenModlogAction: Action {
     enum Content {
         case person(Person)
     }
