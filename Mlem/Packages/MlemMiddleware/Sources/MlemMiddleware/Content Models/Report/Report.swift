@@ -48,6 +48,8 @@ public class Report: UnifiedModelProviding, FeedLoadable {
     
     @MainActor
     public func update(with properties: ReportProperties) {
+        api.unreadCount?.verifyItem(itemType: .moderation, isRead: properties.resolved)
+        
         setIfChanged(\.resolver, properties.resolver)
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.resolved, properties.resolved)
@@ -86,6 +88,8 @@ public extension Report {
 public extension Report {
     func updateResolved(_ newValue: Bool) {
         self.resolved = newValue
+        // when verified value comes back, unreadCount updated through `update(with properties)`
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue)
         
         Task {
             await updateQueue.addItem {
