@@ -47,7 +47,6 @@ struct SearchView: View {
     
     @Setting(\.comment_compact) var compactComments
     
-    @State var searchBarFocused: Bool = false
     @State var isSearching: Bool = false
     @State var query: String = ""
     @State var hasAppeared: Bool = false
@@ -92,9 +91,20 @@ struct SearchView: View {
             .themedGroupedBackground()
             .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.large)
-            .navigationSearchBar(searchBar)
+            .searchable(
+                text: $query,
+                isPresented: $isSearching,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Search..."
+            )
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
-            .navigationSearchBarHiddenWhenScrolling(false)
+            .onSubmit(of: .search) {
+                if selectedTab == .posts || selectedTab == .comments {
+                    Task { @MainActor in
+                        await refresh(clearBeforeRefresh: true)
+                    }
+                }
+            }
             .toolbar { PasteLinkButtonView() }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) { _, newValue in
@@ -103,7 +113,7 @@ struct SearchView: View {
                     selectedTab = str.hasPrefix("@") ? .people : .communities
                     query = ""
                     page = .recents
-                    searchBarFocused = true
+                    isSearching = true
                     contentChangeTriggerDebouncedRefresh()
                     
                 default:
@@ -113,9 +123,11 @@ struct SearchView: View {
                 }
                 lastExecutedQuery[selectedTab] = query
             }
-            .onChange(of: isSearching) {
-                if isSearching, query.isEmpty {
+            .onChange(of: isSearching) { oldValue, newValue in
+                if newValue, query.isEmpty {
                     page = .recents
+                } else if oldValue, !newValue {
+                    returnToHome()
                 }
             }
             // Don't use `.task` here, because it triggers when navigating back
@@ -145,7 +157,7 @@ struct SearchView: View {
     
     @ViewBuilder
     var content: some View {
-        FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { searchBarFocused = true } content: {
+        FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { isSearching = true } content: {
             VStack(alignment: .leading, spacing: 0) {
                 if page != .home {
                     tabView
@@ -167,25 +179,6 @@ struct SearchView: View {
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
         .animation(.easeOut(duration: 0.2), value: page)
-    }
-    
-    func searchBar() -> SearchBar {
-        SearchBar(
-            "Search...",
-            text: $query,
-            isEditing: $isSearching,
-            onCommit: {
-                if selectedTab == .posts || selectedTab == .comments {
-                    Task { @MainActor in
-                        await refresh(clearBeforeRefresh: true)
-                    }
-                }
-            }
-        )
-        .returnKeyType(.search)
-        .showsCancelButton(page != .home)
-        .onCancel(perform: returnToHome)
-        .focused($searchBarFocused)
     }
 }
 
