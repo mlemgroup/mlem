@@ -48,8 +48,6 @@ public class Report: UnifiedModelProviding, FeedLoadable {
     
     @MainActor
     public func update(with properties: ReportProperties) {
-        api.unreadCount?.verifyItem(itemType: .moderation, isRead: properties.resolved)
-        
         setIfChanged(\.resolver, properties.resolver)
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.resolved, properties.resolved)
@@ -95,17 +93,21 @@ public extension Report {
             await updateQueue.addItem {
                 guard let myPersonId = try await self.api.myPersonId else { throw ApiClientError.notLoggedIn }
                 
+                var ret: ReportProperties
                 switch self.target.type {
                 case .post:
                     let snapshot = try await self.api.repository.resolvePostReport(id: self.id, resolved: self.resolved)
-                    return await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
                 case .comment:
                     let snapshot = try await self.api.repository.resolveCommentReport(id: self.id, resolved: self.resolved)
-                    return await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
                 case .message:
                     let snapshot = try await self.api.repository.resolveMessageReport(id: self.id, resolved: self.resolved)
-                    return await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
                 }
+                
+                self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: ret.resolved)
+                return ret
             }
         }
     }
