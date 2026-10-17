@@ -9,7 +9,7 @@ public class PostReportChildFeedLoader: ModMailChildFeedLoader {
     class Fetcher: ModMailFetcher {
         override func fetchContent(_ pageInfo: PageInfo) async throws -> PagedResponse<ModMailItem> {
             do {
-                let response = try await api.getPostReports(pageInfo: pageInfo)
+                let response = try await api.getPostReports(pageInfo: pageInfo, unresolvedOnly: unreadOnly)
                 return .init(
                     items: response.items.map { .report($0) },
                     nextLocation: response.nextLocation
