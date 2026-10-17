@@ -130,6 +130,7 @@ internal extension LemmyConnection {
                     sort: sortType,
                     searchTerm: query,
                     searchTitleOnly: nil,
+                    communityId: nil,
                     pageCursor: try pageInfo.cursor.requireCursorString,
                     limit: pageInfo.limit
                 )
