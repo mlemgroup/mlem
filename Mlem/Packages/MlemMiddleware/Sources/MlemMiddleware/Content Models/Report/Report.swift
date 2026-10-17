@@ -86,7 +86,6 @@ public extension Report {
 public extension Report {
     func updateResolved(_ newValue: Bool) {
         self.resolved = newValue
-        // when verified value comes back, unreadCount updated through `update(with properties)`
         api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue)
         
         Task {
