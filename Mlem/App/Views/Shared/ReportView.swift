@@ -14,7 +14,7 @@ struct ReportView: View {
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     
-    let report: Report
+    @State var report: Report
     
     var body: some View {
         targetView
