@@ -24,7 +24,7 @@ public extension Report {
     typealias FilterType = ModMailItemFilterType
     
     static func == (lhs: Report, rhs: Report) -> Bool {
-        lhs.target.case == rhs.target.case && lhs.id == rhs.id
+        lhs.target.type == rhs.target.type && lhs.id == rhs.id
     }
     
     func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {

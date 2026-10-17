@@ -77,7 +77,7 @@ public extension Report {
     var modMailId: Int {
         var hasher: Hasher = .init()
         hasher.combine("report")
-        hasher.combine(target.case)
+        hasher.combine(target.type)
         hasher.combine(id)
         return hasher.finalize()
     }
