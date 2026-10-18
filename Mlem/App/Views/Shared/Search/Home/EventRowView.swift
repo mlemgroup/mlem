@@ -19,19 +19,37 @@ struct EventRowView: View {
                 openURL(url)
             } 
         } label: {
-            HStack(spacing: 15) {
-                CircleCroppedImageView(
-                    url: event.logos.first?.url,
-                    frame: SearchHomeLabelStyle.iconSize,
-                    fallback: .event
-                )
-                Text(event.name)
-                Spacer()
-                dateView
+            labelView
                 .padding(.trailing, 15)
-            }
         }
         .buttonStyle(.chevron)
+    }
+
+    @ViewBuilder
+    var labelView: some View {
+        HStack(spacing: 15) {
+            avatarView
+            ViewThatFits {
+                HStack(spacing: 15) {
+                    Text(event.name)
+                    Spacer()
+                    dateView
+                }
+                VStack {
+                    Text(event.name)
+                    dateView
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    var avatarView: some View {
+        CircleCroppedImageView(
+            url: event.logos.first?.url,
+            frame: SearchHomeLabelStyle.iconSize,
+            fallback: .event
+        )
     }
 
     @ViewBuilder
