@@ -10,17 +10,21 @@ import SwiftUI
 struct AdaptableSearchHomeListView<Content: View>: View {
     var content: Content
 
+    @State private var width: CGFloat = 0
+
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            if geometry.size.width > 500 {
+        Group {
+            if width > 500 {
                 SearchHomeGridView { content }
             } else {
                 SearchHomeListView { content }
             }
         }
+        .frame(maxWidth: .infinity)
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
     }
 }
