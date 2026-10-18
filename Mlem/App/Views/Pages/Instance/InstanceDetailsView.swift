@@ -19,12 +19,12 @@ struct InstanceDetailsView: View {
     
     var body: some View {
         content
-            .task {
-                let fetchedData = await loadUptimeData(instance: instance)
-                withAnimation(.easeOut(duration: 0.2)) {
-                    uptimeData = fetchedData
-                }
-            }
+            // .task {
+            //     let fetchedData = await loadUptimeData(instance: instance)
+            //     withAnimation(.easeOut(duration: 0.2)) {
+            //         uptimeData = fetchedData
+            //     }
+            // }
     }
     
     var content: some View {
@@ -38,16 +38,16 @@ struct InstanceDetailsView: View {
             
             statsView
             
-            FormSection {
-                if case let .success(uptimeData) = uptimeData {
-                    NavigationLink(.instanceUptime(instance, uptimeData: uptimeData)) {
-                        uptimeSummary
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    uptimeSummary
-                }
-            }
+            // FormSection {
+            //     if case let .success(uptimeData) = uptimeData {
+            //         NavigationLink(.instanceUptime(instance, uptimeData: uptimeData)) {
+            //             uptimeSummary
+            //         }
+            //         .buttonStyle(.plain)
+            //     } else {
+            //         uptimeSummary
+            //     }
+            // }
             
             if instance.api.supports(.viewInstanceSettings, defaultValue: true) {
                 settingsListView

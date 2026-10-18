@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct AppointAdminAction: Actions.Action {
+struct AppointAdminAction: Action {
     let entity: Person
 }
 

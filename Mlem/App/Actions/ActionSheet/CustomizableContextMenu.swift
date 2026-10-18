@@ -13,11 +13,11 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
     @Environment(\.self) var environment
 
     let configurationKeyPathGenerator: (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>
-    let createAction: (ActionSeed, EnvironmentValues) -> (any Actions.Action)?
+    let createAction: (ActionSeed, EnvironmentValues) -> (any Action)?
 
     fileprivate init(
         configuration keyPathGenerator: @escaping (EnvironmentValues) -> ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
+        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Action)?,
     ) {
         self.configurationKeyPathGenerator = keyPathGenerator
         self.createAction = createAction
@@ -51,7 +51,7 @@ struct CustomizableActionMenu<Configuration: ContextMenuConfiguration>: View {
         }
     }
 
-    func createActions(seeds: [ActionSeed]) -> [any Actions.Action] {
+    func createActions(seeds: [ActionSeed]) -> [any Action] {
         seeds.compactMap { self.createAction($0, environment) }
     }
 }
@@ -68,7 +68,7 @@ extension CustomizableActionMenu {
 
     init(
         configuration keyPath: ReferenceWritableKeyPath<SettingsValues, Configuration>,
-        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Actions.Action)?,
+        createAction: @escaping (ActionSeed, EnvironmentValues) -> (any Action)?,
     ) {
         self.configurationKeyPathGenerator = { _ in keyPath }
         self.createAction = createAction
