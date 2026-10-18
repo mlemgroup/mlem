@@ -14,14 +14,6 @@ struct ToolbarEllipsisMenu<Content: View>: View {
         self.content = content()
     }
     
-    init(_ actions: [any Action]) where Content == ForEach<[any Action], String, MenuButton> {
-        self.init(content: {
-            ForEach(actions, id: \.id) { action in
-                MenuButton(action: action)
-            }
-        })
-    }
-    
     var body: some View {
         Menu {
             content

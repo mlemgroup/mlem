@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct CopyNameAction: Actions.Action {
+struct CopyNameAction: Action {
     enum Relationship { case identity, author }
     let text: String
     let relationship: Relationship

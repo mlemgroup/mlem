@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct AppointModeratorAction: Actions.Action {
+struct AppointModeratorAction: Action {
     let entity: Person
 }
 

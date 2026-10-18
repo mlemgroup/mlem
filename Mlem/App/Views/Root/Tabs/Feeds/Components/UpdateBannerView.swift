@@ -8,6 +8,7 @@
 import MlemMiddleware
 import SwiftUI
 import Theming
+import QuickSwipes
 
 struct UpdateBannerView: View {
     @Environment(AppState.self) var appState
@@ -47,9 +48,9 @@ struct UpdateBannerView: View {
         .clipShape(.rect(cornerRadius: Constants.main.standardSpacing))
         .contentShape(.contextMenuPreview, .rect(cornerRadius: Constants.main.standardSpacing))
         .quickSwipes(trailing: [
-            BasicAction(
-                id: "dismissTestFlightUpdatePopup",
-                appearance: .init(label: "Dismiss", color: .themedNegative, icon: Icons.close),
+            QuickSwipeAction(
+                icon: .general.close,
+                color: .themedNegative,
                 callback: dismiss
             )
         ], leadingBuffer: .standard)

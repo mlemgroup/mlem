@@ -17,8 +17,8 @@ extension Sharable {
             .appendingPathComponent(actorId.url.path()))
     }
     
-    func shareSheetActions() -> [Actions.Action] {
-        var shareActions: [Actions.Action] = [SendLinkInMessageAction(url: self.actorId.url)]
+    func shareSheetActions() -> [Action] {
+        var shareActions: [Action] = [SendLinkInMessageAction(url: self.actorId.url)]
         if let post = self as? Post {
             shareActions.prepend(CrosspostAction(entity: post))
         }
