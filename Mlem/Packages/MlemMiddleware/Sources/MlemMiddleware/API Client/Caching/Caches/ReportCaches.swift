@@ -13,25 +13,14 @@ class ReportCache: CoreCache<Report> {
     func getModel(
         api: ApiClient,
         from snapshot: ReportSnapshot,
-        myPersonId: Int,
-        semaphore: UInt? = nil
+        myPersonId: Int
     ) -> Report {
         if let item = retrieveModel(cacheId: snapshot.cacheId) {
-            item.update(with: snapshot, semaphore: semaphore)
+            updateModel(item, with: snapshot, myPersonId: myPersonId)
             return item
         }
         
-        let newItem: Report = .init(
-            api: api,
-            id: snapshot.id,
-            creator: api.caches.person.getModel(api: api, from: .person1(snapshot.creator), semaphore: semaphore),
-            resolver: api.caches.person.getOptionalModel(api: api, from: .person1(snapshot.resolver), semaphore: semaphore),
-            target: .init(from: snapshot.target, api: api, myPersonId: myPersonId),
-            resolved: snapshot.resolved,
-            reason: snapshot.reason,
-            created: snapshot.created,
-            updated: snapshot.updated
-        )
+        let newItem = performModelTranslation(api: api, from: snapshot, myPersonId: myPersonId)
         itemCache.put(newItem)
         return newItem
     }
@@ -40,9 +29,20 @@ class ReportCache: CoreCache<Report> {
     func getModels(
         api: ApiClient,
         from snapshots: [ReportSnapshot],
-        myPersonId: Int,
-        semaphore: UInt? = nil
+        myPersonId: Int
     ) -> [Report] {
-        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
+        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId) }
+    }
+    
+    @MainActor
+    func performModelTranslation(api: ApiClient, from apiType: ReportSnapshot, myPersonId: Int) -> Report {
+        return .init(api: api, properties: .init(api: api, snapshot: apiType, myPersonId: myPersonId))
+    }
+    
+    func updateModel(_ item: Report, with apiType: ReportSnapshot, myPersonId: Int) {
+        // attempt a direct update through the queue to avoid overwriting more recent data
+        Task {
+            await item.updateQueue.attemptDirectUpdate(with: .init(api: item.api, snapshot: apiType, myPersonId: myPersonId))
+        }
     }
 }
