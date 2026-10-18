@@ -44,6 +44,8 @@ struct SearchView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
     @Setting(\.comment_compact) var compactComments
     
@@ -89,12 +91,12 @@ struct SearchView: View {
         content
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
-            .navigationTitle("Search")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(horizontalSizeClass == .regular ? "" : "Search")
+            .navigationBarTitleDisplayMode(horizontalSizeClass == .regular ? .inline : .large)
             .searchable(
                 text: $query,
                 isPresented: $isSearching,
-                placement: .navigationBarDrawer(displayMode: .always),
+                placement: .toolbarPrincipal,
                 prompt: "Search..."
             )
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
@@ -105,7 +107,9 @@ struct SearchView: View {
                     }
                 }
             }
-            .toolbar { PasteLinkButtonView() }
+            .toolbar {
+                toolbarContent
+            }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) { _, newValue in
                 switch newValue {
@@ -124,7 +128,7 @@ struct SearchView: View {
                 lastExecutedQuery[selectedTab] = query
             }
             .onChange(of: isSearching) { oldValue, newValue in
-                if newValue, query.isEmpty {
+                if newValue, query.isEmpty, horizontalSizeClass == .compact {
                     page = .recents
                 } else if oldValue, !newValue {
                     returnToHome()
@@ -154,19 +158,50 @@ struct SearchView: View {
             }
             .task(id: appState.firstApi) { await setupFilters() }
     }
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        if horizontalSizeClass == .regular {
+            ToolbarItem(placement: .topBarLeading) {
+                Menu {
+                    Picker(selectedTab.label, selection: $selectedTab) {
+                        ForEach(Tab.allCases, id: \.self) { tab in
+                            Text(tab.label)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(selectedTab.label)
+                        Image(icon: .general.dropDown)
+                            .imageScale(.small)
+                    }
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                // Button("Toggle filters", icon: .general.filterMenu) {
+                //     hapticManager.play(haptic: .gentleInfo, tier: .low)
+                //     filtersActive.toggle()
+                // }
+                // .buttonStyle(.glassProminent)
+                Toggle("Filters", icon: .general.filterMenu, isOn: $filtersActive)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            PasteLinkButtonView()
+        }
+    }
     
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { isSearching = true } content: {
             VStack(alignment: .leading, spacing: 0) {
-                if page != .home {
+                if page != .home, horizontalSizeClass == .compact {
                     tabView
-                    if filtersActive {
-                        filtersView
-                    }
+                }
+                if filtersActive, page != .home || horizontalSizeClass == .regular {
+                    filtersView
                 }
             }
-            .padding(.top, -8)
             switch page {
             case .recents:
                 recentSearchesListView
@@ -179,6 +214,7 @@ struct SearchView: View {
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
         .animation(.easeOut(duration: 0.2), value: page)
+        .contentMargins(.top, horizontalSizeClass == .compact ? -8 : 0)
     }
 }
 

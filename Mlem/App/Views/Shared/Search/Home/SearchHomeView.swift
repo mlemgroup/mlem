@@ -50,7 +50,7 @@ struct SearchHomeView: View {
     
     @ViewBuilder
     var topRow: some View {
-        SearchHomeListView {
+        AdaptableSearchHomeListView {
             NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
                 .tint(.themedSavedFeed)
             NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
@@ -67,7 +67,7 @@ struct SearchHomeView: View {
             eventsMenuView
         }
         .padding(.top, 15)
-        SearchHomeListView {
+        AdaptableSearchHomeListView {
             ForEach(events) { 
                 EventRowView(event: $0)
             }
