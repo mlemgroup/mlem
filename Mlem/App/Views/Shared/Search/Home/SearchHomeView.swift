@@ -29,10 +29,12 @@ struct SearchHomeView: View {
         ) {
             if appState.firstAccount.accountType != .guest {
                 subheadingView("Visit Again")
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 topRow
             }
             
             subheadingView("Browse")
+                .frame(maxWidth: .infinity, alignment: .leading)
             browseList
                 .padding(.top, 15)
 
@@ -54,7 +56,6 @@ struct SearchHomeView: View {
         Text(text)
             .font(.title)
             .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, -4)
     }
     
@@ -73,12 +74,13 @@ struct SearchHomeView: View {
     func eventsView(_ events: [Event]) -> some View {
         HStack {
             subheadingView("Events")
-                .padding(.trailing, 20)
+                .padding(.trailing, 5)
             if !useWideLayout {
                 Spacer()
             }
             eventsMenuView
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 15)
         AdaptableSearchHomeListView(isGrid: useWideLayout) {
             ForEach(events) { 
@@ -103,7 +105,7 @@ struct SearchHomeView: View {
     
     @ViewBuilder
     var browseList: some View {
-        HStack(alignment: .center, spacing: UIDevice.isPad ? 30 : 0) {
+        HStack(alignment: .center, spacing: useWideLayout ? 30 : 0) {
             NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
                 .tint(.themedCommunityAccent)
 
