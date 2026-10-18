@@ -121,9 +121,9 @@ struct SearchView: View {
                     contentChangeTriggerDebouncedRefresh()
                     
                 default:
-                    if page != .home {
+                    // if page != .home {
                         page = query.isEmpty ? .recents : .results
-                    }
+                    // }
                 }
                 lastExecutedQuery[selectedTab] = query
             }

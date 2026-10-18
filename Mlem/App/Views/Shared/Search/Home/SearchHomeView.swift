@@ -27,6 +27,14 @@ struct SearchHomeView: View {
             alignment: useWideLayout ? .leading : .center,
             spacing: 20
         ) {
+            subheadingView("Recently Searched")
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if let session = appState.firstSession as? UserSession,
+                let visitHistory = session.visitHistory {
+                RecentSearchListView(visitHistory: visitHistory)
+            }
+
             if appState.firstAccount.accountType != .guest {
                 subheadingView("Visit Again")
                     .frame(maxWidth: .infinity, alignment: .leading)
