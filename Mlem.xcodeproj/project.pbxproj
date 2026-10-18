@@ -62,6 +62,8 @@
 		031E2D5B2BEFC9460003BC45 /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */; };
 		031E2D5D2BEFCC630003BC45 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031E2D5C2BEFCC630003BC45 /* SettingsView.swift */; };
 		031EC5302E5F77D7003408B7 /* FeedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031EC52F2E5F77D7003408B7 /* FeedContext.swift */; };
+		031F88873084EDD4003B7247 /* AdaptableSearchHomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031F88863084EDD4003B7247 /* AdaptableSearchHomeListView.swift */; };
+		031F88893084EDF4003B7247 /* SearchHomeGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031F88883084EDF4003B7247 /* SearchHomeGridView.swift */; };
 		0320B64F2C8A638A00D38548 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B64E2C8A638A00D38548 /* SignUpView.swift */; };
 		0320B6542C8B65EB00D38548 /* Captcha+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */; };
 		0320B6582C8BB3C400D38548 /* SignUpView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */; };
@@ -673,6 +675,8 @@
 		031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		031E2D5C2BEFCC630003BC45 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		031EC52F2E5F77D7003408B7 /* FeedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContext.swift; sourceTree = "<group>"; };
+		031F88863084EDD4003B7247 /* AdaptableSearchHomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptableSearchHomeListView.swift; sourceTree = "<group>"; };
+		031F88883084EDF4003B7247 /* SearchHomeGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeGridView.swift; sourceTree = "<group>"; };
 		0320B64E2C8A638A00D38548 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		0320B6532C8B65EB00D38548 /* Captcha+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Captcha+Extensions.swift"; sourceTree = "<group>"; };
 		0320B6572C8BB3C400D38548 /* SignUpView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignUpView+Views.swift"; sourceTree = "<group>"; };
@@ -1296,6 +1300,8 @@
 				0311ADBC2E4F668900EC3120 /* TopCommunitiesListView.swift */,
 				0311ADBE2E4F68D000EC3120 /* TopPeopleListView.swift */,
 				0311ADC02E4F693B00EC3120 /* TopInstancesListView.swift */,
+				031F88863084EDD4003B7247 /* AdaptableSearchHomeListView.swift */,
+				031F88883084EDF4003B7247 /* SearchHomeGridView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -3092,6 +3098,7 @@
 				030056A62D7DBD4F00EB0BA3 /* Sharable+Extensions.swift in Sources */,
 				03DD69422D4FDE8900F8950D /* Person+Mock.swift in Sources */,
 				03D284062D2AEE3A00A6659B /* TabBarSettingsView.swift in Sources */,
+				031F88893084EDF4003B7247 /* SearchHomeGridView.swift in Sources */,
 				03D006322ECCBA95001BF97D /* QuickSwipeAction+Actions.swift in Sources */,
 				0320B6612C8DFCF100D38548 /* SearchView+FiltersView.swift in Sources */,
 				034B94892C09360A00039AF4 /* Int+Extensions.swift in Sources */,
@@ -3216,6 +3223,7 @@
 				03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */,
 				0315B1C62C754802006D4F82 /* PostEditorView+Logic.swift in Sources */,
 				0370299F2D6B743B00B749DF /* PostMockType+Realistic.swift in Sources */,
+				031F88873084EDD4003B7247 /* AdaptableSearchHomeListView.swift in Sources */,
 				CDE1F1942C63DF44008AF042 /* PlatformConstants.swift in Sources */,
 				0335AE112D8991330094FFD9 /* View+HiddenNavigationTitle.swift in Sources */,
 				0397D4602C66113F002C6CDC /* CommentBodyView.swift in Sources */,

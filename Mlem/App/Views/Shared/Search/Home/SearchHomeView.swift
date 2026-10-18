@@ -20,8 +20,13 @@ struct SearchHomeView: View {
     
     @Setting(\.events_showEvents) var showEvents
 
+    @State private var width: CGFloat = 0
+
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(
+            alignment: useWideLayout ? .leading : .center,
+            spacing: 20
+        ) {
             if appState.firstAccount.accountType != .guest {
                 subheadingView("Visit Again")
                 topRow
@@ -37,6 +42,11 @@ struct SearchHomeView: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 20)
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
+    }
+
+    var useWideLayout: Bool {
+        width > 500
     }
 
     @ViewBuilder
@@ -50,7 +60,7 @@ struct SearchHomeView: View {
     
     @ViewBuilder
     var topRow: some View {
-        AdaptableSearchHomeListView {
+        AdaptableSearchHomeListView(isGrid: useWideLayout) {
             NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
                 .tint(.themedSavedFeed)
             NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
@@ -63,11 +73,14 @@ struct SearchHomeView: View {
     func eventsView(_ events: [Event]) -> some View {
         HStack {
             subheadingView("Events")
-            Spacer()
+                .padding(.trailing, 20)
+            if !useWideLayout {
+                Spacer()
+            }
             eventsMenuView
         }
         .padding(.top, 15)
-        AdaptableSearchHomeListView {
+        AdaptableSearchHomeListView(isGrid: useWideLayout) {
             ForEach(events) { 
                 EventRowView(event: $0)
             }
@@ -94,12 +107,12 @@ struct SearchHomeView: View {
             NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
                 .tint(.themedCommunityAccent)
 
-            if !UIDevice.isPad { Spacer() }
+            if !useWideLayout { Spacer() }
 
             NavigationLink("Users", icon: .lemmy.person, destination: .topPeople)
                 .tint(.themedPersonAccent)
 
-            if !UIDevice.isPad { Spacer() }
+            if !useWideLayout { Spacer() }
 
             NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
                 .tint(.themedInstanceAccent)
