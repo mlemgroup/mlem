@@ -14,7 +14,7 @@ import Theming
 struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
     @Environment(\.palette) var palette
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.searchBarMode) var searchBarMode
 
     @Environment(AppState.self) var appState
     @Environment(EventsTracker.self) var eventsTracker
@@ -27,7 +27,7 @@ struct SearchHomeView: View {
         sectionsView {
             if let session = appState.firstSession as? UserSession,
                 let visitHistory = session.visitHistory,
-                horizontalSizeClass == .regular {
+                searchBarMode == .regular {
                 Section("Recently Searched") {
                     RecentSearchListView(visitHistory: visitHistory)
                 }
