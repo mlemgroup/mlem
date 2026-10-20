@@ -98,7 +98,7 @@ struct SearchView: View {
                 text: $query,
                 isPresented: $isSearching,
                 placement: .toolbarPrincipal,
-                prompt: "Search..."
+                prompt: prompt
             )
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
             .onSubmit(of: .search) {
