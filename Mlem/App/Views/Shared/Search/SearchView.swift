@@ -44,15 +44,16 @@ struct SearchView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     @Setting(\.comment_compact) var compactComments
     
     @State var isSearching: Bool = false
     @State var query: String = ""
+
+    // Separate state var to avoid unnecessary view updates
+    @State var queryIsEmpty: Bool = true
     @State var hasAppeared: Bool = false
-    @State var page: Page = .home
     
     @State var filtersActive: Bool = false
     @State var communityFilters: CommunityFilters?
@@ -112,27 +113,16 @@ struct SearchView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) { _, newValue in
-                switch newValue {
-                case let str where str.hasPrefix("@"), let str where str.hasPrefix("!"):
-                    selectedTab = str.hasPrefix("@") ? .people : .communities
+                if self.queryIsEmpty != newValue.isEmpty {
+                    self.queryIsEmpty = newValue.isEmpty
+                }
+                if newValue.hasPrefix("@") || newValue.hasPrefix("!") {
+                    selectedTab = newValue.hasPrefix("@") ? .people : .communities
                     query = ""
-                    page = .recents
                     isSearching = true
                     contentChangeTriggerDebouncedRefresh()
-                    
-                default:
-                    // if page != .home {
-                        page = query.isEmpty ? .recents : .results
-                    // }
                 }
                 lastExecutedQuery[selectedTab] = query
-            }
-            .onChange(of: isSearching) { oldValue, newValue in
-                if newValue, query.isEmpty, horizontalSizeClass == .compact {
-                    page = .recents
-                } else if oldValue, !newValue {
-                    returnToHome()
-                }
             }
             // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
@@ -208,8 +198,11 @@ struct SearchView: View {
             case .home:
                 SearchHomeView()
                     .frame(maxWidth: .infinity)
+                    .geometryGroup()
             case .results:
                 resultsListView
+                    .frame(maxWidth: .infinity)
+                    .geometryGroup()
             }
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
