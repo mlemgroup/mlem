@@ -120,7 +120,7 @@ struct SearchHomeView: View {
     func sectionsView(@ViewBuilder _ content: () -> some View) -> some View {
         VStack(
             alignment: useWideLayout ? .leading : .center,
-            spacing: 30
+            spacing: useWideLayout ? 50 : 30
         ) {
             ForEach(sections: content()) { section in
                 VStack(alignment: .leading, spacing: 16) {
