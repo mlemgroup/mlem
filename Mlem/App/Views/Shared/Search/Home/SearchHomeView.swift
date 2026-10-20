@@ -130,40 +130,4 @@ struct SearchHomeView: View {
         .buttonStyle(.empty)
         .padding(.horizontal, 20)
     }
-    
-    @ViewBuilder
-    var browseGrid: some View {
-        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 16) {
-            GridButton(title: "Top Communities", color: .themedCommunityAccent)
-            GridButton(title: "Trending Communities", color: .themedColorfulAccent(0))
-            GridButton(title: "Users", color: .themedPersonAccent)
-            GridButton(title: "Instances", color: .themedInstanceAccent)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, -4)
-    }
-}
-
-private struct GridButton: View {
-    @Environment(\.palette) var palette
-    
-    let title: LocalizedStringResource
-    let color: ThemedColor
-    
-    var body: some View {
-        ZStack {
-            Text(title)
-                .foregroundStyle(.themedContrastingLabel)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 10)
-        }
-        .aspectRatio(5 / 3, contentMode: .fit)
-        .frame(maxWidth: .infinity)
-        .background(color.resolve(with: palette).gradient)
-        .clipShape(.rect(cornerRadius: 16))
-        .padding(.horizontal, 4)
-        .onTapGesture {}
-    }
 }
