@@ -11,7 +11,7 @@ import SwiftUI
 import Theming
 
 struct CommunityListRowBody<Content: View>: View {
-    enum Complication { case instance, subscriberCount }
+    enum Complication { case type, instance, subscriberCount }
     enum Readout { case subscribers }
     
     @Environment(\.isEnabled) var isEnabled
@@ -108,6 +108,8 @@ struct CommunityListRowBody<Content: View>: View {
                 }
                 Group {
                     switch complication {
+                    case .type:
+                        Text("Community")
                     case .instance:
                         Text(verbatim: "@\(community.host)")
                     case .subscriberCount:

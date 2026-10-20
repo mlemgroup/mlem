@@ -19,7 +19,7 @@ struct RecentSearchListView: View {
                 Button {
                     navigation.push(.community(community, visitContext: .other))
                 } label: {
-                    CommunityListRowBody(community)
+                    CommunityListRowBody(community, complications: [.type])
                 }
                 .buttonStyle(.empty)
                 .padding(.vertical, 6)
