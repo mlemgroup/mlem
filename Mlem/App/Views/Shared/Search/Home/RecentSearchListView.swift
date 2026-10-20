@@ -14,7 +14,7 @@ struct RecentSearchListView: View {
 
     var body: some View {
         let communities = visitHistory.communities(withContext: .search)
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 16)], spacing: 16) {
             ForEach(communities) { community in
                 Button {
                     navigation.push(.community(community, visitContext: .other))

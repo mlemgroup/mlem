@@ -15,7 +15,7 @@ struct SearchHomeGridView<Content: View>: View {
     }
 
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 200), spacing: 16)], spacing: 16) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 16)], spacing: 16) {
             Group(subviews: content) { subviews in
                 ForEach(subviews) { subview in
                     subview
