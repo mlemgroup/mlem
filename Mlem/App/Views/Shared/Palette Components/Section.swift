@@ -8,47 +8,21 @@
 import Foundation
 import SwiftUI
 
-struct Section<Parent: View, Content: View, Footer: View>: View {
-    @ViewBuilder let header: () -> Parent
-    @ViewBuilder let content: () -> Content
-    @ViewBuilder let footer: () -> Footer
-
-    init(
-        @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder header: @escaping () -> Parent = { EmptyView() },
-        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
-    ) {
-        self.header = header
-        self.content = content
-        self.footer = footer
-    }
-
+extension Section {
     init(
         _ header: LocalizedStringResource,
         @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
+        @ViewBuilder footer: @escaping () -> Footer
     ) where Parent == Text {
-        self.header = { Text(header) }
-        self.content = content
-        self.footer = footer
+        self.init(content: content, header: { Text(header) }, footer: footer)
     }
     
     @_disfavoredOverload
     init(
-        _ header: String,
+        _ header: some StringProtocol,
         @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
+        @ViewBuilder footer: @escaping () -> Footer
     ) where Parent == Text {
-        self.header = { Text(header) }
-        self.content = content
-        self.footer = footer
-    }
-
-    var body: some View {
-        SwiftUI.Section(
-            content: content,
-            header: { header().foregroundStyle(.themedSecondary) },
-            footer: { footer().foregroundStyle(.themedSecondary) }
-        )
+        self.init(content: content, header: { Text(header) }, footer: footer)
     }
 }

@@ -24,11 +24,21 @@ struct Form<Content: View>: View {
     
     var body: some View {
         SwiftUI.Form {
-            content()
-                .foregroundStyle(.themedPrimary)
-                .listRowBackground(palette.groupedBackground.secondary)
-                .buttonStyle(PaletteButton())
+            ForEach(sections: content()) { section in
+                Section {
+                    section.content
+                        .foregroundStyle(.themedPrimary)
+                } header: {
+                    section.header
+                        .foregroundStyle(.themedSecondary)
+                } footer: {
+                    section.footer
+                        .foregroundStyle(.themedSecondary)
+                }
+            }
+            .listRowBackground(palette.groupedBackground.secondary)
         }
+        .buttonStyle(PaletteButton())
         .tint(tint)
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
