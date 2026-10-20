@@ -100,7 +100,6 @@ struct SearchView: View {
                 placement: .toolbarPrincipal,
                 prompt: "Search..."
             )
-            .searchPresentationToolbarBehavior(.avoidHidingContent)
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
             .onSubmit(of: .search) {
                 if selectedTab == .posts || selectedTab == .comments {

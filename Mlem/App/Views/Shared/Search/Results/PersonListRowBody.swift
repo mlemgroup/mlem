@@ -5,6 +5,7 @@
 //  Created by Sjmarf on 28/06/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 
@@ -112,7 +113,7 @@ struct PersonListRowBody<Content: View>: View {
                 Group {
                     switch complication {
                     case .type:
-                        Text("User")
+                        Image(icon: .lemmy.person)
                     case .instance:
                         Text(verbatim: "@\(person.host)")
                     case .date:

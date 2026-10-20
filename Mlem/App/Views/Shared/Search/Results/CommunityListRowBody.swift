@@ -109,7 +109,7 @@ struct CommunityListRowBody<Content: View>: View {
                 Group {
                     switch complication {
                     case .type:
-                        Text("Community")
+                        Image(icon: .lemmy.community)
                     case .instance:
                         Text(verbatim: "@\(community.host)")
                     case .subscriberCount:

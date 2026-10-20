@@ -32,21 +32,21 @@ struct RecentSearchListView: View {
             Button {
                 navigation.push(.community(community, visitContext: .other))
             } label: {
-                CommunityListRowBody(community, complications: [.type])
+                CommunityListRowBody(community, complications: [.type, .instance])
             }
             .contextMenu(community: community)
         case let .person(person):
             Button {
                 navigation.push(.person(person, visitContext: .other))
             } label: {
-                PersonListRowBody(person, complications: [.type])
+                PersonListRowBody(person, complications: [.type, .instance])
             }
             .contextMenu(person: person)
         case let .instance(instance):
             Button {
                 navigation.push(.instanceStub(instance.instanceStub, visitContext: .other))
             } label: {
-                InstanceListRowBody(instance, complications: [.type])
+                InstanceListRowBody(instance, complications: [.type, .software])
             }
             .contextMenu(instance: instance)
         }
