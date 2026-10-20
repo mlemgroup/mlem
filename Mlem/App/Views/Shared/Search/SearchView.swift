@@ -168,11 +168,6 @@ struct SearchView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                // Button("Toggle filters", icon: .general.filterMenu) {
-                //     hapticManager.play(haptic: .gentleInfo, tier: .low)
-                //     filtersActive.toggle()
-                // }
-                // .buttonStyle(.glassProminent)
                 Toggle("Filters", icon: .general.filterMenu, isOn: $filtersActive)
             }
         }
