@@ -20,7 +20,7 @@ struct SearchHomeGridView<Content: View>: View {
                 ForEach(subviews) { subview in
                     subview
                         .lineLimit(1)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(16)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 16))
                         .paletteBorder(cornerRadius: 16)
@@ -28,5 +28,6 @@ struct SearchHomeGridView<Content: View>: View {
             }
         }
         .labelStyle(SearchHomeLabelStyle())
+        .buttonStyle(.empty)
     }
 }

@@ -75,7 +75,6 @@ struct SearchHomeView: View {
             NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
                 .tint(.themedUpvote)
         }
-        .buttonStyle(.chevron)
     }
 
     @ViewBuilder
