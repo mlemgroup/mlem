@@ -13,7 +13,7 @@ extension SearchView {
     var page: Page {
         if !queryIsEmpty {
             .results
-        } else if isSearching, horizontalSizeClass == .compact {
+        } else if isSearching, searchBarMode == .compact {
             .recents
         } else {
             .home

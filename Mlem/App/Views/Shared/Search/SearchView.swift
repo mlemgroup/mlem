@@ -44,7 +44,7 @@ struct SearchView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.searchBarMode) var searchBarMode
     
     @Setting(\.comment_compact) var compactComments
     
@@ -92,14 +92,15 @@ struct SearchView: View {
         content
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
-            .navigationTitle(horizontalSizeClass == .regular ? "" : "Search")
-            .navigationBarTitleDisplayMode(horizontalSizeClass == .regular ? .inline : .large)
+            .navigationTitle(searchBarMode == .regular ? "" : "Search")
+            .navigationBarTitleDisplayMode(searchBarMode == .regular ? .inline : .large)
             .searchable(
                 text: $query,
                 isPresented: $isSearching,
                 placement: .toolbarPrincipal,
                 prompt: "Search..."
             )
+            .searchPresentationToolbarBehavior(.avoidHidingContent)
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
             .onSubmit(of: .search) {
                 if selectedTab == .posts || selectedTab == .comments {
@@ -151,7 +152,7 @@ struct SearchView: View {
 
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        if horizontalSizeClass == .regular {
+        if searchBarMode == .regular {
             ToolbarItem(placement: .topBarLeading) {
                 Menu {
                     Picker(selectedTab.label, selection: $selectedTab) {
@@ -180,10 +181,10 @@ struct SearchView: View {
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { isSearching = true } content: {
             VStack(alignment: .leading, spacing: 0) {
-                if page != .home, horizontalSizeClass == .compact {
+                if page != .home, searchBarMode == .compact {
                     tabView
                 }
-                if filtersActive, page != .home || horizontalSizeClass == .regular {
+                if filtersActive, page != .home || searchBarMode == .regular {
                     filtersView
                 }
             }
@@ -202,7 +203,7 @@ struct SearchView: View {
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
         .animation(.easeOut(duration: 0.2), value: page)
-        .contentMargins(.top, horizontalSizeClass == .compact ? -8 : 0)
+        .contentMargins(.top, searchBarMode == .compact ? -8 : 0)
     }
 }
 
