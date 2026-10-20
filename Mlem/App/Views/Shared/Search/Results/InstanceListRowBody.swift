@@ -12,6 +12,7 @@ import SwiftUI
 import Theming
 
 struct InstanceListRowBody<Content: View>: View {
+    enum Complication { case type, software }
     enum Readout { case users }
 
     @Setting(\.safety_blurNsfw) var blurNsfw
@@ -20,6 +21,7 @@ struct InstanceListRowBody<Content: View>: View {
     
     let instance: Instance?
     let summary: InstanceSummary?
+    let complications: [Complication]
     let readout: Readout?
     let showBlockStatus: Bool
     
@@ -28,11 +30,13 @@ struct InstanceListRowBody<Content: View>: View {
     init(
         _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content = { EmptyView() },
+        complications: [Complication] = [.software],
         showBlockStatus: Bool = true,
         readout: Readout? = nil
     ) {
         self.instance = instance
         self.summary = nil
+        self.complications = complications
         self.showBlockStatus = showBlockStatus
         self.content = content
         self.readout = readout
@@ -41,11 +45,13 @@ struct InstanceListRowBody<Content: View>: View {
     init(
         _ summary: InstanceSummary,
         @ViewBuilder content: @escaping () -> Content = { EmptyView() },
+        complications: [Complication] = [.software],
         showBlockStatus: Bool = true,
         readout: Readout? = nil
     ) {
         self.summary = summary
         self.instance = nil
+        self.complications = complications
         self.showBlockStatus = showBlockStatus
         self.content = content
         self.readout = readout
@@ -99,12 +105,10 @@ struct InstanceListRowBody<Content: View>: View {
                 Text(title)
                     .foregroundStyle(isEnabled ? .themedPrimary : .themedSecondary)
                     .lineLimit(1)
-                if let software {
-                    Text(software.label)
-                        .font(.footnote)
-                        .foregroundStyle(.themedSecondary)
-                        .lineLimit(1)
-                }
+                caption
+                    .font(.footnote)
+                    .foregroundStyle(.themedSecondary)
+                    .lineLimit(1)
             }
             Spacer()
             switch readout {
@@ -116,6 +120,31 @@ struct InstanceListRowBody<Content: View>: View {
         }
         .padding(.horizontal)
         .contentShape(.rect)
+    }
+    
+    var displayedComplications: [Complication] {
+        complications.filter { $0 != .software || software != nil }
+    }
+    
+    @ViewBuilder
+    var caption: some View {
+        HStack(spacing: 2) {
+            ForEach(Array(displayedComplications.enumerated()), id: \.element) { index, complication in
+                if index != 0 {
+                    Text(verbatim: "∙")
+                }
+                Group {
+                    switch complication {
+                    case .type:
+                        Text("Instance")
+                    case .software:
+                        if let software {
+                            Text(software.label)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     var userCountReadout: some View {

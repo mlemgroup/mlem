@@ -26,6 +26,28 @@ class VisitHistory {
         let value: T
         let date: Date
     }
+
+    enum Item {
+        case person(Person)
+        case community(Community)
+        case instance(InstanceSummary)
+
+        var viewId: Int {
+            var hasher = Hasher()
+            switch self {
+            case let .person(person):
+                hasher.combine(0)
+                hasher.combine(person.id)
+            case let .community(community):
+                hasher.combine(1)
+                hasher.combine(community.id)
+            case let .instance(instance):
+                hasher.combine(2)
+                hasher.combine(instance.host)
+            }
+            return hasher.finalize()
+        }
+    }
     
     private(set) var communityRecords: [VisitContext: [VisitRecord<Community>]]
     private(set) var personRecords: [VisitContext: [VisitRecord<Person>]]
@@ -70,7 +92,17 @@ class VisitHistory {
     func instances(withContext context: VisitContext) -> [InstanceSummary] {
         instanceRecords[context]?.map(\.value) ?? []
     }
-    
+
+    func all(withContext context: VisitContext) -> [Item] {
+        var records: [(date: Date, item: Item)] = []
+        records += (communityRecords[context] ?? []).map { ($0.date, Item.community($0.value)) }
+        records += (personRecords[context] ?? []).map { ($0.date, Item.person($0.value)) }
+        records += (instanceRecords[context] ?? []).map { ($0.date, Item.instance($0.value)) }
+        return records
+            .sorted { $0.date > $1.date }
+            .map(\.item)
+    }
+
     @MainActor
     func addCommunity(_ community: Community, context: VisitContext) {
         addValue(community, to: &communityRecords, context: context)
