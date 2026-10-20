@@ -23,28 +23,23 @@ struct SearchHomeView: View {
     @State private var width: CGFloat = 0
 
     var body: some View {
-        VStack(
-            alignment: useWideLayout ? .leading : .center,
-            spacing: 20
-        ) {
-            subheadingView("Recently Searched")
-                .frame(maxWidth: .infinity, alignment: .leading)
-
+        sectionsView {
             if let session = appState.firstSession as? UserSession,
                 let visitHistory = session.visitHistory {
-                RecentSearchListView(visitHistory: visitHistory)
+                Section("Recently Searched") {
+                    RecentSearchListView(visitHistory: visitHistory)
+                }
             }
 
             if appState.firstAccount.accountType != .guest {
-                subheadingView("Visit Again")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                topRow
+                Section("Visit Again") {
+                    topRow
+                }
             }
             
-            subheadingView("Browse")
-                .frame(maxWidth: .infinity, alignment: .leading)
-            browseList
-                .padding(.top, 15)
+            Section("Browse") {
+                browseList
+            }
 
             if let events = eventsTracker.events, !events.isEmpty, showEvents {
                 eventsView(events)
@@ -60,14 +55,6 @@ struct SearchHomeView: View {
     }
 
     @ViewBuilder
-    func subheadingView(_ text: LocalizedStringResource) -> some View {
-        Text(text)
-            .font(.title)
-            .fontWeight(.semibold)
-            .padding(.bottom, -4)
-    }
-    
-    @ViewBuilder
     var topRow: some View {
         AdaptableSearchHomeListView(isGrid: useWideLayout) {
             NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
@@ -79,20 +66,18 @@ struct SearchHomeView: View {
 
     @ViewBuilder
     func eventsView(_ events: [Event]) -> some View {
-        HStack {
-            subheadingView("Events")
-                .padding(.trailing, 5)
+        Section {
+            AdaptableSearchHomeListView(isGrid: useWideLayout) {
+                ForEach(events) { 
+                    EventRowView(event: $0)
+                }
+            }
+        } header: {
+            Text("Events")
             if !useWideLayout {
                 Spacer()
             }
             eventsMenuView
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 15)
-        AdaptableSearchHomeListView(isGrid: useWideLayout) {
-            ForEach(events) { 
-                EventRowView(event: $0)
-            }
         }
     }
 
@@ -116,12 +101,9 @@ struct SearchHomeView: View {
             NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
                 .tint(.themedCommunityAccent)
 
-            if !useWideLayout { Spacer() }
-
             NavigationLink("Users", icon: .lemmy.person, destination: .topPeople)
                 .tint(.themedPersonAccent)
-
-            if !useWideLayout { Spacer() }
+                .frame(maxWidth: useWideLayout ? nil : .infinity)
 
             NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
                 .tint(.themedInstanceAccent)
@@ -129,5 +111,26 @@ struct SearchHomeView: View {
         .labelStyle(SearchHomeCategoryLabelStyle())
         .buttonStyle(.empty)
         .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+    }
+
+    @ViewBuilder
+    func sectionsView(@ViewBuilder _ content: () -> some View) -> some View {
+        VStack(
+            alignment: useWideLayout ? .leading : .center,
+            spacing: 30
+        ) {
+            ForEach(sections: content()) { section in
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(spacing: 15) {
+                        section.header
+                            .font(.title)
+                            .fontWeight(.semibold)
+                    }
+                    section
+                        .content
+                }
+            }
+        }
     }
 }
