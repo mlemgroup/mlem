@@ -20,25 +20,7 @@ struct RecentSearchListView: View {
 
     var body: some View {
         Section {
-            let items = visitHistory.all(withContext: .search)
-            ScrollView(.horizontal) {
-                LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
-                    ForEach(items, id: \.viewId) { item in
-                        itemView(item)
-                            .containerRelativeFrame(.horizontal) { width, _ in
-                                let columns = max(1, (width + spacing) / (minItemWidth + spacing)).rounded(.down)
-                                return (width - spacing * (columns - 1)) / columns
-                            }
-                            .popupAnchor()
-                    }
-                }
-                .scrollTargetLayout()
-                .buttonStyle(RecentSearchItemButtonStyle())
-                .padding(.vertical, 10)
-            }
-            .scrollTargetBehavior(.viewAligned)
-            .scrollIndicators(.hidden)
-            .padding(.vertical, -10)
+            content
         } header: {
             Text("Recently Searched")
             Group {
@@ -54,6 +36,29 @@ struct RecentSearchListView: View {
             .fontWeight(.regular)
         }
         .animation(.easeOut(duration: 0.2), value: isEditing)
+    }
+
+    @ViewBuilder
+    var content: some View {
+        let items = visitHistory.all(withContext: .search)
+        ScrollView(.horizontal) {
+            LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
+                ForEach(items, id: \.viewId) { item in
+                    itemView(item)
+                        .containerRelativeFrame(.horizontal) { width, _ in
+                            let columns = max(1, (width + spacing) / (minItemWidth + spacing)).rounded(.down)
+                            return (width - spacing * (columns - 1)) / columns
+                        }
+                        .popupAnchor()
+                }
+            }
+            .scrollTargetLayout()
+            .buttonStyle(RecentSearchItemButtonStyle())
+            .padding(.vertical, 10)
+        }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollIndicators(.hidden)
+        .padding(.vertical, -10)
     }
 
     @ViewBuilder
