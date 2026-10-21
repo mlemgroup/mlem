@@ -137,6 +137,7 @@ struct InstanceListRowBody<Content: View>: View {
                     switch complication {
                     case .type:
                         Image(icon: .lemmy.instance)
+                            .symbolVariant(.fill)
                     case .software:
                         if let software {
                             Text(software.label)

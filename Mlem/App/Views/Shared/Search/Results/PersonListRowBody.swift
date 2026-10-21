@@ -114,6 +114,7 @@ struct PersonListRowBody<Content: View>: View {
                     switch complication {
                     case .type:
                         Image(icon: .lemmy.person)
+                            .symbolVariant(.fill)
                     case .instance:
                         Text(verbatim: "@\(person.host)")
                     case .date:
