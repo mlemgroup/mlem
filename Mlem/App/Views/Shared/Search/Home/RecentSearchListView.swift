@@ -10,6 +10,7 @@ import SwiftUI
 struct RecentSearchListView: View {
     @Environment(NavigationLayer.self) var navigation
 
+    let session: UserSession
     let visitHistory: VisitHistory
     @State var isEditing: Bool = false
 
@@ -75,7 +76,11 @@ struct RecentSearchListView: View {
                         visitHistory.remove(item, context: .search)
                     }
                     Task(priority: .background) {
-                        try await session.saveVisitHistory()
+                        do {
+                            try await session.saveVisitHistory()
+                        } catch {
+                            handleError(error)
+                        }
                     }
                 }
                 .symbolVariant(.circle.fill)
