@@ -15,16 +15,30 @@ struct RecentSearchListView: View {
 
     typealias Item = VisitHistory.Item
 
+    let minItemWidth: CGFloat = 220
+    let spacing: CGFloat = 16
+
     var body: some View {
         Section {
             let items = visitHistory.all(withContext: .search)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 16)], spacing: 16) {
-                ForEach(items, id: \.viewId) { item in
-                    itemView(item)
-                        .popupAnchor()
+            ScrollView(.horizontal) {
+                LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
+                    ForEach(items, id: \.viewId) { item in
+                        itemView(item)
+                            .containerRelativeFrame(.horizontal) { width, _ in
+                                let columns = max(1, (width + spacing) / (minItemWidth + spacing)).rounded(.down)
+                                return (width - spacing * (columns - 1)) / columns
+                            }
+                            .popupAnchor()
+                    }
                 }
+                .scrollTargetLayout()
+                .buttonStyle(RecentSearchItemButtonStyle())
+                .padding(.vertical, 10)
             }
-            .buttonStyle(RecentSearchItemButtonStyle())
+            .scrollTargetBehavior(.viewAligned)
+            .scrollIndicators(.hidden)
+            .padding(.vertical, -10)
         } header: {
             Text("Recently Searched")
             Group {
