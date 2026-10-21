@@ -27,8 +27,14 @@ struct RecentSearchListView: View {
             .buttonStyle(RecentSearchItemButtonStyle())
         } header: {
             Text("Recently Searched")
-            Button(isEditing ? "Done" : "Edit") {
-                isEditing.toggle()
+            Group {
+                Button(isEditing ? "Done" : "Edit") {
+                    isEditing.toggle()
+                }
+                if isEditing {
+                    ClearRecentSearchesButton()
+                        .tint(.themedWarning)
+                }
             }
             .font(.body)
             .fontWeight(.regular)
