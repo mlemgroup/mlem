@@ -100,6 +100,7 @@
 		0331715E2CCD6D95002DA370 /* ContentPurgeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */; };
 		0335AE112D8991330094FFD9 /* View+HiddenNavigationTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */; };
 		0336990E3088043D008811BB /* EnvironmentValues+SearchBarMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0336990D3088043D008811BB /* EnvironmentValues+SearchBarMode.swift */; };
+		033699103088D723008811BB /* ClearRecentSearchesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0336990F3088D723008811BB /* ClearRecentSearchesButton.swift */; };
 		033819282D4424D9000AFC55 /* SafetyWarningsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033819272D4424D9000AFC55 /* SafetyWarningsSettingsView.swift */; };
 		03396A642FAF6ECF0000E27A /* UnavailableContentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03396A632FAF6ECF0000E27A /* UnavailableContentInfoView.swift */; };
 		033EF4102CB9AEF7004D8A3F /* ExpandedPostView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */; };
@@ -715,6 +716,7 @@
 		0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPurgeEditorView.swift; sourceTree = "<group>"; };
 		0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HiddenNavigationTitle.swift"; sourceTree = "<group>"; };
 		0336990D3088043D008811BB /* EnvironmentValues+SearchBarMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+SearchBarMode.swift"; sourceTree = "<group>"; };
+		0336990F3088D723008811BB /* ClearRecentSearchesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearRecentSearchesButton.swift; sourceTree = "<group>"; };
 		033819272D4424D9000AFC55 /* SafetyWarningsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyWarningsSettingsView.swift; sourceTree = "<group>"; };
 		03396A632FAF6ECF0000E27A /* UnavailableContentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailableContentInfoView.swift; sourceTree = "<group>"; };
 		033EF40F2CB9AEF7004D8A3F /* ExpandedPostView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExpandedPostView+Views.swift"; sourceTree = "<group>"; };
@@ -1529,6 +1531,7 @@
 				03531EF02C2DA298004A3464 /* SearchResultsView.swift */,
 				035EDF002C2ECFE000F51144 /* Searchable.swift */,
 				03D283F92D256E1E00A6659B /* VisitHistory.swift */,
+				0336990F3088D723008811BB /* ClearRecentSearchesButton.swift */,
 				03D283FB2D25A3F700A6659B /* VisitHistory+CodedData.swift */,
 				03673D3A307929A60015F564 /* View+WithSheetSearch.swift */,
 			);
@@ -3000,6 +3003,7 @@
 				CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */,
 				030E95E72C80A20A0045BC2C /* View+NavigationTransition.swift in Sources */,
 				CD45CB0D2D1880E8008BC729 /* FiltersSettingsView.swift in Sources */,
+				033699103088D723008811BB /* ClearRecentSearchesButton.swift in Sources */,
 				038028FF2CB72AC90091A8A2 /* ReasonShortcutView.swift in Sources */,
 				03A6316D2D4E3D24009A47A6 /* ModeratorActionSeparationSettingsView.swift in Sources */,
 				03B2F0A72FC99B2100C36011 /* InstanceSettingsView.swift in Sources */,
