@@ -19,28 +19,30 @@ struct RecentSearchListView: View {
     let spacing: CGFloat = 16
 
     var body: some View {
-        Section {
-            content
-        } header: {
-            Text("Recently Searched")
-            Group {
-                Button(isEditing ? "Done" : "Edit") {
-                    isEditing.toggle()
+        let items = visitHistory.all(withContext: .search)
+        if !items.isEmpty {
+            Section {
+                content(items)
+            } header: {
+                Text("Recently Searched")
+                Group {
+                    Button(isEditing ? "Done" : "Edit") {
+                        isEditing.toggle()
+                    }
+                    if isEditing {
+                        ClearRecentSearchesButton()
+                            .tint(.themedWarning)
+                    }
                 }
-                if isEditing {
-                    ClearRecentSearchesButton()
-                        .tint(.themedWarning)
-                }
+                .font(.body)
+                .fontWeight(.regular)
             }
-            .font(.body)
-            .fontWeight(.regular)
+            .animation(.easeOut(duration: 0.2), value: isEditing)
         }
-        .animation(.easeOut(duration: 0.2), value: isEditing)
     }
 
     @ViewBuilder
-    var content: some View {
-        let items = visitHistory.all(withContext: .search)
+    func content(_ items: [Item]) -> some View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
                 ForEach(items, id: \.viewId) { item in
