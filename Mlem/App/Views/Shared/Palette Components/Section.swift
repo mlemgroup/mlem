@@ -8,21 +8,47 @@
 import Foundation
 import SwiftUI
 
-extension Section {
+struct Section<Parent: View, Content: View, Footer: View>: View {
+    @ViewBuilder let header: () -> Parent
+    @ViewBuilder let content: () -> Content
+    @ViewBuilder let footer: () -> Footer
+
+    init(
+        @ViewBuilder content: @escaping () -> Content,
+        @ViewBuilder header: @escaping () -> Parent = { EmptyView() },
+        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
+    ) {
+        self.header = header
+        self.content = content
+        self.footer = footer
+    }
+
     init(
         _ header: LocalizedStringResource,
         @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder footer: @escaping () -> Footer
+        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
     ) where Parent == Text {
-        self.init(content: content, header: { Text(header) }, footer: footer)
+        self.header = { Text(header) }
+        self.content = content
+        self.footer = footer
     }
     
     @_disfavoredOverload
     init(
-        _ header: some StringProtocol,
+        _ header: String,
         @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder footer: @escaping () -> Footer
+        @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
     ) where Parent == Text {
-        self.init(content: content, header: { Text(header) }, footer: footer)
+        self.header = { Text(header) }
+        self.content = content
+        self.footer = footer
+    }
+
+    var body: some View {
+        SwiftUI.Section(
+            content: content,
+            header: { header().foregroundStyle(.themedSecondary) },
+            footer: { footer().foregroundStyle(.themedSecondary) }
+        )
     }
 }

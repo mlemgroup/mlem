@@ -32,12 +32,12 @@ struct SearchHomeView: View {
             }
 
             if appState.firstAccount.accountType != .guest {
-                Section("Visit Again") {
+                SwiftUI.Section("Visit Again") {
                     topRow
                 }
             }
             
-            Section("Browse") {
+            SwiftUI.Section("Browse") {
                 browseList
             }
 
@@ -66,7 +66,7 @@ struct SearchHomeView: View {
 
     @ViewBuilder
     func eventsView(_ events: [Event]) -> some View {
-        Section {
+        SwiftUI.Section {
             AdaptableSearchHomeListView(isGrid: useWideLayout) {
                 ForEach(events) {
                     EventRowView(event: $0)
