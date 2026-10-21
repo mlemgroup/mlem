@@ -44,7 +44,7 @@ struct RecentSearchListView: View {
     @ViewBuilder
     func content(_ items: [Item]) -> some View {
         ScrollView(.horizontal) {
-            LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
+            LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: min(3, items.count)), spacing: spacing) {
                 ForEach(items, id: \.viewId) { item in
                     itemViewBody(item)
                         .containerRelativeFrame(.horizontal) { width, _ in
