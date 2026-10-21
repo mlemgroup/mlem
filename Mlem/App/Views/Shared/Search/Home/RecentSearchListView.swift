@@ -74,6 +74,9 @@ struct RecentSearchListView: View {
                     withAnimation {
                         visitHistory.remove(item, context: .search)
                     }
+                    Task(priority: .background) {
+                        try await session.saveVisitHistory()
+                    }
                 }
                 .symbolVariant(.circle.fill)
                 .symbolRenderingMode(.palette)
