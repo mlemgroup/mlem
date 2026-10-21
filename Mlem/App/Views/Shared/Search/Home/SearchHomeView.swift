@@ -45,7 +45,6 @@ struct SearchHomeView: View {
                 eventsView(events)
             }
         }
-        .padding(.horizontal, 16)
         .padding(.top, 20)
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
     }
@@ -62,16 +61,18 @@ struct SearchHomeView: View {
             NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
                 .tint(.themedUpvote)
         }
+        .padding(.horizontal, 16)
     }
 
     @ViewBuilder
     func eventsView(_ events: [Event]) -> some View {
         Section {
             AdaptableSearchHomeListView(isGrid: useWideLayout) {
-                ForEach(events) { 
+                ForEach(events) {
                     EventRowView(event: $0)
                 }
             }
+            .padding(.horizontal, 16)
         } header: {
             Text("Events")
             if !useWideLayout {
@@ -112,6 +113,7 @@ struct SearchHomeView: View {
         .buttonStyle(.empty)
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
+        .padding(.horizontal, 16)
     }
 
     @ViewBuilder
@@ -127,6 +129,7 @@ struct SearchHomeView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                     }
+                    .padding(.horizontal, 16)
                     section
                         .content
                 }

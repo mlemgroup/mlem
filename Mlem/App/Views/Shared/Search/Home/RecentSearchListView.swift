@@ -58,6 +58,7 @@ struct RecentSearchListView: View {
         }
         .scrollTargetBehavior(.viewAligned)
         .scrollIndicators(.hidden)
+        .contentMargins(.horizontal, 16, for: .scrollContent)
         .padding(.vertical, -10)
     }
 
