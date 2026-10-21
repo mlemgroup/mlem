@@ -28,9 +28,7 @@ struct SearchHomeView: View {
             if let session = appState.firstSession as? UserSession,
                 let visitHistory = session.visitHistory,
                 searchBarMode == .regular {
-                Section("Recently Searched") {
-                    RecentSearchListView(visitHistory: visitHistory)
-                }
+                RecentSearchListView(visitHistory: visitHistory)
             }
 
             if appState.firstAccount.accountType != .guest {

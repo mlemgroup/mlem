@@ -11,22 +11,58 @@ struct RecentSearchListView: View {
     @Environment(NavigationLayer.self) var navigation
 
     let visitHistory: VisitHistory
+    @State var isEditing: Bool = false
 
     typealias Item = VisitHistory.Item
 
     var body: some View {
-        let items = visitHistory.all(withContext: .search)
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 16)], spacing: 16) {
-            ForEach(items, id: \.viewId) { item in
-                itemView(item)
-                    .popupAnchor()
+        Section {
+            let items = visitHistory.all(withContext: .search)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 220), spacing: 16)], spacing: 16) {
+                ForEach(items, id: \.viewId) { item in
+                    itemView(item)
+                        .popupAnchor()
+                }
             }
+            .buttonStyle(RecentSearchItemButtonStyle())
+        } header: {
+            Text("Recently Searched")
+            Button(isEditing ? "Done" : "Edit") {
+                isEditing.toggle()
+            }
+            .font(.body)
+            .fontWeight(.regular)
         }
-        .buttonStyle(RecentSearchItemButtonStyle())
+        .animation(.easeOut(duration: 0.2), value: isEditing)
     }
 
     @ViewBuilder
     func itemView(_ item: Item) -> some View {
+        itemViewBody(item)
+            .overlay(alignment: .topTrailing) {
+                VStack {
+                    if isEditing {
+                        Button("Remove", icon: .general.close) {
+                            withAnimation {
+                                visitHistory.remove(item, context: .search)
+                            }
+                        }
+                        .symbolVariant(.circle.fill)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.themedContrastingLabel, .themedSecondary)
+                        .transition(.scale.combined(with: .opacity))
+                        .labelStyle(.iconOnly)
+                        .imageScale(.large)
+                        .buttonStyle(.plain)
+
+                    }
+                }
+                .offset(x: 10, y: -10)
+            }
+    }
+
+    @ViewBuilder
+    func itemViewBody(_ item: Item) -> some View {
         switch item {
         case let .community(community):
             Button {

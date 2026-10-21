@@ -132,6 +132,18 @@ class VisitHistory {
     func removeInstance(_ instance: InstanceSummary, context: VisitContext) {
         removeValue(instance, from: &instanceRecords, context: context)
     }
+
+    @MainActor
+    func remove(_ item: Item, context: VisitContext) {
+        switch item {
+        case let .community(community):
+            removeCommunity(community, context: context)
+        case let .person(person):
+            removePerson(person, context: context)
+        case let .instance(instance):
+            removeInstance(instance, context: context)
+        }
+    }
     
     private func addValue<T: Equatable>(
         _ value: T,
