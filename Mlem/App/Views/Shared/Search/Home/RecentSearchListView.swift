@@ -44,47 +44,45 @@ struct RecentSearchListView: View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: Array(repeating: GridItem(.flexible(), spacing: spacing), count: 3), spacing: spacing) {
                 ForEach(items, id: \.viewId) { item in
-                    itemView(item)
+                    itemViewBody(item)
                         .containerRelativeFrame(.horizontal) { width, _ in
                             let columns = max(1, (width + spacing) / (minItemWidth + spacing)).rounded(.down)
                             return (width - spacing * (columns - 1)) / columns
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            removeButton(item)
                         }
                         .popupAnchor()
                 }
             }
             .scrollTargetLayout()
             .buttonStyle(RecentSearchItemButtonStyle())
-            .padding(.vertical, 10)
         }
+        .scrollClipDisabled()
         .scrollTargetBehavior(.viewAligned)
         .scrollIndicators(.hidden)
         .contentMargins(.horizontal, 16, for: .scrollContent)
-        .padding(.vertical, -10)
     }
 
     @ViewBuilder
-    func itemView(_ item: Item) -> some View {
-        itemViewBody(item)
-            .overlay(alignment: .topTrailing) {
-                VStack {
-                    if isEditing {
-                        Button("Remove", icon: .general.close) {
-                            withAnimation {
-                                visitHistory.remove(item, context: .search)
-                            }
-                        }
-                        .symbolVariant(.circle.fill)
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.themedContrastingLabel, .themedSecondary)
-                        .transition(.scale.combined(with: .opacity))
-                        .labelStyle(.iconOnly)
-                        .imageScale(.large)
-                        .buttonStyle(.plain)
-
+    func removeButton(_ item: Item) -> some View {
+        VStack {
+            if isEditing {
+                Button("Remove", icon: .general.close) {
+                    withAnimation {
+                        visitHistory.remove(item, context: .search)
                     }
                 }
-                .offset(x: 10, y: -10)
+                .symbolVariant(.circle.fill)
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.themedContrastingLabel, .themedNeutralAccent)
+                .transition(.scale.combined(with: .opacity))
+                .labelStyle(.iconOnly)
+                .imageScale(.large)
+                .buttonStyle(.plain)
             }
+        }
+        .offset(x: 10, y: -10)
     }
 
     @ViewBuilder
