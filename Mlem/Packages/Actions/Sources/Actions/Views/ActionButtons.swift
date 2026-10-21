@@ -13,10 +13,10 @@ import SwiftUI
 public struct ActionButtons: View {
     @Environment(\.self) var environment
     
-    let actions: (EnvironmentValues) -> [any Actions.Action]
+    let actions: (EnvironmentValues) -> [any Action]
     
     public init(
-        _ actions: @escaping (EnvironmentValues) -> [any Actions.Action]
+        _ actions: @escaping (EnvironmentValues) -> [any Action]
     ) {
         self.actions = actions
     }

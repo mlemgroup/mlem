@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct EditNoteAction: Actions.Action {
+struct EditNoteAction: Action {
     let entity: Person
 }
 

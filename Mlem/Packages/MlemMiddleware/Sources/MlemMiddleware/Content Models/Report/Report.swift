@@ -2,96 +2,116 @@
 //  Report.swift
 //  MlemMiddleware
 //
-//  Created by Sjmarf on 2024-12-15.
+//  Created by Eric Andrews on 2026-10-12.
 //
 
-import Foundation
 import Observation
+import Foundation
+
+import os
 
 @Observable
-public class Report: CacheIdentifiable, ContentModel, FeedLoadable {
-    public typealias FilterType = ModMailItemFilterType
+public class Report: UnifiedModelProviding, FeedLoadable {
+    public typealias Properties = ReportProperties
     
     public var api: ApiClient
+    private let properties: ReportProperties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Report> = .init(parent: self, properties: properties)
     
-    // Keep this internal - a post report and a comment report can have the same ID, so it's not a true identifier.
-    var id: Int
+    // MARK: API Properties
+    // Properties that are provided by teh API
     
+    public let id: Int
     public let created: Date
-    public internal(set) var updated: Date?
     public let creator: Person
     public let target: ReportTarget
-    public internal(set) var resolver: Person?
-    public internal(set) var reason: String
+    public var resolver: Person?
+    public var updated: Date?
+    public var resolved: Bool
+    public var reason: String
     
-    var resolvedManager: StateManager<Bool>
-    public var resolved: Bool { resolvedManager.displayedValue }
+    // MARK: Initializers and Updates
     
-    init(
-        api: ApiClient,
-        id: Int,
-        creator: Person,
-        resolver: Person?,
-        target: ReportTarget,
-        resolved: Bool,
-        reason: String,
-        created: Date,
-        updated: Date?
-    ) {
+    public init(api: ApiClient, properties: ReportProperties) {
         self.api = api
-        self.id = id
-        self.creator = creator
-        self.resolver = resolver
-        self.target = target
-        self.reason = reason
-        self.created = created
-        self.updated = updated
+        self.properties = properties
         
-        self.resolvedManager = .init(wrappedValue: resolved)
-        resolvedManager.onSet = { newValue, type, _ in
-            if type == .begin || type == .rollback {
-                api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue)
-            }
-        }
-        resolvedManager.onVerify = { newValue, _ in
-            api.unreadCount?.verifyItem(itemType: .moderation, isRead: newValue)
-        }
+        self.id = properties.id
+        self.created = properties.created
+        self.creator = properties.creator
+        self.target = properties.target
+        self.resolver = properties.resolver
+        self.updated = properties.updated
+        self.resolved = properties.resolved
+        self.reason = properties.reason
     }
     
-    public var modMailId: Int {
+    @MainActor
+    public func update(with properties: ReportProperties) {
+        setIfChanged(\.resolver, properties.resolver)
+        setIfChanged(\.updated, properties.updated)
+        setIfChanged(\.resolved, properties.resolved)
+        setIfChanged(\.reason, properties.reason)
+    }
+    
+    public func softUpdate(with properties: ReportProperties) {
+        // noop - no higher-tier properties to update
+    }
+    
+    public func fetchUpgraded() async throws -> ReportProperties {
+        assertionFailure("Cannot upgrade Report")
+        return self.properties
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        assertionFailure("Cannot resolve report")
+        throw ApiClientError.invalidInput
+    }
+}
+
+// MARK: - Computed
+
+public extension Report {
+    var modMailId: Int {
         var hasher: Hasher = .init()
         hasher.combine("report")
-        hasher.combine(target.case)
+        hasher.combine(target.type)
         hasher.combine(id)
         return hasher.finalize()
     }
-    
-    @discardableResult
-    public func updateResolved(_ newValue: Bool) -> Task<StateUpdateResult, Never> {
-        resolvedManager.performRequest(expectedResult: newValue) { semaphore in
-            switch self.target.type {
-            case .post:
-                try await self.api.resolvePostReport(id: self.id, resolved: newValue, semaphore: semaphore)
-            case .comment:
-                try await self.api.resolveCommentReport(id: self.id, resolved: newValue, semaphore: semaphore)
-            case .message:
-                try await self.api.resolveMessageReport(id: self.id, resolved: newValue, semaphore: semaphore)
+}
+
+// MARK: - Interactions
+
+public extension Report {
+    func updateResolved(_ newValue: Bool) {
+        self.resolved = newValue
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue)
+        
+        Task {
+            await updateQueue.addItem {
+                guard let myPersonId = try await self.api.myPersonId else { throw ApiClientError.notLoggedIn }
+                
+                var ret: ReportProperties
+                switch self.target.type {
+                case .post:
+                    let snapshot = try await self.api.repository.resolvePostReport(id: self.id, resolved: self.resolved)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                case .comment:
+                    let snapshot = try await self.api.repository.resolveCommentReport(id: self.id, resolved: self.resolved)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                case .message:
+                    let snapshot = try await self.api.repository.resolveMessageReport(id: self.id, resolved: self.resolved)
+                    ret = await .init(api: self.api, snapshot: snapshot, myPersonId: myPersonId)
+                }
+                
+                self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: ret.resolved)
+                return ret
             }
         }
     }
     
-    @discardableResult
-    public func toggleResolved() -> Task<StateUpdateResult, Never> {
+    func toggleResolved() {
         updateResolved(!resolved)
-    }
-    
-    public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
-        switch sortType {
-        case .new: .new(created)
-        }
-    }
-    
-    public static func == (lhs: Report, rhs: Report) -> Bool {
-        lhs.target.case == rhs.target.case && lhs.id == rhs.id
     }
 }

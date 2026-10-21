@@ -24,8 +24,8 @@ public struct QuickSwipeAction {
     public init(
         icon: Icon,
         color: ThemedColor,
-        enabled: Bool,
-        confirmationPrompt: String?,
+        enabled: Bool = true,
+        confirmationPrompt: String? = nil,
         callback: @MainActor @escaping () -> Void
     ) {
         self.icon = icon

@@ -15,7 +15,7 @@ class ShareActivity: UIActivity {
 
     let callback: @MainActor () -> Void
     
-    init(action: Actions.Action, environment: EnvironmentValues) {
+    init(action: Action, environment: EnvironmentValues) {
         let label = action.createAppearance(environment: environment).label(describing: .stateTransition)
         self.title = label.title
         self.icon = label.icon

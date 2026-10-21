@@ -9,7 +9,7 @@ import Actions
 import MlemMiddleware
 import SwiftUI
 
-struct PurgeAction: Actions.Action {
+struct PurgeAction: Action {
     enum Relationship { case identity, author }
 
     let entity: any PurgableProviding
