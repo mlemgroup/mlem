@@ -71,6 +71,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var imageViewer_showCloseButton: Bool
     var imageViewer_showZoomIndicator: Bool
     var imageViewer_dismissThreshold: Int
+    var imageViewer_tapToResetZoom: Bool
     var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
@@ -216,6 +217,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_showCloseButton = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showCloseButton) ?? true
         self.imageViewer_showZoomIndicator = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showZoomIndicator) ?? true
         self.imageViewer_dismissThreshold = try container.decodeIfPresent(Int.self, forKey: ._imageViewer_dismissThreshold) ?? 10
+        self.imageViewer_tapToResetZoom = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_tapToResetZoom) ?? false
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
@@ -331,6 +333,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_showCloseButton = true
         self.imageViewer_showZoomIndicator = true
         self.imageViewer_dismissThreshold = 10
+        self.imageViewer_tapToResetZoom = false
         self.media_animatedAvatars = UIAccessibility.isReduceMotionEnabled ? .never : .always
         self.menus_allModActions = false
         self.menus_modActionGrouping = .combined
@@ -441,6 +444,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         imageViewer_showCloseButton = otherValues.imageViewer_showCloseButton
         imageViewer_showZoomIndicator = otherValues.imageViewer_showZoomIndicator
         imageViewer_dismissThreshold = otherValues.imageViewer_dismissThreshold
+        imageViewer_tapToResetZoom = otherValues.imageViewer_tapToResetZoom
         media_animatedAvatars = otherValues.media_animatedAvatars
         menus_allModActions = otherValues.menus_allModActions
         menus_modActionGrouping = otherValues.menus_modActionGrouping
@@ -558,6 +562,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _imageViewer_showCloseButton = "imageViewer_showCloseButton"
         case _imageViewer_showZoomIndicator = "imageViewer_showZoomIndicator"
         case _imageViewer_dismissThreshold = "imageViewer_dismissThreshold"
+        case _imageViewer_tapToResetZoom = "imageViewer_tapToResetZoom"
         case _media_animatedAvatars = "media_animatedAvatars"
         case _menus_allModActions = "menus_allModActions"
         case _menus_modActionGrouping = "menus_modActionGrouping"
