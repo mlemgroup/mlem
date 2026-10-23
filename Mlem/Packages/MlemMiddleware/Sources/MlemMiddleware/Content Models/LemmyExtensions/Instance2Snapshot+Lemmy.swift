@@ -64,28 +64,31 @@ extension Instance2Snapshot {
             )
         }
 
-        let voteFederationMode: VoteSettings
+        let defaultVoteSettings: VoteSettings
         if let commentDownvotes = site.localSite.defaultCommentDownvotes,
             let commentUpvotes = site.localSite.defaultCommentUpvotes,
             let postDownvotes = site.localSite.defaultPostDownvotes,
             let postUpvotes = site.localSite.defaultPostUpvotes
         {
-            voteFederationMode = .init(
+            defaultVoteSettings = .init(
                 postUpvote: .init(from: postUpvotes),
                 postDownvote: .init(from: postDownvotes),
                 commentUpvote: .init(from: commentUpvotes),
                 commentDownvote: .init(from: commentDownvotes)
             )
         } else if let enableDownvotes = site.localSite.enableDownvotes {
-            voteFederationMode = enableDownvotes ? .all : .downvotesDisabled
+            defaultVoteSettings = enableDownvotes ? .all : .downvotesDisabled
         } else {
-            throw .responseMissingRequiredData("LemmySiteView downvoteFederationMode")
+            throw .responseMissingRequiredData("LemmySiteView defaultVoteSettings")
         }
+
+        let downvotesEnabled = site.localSite.enableDownvotes ?? true
 
         try self.init(
             instance: .init(from: site.site),
             setup: site.localSite.siteSetup,
-            voteFederationMode: voteFederationMode,
+            defaultVoteSettings: defaultVoteSettings,
+            downvotesEnabled: downvotesEnabled,
             nsfwContentEnabled: nsfwContentEnabled,
             communityCreationRestrictedToAdmins: site.localSite.communityCreationAdminOnly,
             emailVerificationRequired: site.localSite.requireEmailVerification ?? true,

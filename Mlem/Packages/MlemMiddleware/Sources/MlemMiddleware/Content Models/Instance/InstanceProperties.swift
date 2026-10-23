@@ -25,7 +25,8 @@ public struct InstanceProperties: UnifiedPropertiesProviding {
     
     // From Instance2Snapshot
     var setup: Bool?
-    var voteFederationMode: VoteSettings?
+    var defaultVoteSettings: VoteSettings?
+    var downvotesEnabled: Bool?
     var nsfwContentEnabled: Bool?
     var communityCreationRestrictedToAdmins: Bool?
     var emailVerificationRequired: Bool?
@@ -92,7 +93,8 @@ public struct InstanceProperties: UnifiedPropertiesProviding {
         
         if let snapshot2 {
             setup = snapshot2.setup
-            voteFederationMode = snapshot2.voteFederationMode
+            defaultVoteSettings = snapshot2.defaultVoteSettings
+            downvotesEnabled = snapshot2.downvotesEnabled
             nsfwContentEnabled = snapshot2.nsfwContentEnabled
             communityCreationRestrictedToAdmins = snapshot2.communityCreationRestrictedToAdmins
             emailVerificationRequired = snapshot2.emailVerificationRequired
@@ -147,7 +149,8 @@ public struct InstanceProperties: UnifiedPropertiesProviding {
         
         // tier 2, 3 properties: only assign if incoming non-nil
         self.setup = other.setup ?? self.setup
-        self.voteFederationMode = other.voteFederationMode ?? self.voteFederationMode
+        self.defaultVoteSettings = other.defaultVoteSettings ?? self.defaultVoteSettings
+        self.downvotesEnabled = other.downvotesEnabled ?? self.downvotesEnabled
         self.nsfwContentEnabled = other.nsfwContentEnabled ?? self.nsfwContentEnabled
         self.communityCreationRestrictedToAdmins = other.communityCreationRestrictedToAdmins ?? self.communityCreationRestrictedToAdmins
         self.emailVerificationRequired = other.emailVerificationRequired ?? self.emailVerificationRequired
