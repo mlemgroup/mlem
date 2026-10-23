@@ -64,11 +64,11 @@ extension Instance2Snapshot {
             )
         }
 
-        let voteFederationMode: VoteFederationMode
-        if let commentDownvotes = site.localSite.commentDownvotes,
-            let commentUpvotes = site.localSite.commentUpvotes,
-            let postDownvotes = site.localSite.postDownvotes,
-            let postUpvotes = site.localSite.postUpvotes
+        let voteFederationMode: VoteSettings
+        if let commentDownvotes = site.localSite.defaultCommentDownvotes,
+            let commentUpvotes = site.localSite.defaultCommentUpvotes,
+            let postDownvotes = site.localSite.defaultPostDownvotes,
+            let postUpvotes = site.localSite.defaultPostUpvotes
         {
             voteFederationMode = .init(
                 postUpvote: .init(from: postUpvotes),

@@ -66,7 +66,7 @@ public class ApiClient {
         }
     }
     
-    public var voteFederationMode: VoteFederationMode {
+    public var voteFederationMode: VoteSettings {
         myInstance?.voteFederationMode.value ?? .all
     }
     

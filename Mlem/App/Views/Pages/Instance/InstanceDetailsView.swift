@@ -309,7 +309,7 @@ struct InstanceDetailsView: View {
     func voteFederationRow(
         _ label: LocalizedStringResource,
         type: ScoringOperation,
-        value: FederationMode
+        value: VoteSettingsMode
     ) -> some View {
         settingRow(
             label,

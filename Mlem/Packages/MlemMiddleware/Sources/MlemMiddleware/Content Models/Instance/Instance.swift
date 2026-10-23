@@ -50,7 +50,7 @@ public final class Instance:
     public var contentWarning: String?
     
     public var setup: ExpectedValue<Bool>
-    public var voteFederationMode: ExpectedValue<VoteFederationMode>
+    public var voteFederationMode: ExpectedValue<VoteSettings>
     public var nsfwContentEnabled: ExpectedValue<Bool>
     public var communityCreationRestrictedToAdmins: ExpectedValue<Bool>
     public var emailVerificationRequired: ExpectedValue<Bool>

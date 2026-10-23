@@ -25,7 +25,7 @@ public struct InstanceProperties: UnifiedPropertiesProviding {
     
     // From Instance2Snapshot
     var setup: Bool?
-    var voteFederationMode: VoteFederationMode?
+    var voteFederationMode: VoteSettings?
     var nsfwContentEnabled: Bool?
     var communityCreationRestrictedToAdmins: Bool?
     var emailVerificationRequired: Bool?
