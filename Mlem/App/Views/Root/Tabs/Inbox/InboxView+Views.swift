@@ -138,6 +138,7 @@ extension InboxView {
                 dropdownStyle: availableFeeds.count > 1 ? .enabled(showBadge: showBadge) : .disabled
             )
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     @ViewBuilder
