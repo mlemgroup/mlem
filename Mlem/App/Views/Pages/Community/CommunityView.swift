@@ -100,6 +100,7 @@ struct CommunityView: View {
                         )
                     }
                 )
+                Spacer()
                 subscribeButton
                     .padding(.top, Constants.main.halfSpacing)
             }
