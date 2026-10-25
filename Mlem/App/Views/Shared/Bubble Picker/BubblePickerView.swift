@@ -100,7 +100,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     }
     
     /// Builds the HStack containing the actual buttons
-    /// - Parameter scrollProxy: scrollProxy to handle scrolling horizontally to the selected view. If present, the stack will create buttons and apply a ChildSizeReader to them to populate the size information for the masking; otherwise the stack will use inert labels.
+    /// - Parameter scrollProxy: scrollProxy to handle scrolling horizontally to the selected view. 
     @ViewBuilder
     func buttonStack(
         scrollProxy: ScrollViewProxy? = nil,
