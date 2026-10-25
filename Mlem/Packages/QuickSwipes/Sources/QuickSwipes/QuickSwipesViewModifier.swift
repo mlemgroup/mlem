@@ -19,6 +19,7 @@ struct QuickSwipeViewModifier: ViewModifier {
     
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
+    @Environment(\.layoutDirection) var layoutDirection
     
     @Environment(\.quickSwipeThresholdSet) var thresholds
     @Environment(\.quickSwipeMinimumDrag) var minimumDrag
@@ -83,7 +84,9 @@ struct QuickSwipeViewModifier: ViewModifier {
                     if [.ended, .cancelled].contains(recognizer.state) {
                         draggingUpdated(dragState: 0)
                     } else {
-                        draggingUpdated(dragState: recognizer.translation(in: recognizer.view).x)
+                        // translation is in screen space, but offset is mirrored in RTL mode
+                        let translation = recognizer.translation(in: recognizer.view).x
+                        draggingUpdated(dragState: layoutDirection == .rightToLeft ? -translation : translation)
                     }
                 }
             )
