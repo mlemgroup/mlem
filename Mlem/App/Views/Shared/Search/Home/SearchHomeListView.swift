@@ -31,5 +31,6 @@ struct SearchHomeListView<Content: View>: View {
         .labelStyle(SearchHomeLabelStyle())
         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: 25))
         .paletteBorder(cornerRadius: 25)
+        .buttonStyle(.chevron)
     }
 }
