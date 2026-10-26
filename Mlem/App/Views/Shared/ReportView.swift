@@ -98,7 +98,7 @@ struct ReportView: View {
         HStack {
             Button(
                 report.resolved ? "Resolved" : "Resolve",
-                systemImage: Icons.success
+                icon: .general.success
             ) {
                 hapticManager.play(haptic: .success, tier: .low)
                 report.toggleResolved()
