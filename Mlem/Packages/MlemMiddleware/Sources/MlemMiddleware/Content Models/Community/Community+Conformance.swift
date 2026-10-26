@@ -157,7 +157,11 @@ public extension Community {
             subscribersLocal: nil,
             reportCount: nil,
             unresolvedReportCount: nil,
-            localRemoved: nil
+            localRemoved: nil,
+            postUpvotes: nil,
+            postDownvotes: nil,
+            commentUpvotes: nil,
+            commentDownvotes: nil
         )
     }
     
