@@ -137,6 +137,7 @@ struct FeedsView: View {
                                 .padding(.bottom, Constants.main.standardSpacing)
                         }
                         .buttonStyle(.plain)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 .animation(.snappy, value: backendClient.testflightUpdate != lastTestFlightUpdate)

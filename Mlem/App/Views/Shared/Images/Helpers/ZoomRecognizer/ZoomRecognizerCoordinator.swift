@@ -22,6 +22,8 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     private let log: Logger = .mlemLogger()
     
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
+    @Setting(\.imageViewer_tapToResetZoom) var tapToResetZoom
+    @Setting(\.imageViewer_showControls) var showControls
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
@@ -48,6 +50,10 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     var panType: PanType = .none
     
     var customPanStartLocation: CGPoint?
+    
+    var tapShouldResetZoom: Bool {
+        scale != 1 && (tapToResetZoom || showControls == .never)
+    }
     
     /// Computes the maximum allowed offsets for a given scale.
     /// - Note: to get the minimum offset, multiply the return value by -1.
@@ -165,7 +171,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
             assertionFailure("No bounds")
             return
         }
-
+        
         let maxOffsets = maxOffsets.compute(.init(bounds: bounds, scale: scale))
         if abs(offset.width) > maxOffsets.width || abs(offset.height) > maxOffsets.height {
             resetToBounds(activeOffset: offset - initialOffset)
@@ -173,6 +179,12 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
         
         if gesture.momentumKilled {
             gesture.momentumKilled = false
+        } else if tapShouldResetZoom {
+            anchor = .center
+            withAnimation(.easeInOut(duration: 0.25)) {
+                offset = .zero
+                scale = 1
+            }
         } else if let customTap {
             customTap()
         }
