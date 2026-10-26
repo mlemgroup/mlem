@@ -81,7 +81,6 @@ struct FeedHeaderView<ImageContent: View>: View {
                         .foregroundStyle(.themedSecondary)
                 }
                 .frame(height: Constants.main.feedHeaderSize)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, Constants.main.halfSpacing)
         }
