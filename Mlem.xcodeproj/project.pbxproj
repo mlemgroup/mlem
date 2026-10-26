@@ -509,7 +509,6 @@
 		CD7DB9732C4AEDDE00DCC542 /* TileCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */; };
 		CD7DB9762C4D6C0A00DCC542 /* FeedCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */; };
 		CD869FCC2C15F8AC00FC8B5B /* BubblePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */; };
-		CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */; };
 		CD87BEC32D5132BE0099F190 /* FilterViolationWarning.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD87BEC22D5132BB0099F190 /* FilterViolationWarning.swift */; };
 		CD8DB93A2D22004000EB0C7B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DB9392D22003D00EB0C7B /* Animations.swift */; };
 		CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */; };
@@ -1100,7 +1099,6 @@
 		CD7DB9722C4AEDDE00DCC542 /* TileCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileCommentView.swift; sourceTree = "<group>"; };
 		CD7DB9752C4D6C0A00DCC542 /* FeedCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCommentView.swift; sourceTree = "<group>"; };
 		CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubblePickerView.swift; sourceTree = "<group>"; };
-		CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		CD869FCF2C15F92E00FC8B5B /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		CD87BEC22D5132BB0099F190 /* FilterViolationWarning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViolationWarning.swift; sourceTree = "<group>"; };
 		CD8DB9392D22003D00EB0C7B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
@@ -2275,7 +2273,6 @@
 			isa = PBXGroup;
 			children = (
 				CD869FCB2C15F8AC00FC8B5B /* BubblePickerView.swift */,
-				CD869FCD2C15F90C00FC8B5B /* ChildSizeReader.swift */,
 			);
 			path = "Bubble Picker";
 			sourceTree = "<group>";
@@ -2810,7 +2807,6 @@
 				CDA67A9F2D9B32A100E5D17B /* CGPoint+Extensions.swift in Sources */,
 				03BF11C52D3D3AFB00CC1F66 /* PostReadIndicatorSettingsView.swift in Sources */,
 				03B2F09D2FC9958600C36011 /* PersonSettingsView.swift in Sources */,
-				CD869FCE2C15F90C00FC8B5B /* ChildSizeReader.swift in Sources */,
 				039F588C2C7B574E00C61658 /* AdvancedSettingsView.swift in Sources */,
 				03250CEA2FD71303006F8394 /* CacheSettingsView.swift in Sources */,
 				CDDA49A82F7044D2004A5AFF /* InstanceStubResolutionPage.swift in Sources */,
