@@ -8,18 +8,6 @@
 import Foundation
 
 public enum ReportTarget {
-    enum Case {
-        case post, comment, message
-    }
-    
-    var `case`: Case {
-        switch self {
-        case .post: .post
-        case .comment: .comment
-        case .message: .message
-        }
-    }
-    
     case post(Post)
     case comment(Comment)
     case message(Message)
