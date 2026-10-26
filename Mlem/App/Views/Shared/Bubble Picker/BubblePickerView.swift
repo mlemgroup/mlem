@@ -79,6 +79,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                                         .padding(.horizontal, Constants.main.standardSpacing)
                                         .matchedGeometryEffect(id: selected, in: namespace, isSource: false)
                                         .animation(animation, value: selected)
+                                        .transaction { $0.animation = nil }
                                 }
                         }
                 }
@@ -120,6 +121,8 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                         Color.clear
                             .frame(height: 30)
                             .matchedGeometryEffect(id: tab, in: namespace)
+                            .animation(animation, value: selected)
+                            .transaction { $0.animation = nil }
                     }
                 } else {
                     bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
