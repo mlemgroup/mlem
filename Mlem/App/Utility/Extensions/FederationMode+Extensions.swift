@@ -9,11 +9,12 @@ import Foundation
 import Theming
 import MlemMiddleware
 
-extension FederationMode {
+extension VoteSettingsMode {
     var label: LocalizedStringResource {
         switch self {
         case .all: "Yes"
         case .local: "Local Only"
+        case .subscribed: "Subscribers Only"
         case .disable: "No"
         }
     }
@@ -22,6 +23,7 @@ extension FederationMode {
         switch self {
         case .all: .themedPositive
         case .local: .themedWarning
+        case .subscribed: .themedAccent
         case .disable: .themedNegative
         }
     }

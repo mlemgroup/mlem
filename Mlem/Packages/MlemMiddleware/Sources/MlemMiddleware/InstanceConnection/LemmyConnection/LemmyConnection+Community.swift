@@ -124,7 +124,11 @@ internal extension LemmyConnection {
                 discussionLanguages: nil,
                 visibility: nil,
                 sidebar: newValue,
-                summary: nil
+                summary: nil,
+                postUpvotes: nil,
+                postDownvotes: nil,
+                commentUpvotes: nil,
+                commentDownvotes: nil
             )
         }
         return try .init(from: response.communityView)

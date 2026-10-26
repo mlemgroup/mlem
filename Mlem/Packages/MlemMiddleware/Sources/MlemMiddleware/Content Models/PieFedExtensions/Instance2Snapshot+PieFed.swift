@@ -34,7 +34,8 @@ public extension Instance2Snapshot {
         try self.init(
             instance: .init(from: pieFed),
             setup: true,
-            voteFederationMode: enableDownvotes ? .all : .downvotesDisabled,
+            defaultVoteSettings: enableDownvotes ? .all : .downvotesDisabled,
+            downvotesEnabled: enableDownvotes,
             nsfwContentEnabled: false,
             communityCreationRestrictedToAdmins: false,
             emailVerificationRequired: true,
