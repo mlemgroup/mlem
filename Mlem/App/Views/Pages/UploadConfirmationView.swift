@@ -27,12 +27,7 @@ struct UploadConfirmationView: View {
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                if let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
-                }
+                imageView
                 Spacer()
                     .frame(height: 100)
             }
@@ -50,6 +45,16 @@ struct UploadConfirmationView: View {
         }
         .padding()
         .presentationBackground(.themedBackground)
+    }
+
+    @ViewBuilder
+    var imageView: some View {
+        if let uiImage = UIImage(data: imageData) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+        }
     }
 
     @ViewBuilder
