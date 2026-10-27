@@ -24,13 +24,20 @@ struct ImageUploadMenu<Label: View>: View {
     var body: some View {
         Menu(content: {
             Button("Photo Library", icon: .general.chooseImage) {
-                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
+                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi) {
+                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                }
             }
             Button("Choose File", icon: .general.chooseFile) {
-                navigation.showFilePicker(for: imageManager, api: imageUploadApi)
+                navigation.showFilePicker(for: imageManager, api: imageUploadApi) {
+                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                }
             }
             Button("Paste", icon: .general.paste) {
-                navigation.uploadImageFromClipboard(for: imageManager, api: imageUploadApi)
+                Task {
+                    await imageManager.pasteFromClipboard()
+                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                }
             }
         }, label: label)
             .disabled(imageManager.state != .idle)

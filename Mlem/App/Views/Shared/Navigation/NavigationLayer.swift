@@ -158,19 +158,16 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+    func showPhotosPicker(
+        for imageUploadManager: ImageUploadManager,
+        api: ApiClient,
+        callback: @escaping () async throws -> Void = {}
+    ) {
         model?.contentPickerTracker.photosPickerCallback = { photo in
             Task {
                 do {
                     try await imageUploadManager.choosePhoto(photo)
-                    if Settings.get(\.behavior_confirmImageUploads) {
-                        self.openSheet(.confirmUpload(
-                            imageManager: imageUploadManager,
-                            uploadApi: api
-                        ))
-                    } else {
-                        try await imageUploadManager.upload(api: api)
-                    }
+                    try await callback()
                 } catch {
                     handleError(error)
                 }
@@ -179,28 +176,25 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+    func showFilePicker(
+        for imageUploadManager: ImageUploadManager,
+        api: ApiClient,
+        callback: @escaping () async throws -> Void = {}
+    ) {
         model?.contentPickerTracker.showingFilePicker = true
         model?.contentPickerTracker.filePickerContentTypes = [.image]
         model?.contentPickerTracker.filePickerCallback = { url in
             Task {
                 do {
                     try await imageUploadManager.chooseFile(localUrl: url)
-                    if Settings.get(\.behavior_confirmImageUploads) {
-                        self.openSheet(.confirmUpload(
-                            imageManager: imageUploadManager,
-                            uploadApi: api
-                        ))
-                    } else {
-                        try await imageUploadManager.upload(api: api)
-                    }
+                    try await callback()
                 } catch {
                     handleError(error)
                 }
             }
         }
     }
-    
+
     @MainActor
     func showFilePicker(types: [UTType], callback: @escaping (Data) async -> Void) {
         model?.contentPickerTracker.showingFilePicker = true
@@ -223,10 +217,9 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
+    func triggerUpload(for imageUploadManager: ImageUploadManager, api: ApiClient) {
         Task {
             do {
-                await imageUploadManager.pasteFromClipboard()
                 if Settings.get(\.behavior_confirmImageUploads) {
                     openSheet(.confirmUpload(
                         imageManager: imageUploadManager,

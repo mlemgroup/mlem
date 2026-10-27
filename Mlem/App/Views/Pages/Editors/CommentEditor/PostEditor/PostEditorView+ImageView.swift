@@ -145,15 +145,22 @@ struct PostEditorImageUploadWidgetView: View {
         HStack {
             Button("Photos", icon: .general.photoLibary) {
                 guard let imageManager else { return }
-                navigation.showPhotosPicker(for: imageManager, api: primaryApi)
+                navigation.showPhotosPicker(for: imageManager, api: primaryApi) {
+                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                }
             }
             Button("Files", icon: .general.chooseFile) {
                 guard let imageManager else { return }
-                navigation.showFilePicker(for: imageManager, api: primaryApi)
+                navigation.showFilePicker(for: imageManager, api: primaryApi) {
+                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                }
             }
             Button("Paste", icon: .general.paste) {
                 guard let imageManager else { return }
-                navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
+                Task {
+                    await imageManager.pasteFromClipboard()
+                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                }
             }
         }
         .font(.subheadline)
