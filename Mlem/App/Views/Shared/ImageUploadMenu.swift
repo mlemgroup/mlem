@@ -13,11 +13,18 @@ struct ImageUploadMenu<Label: View>: View {
 
     let imageManager: ImageUploadManager
     let imageUploadApi: ApiClient
+    let triggerUpload: Bool
     @ViewBuilder let label: () -> Label
     
-    init(imageManager: ImageUploadManager, imageUploadApi: ApiClient, @ViewBuilder label: @escaping () -> Label) {
+    init(
+        imageManager: ImageUploadManager,
+        imageUploadApi: ApiClient,
+        triggerUpload: Bool,
+        @ViewBuilder label: @escaping () -> Label
+    ) {
         self.imageManager = imageManager
         self.imageUploadApi = imageUploadApi
+        self.triggerUpload = triggerUpload
         self.label = label
     }
     
@@ -25,21 +32,25 @@ struct ImageUploadMenu<Label: View>: View {
         Menu(content: {
             Button("Photo Library", icon: .general.chooseImage) {
                 navigation.showPhotosPicker(for: imageManager, api: imageUploadApi) {
-                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                    upload()
                 }
             }
             Button("Choose File", icon: .general.chooseFile) {
                 navigation.showFilePicker(for: imageManager, api: imageUploadApi) {
-                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                    upload()
                 }
             }
             Button("Paste", icon: .general.paste) {
                 Task {
                     await imageManager.pasteFromClipboard()
-                    navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+                    upload()
                 }
             }
         }, label: label)
             .disabled(imageManager.state != .idle)
+    }
+
+    func upload() {
+        navigation.triggerUpload(for: imageManager, api: imageUploadApi)
     }
 }

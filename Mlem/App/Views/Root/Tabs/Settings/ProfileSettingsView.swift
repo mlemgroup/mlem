@@ -233,7 +233,11 @@ private struct CircleImageUploadButton: View {
                     ProgressView()
                         .controlSize(.extraLarge)
                 default:
-                    ImageUploadMenu(imageManager: imageManager, imageUploadApi: api) {
+                    ImageUploadMenu(
+                        imageManager: imageManager,
+                        imageUploadApi: api,
+                        triggerUpload: true
+                    ) {
                         Image(icon: .general.add)
                             .resizable()
                             .symbolVariant(.circle.fill)

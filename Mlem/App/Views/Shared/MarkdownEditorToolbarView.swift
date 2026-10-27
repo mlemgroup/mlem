@@ -198,7 +198,11 @@ struct MarkdownEditorToolbarView: View {
                 textView.toggleQuoteAtCursor()
             }
             if let imageUploadApi = model.imageUploadApi {
-                ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                ImageUploadMenu(
+                    imageManager: imageManager,
+                    imageUploadApi: imageUploadApi,
+                    triggerUpload: true
+                ) {
                     Label("Image", icon: .markdown.uploadImage)
                 }
                 .disabled(!imageUploadApi.contextIsFetched)
