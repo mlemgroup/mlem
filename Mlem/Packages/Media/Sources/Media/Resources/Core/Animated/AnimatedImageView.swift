@@ -73,7 +73,7 @@ struct AnimatedImageView: UIViewRepresentable {
         return imageView
     }
     
-    func updateUIView(_ uiView: SDAnimatedImageView, context: Context) {
+    public func updateUIView(_ uiView: SDAnimatedImageView, context: Context) {
         guard let player else {
             return
         }

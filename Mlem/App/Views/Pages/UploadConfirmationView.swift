@@ -50,12 +50,8 @@ struct UploadConfirmationView: View {
     var imageView: some View {
         switch imageManager.state {
         case let .waiting(image), let .uploading(image, progress: _):
-            if let uiImage = UIImage(data: image.data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
-            }
+            PendingImageView(data: image.data, contentType: image.type)
+                .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
         default:
             Text(verbatim: "Error: not in 'waiting' state")
         }
