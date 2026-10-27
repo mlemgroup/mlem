@@ -9,6 +9,7 @@ import Haptics
 import MlemMiddleware
 import PhotosUI
 import SwiftUI
+import Theming
 
 struct UploadConfirmationView: View {
     @Environment(HapticManager.self) var hapticManager
@@ -17,8 +18,6 @@ struct UploadConfirmationView: View {
     
     @Setting(\.behavior_confirmImageUploads) var confirmImageUploads
     
-    var imageData: Data
-    var fileType: UTType?
     var imageManager: ImageUploadManager
     var uploadApi: ApiClient
     
@@ -49,11 +48,16 @@ struct UploadConfirmationView: View {
 
     @ViewBuilder
     var imageView: some View {
-        if let uiImage = UIImage(data: imageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+        switch imageManager.state {
+        case let .waiting(image), let .uploading(image, progress: _):
+            if let uiImage = UIImage(data: image.data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+            }
+        default:
+            Text(verbatim: "Error: not in 'waiting' state")
         }
     }
 
@@ -79,11 +83,7 @@ struct UploadConfirmationView: View {
                         Task { @MainActor in
                             isUploading = true
                             do {
-                                try await imageManager.upload(
-                                    data: imageData,
-                                    fileType: fileType,
-                                    api: uploadApi
-                                )
+                                try await imageManager.upload(api: uploadApi)
                                 hapticManager.play(haptic: .success, tier: .low)
                                 dismiss()
                             } catch {

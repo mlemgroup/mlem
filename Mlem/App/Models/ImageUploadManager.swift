@@ -11,8 +11,16 @@ import SwiftUI
 
 @Observable
 class ImageUploadManager: Hashable {
+    struct PendingUpload: Hashable, Equatable {
+        let data: Data
+        let type: UTType?
+    }
+
     enum UploadState: Hashable {
-        case idle, uploading(progress: Double), done(ImageUpload1)
+        case idle
+        case waiting(PendingUpload)
+        case uploading(PendingUpload, progress: Double)
+        case done(ImageUpload1)
         
         var isDone: Bool {
             switch self {
@@ -37,18 +45,18 @@ class ImageUploadManager: Hashable {
     
     var progress: Double {
         switch state {
-        case .idle: 0
-        case let .uploading(progress): progress
+        case .idle, .waiting: 0
+        case let .uploading(_, progress): progress
         case .done: 1
         }
     }
     
-    func uploadPhoto(_ photo: PhotosPickerItem, api: ApiClient) async throws {
+    func choosePhoto(_ photo: PhotosPickerItem) async throws {
         do {
             guard let data = try await photo.loadTransferable(type: Data.self) else {
                 throw ApiClientError.unsuccessful
             }
-            try await upload(data: data, fileType: photo.supportedContentTypes.first, api: api)
+            self.state = .waiting(.init(data: data, type: photo.supportedContentTypes.first))
         } catch {
             Task { @MainActor in
                 state = .idle
@@ -57,16 +65,15 @@ class ImageUploadManager: Hashable {
         }
     }
     
-    func uploadFile(localUrl url: URL, api: ApiClient) async throws {
+    func chooseFile(localUrl url: URL) async throws {
         do {
             guard url.startAccessingSecurityScopedResource() else {
                 throw ApiClientError.insufficientPermissions
             }
             let data = try Data(contentsOf: url)
             url.stopAccessingSecurityScopedResource()
-            var type = UTType(filenameExtension: url.pathExtension)
-            try await upload(data: data, fileType: type, api: api)
-            
+            let type = UTType(filenameExtension: url.pathExtension)
+            self.state = .waiting(.init(data: data, type: type))
         } catch {
             url.stopAccessingSecurityScopedResource()
             Task { @MainActor in
@@ -76,28 +83,28 @@ class ImageUploadManager: Hashable {
         }
     }
     
-    func pasteFromClipboard(api: ApiClient) async throws {
-        do {
-            if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
-                if let data = content.pngData() {
-                    try await upload(data: data, fileType: .png, api: api)
-                }
+    func pasteFromClipboard() async {
+        if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
+            if let data = content.pngData() {
+                self.state = .waiting(.init(data: data, type: .png))
             }
-        } catch {
-            Task { @MainActor in
-                state = .idle
-            }
-            throw error
         }
     }
     
-    func upload(data: Data, fileType: UTType?, api: ApiClient) async throws {
+    func upload(api: ApiClient) async throws {
+        guard case let .waiting(pendingImage) = self.state else {
+            throw ImageUploadManagerError.noPendingImage
+        }
+        
         do {
-            let image = try await api.uploadImage(data, fileType: fileType, onProgress: { value in
+            let image = try await api.uploadImage(
+                pendingImage.data,
+                fileType: pendingImage.type
+            ) { value in
                 Task { @MainActor in
-                    self.state = .uploading(progress: value)
+                    self.state = .uploading(pendingImage, progress: value)
                 }
-            })
+            }
             Task { @MainActor in
                 state = .done(image)
             }
@@ -131,3 +138,7 @@ class ImageUploadManager: Hashable {
         lhs.hashValue == rhs.hashValue
     }
 }
+
+enum ImageUploadManagerError: Error {
+    case noPendingImage
+} 

@@ -40,7 +40,7 @@ struct PostEditorImageUploadWidgetView: View {
                     }
                 }
                 .transition(.opacity)
-            case let .uploading(progress: progress):
+            case let .uploading(_, progress: progress):
                 uploadingProgressView(progress: progress)
                     .transition(.opacity)
             default:

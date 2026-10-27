@@ -76,7 +76,7 @@ struct MarkdownEditorToolbarView: View {
     @ViewBuilder
     var content: some View {
         switch imageManager.state {
-        case let .uploading(progress):
+        case let .uploading(_, progress):
             Group {
                 if progress == 1 {
                     HStack {

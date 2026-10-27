@@ -162,22 +162,14 @@ class NavigationLayer: Identifiable {
         model?.contentPickerTracker.photosPickerCallback = { photo in
             Task {
                 do {
-                    guard let data = try await photo.loadTransferable(type: Data.self) else {
-                        throw ApiClientError.unsuccessful
-                    }
+                    try await imageUploadManager.choosePhoto(photo)
                     if Settings.get(\.behavior_confirmImageUploads) {
                         self.openSheet(.confirmUpload(
-                            imageData: data,
-                            fileType: photo.supportedContentTypes.first,
                             imageManager: imageUploadManager,
                             uploadApi: api
                         ))
                     } else {
-                        try await imageUploadManager.upload(
-                            data: data,
-                            fileType: photo.supportedContentTypes.first,
-                            api: api
-                        )
+                        try await imageUploadManager.upload(api: api)
                     }
                 } catch {
                     handleError(error)
@@ -193,27 +185,16 @@ class NavigationLayer: Identifiable {
         model?.contentPickerTracker.filePickerCallback = { url in
             Task {
                 do {
-                    guard url.startAccessingSecurityScopedResource() else {
-                        throw MlemError.cannotAccessSecurityScopedResource
-                    }
-                    let data = try Data(contentsOf: url)
-                    url.stopAccessingSecurityScopedResource()
+                    try await imageUploadManager.chooseFile(localUrl: url)
                     if Settings.get(\.behavior_confirmImageUploads) {
                         self.openSheet(.confirmUpload(
-                            imageData: data,
-                            fileType: .init(filenameExtension: url.pathExtension),
                             imageManager: imageUploadManager,
                             uploadApi: api
                         ))
                     } else {
-                        try await imageUploadManager.upload(
-                            data: data,
-                            fileType: .init(filenameExtension: url.pathExtension),
-                            api: api
-                        )
+                        try await imageUploadManager.upload(api: api)
                     }
                 } catch {
-                    url.stopAccessingSecurityScopedResource()
                     handleError(error)
                 }
             }
@@ -243,24 +224,19 @@ class NavigationLayer: Identifiable {
     
     @MainActor
     func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
-            if let data = content.pngData() {
+        Task {
+            do {
+                await imageUploadManager.pasteFromClipboard()
                 if Settings.get(\.behavior_confirmImageUploads) {
                     openSheet(.confirmUpload(
-                        imageData: data,
-                        fileType: .png,
                         imageManager: imageUploadManager,
                         uploadApi: api
                     ))
                 } else {
-                    Task {
-                        do {
-                            try await imageUploadManager.upload(data: data, fileType: .png, api: api)
-                        } catch {
-                            handleError(error)
-                        }
-                    }
+                    try await imageUploadManager.upload(api: api)
                 }
+            } catch {
+                handleError(error)
             }
         }
     }
