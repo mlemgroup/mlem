@@ -46,63 +46,68 @@ struct UploadConfirmationView: View {
                 .frame(height: 100)
                 .allowsHitTesting(false)
             }
-            VStack(spacing: 0) {
-                VStack(spacing: 16) {
-                    if isUploading {
-                        VStack {
-                            Text("Uploading...")
-                            ProgressView()
-                        }
-                        .font(.title3)
-                        .padding(.vertical, 100)
-                    } else {
-                        Text("Upload this image to \(uploadApi.host)?")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                        Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
-                            .controlSize(.mini)
-                            .padding(.horizontal)
-                        Button {
-                            Task { @MainActor in
-                                isUploading = true
-                                do {
-                                    try await imageManager.upload(
-                                        data: imageData,
-                                        fileType: fileType,
-                                        api: uploadApi
-                                    )
-                                    hapticManager.play(haptic: .success, tier: .low)
-                                    dismiss()
-                                } catch {
-                                    handleError(error)
-                                }
-                                isUploading = false
-                            }
-                        } label: {
-                            Text("Upload")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .controlSize(.large)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .buttonStyle(.borderedProminent)
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .controlSize(.large)
-                        .buttonStyle(.bordered)
-                    }
-                }
-                .padding(.top, 15)
-                .padding(.bottom, 20)
-                .background(.themedBackground)
-            }
-            .interactiveDismissDisabled()
-            .animation(.easeOut(duration: 0.1), value: isUploading)
+            footerView
         }
         .padding()
         .presentationBackground(.themedBackground)
+    }
+
+    @ViewBuilder
+    var footerView: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 16) {
+                if isUploading {
+                    VStack {
+                        Text("Uploading...")
+                        ProgressView()
+                    }
+                    .font(.title3)
+                    .padding(.vertical, 100)
+                } else {
+                    Text("Upload this image to \(uploadApi.host)?")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                    Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
+                        .controlSize(.mini)
+                        .padding(.horizontal)
+                    Button {
+                        Task { @MainActor in
+                            isUploading = true
+                            do {
+                                try await imageManager.upload(
+                                    data: imageData,
+                                    fileType: fileType,
+                                    api: uploadApi
+                                )
+                                hapticManager.play(haptic: .success, tier: .low)
+                                dismiss()
+                            } catch {
+                                handleError(error)
+                            }
+                            isUploading = false
+                        }
+                    } label: {
+                        Text("Upload")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .buttonStyle(.borderedProminent)
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding(.top, 15)
+            .padding(.bottom, 20)
+            .background(.themedBackground)
+        }
+        .interactiveDismissDisabled()
+        .animation(.easeOut(duration: 0.1), value: isUploading)
     }
 }
