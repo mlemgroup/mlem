@@ -12,6 +12,10 @@ import SwiftUI
 import Theming
 
 struct UploadConfirmationView: View {
+    enum Outcome {
+        case uploaded, cancelled
+    }
+    
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
@@ -20,8 +24,10 @@ struct UploadConfirmationView: View {
     
     var imageManager: ImageUploadManager
     var uploadApi: ApiClient
+    var callback: (Outcome) -> Void
     
     @State var isUploading: Bool = false
+    @State var outcome: Outcome = .cancelled
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,6 +50,7 @@ struct UploadConfirmationView: View {
         }
         .padding()
         .presentationBackground(.themedBackground)
+        .onDisappear { callback(outcome) }
     }
 
     @ViewBuilder
@@ -81,6 +88,7 @@ struct UploadConfirmationView: View {
                             do {
                                 try await imageManager.upload(api: uploadApi)
                                 hapticManager.play(haptic: .success, tier: .low)
+                                outcome = .uploaded
                                 dismiss()
                             } catch {
                                 handleError(error)

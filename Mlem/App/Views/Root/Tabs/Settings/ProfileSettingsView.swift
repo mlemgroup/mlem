@@ -122,7 +122,9 @@ struct ProfileSettingsView: View {
         }
     }
     
-    var showToolbarOptions: Bool { profileDetails != person.profileDetails() }
+    var showToolbarOptions: Bool {
+        profileDetails != person.profileDetails() || avatarManager.state != .idle
+    }
 
     @ViewBuilder
     var displayNameSection: some View {
@@ -139,13 +141,23 @@ struct ProfileSettingsView: View {
     var avatarSection: some View {
         Section {
             HStack(spacing: 15) {
-                CircleCroppedImageView(url: profileDetails.avatar, frame: 48, fallback: .personAvatar)
+                switch avatarManager.state {
+                case let .done(image):
+                    CircleCroppedImageView(url: image.url, frame: 48, fallback: .personAvatar)
+                case let .waiting(image), let .uploading(image, progress: _):
+                    if let uiImage = UIImage(data: image.data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(.circle)
+                            .frame(width: 48, height: 48)
+                    }
+                case .idle:
+                    CircleCroppedImageView(url: nil, frame: 48, fallback: .personAvatar)
+                }
                 Text("Avatar")
                 Spacer()
-                CircleImageUploadButton(imageManager: avatarManager, url: $profileDetails.avatar, api: person.api)
-            }
-            .onChange(of: avatarManager.image?.url) {
-                profileDetails.avatar = avatarManager.image?.url
+                CircleImageUploadButton(imageManager: avatarManager, api: person.api)
             }
         }
     }
@@ -172,7 +184,7 @@ struct ProfileSettingsView: View {
                 HStack(spacing: 15) {
                     Text("Banner")
                     Spacer()
-                    CircleImageUploadButton(imageManager: bannerManager, url: $profileDetails.banner, api: person.api)
+                    CircleImageUploadButton(imageManager: bannerManager, api: person.api)
                 }
                 .padding(.horizontal, 15)
                 .padding(.vertical, 10)
@@ -198,6 +210,13 @@ struct ProfileSettingsView: View {
     func submit() async {
         isSubmitting = true
         do {
+            if avatarManager.isWaiting {
+                guard try await navigation.triggerUpload(for: avatarManager, api: person.api) else {
+                    isSubmitting = false
+                    return
+                }
+                profileDetails.avatar = avatarManager.image?.url
+            }
             try await person.updateProfile(profileDetails)
             if let session = appState.firstSession as? UserSession, session.person === person {
                 try await session.updateAccount()
@@ -214,14 +233,13 @@ struct ProfileSettingsView: View {
 
 private struct CircleImageUploadButton: View {
     let imageManager: ImageUploadManager
-    @Binding var url: URL?
     let api: ApiClient
     
     var body: some View {
         Group {
-            if url != nil {
+            if imageManager.state != .idle {
                 Button {
-                    url = nil
+                    imageManager.clear()
                 } label: {
                     Image(icon: .general.delete)
                         .resizable()
@@ -236,7 +254,7 @@ private struct CircleImageUploadButton: View {
                     ImageUploadMenu(
                         imageManager: imageManager,
                         imageUploadApi: api,
-                        triggerUpload: true
+                        triggerUpload: false
                     ) {
                         Image(icon: .general.add)
                             .resizable()

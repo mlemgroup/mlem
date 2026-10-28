@@ -146,20 +146,24 @@ struct PostEditorImageUploadWidgetView: View {
             Button("Photos", icon: .general.photoLibary) {
                 guard let imageManager else { return }
                 navigation.showPhotosPicker(for: imageManager, api: primaryApi) {
-                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                    try await navigation.triggerUpload(for: imageManager, api: primaryApi)
                 }
             }
             Button("Files", icon: .general.chooseFile) {
                 guard let imageManager else { return }
                 navigation.showFilePicker(for: imageManager, api: primaryApi) {
-                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                    try await navigation.triggerUpload(for: imageManager, api: primaryApi)
                 }
             }
             Button("Paste", icon: .general.paste) {
                 guard let imageManager else { return }
                 Task {
                     await imageManager.pasteFromClipboard()
-                    navigation.triggerUpload(for: imageManager, api: primaryApi)
+                    do {
+                        try await navigation.triggerUpload(for: imageManager, api: primaryApi)
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
         }

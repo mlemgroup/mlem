@@ -216,21 +216,21 @@ class NavigationLayer: Identifiable {
         }
     }
     
+    /// - Returns: `false` if the user cancelled the upload from the confirmation prompt.
     @MainActor
-    func triggerUpload(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        Task {
-            do {
-                if Settings.get(\.behavior_confirmImageUploads) {
-                    openSheet(.confirmUpload(
-                        imageManager: imageUploadManager,
-                        uploadApi: api
-                    ))
-                } else {
-                    try await imageUploadManager.upload(api: api)
-                }
-            } catch {
-                handleError(error)
+    @discardableResult
+    func triggerUpload(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws -> Bool {
+        if Settings.get(\.behavior_confirmImageUploads) {
+            return await withCheckedContinuation { continuation in
+                openSheet(.confirmUpload(
+                    imageManager: imageUploadManager,
+                    uploadApi: api,
+                    callback: { continuation.resume(returning: $0 == .uploaded) }
+                ))
             }
+        } else {
+            try await imageUploadManager.upload(api: api)
+            return true
         }
     }
 

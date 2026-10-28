@@ -32,25 +32,31 @@ struct ImageUploadMenu<Label: View>: View {
         Menu(content: {
             Button("Photo Library", icon: .general.chooseImage) {
                 navigation.showPhotosPicker(for: imageManager, api: imageUploadApi) {
-                    upload()
+                    try await upload()
                 }
             }
             Button("Choose File", icon: .general.chooseFile) {
                 navigation.showFilePicker(for: imageManager, api: imageUploadApi) {
-                    upload()
+                    try await upload()
                 }
             }
             Button("Paste", icon: .general.paste) {
                 Task {
                     await imageManager.pasteFromClipboard()
-                    upload()
+                    do {
+                        try await upload()
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
         }, label: label)
             .disabled(imageManager.state != .idle)
     }
 
-    func upload() {
-        navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+    func upload() async throws {
+        if triggerUpload {
+            try await navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+        }
     }
 }

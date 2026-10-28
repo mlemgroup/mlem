@@ -119,6 +119,13 @@ class ImageUploadManager: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(state)
     }
+
+    var isWaiting: Bool {
+        switch state {
+        case .waiting: true
+        default: false
+        }
+    }
     
     @MainActor
     func clear() {

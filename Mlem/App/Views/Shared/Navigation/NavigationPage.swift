@@ -96,7 +96,7 @@ enum NavigationPage {
     case editPost(_ post: Post)
     case deleteAccount(_ account: UserAccount)
     case bypassImageProxy(callback: () -> Void)
-    case confirmUpload(imageManager: ImageUploadManager, uploadApi: ApiClient)
+    case confirmUpload(imageManager: ImageUploadManager, uploadApi: ApiClient, callback: (UploadConfirmationView.Outcome) -> Void)
     case rulesList(_ model: any ProfileProviding, callback: (String) -> Void)
     case blockList
     case advancedSorting(_ sort: Binding<PostSortType>)
