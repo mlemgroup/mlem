@@ -211,7 +211,7 @@ struct ProfileSettingsView: View {
         isSubmitting = true
         do {
             if avatarManager.isWaiting {
-                guard try await navigation.triggerUpload(for: avatarManager, api: person.api) else {
+                guard try await navigation.triggerUpload(for: avatarManager, api: person.api) == .uploaded else {
                     isSubmitting = false
                     return
                 }

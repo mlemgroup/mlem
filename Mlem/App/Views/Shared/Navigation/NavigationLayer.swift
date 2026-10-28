@@ -158,41 +158,25 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func showPhotosPicker(
-        for imageUploadManager: ImageUploadManager,
-        api: ApiClient,
-        callback: @escaping () async throws -> Void = {}
-    ) {
-        model?.contentPickerTracker.photosPickerCallback = { photo in
-            Task {
-                do {
-                    try await imageUploadManager.choosePhoto(photo)
-                    try await callback()
-                } catch {
-                    handleError(error)
-                }
-            }
+    func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws {
+        guard let model else { return }
+        let photo = await withCheckedContinuation { continuation in
+            model.contentPickerTracker.photosPickerCallback = { continuation.resume(returning: $0) }
         }
+        guard let photo else { return }
+        try await imageUploadManager.choosePhoto(photo)
     }
     
     @MainActor
-    func showFilePicker(
-        for imageUploadManager: ImageUploadManager,
-        api: ApiClient,
-        callback: @escaping () async throws -> Void = {}
-    ) {
-        model?.contentPickerTracker.showingFilePicker = true
-        model?.contentPickerTracker.filePickerContentTypes = [.image]
-        model?.contentPickerTracker.filePickerCallback = { url in
-            Task {
-                do {
-                    try await imageUploadManager.chooseFile(localUrl: url)
-                    try await callback()
-                } catch {
-                    handleError(error)
-                }
-            }
+    func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws {
+        guard let model else { return }
+        let url = await withCheckedContinuation { continuation in
+            model.contentPickerTracker.showingFilePicker = true
+            model.contentPickerTracker.filePickerContentTypes = [.image]
+            model.contentPickerTracker.filePickerCallback = { continuation.resume(returning: $0) }
         }
+        guard let url else { return }
+        try await imageUploadManager.chooseFile(localUrl: url)
     }
 
     @MainActor
@@ -200,6 +184,7 @@ class NavigationLayer: Identifiable {
         model?.contentPickerTracker.showingFilePicker = true
         model?.contentPickerTracker.filePickerContentTypes = types
         model?.contentPickerTracker.filePickerCallback = { url in
+            guard let url else { return }
             Task {
                 do {
                     guard url.startAccessingSecurityScopedResource() else {
@@ -216,21 +201,23 @@ class NavigationLayer: Identifiable {
         }
     }
     
-    /// - Returns: `false` if the user cancelled the upload from the confirmation prompt.
     @MainActor
     @discardableResult
-    func triggerUpload(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws -> Bool {
+    func triggerUpload(
+        for imageUploadManager: ImageUploadManager,
+        api: ApiClient
+    ) async throws -> UploadConfirmationView.Outcome {
         if Settings.get(\.behavior_confirmImageUploads) {
             return await withCheckedContinuation { continuation in
                 openSheet(.confirmUpload(
                     imageManager: imageUploadManager,
                     uploadApi: api,
-                    callback: { continuation.resume(returning: $0 == .uploaded) }
+                    callback: { continuation.resume(returning: $0) }
                 ))
             }
         } else {
             try await imageUploadManager.upload(api: api)
-            return true
+            return .uploaded
         }
     }
 

@@ -31,13 +31,27 @@ struct ImageUploadMenu<Label: View>: View {
     var body: some View {
         Menu(content: {
             Button("Photo Library", icon: .general.chooseImage) {
-                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi) {
-                    try await upload()
+                Task {
+                    do {
+                        try await navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
+                        if imageManager.isWaiting {
+                            try await upload()
+                        }
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
             Button("Choose File", icon: .general.chooseFile) {
-                navigation.showFilePicker(for: imageManager, api: imageUploadApi) {
-                    try await upload()
+                Task {
+                    do {
+                        try await navigation.showFilePicker(for: imageManager, api: imageUploadApi)
+                        if imageManager.isWaiting {
+                            try await upload()
+                        }
+                    } catch {
+                        handleError(error)
+                    }
                 }
             }
             Button("Paste", icon: .general.paste) {

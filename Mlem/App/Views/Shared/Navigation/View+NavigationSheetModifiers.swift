@@ -70,7 +70,12 @@ private struct NavigationSheetModifier: ViewModifier {
             .photosPicker(
                 isPresented: .init(
                     get: { nextLayer == nil && contentPickerTracker?.photosPickerCallback != nil },
-                    set: { contentPickerTracker?.photosPickerCallback = $0 ? contentPickerTracker?.photosPickerCallback : nil }
+                    set: {
+                        if !$0 {
+                            contentPickerTracker?.photosPickerCallback?(nil)
+                            contentPickerTracker?.photosPickerCallback = nil
+                        }
+                    }
                 ),
                 selection: .init(get: { nil }, set: { photo in
                     if let photo {
@@ -98,12 +103,17 @@ private struct NavigationSheetModifier: ViewModifier {
                     set: { contentPickerTracker?.showingFilePicker = $0 }
                 ),
                 allowedContentTypes: contentPickerTracker?.filePickerContentTypes ?? [],
+                allowsMultipleSelection: false,
                 onCompletion: { result in
                     do {
-                        try contentPickerTracker?.filePickerCallback?(result.get())
+                        try contentPickerTracker?.filePickerCallback?(result.get().first)
                     } catch {
+                        contentPickerTracker?.filePickerCallback?(nil)
                         handleError(error)
                     }
+                },
+                onCancellation: {
+                    contentPickerTracker?.filePickerCallback?(nil)
                 }
             )
             .accentColor(ThemedColor.themedAccent.resolve(with: colorPalette.palette)) // deprecated, but .tint colors menu buttons
