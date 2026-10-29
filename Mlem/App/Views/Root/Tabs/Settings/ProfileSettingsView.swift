@@ -29,8 +29,12 @@ struct ProfileSettingsView: View {
     
     @State var avatarManager: ImageUploadManager = .init()
     @State var bannerManager: ImageUploadManager = .init()
+
+    enum SubmittingState {
+        case idle, uploadingImages, submitting
+    }
     
-    @State var isSubmitting: Bool = false
+    @State var submittingState: SubmittingState = .idle
     
     init(person: Person) {
         self.person = person
@@ -114,7 +118,7 @@ struct ProfileSettingsView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    if isSubmitting {
+                    if submittingState != .idle {
                         ProgressView()
                     } else {
                         saveButtonView
@@ -124,7 +128,7 @@ struct ProfileSettingsView: View {
                 CloseButtonToolbarItem()
             }
         }
-        .disabled(isSubmitting)
+        .disabled(submittingState != .idle)
     }
     
     var showToolbarOptions: Bool {
@@ -224,7 +228,9 @@ struct ProfileSettingsView: View {
     
     @MainActor
     func submit() async {
-        isSubmitting = true
+        if avatarManager.isWaiting || bannerManager.isWaiting {
+            submittingState = .uploadingImages
+        } 
         do {
             // Intentionally skipping the upload confirmation dialogue here.
             // The user had a chance to see the pending images already.
@@ -240,6 +246,7 @@ struct ProfileSettingsView: View {
             } else if bannerManager.state == .idle {
                 profileDetails.banner = nil
             }
+            submittingState = .submitting
             try await person.updateProfile(profileDetails)
             if let session = appState.firstSession as? UserSession, session.person === person {
                 try await session.updateAccount()
@@ -250,7 +257,7 @@ struct ProfileSettingsView: View {
         } catch {
             handleError(error)
         }
-        isSubmitting = false
+        submittingState = .idle
     }
 }
 
