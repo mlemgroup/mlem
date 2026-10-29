@@ -375,6 +375,7 @@
 		03DD69442D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */; };
 		03E0EF432CA73D7A002CB66C /* PostStubResolutionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF422CA73D7A002CB66C /* PostStubResolutionPage.swift */; };
 		03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF442CA74036002CB66C /* CommentPage.swift */; };
+		03E129DC3091383300DF2F8A /* PendingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E129DB3091383300DF2F8A /* PendingImageView.swift */; };
 		03E46ACB2D1216CE002589DB /* PostViewLinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46ACA2D1216CE002589DB /* PostViewLinkType.swift */; };
 		03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46ACC2D121C19002589DB /* HeadlinePostBodyView.swift */; };
 		03E46AD22D130681002589DB /* VotesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46AD12D130681002589DB /* VotesListView.swift */; };
@@ -969,6 +970,7 @@
 		03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewModifier+SampleEnvironment.swift"; sourceTree = "<group>"; };
 		03E0EF422CA73D7A002CB66C /* PostStubResolutionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStubResolutionPage.swift; sourceTree = "<group>"; };
 		03E0EF442CA74036002CB66C /* CommentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPage.swift; sourceTree = "<group>"; };
+		03E129DB3091383300DF2F8A /* PendingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingImageView.swift; sourceTree = "<group>"; };
 		03E46ACA2D1216CE002589DB /* PostViewLinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewLinkType.swift; sourceTree = "<group>"; };
 		03E46ACC2D121C19002589DB /* HeadlinePostBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostBodyView.swift; sourceTree = "<group>"; };
 		03E46AD12D130681002589DB /* VotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListView.swift; sourceTree = "<group>"; };
@@ -1888,6 +1890,7 @@
 				03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */,
 				CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */,
 				CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */,
+				03E129DB3091383300DF2F8A /* PendingImageView.swift */,
 			);
 			path = Wrappers;
 			sourceTree = "<group>";
@@ -2926,6 +2929,7 @@
 				0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */,
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
+				03E129DC3091383300DF2F8A /* PendingImageView.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
 				CD737FBA2F771BF600E46411 /* InstanceSummarySoftware+Extensions.swift in Sources */,
 				035DFA232EB3F7240021DE8C /* CommunityAboutView.swift in Sources */,
