@@ -101,10 +101,15 @@ class ImageUploadManager: Hashable {
     }
     
     func upload(api: ApiClient) async throws {
-        guard case let .waiting(pendingImage) = self.state else {
+        guard self.isWaiting else {
             throw ImageUploadManagerError.noPendingImage
         }
-        
+        try await self.uploadIfWaiting(api: api)
+    }
+
+    func uploadIfWaiting(api: ApiClient) async throws {
+        guard case let .waiting(pendingImage) = self.state else { return }
+
         do {
             let image = try await api.uploadImage(
                 pendingImage.data,

@@ -234,14 +234,18 @@ struct ProfileSettingsView: View {
         do {
             // Intentionally skipping the upload confirmation dialogue here.
             // The user had a chance to see the pending images already.
-            if avatarManager.isWaiting {
-                try await avatarManager.upload(api: person.api)
+            let shouldUploadAvatar = avatarManager.isWaiting
+            let shouldUploadBanner = bannerManager.isWaiting
+            async let avatarUpload: Void = avatarManager.uploadIfWaiting(api: person.api)
+            async let bannerUpload: Void = bannerManager.uploadIfWaiting(api: person.api)
+            _ = try await (avatarUpload, bannerUpload)
+
+            if shouldUploadAvatar {
                 profileDetails.avatar = avatarManager.image?.url
             } else if avatarManager.state == .idle {
                 profileDetails.avatar = nil
             }
-            if bannerManager.isWaiting {
-                try await bannerManager.upload(api: person.api)
+            if shouldUploadBanner {
                 profileDetails.banner = bannerManager.image?.url
             } else if bannerManager.state == .idle {
                 profileDetails.banner = nil
