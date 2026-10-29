@@ -24,7 +24,6 @@ struct ExpandedPostView<Content: View>: View {
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
-    @Setting(\.comment_jumpButton) var jumpButton
     @Setting(\.comment_compact) var compactComments
     @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
     @Setting(\.post_markCrosspostsRead) var markCrosspostsRead
@@ -181,7 +180,7 @@ struct ExpandedPostView<Content: View>: View {
                         self.jumpButtonTarget = nil
                     }
                 }
-                .overlay(alignment: jumpButton.alignment) {
+                .overlay {
                     JumpButtonsView(
                         showJumpButton: (tracker.nodes.count) > 1,
                         topVisibleItem: topVisibleItem,
@@ -277,8 +276,22 @@ private struct JumpButtonsView: View {
     var scrollToLastVisitedPosition: (() -> Void)?
     var scrollToNextComment: () -> Void
     var scrollToPreviousComment: () -> Void
+
+    @State var isDuo: Bool = false
     
     var body: some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: jumpButton.alignment)
+            .padding(.horizontal, Constants.main.standardSpacing)
+            .padding(.bottom, isDuo ? -20 : Constants.main.standardSpacing)
+            .onGeometryChange(for: Bool.self, of: {
+                return $0.safeAreaInsets.trailing != 0 || $0.safeAreaInsets.leading != 0
+            }, action: {
+                self.isDuo = $0
+            })
+    }
+
+    var content: some View {
         VStack(spacing: 0) {
             if let scrollToLastVisitedPosition, topVisibleItem.isAtPost, showJumpButton {
                 JumpButtonView(
@@ -294,7 +307,6 @@ private struct JumpButtonsView: View {
                 )
             }
         }
-        .padding(Constants.main.standardSpacing)
         .animation(.default, value: topVisibleItem.isAtPost)
     }
 }

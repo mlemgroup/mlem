@@ -50,7 +50,8 @@ public final class Instance:
     public var contentWarning: String?
     
     public var setup: ExpectedValue<Bool>
-    public var voteFederationMode: ExpectedValue<VoteFederationMode>
+    public var defaultVoteSettings: ExpectedValue<VoteSettings>
+    public var downvotesEnabled: ExpectedValue<Bool>
     public var nsfwContentEnabled: ExpectedValue<Bool>
     public var communityCreationRestrictedToAdmins: ExpectedValue<Bool>
     public var emailVerificationRequired: ExpectedValue<Bool>
@@ -106,7 +107,8 @@ public final class Instance:
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
         // this is somewhat cumbersome but avoids lazy vars, which are very awkward in Observables
         self.setup = dummyExpectedValue(properties.setup)
-        self.voteFederationMode = dummyExpectedValue(properties.voteFederationMode)
+        self.defaultVoteSettings = dummyExpectedValue(properties.defaultVoteSettings)
+        self.downvotesEnabled = dummyExpectedValue(properties.downvotesEnabled)
         self.nsfwContentEnabled = dummyExpectedValue(properties.nsfwContentEnabled)
         self.communityCreationRestrictedToAdmins = dummyExpectedValue(properties.communityCreationRestrictedToAdmins)
         self.emailVerificationRequired = dummyExpectedValue(properties.emailVerificationRequired)
@@ -145,7 +147,8 @@ public final class Instance:
             )
         }
         self.setup = expectedValue(properties.setup)
-        self.voteFederationMode = expectedValue(properties.voteFederationMode)
+        self.defaultVoteSettings = expectedValue(properties.defaultVoteSettings)
+        self.downvotesEnabled = expectedValue(properties.downvotesEnabled)
         self.nsfwContentEnabled = expectedValue(properties.nsfwContentEnabled)
         self.communityCreationRestrictedToAdmins = expectedValue(properties.communityCreationRestrictedToAdmins)
         self.emailVerificationRequired = expectedValue(properties.emailVerificationRequired)
@@ -190,7 +193,8 @@ public final class Instance:
         setIfChanged(\.contentWarning, properties.contentWarning)
         
         updateIfChanged(\.setup.value_, properties.setup)
-        updateIfChanged(\.voteFederationMode.value_, properties.voteFederationMode)
+        updateIfChanged(\.defaultVoteSettings.value_, properties.defaultVoteSettings)
+        updateIfChanged(\.downvotesEnabled.value_, properties.downvotesEnabled)
         updateIfChanged(\.nsfwContentEnabled.value_, properties.nsfwContentEnabled)
         updateIfChanged(\.communityCreationRestrictedToAdmins.value_, properties.communityCreationRestrictedToAdmins)
         updateIfChanged(\.emailVerificationRequired.value_, properties.emailVerificationRequired)
@@ -227,7 +231,8 @@ public final class Instance:
     @MainActor
     public func softUpdate(with properties: InstanceProperties) {
         setIfNil(\.setup.value_, properties.setup)
-        setIfNil(\.voteFederationMode.value_, properties.voteFederationMode)
+        setIfNil(\.defaultVoteSettings.value_, properties.defaultVoteSettings)
+        setIfNil(\.downvotesEnabled.value_, properties.downvotesEnabled)
         setIfNil(\.nsfwContentEnabled.value_, properties.nsfwContentEnabled)
         setIfNil(\.communityCreationRestrictedToAdmins.value_, properties.communityCreationRestrictedToAdmins)
         setIfNil(\.emailVerificationRequired.value_, properties.emailVerificationRequired)

@@ -10,6 +10,30 @@ import MlemMiddleware
 import SwiftUI
 
 extension SearchView {
+    var page: Page {
+        if !queryIsEmpty {
+            .results
+        } else if isSearching, searchBarMode == .compact {
+            .recents
+        } else {
+            .home
+        }
+    }
+
+    var prompt: String {
+        if searchBarMode == .compact {
+            "Search..."
+        } else {
+            switch selectedTab {
+            case .communities: "Search Communities..."
+            case .people: "Search Users..."
+            case .instances: "Search Instances..."
+            case .posts: "Search Posts..."
+            case .comments: "Search Comments..."
+            }
+        }
+    }
+
     func contentChangeTriggerDebouncedRefresh() {
         let stashedQuery = query
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -30,18 +54,6 @@ extension SearchView {
         Task {
             await refresh(clearBeforeRefresh: selectedTab == .posts || selectedTab == .comments)
         }
-    }
-    
-    func returnToHome() {
-        if selectedTab == .posts || selectedTab == .comments {
-            selectedTab = .communities
-        }
-        page = .home
-        if !query.isEmpty {
-            query = ""
-            Task { await refresh(clearBeforeRefresh: true) }
-        }
-        resultsScrollToTopTrigger.toggle()
     }
     
     func setupFilters() async {

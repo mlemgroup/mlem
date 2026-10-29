@@ -15,6 +15,7 @@ struct AdvancedSettingsView: View {
     @Setting(\.dev_errorTimeout) var errorToastTimeout
 
     @Setting(\.dev_developerMode) var developerMode
+    @Setting(\.dev_flipLayoutDirection) var flipLayoutDirection
     
     @State var backendStatus: BackendHealthCheck?
     @State var lastBackendStatusCheck: Date?
@@ -65,6 +66,10 @@ struct AdvancedSettingsView: View {
                 Toggle("Developer Mode", isOn: $developerMode)
             } footer: {
                 Text("Show additional debug information. Not recommended for normal use.")
+            }
+            
+            Section {
+                Toggle("Flip Layout Direction", isOn: $flipLayoutDirection)
             }
         }
         .withConditionalLabelStyle()

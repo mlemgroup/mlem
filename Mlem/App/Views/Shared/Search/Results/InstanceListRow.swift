@@ -24,24 +24,38 @@ struct InstanceListRow<Content2: View>: View {
     init(
         _ instance: Instance,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
+        complications: [Content.Complication] = [.software],
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,
         visitContext: VisitHistory.VisitContext = .other
     ) {
         self.instance = instance
-        self.content = .init(instance, content: content, showBlockStatus: showBlockStatus, readout: readout)
+        self.content = .init(
+            instance,
+            content: content,
+            complications: complications,
+            showBlockStatus: showBlockStatus,
+            readout: readout
+        )
         self.visitContext = visitContext
     }
     
     init(
         _ summary: InstanceSummary,
         @ViewBuilder content: @escaping () -> Content2 = { EmptyView() },
+        complications: [Content.Complication] = [.software],
         showBlockStatus: Bool = true,
         readout: Content.Readout? = nil,
         visitContext: VisitHistory.VisitContext = .other
     ) where Content2 == EmptyView {
         self.instance = summary
-        self.content = .init(summary, content: content, showBlockStatus: showBlockStatus, readout: readout)
+        self.content = .init(
+            summary,
+            content: content,
+            complications: complications,
+            showBlockStatus: showBlockStatus,
+            readout: readout
+        )
         self.visitContext = visitContext
     }
     

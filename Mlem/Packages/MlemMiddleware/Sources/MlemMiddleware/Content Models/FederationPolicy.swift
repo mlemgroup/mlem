@@ -32,15 +32,15 @@ public struct FederationPolicy {
     }
 }
 
-public enum FederationMode: Hashable {
-    case all, local, disable
+public enum VoteSettingsMode: Hashable {
+    case all, local, subscribed, disable
 }
 
-public struct VoteFederationMode: Hashable {
-    public let postUpvote: FederationMode
-    public let postDownvote: FederationMode
-    public let commentUpvote: FederationMode
-    public let commentDownvote: FederationMode
+public struct VoteSettings: Hashable {
+    public let postUpvote: VoteSettingsMode
+    public let postDownvote: VoteSettingsMode
+    public let commentUpvote: VoteSettingsMode
+    public let commentDownvote: VoteSettingsMode
 
     public static let all: Self = .init(
         postUpvote: .all,

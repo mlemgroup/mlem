@@ -66,8 +66,8 @@ public class ApiClient {
         }
     }
     
-    public var voteFederationMode: VoteFederationMode {
-        myInstance?.voteFederationMode.value ?? .all
+    public var downvotesEnabled: Bool {
+        myInstance?.downvotesEnabled.value ?? true
     }
     
     // MARK: caching

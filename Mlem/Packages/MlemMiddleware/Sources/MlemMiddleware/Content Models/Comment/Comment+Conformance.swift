@@ -73,7 +73,7 @@ public extension Comment {
 
 public extension Comment {
     var downvotesEnabled: Bool {
-        api.voteFederationMode.commentDownvote != .disable
+        api.downvotesEnabled
     }
 }
 

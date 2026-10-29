@@ -14,63 +14,71 @@ import Theming
 struct SearchHomeView: View {
     @Environment(\.navigation) var navigation
     @Environment(\.palette) var palette
+    @Environment(\.searchBarMode) var searchBarMode
 
     @Environment(AppState.self) var appState
     @Environment(EventsTracker.self) var eventsTracker
     
     @Setting(\.events_showEvents) var showEvents
 
+    @State private var width: CGFloat = 0
+
     var body: some View {
-        VStack(spacing: 20) {
+        sectionsView {
+            if let session = appState.firstSession as? UserSession,
+                let visitHistory = session.visitHistory,
+                searchBarMode == .regular {
+                RecentSearchListView(session: session, visitHistory: visitHistory)
+            }
+
             if appState.firstAccount.accountType != .guest {
-                subheadingView("Visit Again")
-                topRow
+                SwiftUI.Section("Visit Again") {
+                    topRow
+                }
             }
             
-            subheadingView("Browse")
-            browseList
-                .padding(.top, 15)
+            SwiftUI.Section("Browse") {
+                browseList
+            }
 
             if let events = eventsTracker.events, !events.isEmpty, showEvents {
                 eventsView(events)
             }
         }
-        .padding(.horizontal, 16)
         .padding(.top, 20)
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
+    }
+
+    var useWideLayout: Bool {
+        width > 500
     }
 
     @ViewBuilder
-    func subheadingView(_ text: LocalizedStringResource) -> some View {
-        Text(text)
-            .font(.title)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, -4)
-    }
-    
-    @ViewBuilder
     var topRow: some View {
-        SearchHomeListView {
+        AdaptableSearchHomeListView(isGrid: useWideLayout) {
             NavigationLink("Saved", icon: .lemmy.savedFeed, destination: .savedFeed)
                 .tint(.themedSavedFeed)
             NavigationLink("Upvoted", icon: .lemmy.upvoted, destination: .upvotedFeed)
                 .tint(.themedUpvote)
         }
-        .buttonStyle(.chevron)
+        .padding(.horizontal, 16)
     }
 
     @ViewBuilder
     func eventsView(_ events: [Event]) -> some View {
-        HStack {
-            subheadingView("Events")
-            Spacer()
-            eventsMenuView
-        }
-        .padding(.top, 15)
-        SearchHomeListView {
-            ForEach(events) { 
-                EventRowView(event: $0)
+        SwiftUI.Section {
+            AdaptableSearchHomeListView(isGrid: useWideLayout) {
+                ForEach(events) {
+                    EventRowView(event: $0)
+                }
             }
+            .padding(.horizontal, 16)
+        } header: {
+            Text("Events")
+            if !useWideLayout {
+                Spacer()
+            }
+            eventsMenuView
         }
     }
 
@@ -90,16 +98,13 @@ struct SearchHomeView: View {
     
     @ViewBuilder
     var browseList: some View {
-        HStack(alignment: .center, spacing: UIDevice.isPad ? 30 : 0) {
+        HStack(alignment: .center, spacing: useWideLayout ? 30 : 0) {
             NavigationLink("Communities", icon: .lemmy.community, destination: .topCommunities)
                 .tint(.themedCommunityAccent)
 
-            if !UIDevice.isPad { Spacer() }
-
             NavigationLink("Users", icon: .lemmy.person, destination: .topPeople)
                 .tint(.themedPersonAccent)
-
-            if !UIDevice.isPad { Spacer() }
+                .frame(maxWidth: useWideLayout ? nil : .infinity)
 
             NavigationLink("Instances", icon: .lemmy.instance, destination: .topInstances)
                 .tint(.themedInstanceAccent)
@@ -107,41 +112,28 @@ struct SearchHomeView: View {
         .labelStyle(SearchHomeCategoryLabelStyle())
         .buttonStyle(.empty)
         .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
     }
-    
-    @ViewBuilder
-    var browseGrid: some View {
-        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())], spacing: 16) {
-            GridButton(title: "Top Communities", color: .themedCommunityAccent)
-            GridButton(title: "Trending Communities", color: .themedColorfulAccent(0))
-            GridButton(title: "Users", color: .themedPersonAccent)
-            GridButton(title: "Instances", color: .themedInstanceAccent)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, -4)
-    }
-}
 
-private struct GridButton: View {
-    @Environment(\.palette) var palette
-    
-    let title: LocalizedStringResource
-    let color: ThemedColor
-    
-    var body: some View {
-        ZStack {
-            Text(title)
-                .foregroundStyle(.themedContrastingLabel)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 10)
+    @ViewBuilder
+    func sectionsView(@ViewBuilder _ content: () -> some View) -> some View {
+        VStack(
+            alignment: useWideLayout ? .leading : .center,
+            spacing: useWideLayout ? 50 : 30
+        ) {
+            ForEach(sections: content()) { section in
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(spacing: 15) {
+                        section.header
+                            .font(.title)
+                            .fontWeight(.semibold)
+                    }
+                    .padding(.horizontal, 16)
+                    section
+                        .content
+                }
+            }
         }
-        .aspectRatio(5 / 3, contentMode: .fit)
-        .frame(maxWidth: .infinity)
-        .background(color.resolve(with: palette).gradient)
-        .clipShape(.rect(cornerRadius: 16))
-        .padding(.horizontal, 4)
-        .onTapGesture {}
     }
 }

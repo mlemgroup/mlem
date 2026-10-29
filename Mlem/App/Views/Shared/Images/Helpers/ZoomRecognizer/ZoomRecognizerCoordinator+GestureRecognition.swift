@@ -26,9 +26,10 @@ extension ZoomRecognizerCoordinator {
         _ gestureRecognizer: UIGestureRecognizer,
         shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
-        // single tap should require double tap to fail unless it killed momentum
+        // single tap should require double tap to fail unless it killed momentum or will reset the zoom
         if let momentumResetGesture = gestureRecognizer as? MomentumResetTapGestureRecognizer,
            !momentumResetGesture.momentumKilled,
+           !tapShouldResetZoom,
            let doubleTap = otherGestureRecognizer as? UITapGestureRecognizer,
            doubleTap.numberOfTapsRequired == 2 {
             return true
@@ -37,7 +38,9 @@ extension ZoomRecognizerCoordinator {
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer is UIPinchGestureRecognizer || gestureRecognizer is UITapGestureRecognizer {
+        if let doubleTap = gestureRecognizer as? UITapGestureRecognizer, doubleTap.numberOfTapsRequired == 2 {
+            return !tapShouldResetZoom
+        } else if gestureRecognizer is UIPinchGestureRecognizer || gestureRecognizer is UITapGestureRecognizer {
             return true
         } else if gestureRecognizer is UIPanGestureRecognizer {
             let location = gestureRecognizer.location(in: nil)

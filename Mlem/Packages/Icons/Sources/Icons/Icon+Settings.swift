@@ -77,6 +77,7 @@ public extension Icon {
         public let imageViewer: Icon = .init("rectangle.portrait.center.inset.filled")
         public let imageViewerControls: Icon = .init("ellipsis")
         public let imageViewerDismissSensitivity: Icon = .applySquare("arrow.down.to.line")
+        public let imageViewerTapToResetZoom: Icon = .init("arrow.down.right.and.arrow.up.left")
         public let avatar: Icon = .applyCircle("circle.dashed.inset.fill")
         public let cache: Icon = .applyCircle("externaldrive.fill")
     }

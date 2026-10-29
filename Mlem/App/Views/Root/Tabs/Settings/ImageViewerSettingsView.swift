@@ -13,6 +13,7 @@ struct ImageViewerSettingsView: View {
     @Setting(\.imageViewer_showCloseButton) var showCloseButton
     @Setting(\.imageViewer_showZoomIndicator) var showZoomIndicator
     @Setting(\.imageViewer_dismissThreshold) var dismissThreshold
+    @Setting(\.imageViewer_tapToResetZoom) var tapToResetZoom
 
     var body: some View {
         Form {
@@ -66,6 +67,11 @@ struct ImageViewerSettingsView: View {
                 fallbackValue: "",
                 icon: .settings.zoomSlider,
                 destination: .settings(.zoomSlider)
+            )
+            Toggle(
+                "Tap to Reset Zoom",
+                icon: .settings.imageViewerTapToResetZoom,
+                isOn: $tapToResetZoom
             )
         }
     }

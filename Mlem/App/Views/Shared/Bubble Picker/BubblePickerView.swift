@@ -28,13 +28,12 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     
     // currentTabIndex is used to drive the capsule animation; it is tracked separately from selected so that the capsule animations can be triggered independently of any animation (or lack thereof) that is desired on selected
     @State var currentTabIndex: Int
-    @State var selectedTabFrame: BubblePickerItemFrame?
+    @Namespace var namespace
     
     let tabs: [Value]
     let dividers: Set<DividerPlacement>
     let label: (Value) -> LocalizedStringResource
     let value: (Value) -> Int?
-    let spaceName: String = UUID().uuidString
     
     let animation: Animation = .interactiveSpring(response: 0.2, dampingFraction: 0.8)
 
@@ -75,18 +74,14 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
                             buttonStack(isSelectionIndicator: true)
                                 .background(.themedAccent)
                                 .allowsHitTesting(false)
-                                .mask(alignment: .leading) {
-                                    if let selectedTabFrame {
-                                        Capsule()
-                                            .offset(x: selectedTabFrame.offset + Constants.main.standardSpacing)
-                                            .frame(width: max(selectedTabFrame.width - Constants.main.doubleSpacing, 0), height: 30)
-                                            .animation(animation, value: selectedTabFrame)
-                                    } else {
-                                        Color.clear
-                                    }
+                                .mask {
+                                    Capsule()
+                                        .padding(.horizontal, Constants.main.standardSpacing)
+                                        .matchedGeometryEffect(id: selected, in: namespace, isSource: false)
+                                        .animation(animation, value: selected)
+                                        .transaction { $0.animation = nil }
                                 }
                         }
-                        .coordinateSpace(name: spaceName)
                 }
                 .scrollIndicators(.hidden)
                 .onChange(of: selected) {
@@ -106,7 +101,7 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
     }
     
     /// Builds the HStack containing the actual buttons
-    /// - Parameter scrollProxy: scrollProxy to handle scrolling horizontally to the selected view. If present, the stack will create buttons and apply a ChildSizeReader to them to populate the size information for the masking; otherwise the stack will use inert labels.
+    /// - Parameter scrollProxy: scrollProxy to handle scrolling horizontally to the selected view. 
     @ViewBuilder
     func buttonStack(
         scrollProxy: ScrollViewProxy? = nil,
@@ -116,21 +111,19 @@ struct BubblePicker<Value: Identifiable & Equatable & Hashable>: View {
         HStack(spacing: -Constants.main.doubleSpacing) {
             ForEach(Array(tabs.enumerated()), id: \.offset) { index, tab in
                 if let scrollProxy {
-                    ChildSizeReader(
-                        size: tab == selected ? Binding(
-                            get: { selectedTabFrame ?? .zero },
-                            set: { selectedTabFrame = $0 }
-                        ) : nil,
-                        spaceName: spaceName
-                    ) {
-                        bubbleButton(
-                            index: index,
-                            tab: tab,
-                            scrollProxy: scrollProxy,
-                            isSelectionIndicator: isSelectionIndicator
-                        )
+                    bubbleButton(
+                        index: index,
+                        tab: tab,
+                        scrollProxy: scrollProxy,
+                        isSelectionIndicator: isSelectionIndicator
+                    )
+                    .background {
+                        Color.clear
+                            .frame(height: 30)
+                            .matchedGeometryEffect(id: tab, in: namespace)
+                            .animation(animation, value: selected)
+                            .transaction { $0.animation = nil }
                     }
-                    .id("\(isSelectionIndicator)\(value(tab) ?? -1)")
                 } else {
                     bubbleButtonLabel(tab: tab, isSelectionIndicator: isSelectionIndicator)
                 }

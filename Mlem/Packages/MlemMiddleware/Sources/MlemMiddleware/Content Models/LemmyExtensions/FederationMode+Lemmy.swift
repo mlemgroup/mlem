@@ -7,11 +7,12 @@
 
 import Foundation
 
-extension FederationMode {
-    init(from federationMode: LemmyFederationMode) {
+extension VoteSettingsMode {
+    init(from federationMode: LemmyVoteSettings) {
         self = switch federationMode {
         case .all: .all
         case .local: .local
+        case .subscribed: .subscribed
         case .disable: .disable
         }
     }

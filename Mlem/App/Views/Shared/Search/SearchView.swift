@@ -44,13 +44,16 @@ struct SearchView: View {
     @Environment(NavigationLayer.self) var navigation
     @Environment(FiltersTracker.self) var filtersTracker
     @Environment(\.palette) var palette
+    @Environment(\.searchBarMode) var searchBarMode
     
     @Setting(\.comment_compact) var compactComments
     
     @State var isSearching: Bool = false
     @State var query: String = ""
+
+    // Separate state var to avoid unnecessary view updates
+    @State var queryIsEmpty: Bool = true
     @State var hasAppeared: Bool = false
-    @State var page: Page = .home
     
     @State var filtersActive: Bool = false
     @State var communityFilters: CommunityFilters?
@@ -89,13 +92,13 @@ struct SearchView: View {
         content
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
-            .navigationTitle("Search")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(searchBarMode == .regular ? "" : "Search")
+            .navigationBarTitleDisplayMode(searchBarMode == .regular ? .inline : .large)
             .searchable(
                 text: $query,
                 isPresented: $isSearching,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "Search..."
+                placement: .toolbarPrincipal,
+                prompt: prompt
             )
             .autocorrectionDisabled(!selectedTab.shouldAutocorrect)
             .onSubmit(of: .search) {
@@ -105,30 +108,21 @@ struct SearchView: View {
                     }
                 }
             }
-            .toolbar { PasteLinkButtonView() }
+            .toolbar {
+                toolbarContent
+            }
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: query) { _, newValue in
-                switch newValue {
-                case let str where str.hasPrefix("@"), let str where str.hasPrefix("!"):
-                    selectedTab = str.hasPrefix("@") ? .people : .communities
+                if self.queryIsEmpty != newValue.isEmpty {
+                    self.queryIsEmpty = newValue.isEmpty
+                }
+                if newValue.hasPrefix("@") || newValue.hasPrefix("!") {
+                    selectedTab = newValue.hasPrefix("@") ? .people : .communities
                     query = ""
-                    page = .recents
                     isSearching = true
                     contentChangeTriggerDebouncedRefresh()
-                    
-                default:
-                    if page != .home {
-                        page = query.isEmpty ? .recents : .results
-                    }
                 }
                 lastExecutedQuery[selectedTab] = query
-            }
-            .onChange(of: isSearching) { oldValue, newValue in
-                if newValue, query.isEmpty {
-                    page = .recents
-                } else if oldValue, !newValue {
-                    returnToHome()
-                }
             }
             // Don't use `.task` here, because it triggers when navigating back
             .onChange(of: query, initial: true) { oldValue, newValue in
@@ -154,31 +148,61 @@ struct SearchView: View {
             }
             .task(id: appState.firstApi) { await setupFilters() }
     }
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        if searchBarMode == .regular {
+            ToolbarItem(placement: .topBarLeading) {
+                Menu {
+                    Picker(selectedTab.label, selection: $selectedTab) {
+                        ForEach(Tab.allCases, id: \.self) { tab in
+                            Text(tab.label)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(selectedTab.label)
+                        Image(icon: .general.dropDown)
+                            .imageScale(.small)
+                    }
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Toggle("Filters", icon: .general.filterMenu, isOn: $filtersActive)
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            PasteLinkButtonView()
+        }
+    }
     
     @ViewBuilder
     var content: some View {
         FancyScrollView(scrollToTopTrigger: $resultsScrollToTopTrigger) { isSearching = true } content: {
             VStack(alignment: .leading, spacing: 0) {
-                if page != .home {
+                if page != .home, searchBarMode == .compact {
                     tabView
-                    if filtersActive {
-                        filtersView
-                    }
+                }
+                if filtersActive, page != .home || searchBarMode == .regular {
+                    filtersView
                 }
             }
-            .padding(.top, -8)
             switch page {
             case .recents:
                 recentSearchesListView
             case .home:
                 SearchHomeView()
                     .frame(maxWidth: .infinity)
+                    .geometryGroup()
             case .results:
                 resultsListView
+                    .frame(maxWidth: .infinity)
+                    .geometryGroup()
             }
         }
         .animation(.easeOut(duration: 0.1), value: filtersActive)
         .animation(.easeOut(duration: 0.2), value: page)
+        .contentMargins(.top, searchBarMode == .compact ? -8 : 0)
     }
 }
 
