@@ -100,7 +100,7 @@ struct ProfileSettingsView: View {
         .onAppear {
             markdownToolbarEditorModel.imageUploadApi = person.api
         }
-        .navigationTitle("My Profile")
+        .navigationTitle(submittingState == .uploadingImages ? "Uploading Images..." : "My Profile")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
         .navigationBarBackButtonHidden(showToolbarOptions)
