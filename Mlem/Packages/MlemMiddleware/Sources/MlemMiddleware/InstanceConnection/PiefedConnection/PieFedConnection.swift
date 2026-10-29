@@ -75,7 +75,7 @@ public class PieFedConnection: InstanceConnection {
         } catch {
             switch error {
             case let RestError.response(response, statusCode: code):
-                throw ApiClientError(piefedMessage: response, statusCode: code)
+                throw ApiClientError(piefedMessage: response, statusCode: code, hasToken: self.token != nil)
             default:
                 throw ApiClientError(from: error)
             }
@@ -100,7 +100,7 @@ public class PieFedConnection: InstanceConnection {
         } catch {
             switch error {
             case let RestError.response(response, statusCode: code):
-                throw ApiClientError(piefedMessage: response, statusCode: code)
+                throw ApiClientError(piefedMessage: response, statusCode: code, hasToken: self.token != nil)
             default:
                 throw ApiClientError(from: error)
             }

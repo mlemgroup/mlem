@@ -8,10 +8,10 @@
 import Foundation
 
 extension ApiClientError {
-    init(piefedMessage: String, statusCode: Int) {
+    init(piefedMessage: String, statusCode: Int, hasToken: Bool) {
         self = switch piefedMessage {
         case "incorrect_login":
-            .notLoggedIn
+            hasToken ? .invalidSession : .notLoggedIn
         default:
             .response(piefedMessage, statusCode)
         }

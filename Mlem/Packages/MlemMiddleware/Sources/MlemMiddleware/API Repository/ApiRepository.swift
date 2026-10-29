@@ -69,7 +69,7 @@ class ApiRepository {
         line: Int = #line
     ) async throws -> T {
         do {
-            return try await connectionMultiplexer.perform { wrapper in
+            return try await connectionMultiplexer.perform(ref: "\(self.baseUrl.host() ?? "") \(file):\(line) \(function)") { wrapper in
                 try await callback(wrapper.wrappedValue)
             }
         } catch ConnectionMultiplexerError.allConnectionsFailed {
