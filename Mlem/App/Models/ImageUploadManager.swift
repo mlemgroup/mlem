@@ -21,10 +21,11 @@ class ImageUploadManager: Hashable {
         case waiting(PendingUpload)
         case uploading(PendingUpload, progress: Double)
         case done(ImageUpload1)
+        case previousUpload(URL)
         
         var isDone: Bool {
             switch self {
-            case .done: true
+            case .done, .previousUpload: true
             default: false
             }
         }
@@ -42,12 +43,20 @@ class ImageUploadManager: Hashable {
             return nil
         }
     }
-    
+
+    var url: URL? {
+        switch state {
+        case let .done(image): image.url
+        case let .previousUpload(url): url
+        default: nil
+        }
+    }
+
     var progress: Double {
         switch state {
         case .idle, .waiting: 0
         case let .uploading(_, progress): progress
-        case .done: 1
+        case .done, .previousUpload: 1
         }
     }
     
@@ -113,6 +122,22 @@ class ImageUploadManager: Hashable {
                 state = .idle
             }
             throw error
+        }
+    }
+
+    func setPreviousUpload(_ url: URL?) {
+        if let url {
+            self.state = .previousUpload(url)
+        } else {
+            self.state = .idle
+        }
+    }
+
+    func matchesPreviousUpload(_ url: URL?) -> Bool {
+        switch (self.state, url) {
+        case let (.previousUpload(otherUrl), .some(url)): otherUrl == url
+        case (.idle, nil): true
+        default: false
         }
     }
     
