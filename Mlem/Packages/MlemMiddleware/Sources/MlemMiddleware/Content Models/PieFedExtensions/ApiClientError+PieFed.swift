@@ -12,6 +12,8 @@ extension ApiClientError {
         self = switch piefedMessage {
         case "incorrect_login":
             hasToken ? .invalidSession : .notLoggedIn
+        case "No object found.":
+            .noEntityFound
         default:
             .response(piefedMessage, statusCode)
         }
