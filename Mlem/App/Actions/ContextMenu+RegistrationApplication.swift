@@ -16,7 +16,7 @@ private let seeds: [ActionSeed] = [
 ]
 
 extension View {
-    func contextMenu(application: DeprecatedRegistrationApplication) -> some View {
+    func contextMenu(application: RegistrationApplication) -> some View {
         contextMenu {
             ActionButtons { _ in
                 seeds.compactMap { $0.createAction(application) }
@@ -29,7 +29,7 @@ extension EllipsisMenu {
     init(
         icon: Icon = .general.menu,
         size: CGFloat,
-        application: DeprecatedRegistrationApplication
+        application: RegistrationApplication
     ) where Content == ActionButtons {
         self.icon = icon
         self.size = size

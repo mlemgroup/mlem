@@ -15,7 +15,7 @@ struct RegistrationApplicationDenialEditorView: View {
     @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
-    let application: DeprecatedRegistrationApplication
+    let application: RegistrationApplication
     
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool
@@ -48,15 +48,14 @@ struct RegistrationApplicationDenialEditorView: View {
     }
     
     func send() async {
-        let result = await application.deny(reason: reason.isEmpty ? nil : reason).result.get()
-        switch result {
-        case .succeeded:
-            hapticManager.play(haptic: .success, tier: .low)
-            dismiss()
-        case .failed:
-            toastModel.add(.failure())
-        default:
-            break
+        application.deny(reason: reason.isEmpty ? nil : reason) { result in
+            switch result {
+            case .success:
+                hapticManager.play(haptic: .success, tier: .low)
+                dismiss()
+            case .failure:
+                toastModel.add(.failure())
+            }
         }
     }
 }

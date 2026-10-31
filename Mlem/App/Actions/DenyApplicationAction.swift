@@ -10,7 +10,7 @@ import MlemMiddleware
 import SwiftUI
 
 struct DenyApplicationAction: SimpleLabelAction {
-    let application: DeprecatedRegistrationApplication
+    let application: RegistrationApplication
 }
 
 // MARK: - Configurability
@@ -18,7 +18,7 @@ struct DenyApplicationAction: SimpleLabelAction {
 extension ActionSeed {
     static let denyApplication = ActionSeed("denyApplication") { entity in
         switch entity {
-        case let entity as DeprecatedRegistrationApplication: DenyApplicationAction(application: entity)
+        case let entity as RegistrationApplication: DenyApplicationAction(application: entity)
         default: nil
         }
     }

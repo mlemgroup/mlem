@@ -24,7 +24,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     // remember to also amend the `update` method of RegistrationApplication!
     public let emailVerified: Bool
     public let resolver: Person1Snapshot?
-    public let resolution: DeprecatedRegistrationApplication.ResolutionState
+    public let resolution: RegistrationApplication.ResolutionState
     
     public var cacheId: Int { id }
     
@@ -37,7 +37,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
         creator: Person1Snapshot,
         emailVerified: Bool,
         resolver: Person1Snapshot?,
-        resolution: DeprecatedRegistrationApplication.ResolutionState
+        resolution: RegistrationApplication.ResolutionState
     ) {
         self.id = id
         self.created = created

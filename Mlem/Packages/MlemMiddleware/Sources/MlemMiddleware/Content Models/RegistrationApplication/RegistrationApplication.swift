@@ -9,14 +9,14 @@ import Observation
 import Foundation
 
 @Observable
-public class RegistrationApplication: UnifiedModelProviding {
+public class RegistrationApplication: UnifiedModelProviding, ContentIdentifiable, FeedLoadable {
     public typealias Properties = RegistrationApplicationProperties
     
     public var api: ApiClient
     private let properties: RegistrationApplicationProperties
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<RegistrationApplication> = .init(parent: self, properties: properties)
     
-    // MARK: API PRoperties
+    // MARK: API Properties
     // Properties that are provided by the API
     
     public let id: Int
@@ -27,7 +27,7 @@ public class RegistrationApplication: UnifiedModelProviding {
     public let creator: Person
     public var emailVerified: Bool
     public var resolver: Person?
-    public var resolution: DeprecatedRegistrationApplication.ResolutionState
+    public var resolution: RegistrationApplication.ResolutionState
     
     // MARK: Initializers and Updates
     
@@ -66,5 +66,79 @@ public class RegistrationApplication: UnifiedModelProviding {
         assertionFailure("Cannot resolve RegistrationApplication")
         throw ApiClientError.invalidInput
     }
+}
+
+// MARK: - Computed
+
+public extension RegistrationApplication {
+    var modMailId: Int {
+        var hasher: Hasher = .init()
+        hasher.combine("application")
+        hasher.combine(id)
+        return hasher.finalize()
+    }
+}
+
+// MARK: - Interactions
+
+public extension RegistrationApplication {
     
+    func approve(callback: ((UpdateStatus) -> Void)? = nil) {
+        self.resolution = .approved
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: true)
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.approveRegistrationApplication(id: self.id)
+                    self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: true)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+    
+    func deny(reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        self.resolution = .denied(reason: reason)
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: true)
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.denyRegistrationApplication(id: self.id, reason: reason)
+                    self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: true)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
+        }
+    }
+}
+
+public extension RegistrationApplication {
+    enum ResolutionState: Equatable {
+        case unresolved, approved, denied(reason: String?)
+        
+        public var reason: String? {
+            switch self {
+            case .unresolved: nil
+            case .approved: nil
+            case let .denied(reason): reason
+            }
+        }
+        
+        public var isDenied: Bool {
+            switch self {
+            case .denied: true
+            default: false
+            }
+        }
+    }
 }

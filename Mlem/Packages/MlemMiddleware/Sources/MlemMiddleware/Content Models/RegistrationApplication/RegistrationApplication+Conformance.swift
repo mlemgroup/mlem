@@ -10,3 +10,21 @@
 public extension RegistrationApplication {
     var cacheId: Int { id }
 }
+
+// MARK: ContentIdentifiable
+
+public extension RegistrationApplication {
+    static var modelTypeId: ContentType { .registrationApplication }
+}
+
+// MARK: FeedLoadable
+
+public extension RegistrationApplication {
+    typealias FilterType = ModMailItemFilterType
+    
+    func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
+        switch sortType {
+        case .new: .new(created)
+        }
+    }
+}

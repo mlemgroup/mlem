@@ -17,7 +17,7 @@ public struct RegistrationApplicationProperties: UnifiedPropertiesProviding {
     let creator: Person
     var emailVerified: Bool
     var resolver: Person?
-    var resolution: DeprecatedRegistrationApplication.ResolutionState
+    var resolution: RegistrationApplication.ResolutionState
     
     @MainActor
     public init(api: ApiClient, snapshot: RegistrationApplicationSnapshot) {
