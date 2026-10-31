@@ -122,6 +122,7 @@ struct CommunityView: View {
                         ToolbarItem(placement: .topBarTrailing) {
                             FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
                         }
+                        .axisBehavior_(.verticalPreferred)
                     }
                 case .about:
                     CommunityAboutView(community: community)

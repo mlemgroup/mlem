@@ -13,6 +13,7 @@ import Theming
 struct FeedSortPicker: View {
     @Environment(AppState.self) var appState
     @Environment(NavigationLayer.self) var navigation
+    @Environment(\.toolbarVerticalEdge_) var toolbarVerticalEdge
     
     let showTopTimescaleInIcon: Bool
     @Binding var value: Value
@@ -123,20 +124,31 @@ struct FeedSortPicker: View {
     var labelView: some View {
         VStack {
             if showTopTimescaleInIcon, let sort = value.sortType, sort.isTop {
-                HStack {
-                    Image(icon: .lemmy.topSort)
-                        .imageScale(.small)
-                    Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
-                        .font(.body)
-                        .fontDesign(.rounded)
+                Group {
+                    if toolbarVerticalEdge == nil {
+                        horizontalTopLabelView(sort)
+                    } else {
+                        Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
+                    }
                 }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
                 .accessibilityLabel(sort.label(timeRangeFormat: .topAndTimescale))
             } else if let sortType = value.sortType {
                 Label(sortType.label(timeRangeFormat: topSortTypes.count == 1 ? .topOnly : .topAndTimescale), icon: sortType.icon)
             }
         }
         .animation(.easeOut(duration: 0.4), value: value == .unknown)
+    }
+
+    @ViewBuilder
+    func horizontalTopLabelView(_ sort: PostSortType) -> some View {
+        HStack {
+            Image(icon: .lemmy.topSort)
+                .imageScale(.small)
+            Text(sort.label(timeRangeFormat: .timescaleAbbreviated))
+                .font(.body)
+                .fontDesign(.rounded)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
     }
 }
