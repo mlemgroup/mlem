@@ -17,6 +17,7 @@ import Theming
 struct ContentView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.layoutDirection) var layoutDirection
     
     @Dependency(\.persistenceRepository) var persistenceRepository
     
@@ -26,6 +27,7 @@ struct ContentView: View {
     @Setting(\.dev_developerMode) var developerMode
     @Setting(\.behavior_hapticLevel) var hapticLevel
     @Setting(\.behavior_enableQuickSwipes) var quickSwipesEnabled
+    @Setting(\.dev_flipLayoutDirection) var flipLayoutDirection
 
     let cacheCleanTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     let unreadCountTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -126,6 +128,15 @@ struct ContentView: View {
                 .hapticConfiguration(maximumHapticTier: hapticLevel, errorHandler: handleHapticError)
                 .environment(AppState.main)
                 .onOpenURL(perform: self.handleIncomingDeeplink)
+                .environment(\.layoutDirection, effectiveLayoutDirection)
+        }
+    }
+    
+    var effectiveLayoutDirection: LayoutDirection {
+        if flipLayoutDirection {
+            return layoutDirection == .leftToRight ? .rightToLeft : .leftToRight
+        } else {
+            return layoutDirection
         }
     }
     

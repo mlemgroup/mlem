@@ -57,6 +57,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var community_showInstance: Bool
     var dev_developerMode: Bool
     var dev_errorTimeout: Double
+    var dev_flipLayoutDirection: Bool
     var feed_default: ListingType
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
@@ -71,6 +72,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var imageViewer_showCloseButton: Bool
     var imageViewer_showZoomIndicator: Bool
     var imageViewer_dismissThreshold: Int
+    var imageViewer_tapToResetZoom: Bool
     var media_animatedAvatars: AnimatedAvatarBehavior
     var menus_allModActions: Bool
     var menus_modActionGrouping: ModeratorActionGrouping
@@ -192,6 +194,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_colorScheme = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._comment_createImage_colorScheme) ?? .unspecified
         self.dev_developerMode = try container.decodeIfPresent(Bool.self, forKey: ._dev_developerMode) ?? false
         self.dev_errorTimeout = try container.decodeIfPresent(Double.self, forKey: ._dev_errorTimeout) ?? 1.5
+        self.dev_flipLayoutDirection = try container.decodeIfPresent(Bool.self, forKey: ._dev_flipLayoutDirection) ?? false
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
@@ -216,6 +219,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_showCloseButton = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showCloseButton) ?? true
         self.imageViewer_showZoomIndicator = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_showZoomIndicator) ?? true
         self.imageViewer_dismissThreshold = try container.decodeIfPresent(Int.self, forKey: ._imageViewer_dismissThreshold) ?? 10
+        self.imageViewer_tapToResetZoom = try container.decodeIfPresent(Bool.self, forKey: ._imageViewer_tapToResetZoom) ?? false
         self.media_animatedAvatars = try container.decodeIfPresent(AnimatedAvatarBehavior.self, forKey: ._media_animatedAvatars) ?? (UIAccessibility.isReduceMotionEnabled ? .never : .always)
         self.menus_allModActions = try container.decodeIfPresent(Bool.self, forKey: ._menus_allModActions) ?? false
         self.menus_modActionGrouping = try container.decodeIfPresent(ModeratorActionGrouping.self, forKey: ._menus_modActionGrouping) ?? .combined
@@ -316,6 +320,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.comment_createImage_colorScheme = .unspecified
         self.dev_developerMode = false
         self.dev_errorTimeout = 1.5
+        self.dev_flipLayoutDirection = false
         self.feed_default = .subscribed
         self.feed_markReadOnScroll = false
         self.feed_showRead = true
@@ -331,6 +336,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.imageViewer_showCloseButton = true
         self.imageViewer_showZoomIndicator = true
         self.imageViewer_dismissThreshold = 10
+        self.imageViewer_tapToResetZoom = false
         self.media_animatedAvatars = UIAccessibility.isReduceMotionEnabled ? .never : .always
         self.menus_allModActions = false
         self.menus_modActionGrouping = .combined
@@ -427,6 +433,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         community_showBanner = otherValues.community_showBanner
         community_showInstance = otherValues.community_showInstance
         dev_developerMode = otherValues.dev_developerMode
+        dev_flipLayoutDirection = otherValues.dev_flipLayoutDirection
         feed_default = otherValues.feed_default
         feed_markReadOnScroll = otherValues.feed_markReadOnScroll
         feed_showRead = otherValues.feed_showRead
@@ -441,6 +448,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         imageViewer_showCloseButton = otherValues.imageViewer_showCloseButton
         imageViewer_showZoomIndicator = otherValues.imageViewer_showZoomIndicator
         imageViewer_dismissThreshold = otherValues.imageViewer_dismissThreshold
+        imageViewer_tapToResetZoom = otherValues.imageViewer_tapToResetZoom
         media_animatedAvatars = otherValues.media_animatedAvatars
         menus_allModActions = otherValues.menus_allModActions
         menus_modActionGrouping = otherValues.menus_modActionGrouping
@@ -544,6 +552,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _community_showInstance = "community_showInstance"
         case _dev_developerMode = "dev_developerMode"
         case _dev_errorTimeout = "dev_errorTimeout"
+        case _dev_flipLayoutDirection = "dev_flipLayoutDirection"
         case _feed_default = "feed_default"
         case _feed_markReadOnScroll = "feed_markReadOnScroll"
         case _feed_showRead = "feed_showRead"
@@ -558,6 +567,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _imageViewer_showCloseButton = "imageViewer_showCloseButton"
         case _imageViewer_showZoomIndicator = "imageViewer_showZoomIndicator"
         case _imageViewer_dismissThreshold = "imageViewer_dismissThreshold"
+        case _imageViewer_tapToResetZoom = "imageViewer_tapToResetZoom"
         case _media_animatedAvatars = "media_animatedAvatars"
         case _menus_allModActions = "menus_allModActions"
         case _menus_modActionGrouping = "menus_modActionGrouping"

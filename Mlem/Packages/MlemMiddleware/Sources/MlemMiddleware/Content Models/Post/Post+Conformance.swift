@@ -158,7 +158,7 @@ public extension Post {
 
 public extension Post {
     var downvotesEnabled: Bool {
-        api.voteFederationMode.postDownvote != .disable
+        api.downvotesEnabled
     }
 }
 

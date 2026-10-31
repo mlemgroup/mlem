@@ -5,11 +5,12 @@
 //  Created by Sjmarf on 28/06/2024.
 //
 
+import Icons
 import MlemMiddleware
 import SwiftUI
 
 struct PersonListRowBody<Content: View>: View {
-    enum Complication { case instance, date }
+    enum Complication { case type, instance, date }
     enum Readout { case postsAndComments }
     
     @Environment(\.communityContext) var communityContext
@@ -111,6 +112,9 @@ struct PersonListRowBody<Content: View>: View {
                 }
                 Group {
                     switch complication {
+                    case .type:
+                        Image(icon: .lemmy.person)
+                            .symbolVariant(.fill)
                     case .instance:
                         Text(verbatim: "@\(person.host)")
                     case .date:
