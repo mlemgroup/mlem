@@ -18,12 +18,12 @@ struct TileScoreView: View {
             Group {
                 postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) + // saved status
                 Text(verbatim: saved ? " " : "") + // spacing after save
-                Text(Image(systemName: votes.iconName)) + // vote status
+                Text(Image(icon: votes.icon)) + // vote status
                 Text(verbatim: " \(votes.total.abbreviated)")
             }
             .lineLimit(1)
             .font(.caption)
-            .foregroundStyle(votes.iconColor)
+            .foregroundStyle(votes.color)
             .contentShape(.rect)
         }
     }
