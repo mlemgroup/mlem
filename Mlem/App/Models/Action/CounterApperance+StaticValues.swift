@@ -14,7 +14,7 @@ extension CounterAppearance {
             leading: ActionSeed.upvote.appearance,
             trailing: ActionSeed.downvote.appearance,
             label: "Score Counter",
-            singleIcon: Icons.scoreCounter
+            singleIcon: .lemmy.scoreCounter
         )
     }
     
@@ -24,7 +24,7 @@ extension CounterAppearance {
             leading: ActionSeed.upvote.appearance,
             trailing: nil,
             label: "Upvote Counter",
-            singleIcon: Icons.upvoteCounter
+            singleIcon: .lemmy.upvoteCounter
         )
     }
     
@@ -34,7 +34,7 @@ extension CounterAppearance {
             leading: ActionSeed.downvote.appearance,
             trailing: nil,
             label: "Downvote Counter",
-            singleIcon: Icons.downvoteCounter
+            singleIcon: .lemmy.downvoteCounter
         )
     }
     
@@ -44,7 +44,7 @@ extension CounterAppearance {
             leading: ActionSeed.reply.appearance,
             trailing: nil,
             label: "Reply Counter",
-            singleIcon: Icons.replyCounter
+            singleIcon: .lemmy.replyCounter
         )
     }
 }

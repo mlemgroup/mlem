@@ -164,11 +164,13 @@ struct PersonView: View {
         if person.isBot || person.isMlemDeveloper || (person.isAdmin.value ?? false) || person.note != nil {
             HFlow(spacing: Constants.main.halfSpacing) {
                 if person.isMlemDeveloper {
-                    Label("Mlem Developer", systemImage: Icons.developerFlair)
+                    Label("Mlem Developer", icon: .lemmy.developerFlair)
+                        .symbolVariant(.fill)
                         .tint(.themedColorfulAccent(4))
                 }
                 if person.isAdmin.value ?? false {
-                    Label("\(person.host) Administrator", systemImage: Icons.administrationFill)
+                    Label("\(person.host) Administrator", icon: .lemmy.administration)
+                        .symbolVariant(.fill)
                         .tint(.themedAdministration)
                 }
                 if person.isBot {
