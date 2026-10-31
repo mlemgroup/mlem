@@ -32,7 +32,7 @@ public extension Person3Snapshot {
         }
         
         try self.init(
-            person: .init(from: personDetails.personView, allPropertiesPresent: true),
+            person: .init(from: personDetails.personView),
             site: personDetails.site.map { site throws(ApiClientError) in try .init(from: site) },
             moderatedCommunities: moderatedCommunities
         )
