@@ -103,28 +103,6 @@ public extension ApiClient {
         return .init(items: comments, nextLocation: response.nextLocation)
     }
     
-    // TODO: UpdateQueue remove (currently needed for Reply)
-    @discardableResult
-    func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment {
-        let snapshot = try await repository.voteOnComment(id: id, score: score)
-        return await caches.comment.getModel(
-            api: self,
-            from: .comment2(snapshot),
-            semaphore: semaphore
-        )
-    }
-    
-    // TODO: UpdateQueue remove (currently needed for Reply)
-    @discardableResult
-    func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment {
-        let snapshot = try await repository.saveComment(id: id, save: save)
-        return await caches.comment.getModel(
-            api: self,
-            from: .comment2(snapshot),
-            semaphore: semaphore
-        )
-    }
-    
     // There's also a `replyToPost` method in `ApiClient+Post` for creating a comment on a post
     func replyToComment(postId: Int, parentId: Int?, content: String, languageId: Int? = nil) async throws -> Comment {
         let snapshot = try await repository.replyToComment(
