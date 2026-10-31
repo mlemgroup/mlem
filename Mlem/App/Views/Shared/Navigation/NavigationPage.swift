@@ -102,7 +102,7 @@ enum NavigationPage {
     case advancedSorting(_ sort: Binding<PostSortType>)
     case votesList(_ target: VotesListView.Target)
     case modlog(ModlogView.InitialTarget, targetPerson: Person?, moderatorPerson: Person?)
-    case denyApplication(RegistrationApplication)
+    case denyApplication(DeprecatedRegistrationApplication)
     case exportPostImage(_ post: Post)
     case exportCommentImage(_ comment: Comment, tracker: CommentTreeTracker?)
     case unavailableContentInfo

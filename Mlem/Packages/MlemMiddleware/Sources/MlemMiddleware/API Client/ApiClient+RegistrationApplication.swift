@@ -15,7 +15,7 @@ public extension ApiClient {
     func getRegistrationApplications(
         pageInfo: PageInfo,
         unreadOnly: Bool = false
-    ) async throws -> PagedResponse<RegistrationApplication> {
+    ) async throws -> PagedResponse<DeprecatedRegistrationApplication> {
         let response = try await repository.getRegistrationApplications(
             pageInfo: pageInfo,
             unreadOnly: unreadOnly
@@ -28,7 +28,7 @@ public extension ApiClient {
     func approveRegistrationApplication(
         id: Int,
         semaphore: UInt? = nil
-    ) async throws -> RegistrationApplication {
+    ) async throws -> DeprecatedRegistrationApplication {
         let snapshot = try await repository.approveRegistrationApplication(id: id)
         return await caches.registrationApplication.getModel(
             api: self,
@@ -42,7 +42,7 @@ public extension ApiClient {
         id: Int,
         reason: String?,
         semaphore: UInt? = nil
-    ) async throws -> RegistrationApplication {
+    ) async throws -> DeprecatedRegistrationApplication {
         let snapshot = try await repository.denyRegistrationApplication(id: id, reason: reason)
         return await caches.registrationApplication.getModel(
             api: self,

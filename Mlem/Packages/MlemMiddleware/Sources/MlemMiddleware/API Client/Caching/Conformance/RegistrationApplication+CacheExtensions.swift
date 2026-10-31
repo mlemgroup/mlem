@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RegistrationApplication: CacheIdentifiable {
+extension DeprecatedRegistrationApplication: CacheIdentifiable {
     public var cacheId: Int { id }
     
     @MainActor

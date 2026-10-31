@@ -14,7 +14,7 @@ struct RegistrationApplicationView: View {
     @Environment(\.palette) var palette
     @Environment(\.self) var environment
 
-    let application: RegistrationApplication
+    let application: DeprecatedRegistrationApplication
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {

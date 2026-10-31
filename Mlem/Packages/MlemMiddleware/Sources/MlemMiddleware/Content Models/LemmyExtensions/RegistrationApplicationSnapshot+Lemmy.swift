@@ -13,7 +13,7 @@ extension RegistrationApplicationSnapshot {
             throw .responseMissingRequiredData("LemmyRegistrationApplication published")
         }
         
-        let resolution: RegistrationApplication.ResolutionState
+        let resolution: DeprecatedRegistrationApplication.ResolutionState
         if application.creatorLocalUser.acceptedApplication {
             resolution = .approved
         } else if application.admin != nil {

@@ -24,7 +24,7 @@ struct InboxView: View {
     @State var selectedTab: Tab = .all
     @State var selectedModTab: ModTab = .reports
     
-    @State var applications: [RegistrationApplication]?
+    @State var applications: [DeprecatedRegistrationApplication]?
     @State var reports: [Report]?
     
     @State var replyFeedLoader: ReplyChildFeedLoader

@@ -15,7 +15,7 @@ struct RegistrationApplicationDenialEditorView: View {
     @Environment(ToastModel.self) var toastModel
     @Environment(\.dismiss) var dismiss
     
-    let application: RegistrationApplication
+    let application: DeprecatedRegistrationApplication
     
     @State var reason: String = ""
     @FocusState var reasonFocused: Bool

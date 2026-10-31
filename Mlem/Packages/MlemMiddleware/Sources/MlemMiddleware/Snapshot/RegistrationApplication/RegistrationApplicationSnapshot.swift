@@ -14,7 +14,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     
     // I don't *think* these can change, but I'm assuming they do
     // incase the ability to edit applications is added in future.
-    // Update RegistrationApplication if you change these!
+    // Update RegistrationApplication and its Properties if you change these!
     public let questionResponse: String
     public let email: String?
     public let showNsfw: Bool
@@ -24,7 +24,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     // remember to also amend the `update` method of RegistrationApplication!
     public let emailVerified: Bool
     public let resolver: Person1Snapshot?
-    public let resolution: RegistrationApplication.ResolutionState
+    public let resolution: DeprecatedRegistrationApplication.ResolutionState
     
     public var cacheId: Int { id }
     
@@ -37,7 +37,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
         creator: Person1Snapshot,
         emailVerified: Bool,
         resolver: Person1Snapshot?,
-        resolution: RegistrationApplication.ResolutionState
+        resolution: DeprecatedRegistrationApplication.ResolutionState
     ) {
         self.id = id
         self.created = created

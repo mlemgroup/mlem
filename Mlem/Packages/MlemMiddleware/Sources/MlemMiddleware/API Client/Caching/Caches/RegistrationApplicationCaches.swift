@@ -7,12 +7,12 @@
 
 import Foundation
 
-class RegistrationApplicationCache: ApiTypeBackedCache<RegistrationApplication, RegistrationApplicationSnapshot> {
+class RegistrationApplicationCache: ApiTypeBackedCache<DeprecatedRegistrationApplication, RegistrationApplicationSnapshot> {
     @MainActor
     override func performModelTranslation(
         api: ApiClient,
         from snapshot: RegistrationApplicationSnapshot
-    ) -> RegistrationApplication {
+    ) -> DeprecatedRegistrationApplication {
         .init(
             api: api,
             id: snapshot.id,
@@ -29,7 +29,7 @@ class RegistrationApplicationCache: ApiTypeBackedCache<RegistrationApplication, 
     
     @MainActor
     override func updateModel(
-        _ item: RegistrationApplication,
+        _ item: DeprecatedRegistrationApplication,
         with snapshot: RegistrationApplicationSnapshot,
         semaphore: UInt? = nil
     ) {
