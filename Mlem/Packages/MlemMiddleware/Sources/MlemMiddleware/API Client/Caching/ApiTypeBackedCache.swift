@@ -9,17 +9,15 @@ import Foundation
 
 /// Class providing caching behavior for models associated with API types
 class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject & ContentModel, ApiType: CacheIdentifiable>: CoreCache<Content> {
-    // TODO: Unified RegistrationApplication remove semaphore
     @MainActor func getModel(
         api: ApiClient,
         from apiType: ApiType,
         // If `true`, the model will not be updated with the incoming data if the model already exists.
-        isStale: Bool = false,
-        semaphore: UInt? = nil
+        isStale: Bool = false
     ) -> Content {
         if let item = retrieveModel(cacheId: apiType.cacheId) {
             if !isStale {
-                updateModel(item, with: apiType, semaphore: semaphore)
+                updateModel(item, with: apiType)
             }
             return item
         }
@@ -33,21 +31,19 @@ class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject & ContentModel, 
     func getModels(
         api: ApiClient,
         from apiTypes: any Sequence<ApiType>,
-        isStale: Bool = false,
-        semaphore: UInt? = nil
+        isStale: Bool = false
     ) -> [Content] {
-        apiTypes.map { getModel(api: api, from: $0, isStale: isStale, semaphore: semaphore) }
+        apiTypes.map { getModel(api: api, from: $0, isStale: isStale) }
     }
     
     @MainActor
     func getOptionalModel(
         api: ApiClient,
         from apiType: ApiType?,
-        isStale: Bool = false,
-        semaphore: UInt? = nil
+        isStale: Bool = false
     ) -> Content? {
         if let apiType {
-            return getModel(api: api, from: apiType, isStale: isStale, semaphore: semaphore)
+            return getModel(api: api, from: apiType, isStale: isStale)
         }
         return nil
     }
@@ -61,7 +57,7 @@ class ApiTypeBackedCache<Content: CacheIdentifiable & AnyObject & ContentModel, 
     }
     
     @MainActor
-    func updateModel(_ item: Content, with apiType: ApiType, semaphore: UInt? = nil) {
+    func updateModel(_ item: Content, with apiType: ApiType) {
         preconditionFailure("This method must be overridden by the instantiating class: \(self)")
     }
 }

@@ -22,8 +22,7 @@ class RegistrationApplicationCache: ApiTypeBackedCache<RegistrationApplication, 
     @MainActor
     override func updateModel(
         _ item: RegistrationApplication,
-        with snapshot: RegistrationApplicationSnapshot,
-        semaphore: UInt? = nil
+        with snapshot: RegistrationApplicationSnapshot
     ) {
         Task {
             await item.updateQueue.attemptDirectUpdate(with: .init(api: item.api, snapshot: snapshot))

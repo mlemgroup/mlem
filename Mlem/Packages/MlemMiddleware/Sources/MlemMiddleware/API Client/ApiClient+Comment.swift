@@ -105,23 +105,21 @@ public extension ApiClient {
     
     // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
-    func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment {
+    func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment {
         let snapshot = try await repository.voteOnComment(id: id, score: score)
         return await caches.comment.getModel(
             api: self,
-            from: .comment2(snapshot),
-            semaphore: semaphore
+            from: .comment2(snapshot)
         )
     }
     
     // TODO: UpdateQueue remove (currently needed for Reply)
     @discardableResult
-    func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment {
+    func saveComment(id: Int, save: Bool) async throws -> Comment {
         let snapshot = try await repository.saveComment(id: id, save: save)
         return await caches.comment.getModel(
             api: self,
-            from: .comment2(snapshot),
-            semaphore: semaphore
+            from: .comment2(snapshot)
         )
     }
     
