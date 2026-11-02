@@ -70,11 +70,12 @@ struct PostEditorImageUploadWidgetView: View {
             cornerRadius: Constants.main.mediumItemCornerRadius
         )
         .overlay(alignment: .topTrailing) {
-            Button("Remove", systemImage: Icons.closeCircleFill) {
+            Button("Remove", icon: .general.close) {
                 onRemove()
                 imageManager = nil
                 imageUrl = nil
             }
+            .symbolVariant(.circle.fill)
             .symbolRenderingMode(.palette)
             .foregroundStyle(.secondary, .thinMaterial)
             .font(.title)
@@ -97,11 +98,12 @@ struct PostEditorImageUploadWidgetView: View {
                 .padding(.leading, 4)
                 .frame(maxWidth: .infinity, alignment: imageManager?.state == nil ? .center : .leading)
                 if imageManager?.state != nil {
-                    Button("Remove", systemImage: Icons.closeCircleFill) {
+                    Button("Remove", icon: .general.close) {
                         imageManager = nil
                     }
                     .font(.title2)
                     .labelStyle(.iconOnly)
+                    .symbolVariant(.circle.fill)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.themedAccent)
                 }

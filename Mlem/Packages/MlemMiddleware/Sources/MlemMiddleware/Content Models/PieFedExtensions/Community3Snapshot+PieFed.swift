@@ -15,7 +15,7 @@ public extension Community3Snapshot {
         }
 
         self.init(
-            community: try .init(from: community.communityView, allPropertiesPresent: true),
+            community: try .init(from: community.communityView),
             instance: try community.site.map {site throws(ApiClientError) in
                 try .init(from: site)
             },
