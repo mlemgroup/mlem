@@ -16,8 +16,25 @@ struct CommentBarThemePickerView: View {
         Section("Comment Bar Colors") {
             Picker("Comment Bar Colors", selection: $commentBarTheme) {
                 ForEach(CommentBarTheme.allCases(in: palette)) { value in
-                    Text(value.label)
+                    HStack(spacing: 16) {
+                        dotsView(value.colors(in: palette))
+                        Text(value.label)
+                    }
                 }
+            }
+            .labelsHidden()
+            .pickerStyle(.inline)
+        }
+    }
+
+    @ViewBuilder
+    func dotsView(_ colors: [Color]) -> some View {
+        let repeatedColors = (0..<6).lazy.map { colors[$0 % colors.count] }
+        HStack {
+            ForEach(repeatedColors, id: \.self) { color in
+                Circle()
+                    .fill(color)
+                    .frame(width: 8)
             }
         }
     }

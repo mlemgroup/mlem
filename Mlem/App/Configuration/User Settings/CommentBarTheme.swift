@@ -5,8 +5,8 @@
 //  Created by Sjmarf on 2026-11-05.
 //
 
-import Foundation
 import Theming
+import SwiftUI
 
 enum CommentBarTheme: Codable, Identifiable, Hashable {
     case rainbow
@@ -33,6 +33,39 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         case .neutralAccent: "Neutral"
         case .tertiaryLabelMonochrome: "Monochrome"
         case let .colorfulAccent(value): "Accent #\(value)"
+        }
+    }
+
+    func colors(in palette: Palette) -> [Color] {
+        switch self {
+        case .rainbow:
+            palette.commentIndentColors
+        case .accent:
+            palette.accent.gradientArray()
+        case let .colorfulAccent(index):
+            palette.colorfulAccents[index % palette.colorfulAccents.count].gradientArray()
+        case .primaryLabel:
+            palette.label.primary.gradientArray()
+        case .neutralAccent:
+            palette.neutralAccent.gradientArray()
+        case .tertiaryLabelMonochrome:
+            [palette.label.tertiary]
+        }
+    }
+}
+
+private extension Color {
+    func gradientArray() -> [Color] {
+        let stepCount = 6
+
+        let start: CGFloat = 0.1
+        let end: CGFloat = 1
+
+        let interval = (end - start) / CGFloat(stepCount - 1)
+        let opacities = (0..<stepCount).map { start + CGFloat($0) * interval }
+
+        return opacities.map {
+            self.opacity($0)
         }
     }
 }
