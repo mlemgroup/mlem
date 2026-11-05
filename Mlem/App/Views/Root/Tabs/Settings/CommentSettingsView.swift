@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Theming
 
 struct CommentSettingsView: View {
     @Setting(\.comment_compact) var compactComments
@@ -15,6 +16,8 @@ struct CommentSettingsView: View {
     @Setting(\.comment_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.comment_tallerCollapsed) var tallerCollapsed
     @Setting(\.interactionBar_comment) var commentInteractionBar
+    @Setting(\.appearance_commentBarTheme) var commentBarTheme
+    @Environment(\.palette) var palette
 
     var body: some View {
         Form {
@@ -32,7 +35,13 @@ struct CommentSettingsView: View {
                 NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_comment)))
             }
             Section {
-                NavigationLink("Bar Colors", destination: .settings(.commentBarTheme))
+                NavigationLink(.settings(.commentBarTheme)) {
+                    HStack {
+                        Text("Bar Colors")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        CommentBarThemeDotsView(colors: commentBarTheme.clamped(for: palette).colors(in: palette))
+                    }
+                }
             }
             Section {
                 NavigationLink(

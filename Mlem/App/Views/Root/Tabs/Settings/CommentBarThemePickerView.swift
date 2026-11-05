@@ -19,7 +19,7 @@ struct CommentBarThemePickerView: View {
         )) {
             ForEach(CommentBarTheme.allCases(in: palette)) { value in
                 HStack(spacing: 16) {
-                    dotsView(value.colors(in: palette))
+                    CommentBarThemeDotsView(colors: value.colors(in: palette))
                     Text(value.label(in: palette))
                 }
             }
@@ -27,9 +27,12 @@ struct CommentBarThemePickerView: View {
         .labelsHidden()
         .pickerStyle(.inline)
     }
+}
 
-    @ViewBuilder
-    func dotsView(_ colors: [Color]) -> some View {
+struct CommentBarThemeDotsView: View {
+    let colors: [Color]
+    
+    var body: some View {
         let repeatedColors = (0..<6).lazy.map { colors[$0 % colors.count] }
         HStack {
             ForEach(repeatedColors, id: \.self) { color in
