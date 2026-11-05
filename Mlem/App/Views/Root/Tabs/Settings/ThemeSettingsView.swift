@@ -33,15 +33,19 @@ struct ThemeSettingsView: View {
                 }
             }
             
-            Picker("Theme", selection: $colorPalette) {
-                ForEach(PaletteOption.allCases, id: \.rawValue) { item in
-                    ThemeLabel(palette: item)
-                        .tag(item)
+            Section {
+                Picker("Theme", selection: $colorPalette) {
+                    ForEach(PaletteOption.allCases, id: \.rawValue) { item in
+                        ThemeLabel(palette: item)
+                            .tag(item)
+                    }
+                    .labelStyle(.titleAndIcon)
                 }
-                .labelStyle(.titleAndIcon)
+                .labelsHidden()
+                .pickerStyle(.inline)
             }
-            .labelsHidden()
-            .pickerStyle(.inline)
+            
+            CommentBarThemePickerView()
         }
         .withConditionalLabelStyle()
         .navigationTitle("Theme")
