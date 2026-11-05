@@ -24,13 +24,13 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         return cases
     }
 
-    var label: LocalizedStringResource {
+    func label(in palette: Palette) -> LocalizedStringResource {
         switch self {
         case .rainbow: "Rainbow"
         case .primaryLabel: "Primary"
         case .neutralAccent: "Neutral"
         case .tertiaryLabelMonochrome: "Monochrome"
-        case let .colorfulAccent(value): "Accent #\(value)"
+        case let .colorfulAccent(value): palette.colorfulAccents[value % palette.colorfulAccents.count].label
         }
     }
 
@@ -39,7 +39,7 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         case .rainbow:
             palette.commentIndentColors
         case let .colorfulAccent(index):
-            palette.colorfulAccents[index % palette.colorfulAccents.count].gradientArray()
+            palette.colorfulAccents[index % palette.colorfulAccents.count].color.gradientArray()
         case .primaryLabel:
             palette.label.primary.gradientArray()
         case .neutralAccent:

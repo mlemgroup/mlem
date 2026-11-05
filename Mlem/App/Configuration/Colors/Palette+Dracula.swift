@@ -45,7 +45,15 @@ extension Palette {
         contrastingLabel: _primary,
         accent: _purple,
         neutralAccent: _secondaryBackground,
-        colorfulAccents: [_orange, _pink, _cyan, _green, _purple, _red, _yellow],
+        colorfulAccents: [
+            .init(label: "Orange", color: _orange),
+            .init(label: "Pink", color: _pink),
+            .init(label: "Cyan", color: _cyan),
+            .init(label: "Green", color: _green),
+            .init(label: "Purple", color: _purple),
+            .init(label: "Red", color: _red),
+            .init(label: "Yellow", color: _yellow)
+        ],
         commentIndentColors: [_cyan, _green, _orange, _pink, _purple, _red],
         accountAgeColors: [_green, _cyan],
         positive: _green,

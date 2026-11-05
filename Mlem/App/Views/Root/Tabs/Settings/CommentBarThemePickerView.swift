@@ -18,7 +18,7 @@ struct CommentBarThemePickerView: View {
                 ForEach(CommentBarTheme.allCases(in: palette)) { value in
                     HStack(spacing: 16) {
                         dotsView(value.colors(in: palette))
-                        Text(value.label)
+                        Text(value.label(in: palette))
                     }
                 }
             }
