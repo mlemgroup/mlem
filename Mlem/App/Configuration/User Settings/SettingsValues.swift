@@ -29,6 +29,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var accounts_preferredListRowComplication: PreferredAccountListRowComplication
     var appearance_interfaceStyle: UIUserInterfaceStyle
     var appearance_palette: PaletteOption
+    var appearance_commentBarTheme: CommentBarTheme
     var markdown_wrapCodeBlockLines: Bool
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
@@ -153,6 +154,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.accounts_preferredListRowComplication = try container.decodeIfPresent(PreferredAccountListRowComplication.self, forKey: ._accounts_preferredListRowComplication) ?? .lastUsed
         self.appearance_interfaceStyle = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._appearance_interfaceStyle) ?? .unspecified
         self.appearance_palette = try container.decodeIfPresent(PaletteOption.self, forKey: ._appearance_palette) ?? .standard
+        self.appearance_commentBarTheme = try container.decodeIfPresent(CommentBarTheme.self, forKey: ._appearance_commentBarTheme) ?? .rainbow
         self.markdown_wrapCodeBlockLines = try container.decodeIfPresent(Bool.self, forKey: ._markdown_wrapCodeBlockLines) ?? true
         self.behavior_biometricUnlock = try container.decodeIfPresent(Bool.self, forKey: ._behavior_biometricUnlock) ?? false
         self.behavior_confirmImageUploads = try container.decodeIfPresent(Bool.self, forKey: ._behavior_confirmImageUploads) ?? true
@@ -292,6 +294,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.accounts_preferredListRowComplication = .lastUsed
         self.appearance_interfaceStyle = .unspecified
         self.appearance_palette = .standard
+        self.appearance_commentBarTheme = .rainbow
         self.markdown_wrapCodeBlockLines = true
         self.behavior_biometricUnlock = false
         self.behavior_confirmImageUploads = true
@@ -407,6 +410,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         accounts_preferredListRowComplication = otherValues.accounts_preferredListRowComplication
         appearance_interfaceStyle = otherValues.appearance_interfaceStyle
         appearance_palette = otherValues.appearance_palette
+        appearance_commentBarTheme = otherValues.appearance_commentBarTheme
         markdown_wrapCodeBlockLines = otherValues.markdown_wrapCodeBlockLines
         behavior_biometricUnlock = otherValues.behavior_biometricUnlock
         behavior_confirmImageUploads = otherValues.behavior_confirmImageUploads
@@ -524,6 +528,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _accounts_preferredListRowComplication
         case _appearance_interfaceStyle = "appearance_interfaceStyle"
         case _appearance_palette = "appearance_palette"
+        case _appearance_commentBarTheme = "appearance_commentBarTheme"
         case _markdown_wrapCodeBlockLines = "markdown_wrapCodeBlockLines"
         case _behavior_biometricUnlock = "behavior_biometricUnlock"
         case _behavior_confirmImageUploads = "behavior_confirmImageUploads"
