@@ -48,6 +48,13 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
             [palette.label.tertiary]
         }
     }
+
+    func clamped(for palette: Palette) -> CommentBarTheme {
+        switch self {
+        case let .colorfulAccent(value): .colorfulAccent(value % palette.colorfulAccents.count)
+        default: self
+        }
+    }
 }
 
 private extension Color {
