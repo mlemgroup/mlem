@@ -10,7 +10,6 @@ import SwiftUI
 
 enum CommentBarTheme: Codable, Identifiable, Hashable {
     case rainbow
-    case accent
     case colorfulAccent(Int)
     case primaryLabel
     case neutralAccent
@@ -19,7 +18,7 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
     var id: Self { self }
 
     static func allCases(in palette: Palette) -> [Self] {
-        var cases: [Self] = [.rainbow, .accent]
+        var cases: [Self] = [.rainbow]
         cases += (0..<palette.colorfulAccents.count).map { .colorfulAccent($0) }
         cases += [.primaryLabel, .neutralAccent, .tertiaryLabelMonochrome]
         return cases
@@ -28,7 +27,6 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
     var label: LocalizedStringResource {
         switch self {
         case .rainbow: "Rainbow"
-        case .accent: "Accent"
         case .primaryLabel: "Primary"
         case .neutralAccent: "Neutral"
         case .tertiaryLabelMonochrome: "Monochrome"
@@ -40,8 +38,6 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         switch self {
         case .rainbow:
             palette.commentIndentColors
-        case .accent:
-            palette.accent.gradientArray()
         case let .colorfulAccent(index):
             palette.colorfulAccents[index % palette.colorfulAccents.count].gradientArray()
         case .primaryLabel:
