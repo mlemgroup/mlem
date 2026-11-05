@@ -56,10 +56,10 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
 
 private extension Color {
     func gradientArray() -> [Color] {
-        let stepCount = 6
+        let stepCount = 3
 
-        let start: CGFloat = 0.1
-        let end: CGFloat = 1
+        let start: CGFloat = 1
+        let end: CGFloat = 0.2
 
         let interval = (end - start) / CGFloat(stepCount - 1)
         let opacities = (0..<stepCount).map { start + CGFloat($0) * interval }
