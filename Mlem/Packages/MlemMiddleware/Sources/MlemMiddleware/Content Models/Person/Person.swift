@@ -102,7 +102,7 @@ public final class Person:
         self.instanceId = properties.instanceId
         self.displayName = properties.displayName
         self.avatar = properties.avatar
-        self.note = properties.note
+        self.note = properties.note.value
         self.updated = properties.updated
         self.matrixUserId = properties.matrixUserId
         self.isBot = properties.isBot
@@ -183,7 +183,7 @@ public final class Person:
     public func update(with properties: PersonProperties) {
         setIfChanged(\.displayName, properties.displayName)
         setIfChanged(\.avatar, properties.avatar)
-        setIfChanged(\.note, properties.note)
+        setIfChangedAndProvided(\.note, properties.note)
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.matrixUserId, properties.matrixUserId)
         setIfChanged(\.isBot, properties.isBot)
@@ -400,7 +400,7 @@ public extension Person {
             await updateQueue.addItem { properties in
                 var properties = properties
                 try await self.api.repository.editNote(id: self.id, content: content)
-                properties.note = content
+                properties.note = .init(content)
                 return properties
             }
         }
@@ -568,7 +568,7 @@ public extension Person {
             displayName: displayName,
             avatar: avatar,
             banner: banner,
-            note: note,
+            note: .init(note),
             updated: updated,
             description: description,
             matrixUserId: matrixUserId,

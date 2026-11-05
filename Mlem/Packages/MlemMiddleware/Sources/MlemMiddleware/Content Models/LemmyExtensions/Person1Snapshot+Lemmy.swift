@@ -37,7 +37,7 @@ extension Person1Snapshot {
             displayName: person.displayName ?? person.name,
             avatar: person.avatar,
             banner: person.banner,
-            note: nil,
+            note: .none,
             updated: person.updatedAt ?? person.updated,
             description: person.bio,
             matrixUserId: person.matrixUserId,

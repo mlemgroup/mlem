@@ -8,9 +8,9 @@
 import Foundation
 
 public extension Person2Snapshot {
-    init(from person: PieFedPersonView) throws(ApiClientError) {
+    init(from person: PieFedPersonView, noteProvided: Bool = true) throws(ApiClientError) {
         try self.init(
-            person: .init(from: person.person, allPropertiesPresent: true),
+            person: .init(from: person.person, allPropertiesPresent: true, noteProvided: noteProvided),
             isAdmin: person.isAdmin,
             postCount: person.counts.postCount,
             commentCount: person.counts.commentCount

@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Person1Snapshot {
-    init(from person: PieFedPerson, allPropertiesPresent: Bool = false) throws(ApiClientError) {
+    init(from person: PieFedPerson, allPropertiesPresent: Bool = false, noteProvided: Bool = false) throws(ApiClientError) {
         self.init(
             actorId: person.actorId,
             id: person.id,
@@ -18,7 +18,7 @@ public extension Person1Snapshot {
             displayName: person.title ?? person.userName,
             avatar: person.avatar,
             banner: person.banner,
-            note: person.note,
+            note: noteProvided ? .init(person.note) : .notProvided,
             updated: nil,
             description: person.about,
             matrixUserId: nil,

@@ -20,7 +20,7 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let displayName: String
     public let avatar: URL?
     public let banner: URL?
-    public let note: String?
+    public let note: MaybePresent<String>
     public let updated: Date?
     public let description: String?
     public let matrixUserId: String?
@@ -43,7 +43,7 @@ public struct Person1Snapshot: CacheIdentifiable {
         displayName: String,
         avatar: URL?,
         banner: URL?,
-        note: String?,
+        note: MaybePresent<String>,
         updated: Date?,
         description: String?,
         matrixUserId: String?,

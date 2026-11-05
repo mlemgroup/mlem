@@ -16,7 +16,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     let instanceId: Int
     var displayName: String
     var avatar: URL?
-    var note: String?
+    var note: MaybePresent<String>
     var updated: Date?
     var matrixUserId: String?
     var isBot: Bool
@@ -152,7 +152,6 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         // tier 1 properties: simple assignment
         self.displayName = other.displayName
         self.avatar = other.avatar
-        self.note = other.note
         self.updated = other.updated
         self.matrixUserId = other.matrixUserId
         self.isBot = other.isBot
@@ -162,6 +161,7 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         // tier 2, 3, 4 properties: only assign if incoming non-nil
         self.description = other.description ?? self.description
         self.banner = other.banner ?? self.banner
+        self.note = other.note.isProvided ? other.note : self.note
 
         isAdmin = other.isAdmin ?? self.isAdmin
         postCount = other.postCount ?? self.postCount

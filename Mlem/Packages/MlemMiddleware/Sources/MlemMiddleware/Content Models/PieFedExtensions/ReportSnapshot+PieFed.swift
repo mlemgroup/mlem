@@ -10,7 +10,7 @@ import Foundation
 extension ReportSnapshot {
     init(from report: PieFedCommentReportView) throws(ApiClientError) {
         try self.init(
-            creator: .init(from: report.creator),
+            creator: .init(from: report.creator, noteProvided: true),
             id: report.commentReport.id,
             created: report.commentReport.published,
             resolver: nil,
@@ -23,7 +23,7 @@ extension ReportSnapshot {
     
     init(from report: PieFedPostReportView) throws(ApiClientError) {
         try self.init(
-            creator: .init(from: report.creator),
+            creator: .init(from: report.creator, noteProvided: true),
             id: report.postReport.id,
             created: report.postReport.published,
             resolver: nil,
