@@ -37,9 +37,10 @@ struct CommentSettingsView: View {
             Section {
                 NavigationLink(.settings(.commentBarTheme)) {
                     HStack {
-                        Text("Bar Colors")
+                        Text("Colors")
                             .frame(maxWidth: .infinity, alignment: .leading)
                         CommentBarThemeDotsView(colors: commentBarTheme.clamped(for: palette).colors(in: palette))
+                            .padding(.trailing, 5)
                     }
                 }
             }

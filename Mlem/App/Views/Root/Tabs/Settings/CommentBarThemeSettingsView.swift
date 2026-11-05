@@ -12,6 +12,6 @@ struct CommentBarThemeSettingsView: View {
         Form {
             CommentBarThemePickerView()
         }
-        .navigationTitle("Bar Colors")
+        .navigationTitle("Colors")
     }
 }
