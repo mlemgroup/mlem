@@ -32,6 +32,9 @@ struct CommentSettingsView: View {
                 NavigationLink("Context Menu", destination: .settings(.contextMenu(\.interactionBar_comment)))
             }
             Section {
+                NavigationLink("Bar Colors", destination: .settings(.commentBarTheme))
+            }
+            Section {
                 NavigationLink(
                     "Jump Button",
                     value: .init(localized: jumpButton.label),

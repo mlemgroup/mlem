@@ -45,7 +45,9 @@ struct ThemeSettingsView: View {
                 .pickerStyle(.inline)
             }
             
-            CommentBarThemePickerView()
+            Section("Comment Bar Colors") {
+                CommentBarThemePickerView()
+            }
         }
         .withConditionalLabelStyle()
         .navigationTitle("Theme")

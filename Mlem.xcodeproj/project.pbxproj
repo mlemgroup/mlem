@@ -342,6 +342,7 @@
 		03B72B6B2C28A0190023A6C4 /* SubscriptionListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */; };
 		03B7F3352EEEC70F00B00F6A /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B7F3342EEEC70F00B00F6A /* NoteEditorView.swift */; };
 		03BEDEAE309C9D010045B3F9 /* CommentBarThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BEDEAD309C9D010045B3F9 /* CommentBarThemePickerView.swift */; };
+		03BEDEC0309CAA770045B3F9 /* CommentBarThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BEDEBF309CAA770045B3F9 /* CommentBarThemeSettingsView.swift */; };
 		03BEF4802FF84AB600D75A16 /* NavigationFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BEF47E2FF84AB600D75A16 /* NavigationFrame.swift */; };
 		03BEF4812FF84AB600D75A16 /* NavigationFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BEF47F2FF84AB600D75A16 /* NavigationFrameView.swift */; };
 		03BF11C32D3D135D00CC1F66 /* SearchView+CreatorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */; };
@@ -938,6 +939,7 @@
 		03B72B6A2C28A0190023A6C4 /* SubscriptionListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionListSettingsView.swift; sourceTree = "<group>"; };
 		03B7F3342EEEC70F00B00F6A /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		03BEDEAD309C9D010045B3F9 /* CommentBarThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarThemePickerView.swift; sourceTree = "<group>"; };
+		03BEDEBF309CAA770045B3F9 /* CommentBarThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarThemeSettingsView.swift; sourceTree = "<group>"; };
 		03BEF47E2FF84AB600D75A16 /* NavigationFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationFrame.swift; sourceTree = "<group>"; };
 		03BEF47F2FF84AB600D75A16 /* NavigationFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationFrameView.swift; sourceTree = "<group>"; };
 		03BF11C22D3D135D00CC1F66 /* SearchView+CreatorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchView+CreatorPicker.swift"; sourceTree = "<group>"; };
@@ -1353,6 +1355,7 @@
 				03D284052D2AEE3A00A6659B /* TabBarSettingsView.swift */,
 				031E2D5A2BEFC9460003BC45 /* ThemeSettingsView.swift */,
 				03BEDEAD309C9D010045B3F9 /* CommentBarThemePickerView.swift */,
+				03BEDEBF309CAA770045B3F9 /* CommentBarThemeSettingsView.swift */,
 				038E1ABF2F58C76A00D30F01 /* SwipeActionEditorView.swift */,
 				039F588D2C7B598000C61658 /* Components */,
 				033FCB262C5E3933007B7CD1 /* Icon */,
@@ -2826,6 +2829,7 @@
 				036ED67F2D0B9A520018E5EA /* CommunitySearchSortPicker.swift in Sources */,
 				038028FA2CB097CB0091A8A2 /* SearchView+LocationPicker.swift in Sources */,
 				CDD8B94C2C8234BC00510EBB /* Form.swift in Sources */,
+				03BEDEC0309CAA770045B3F9 /* CommentBarThemeSettingsView.swift in Sources */,
 				036FFA2F2D45197300998D8A /* PrivacySettingsView.swift in Sources */,
 				0320B6652C91DBD500D38548 /* NavigationPage+View.swift in Sources */,
 				03B25B332CC440A600EB6DF5 /* FediseerOpinionView.swift in Sources */,
