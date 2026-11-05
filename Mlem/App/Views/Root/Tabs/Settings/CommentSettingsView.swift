@@ -17,6 +17,7 @@ struct CommentSettingsView: View {
     @Setting(\.comment_tallerCollapsed) var tallerCollapsed
     @Setting(\.interactionBar_comment) var commentInteractionBar
     @Setting(\.appearance_commentBarTheme) var commentBarTheme
+    @Setting(\.appearance_showCommentBars) var showCommentBars
     @Environment(\.palette) var palette
 
     var body: some View {
@@ -39,8 +40,13 @@ struct CommentSettingsView: View {
                     HStack {
                         Text("Colors")
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        CommentBarThemeDotsView(colors: commentBarTheme.clamped(for: palette).colors(in: palette))
-                            .padding(.trailing, 5)
+                        if showCommentBars {
+                            CommentBarThemeDotsView(colors: commentBarTheme.clamped(for: palette).colors(in: palette))
+                                .padding(.trailing, 5)
+                        } else {
+                            Text("Off")
+                                .foregroundStyle(.themedSecondary)
+                        }
                     }
                 }
             }

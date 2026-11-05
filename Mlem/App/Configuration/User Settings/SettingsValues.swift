@@ -30,6 +30,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var appearance_interfaceStyle: UIUserInterfaceStyle
     var appearance_palette: PaletteOption
     var appearance_commentBarTheme: CommentBarTheme
+    var appearance_showCommentBars: Bool
     var markdown_wrapCodeBlockLines: Bool
     var behavior_biometricUnlock: Bool
     var behavior_confirmImageUploads: Bool
@@ -155,6 +156,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.appearance_interfaceStyle = try container.decodeIfPresent(UIUserInterfaceStyle.self, forKey: ._appearance_interfaceStyle) ?? .unspecified
         self.appearance_palette = try container.decodeIfPresent(PaletteOption.self, forKey: ._appearance_palette) ?? .standard
         self.appearance_commentBarTheme = try container.decodeIfPresent(CommentBarTheme.self, forKey: ._appearance_commentBarTheme) ?? .rainbow
+        self.appearance_showCommentBars = try container.decodeIfPresent(Bool.self, forKey: ._appearance_showCommentBars) ?? true
         self.markdown_wrapCodeBlockLines = try container.decodeIfPresent(Bool.self, forKey: ._markdown_wrapCodeBlockLines) ?? true
         self.behavior_biometricUnlock = try container.decodeIfPresent(Bool.self, forKey: ._behavior_biometricUnlock) ?? false
         self.behavior_confirmImageUploads = try container.decodeIfPresent(Bool.self, forKey: ._behavior_confirmImageUploads) ?? true
@@ -295,6 +297,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.appearance_interfaceStyle = .unspecified
         self.appearance_palette = .standard
         self.appearance_commentBarTheme = .rainbow
+        self.appearance_showCommentBars = true
         self.markdown_wrapCodeBlockLines = true
         self.behavior_biometricUnlock = false
         self.behavior_confirmImageUploads = true
@@ -411,6 +414,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         appearance_interfaceStyle = otherValues.appearance_interfaceStyle
         appearance_palette = otherValues.appearance_palette
         appearance_commentBarTheme = otherValues.appearance_commentBarTheme
+        appearance_showCommentBars = otherValues.appearance_showCommentBars
         markdown_wrapCodeBlockLines = otherValues.markdown_wrapCodeBlockLines
         behavior_biometricUnlock = otherValues.behavior_biometricUnlock
         behavior_confirmImageUploads = otherValues.behavior_confirmImageUploads
@@ -529,6 +533,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _appearance_interfaceStyle = "appearance_interfaceStyle"
         case _appearance_palette = "appearance_palette"
         case _appearance_commentBarTheme = "appearance_commentBarTheme"
+        case _appearance_showCommentBars = "appearance_showCommentBars"
         case _markdown_wrapCodeBlockLines = "markdown_wrapCodeBlockLines"
         case _behavior_biometricUnlock = "behavior_biometricUnlock"
         case _behavior_confirmImageUploads = "behavior_confirmImageUploads"

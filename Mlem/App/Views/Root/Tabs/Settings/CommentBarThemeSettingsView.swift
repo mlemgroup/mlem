@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct CommentBarThemeSettingsView: View {
+    @Setting(\.appearance_showCommentBars) var showCommentBars
+
     var body: some View {
         Form {
-            CommentBarThemePickerView()
+            Section {
+                Toggle("Show Bars", isOn: $showCommentBars)
+            }
+            if showCommentBars {
+                CommentBarThemePickerView()
+            }
         }
         .navigationTitle("Colors")
     }
