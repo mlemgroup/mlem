@@ -22,6 +22,7 @@ public struct Person1Snapshot: CacheIdentifiable {
 
     // https://codeberg.org/rimu/pyfedi/issues/882
     public let banner: MaybePresent<URL>
+    // https://codeberg.org/rimu/pyfedi/issues/1961
     public let note: MaybePresent<String>
     public let updated: Date?
     public let description: MaybePresent<String>
