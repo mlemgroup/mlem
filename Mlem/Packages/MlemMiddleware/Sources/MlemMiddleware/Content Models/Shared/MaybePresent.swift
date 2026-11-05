@@ -10,11 +10,11 @@ public enum MaybePresent<Value> {
     case none
     case notProvided
     
-    public init(_ value: Value?) {
+    public static func fromOptional(_ value: Value?) -> Self {
         if let value {
-            self = .some(value)
+            return .some(value)
         } else {
-            self = .none
+            return .none
         }
     }
     

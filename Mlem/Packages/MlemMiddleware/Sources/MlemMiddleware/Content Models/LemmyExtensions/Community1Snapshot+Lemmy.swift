@@ -32,12 +32,12 @@ extension Community1Snapshot {
             instanceId: community.instanceId,
             updated: community.updatedAt ?? community.updated,
             displayName: community.title ?? community.name,
-            description: .init(description),
+            description: .fromOptional(description),
             deleted: community.deleted,
             removed: community.removed,
             nsfw: community.nsfw,
             avatar: community.icon,
-            banner: .init(community.banner),
+            banner: .fromOptional(community.banner),
             hidden: community.hidden ?? false, // TODO: 0.20 we shouldn't be null coalescing here
             onlyModeratorsCanPost: community.postingRestrictedToMods
         )

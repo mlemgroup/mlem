@@ -17,12 +17,12 @@ public extension Community1Snapshot {
             instanceId: community.instanceId,
             updated: community.updated,
             displayName: community.title,
-            description: descriptionAndBannerProvided ? .init(community.description) : .notProvided,
+            description: descriptionAndBannerProvided ? .fromOptional(community.description) : .notProvided,
             deleted: community.deleted,
             removed: community.removed,
             nsfw: community.nsfw,
             avatar: community.icon,
-            banner: descriptionAndBannerProvided ? .init(community.banner) : .notProvided,
+            banner: descriptionAndBannerProvided ? .fromOptional(community.banner) : .notProvided,
             hidden: community.hidden,
             onlyModeratorsCanPost: community.restrictedToMods
         )

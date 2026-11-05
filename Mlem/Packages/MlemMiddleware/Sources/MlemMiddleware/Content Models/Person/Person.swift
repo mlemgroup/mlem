@@ -395,7 +395,7 @@ public extension Person {
             await updateQueue.addItem { properties in
                 var properties = properties
                 try await self.api.repository.editNote(id: self.id, content: content)
-                properties.note = .init(content)
+                properties.note = .fromOptional(content)
                 return properties
             }
         }
@@ -425,9 +425,9 @@ public extension Person {
             
             var properties = properties
             properties.avatar = details.avatar
-            properties.banner = .init(details.banner)
+            properties.banner = .fromOptional(details.banner)
             properties.displayName = details.displayName ?? properties.name
-            properties.description = .init(details.description)
+            properties.description = .fromOptional(details.description)
             properties.matrixUserId = details.matrixUserId
             return properties
         }
@@ -563,7 +563,7 @@ public extension Person {
             displayName: displayName,
             avatar: avatar,
             banner: .notProvided,
-            note: .init(note),
+            note: .fromOptional(note),
             updated: updated,
             description: .notProvided,
             matrixUserId: matrixUserId,

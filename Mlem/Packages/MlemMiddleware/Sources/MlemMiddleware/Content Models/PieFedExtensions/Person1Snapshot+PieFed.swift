@@ -17,10 +17,10 @@ public extension Person1Snapshot {
             instanceId: person.instanceId,
             displayName: person.title ?? person.userName,
             avatar: person.avatar,
-            banner: descriptionAndBannerProvided ? .init(person.banner) : .notProvided,
-            note: noteProvided ? .init(person.note) : .notProvided,
+            banner: descriptionAndBannerProvided ? .fromOptional(person.banner) : .notProvided,
+            note: noteProvided ? .fromOptional(person.note) : .notProvided,
             updated: nil,
-            description: descriptionAndBannerProvided ? .init(person.about) : .notProvided,
+            description: descriptionAndBannerProvided ? .fromOptional(person.about) : .notProvided,
             matrixUserId: nil,
             isBot: person.bot,
             // Does PieFed not have bans with expiry times, or did they just not put it in the API yet?
