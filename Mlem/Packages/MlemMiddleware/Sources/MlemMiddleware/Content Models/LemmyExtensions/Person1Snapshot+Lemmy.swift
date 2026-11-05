@@ -36,15 +36,14 @@ extension Person1Snapshot {
             instanceId: person.instanceId,
             displayName: person.displayName ?? person.name,
             avatar: person.avatar,
-            banner: person.banner,
-            note: nil,
+            banner: .fromOptional(person.banner),
+            note: .none,
             updated: person.updatedAt ?? person.updated,
-            description: person.bio,
+            description: .fromOptional(person.bio),
             matrixUserId: person.matrixUserId,
             isBot: person.botAccount,
             instanceBan: instanceBan,
-            deleted: person.deleted,
-            allPropertiesPresent: true
+            deleted: person.deleted
         )
     }
 }

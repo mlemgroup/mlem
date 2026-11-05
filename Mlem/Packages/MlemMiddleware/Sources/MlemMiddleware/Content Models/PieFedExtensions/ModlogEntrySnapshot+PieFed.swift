@@ -11,7 +11,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModRemovePostView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -25,7 +25,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModLockPostView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -39,7 +39,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModFeaturePostView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -53,7 +53,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedAdminPurgePostView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.admin {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -67,7 +67,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModRemoveCommentView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -81,7 +81,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedAdminPurgeCommentView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.admin {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -95,7 +95,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModRemoveCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -109,7 +109,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedAdminPurgeCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.admin {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -123,7 +123,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModHideCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.admin {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -137,7 +137,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModTransferCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -151,7 +151,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModAddCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -165,7 +165,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModAddView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -180,7 +180,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModBanFromCommunityView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -195,7 +195,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedModBanView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.moderator {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
@@ -210,7 +210,7 @@ extension ModlogEntrySnapshot {
     init(from view: PieFedAdminPurgePersonView) throws(ApiClientError) {
         let moderator: Person1Snapshot?
         if let value = view.admin {
-            moderator = try Person1Snapshot(from: value, allPropertiesPresent: true)
+            moderator = try Person1Snapshot(from: value, descriptionAndBannerProvided: true)
         } else {
             moderator = nil
         }
