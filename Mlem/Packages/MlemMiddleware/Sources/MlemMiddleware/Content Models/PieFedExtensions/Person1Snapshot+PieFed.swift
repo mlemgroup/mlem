@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Person1Snapshot {
-    init(from person: PieFedPerson, allPropertiesPresent: Bool = false, noteProvided: Bool = false) throws(ApiClientError) {
+    init(from person: PieFedPerson, descriptionAndBannerProvided: Bool = false, noteProvided: Bool = false) throws(ApiClientError) {
         self.init(
             actorId: person.actorId,
             id: person.id,
@@ -17,16 +17,15 @@ public extension Person1Snapshot {
             instanceId: person.instanceId,
             displayName: person.title ?? person.userName,
             avatar: person.avatar,
-            banner: person.banner,
+            banner: descriptionAndBannerProvided ? .init(person.banner) : .notProvided,
             note: noteProvided ? .init(person.note) : .notProvided,
             updated: nil,
-            description: person.about,
+            description: descriptionAndBannerProvided ? .init(person.about) : .notProvided,
             matrixUserId: nil,
             isBot: person.bot,
             // Does PieFed not have bans with expiry times, or did they just not put it in the API yet?
             instanceBan: person.banned ? .permanentlyBanned : .notBanned,
-            deleted: person.deleted,
-            allPropertiesPresent: allPropertiesPresent
+            deleted: person.deleted
         )
     }
 }

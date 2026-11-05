@@ -16,7 +16,6 @@ public struct PersonProperties: UnifiedPropertiesProviding {
     let instanceId: Int
     var displayName: String
     var avatar: URL?
-    var note: MaybePresent<String>
     var updated: Date?
     var matrixUserId: String?
     var isBot: Bool
@@ -25,8 +24,9 @@ public struct PersonProperties: UnifiedPropertiesProviding {
 
     // From Person1Snapshot, but PieFed does not always provide these
     // https://codeberg.org/rimu/pyfedi/issues/882
-    var description: String??
-    var banner: URL??
+    var description: MaybePresent<String>
+    var banner: MaybePresent<URL>
+    var note: MaybePresent<String>
     
     // From Person2Snapshot
     var isAdmin: Bool?
@@ -135,17 +135,14 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         instanceId = snapshot1.instanceId
         displayName = snapshot1.displayName
         avatar = snapshot1.avatar
-        note = snapshot1.note
         updated = snapshot1.updated
         matrixUserId = snapshot1.matrixUserId
         isBot = snapshot1.isBot
         instanceBan = snapshot1.instanceBan
         deleted = snapshot1.deleted
-
-        if snapshot1.allPropertiesPresent {
-            description = snapshot1.description
-            banner = snapshot1.banner
-        }
+        description = snapshot1.description
+        banner = snapshot1.banner
+        note = snapshot1.note
     }
     
     public mutating func merge(_ other: PersonProperties) {
@@ -158,11 +155,11 @@ public struct PersonProperties: UnifiedPropertiesProviding {
         self.instanceBan = other.instanceBan
         self.deleted = other.deleted
         
-        // tier 2, 3, 4 properties: only assign if incoming non-nil
-        self.description = other.description ?? self.description
-        self.banner = other.banner ?? self.banner
+        self.description = other.description.isProvided ? other.description : self.description
+        self.banner = other.banner.isProvided ? other.banner : self.banner
         self.note = other.note.isProvided ? other.note : self.note
-
+        
+        // tier 2, 3, 4 properties: only assign if incoming non-nil
         isAdmin = other.isAdmin ?? self.isAdmin
         postCount = other.postCount ?? self.postCount
         commentCount = other.commentCount ?? self.commentCount

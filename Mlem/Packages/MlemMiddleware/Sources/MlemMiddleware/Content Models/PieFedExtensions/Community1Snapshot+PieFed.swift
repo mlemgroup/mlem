@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Community1Snapshot {
-    init(from community: PieFedCommunity, allPropertiesPresent: Bool = false) throws(ApiClientError) {
+    init(from community: PieFedCommunity, descriptionAndBannerProvided: Bool = false) throws(ApiClientError) {
         self.init(
             actorId: community.actorId,
             id: community.id,
@@ -17,15 +17,14 @@ public extension Community1Snapshot {
             instanceId: community.instanceId,
             updated: community.updated,
             displayName: community.title,
-            description: community.description,
+            description: descriptionAndBannerProvided ? .init(community.description) : .notProvided,
             deleted: community.deleted,
             removed: community.removed,
             nsfw: community.nsfw,
             avatar: community.icon,
-            banner: community.banner,
+            banner: descriptionAndBannerProvided ? .init(community.banner) : .notProvided,
             hidden: community.hidden,
-            onlyModeratorsCanPost: community.restrictedToMods,
-            allPropertiesPresent: allPropertiesPresent
+            onlyModeratorsCanPost: community.restrictedToMods
         )
     }
 }

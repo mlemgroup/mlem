@@ -19,18 +19,16 @@ public struct Person1Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Person1!
     public let displayName: String
     public let avatar: URL?
-    public let banner: URL?
+
+    // https://codeberg.org/rimu/pyfedi/issues/882
+    public let banner: MaybePresent<URL>
     public let note: MaybePresent<String>
     public let updated: Date?
-    public let description: String?
+    public let description: MaybePresent<String>
     public let matrixUserId: String?
     public let isBot: Bool
     public let instanceBan: InstanceBanType
     public let deleted: Bool
-    
-    // This is a dodgy workaround for https://codeberg.org/rimu/pyfedi/issues/882
-    // TODO: If that issue gets fixed, we can remove this
-    public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
     
@@ -42,15 +40,14 @@ public struct Person1Snapshot: CacheIdentifiable {
         instanceId: Int,
         displayName: String,
         avatar: URL?,
-        banner: URL?,
+        banner: MaybePresent<URL>,
         note: MaybePresent<String>,
         updated: Date?,
-        description: String?,
+        description: MaybePresent<String>,
         matrixUserId: String?,
         isBot: Bool,
         instanceBan: InstanceBanType,
-        deleted: Bool,
-        allPropertiesPresent: Bool
+        deleted: Bool
     ) {
         self.actorId = actorId
         self.id = id
@@ -67,6 +64,5 @@ public struct Person1Snapshot: CacheIdentifiable {
         self.isBot = isBot
         self.instanceBan = instanceBan
         self.deleted = deleted
-        self.allPropertiesPresent = allPropertiesPresent
     }
 }
