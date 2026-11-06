@@ -8,6 +8,7 @@
 import Foundation
 import MlemMiddleware
 import SwiftUI
+import Icons
 
 struct TileScoreView: View {
     let saved: ExpectedValue<Bool>
@@ -16,16 +17,25 @@ struct TileScoreView: View {
     var body: some View {
         if let saved = saved.value, let votes = votes.value {
             Group {
-                postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) + // saved status
-                Text(verbatim: saved ? " " : "") + // spacing after save
-                Text(Image(icon: votes.icon)) + // vote status
-                Text(verbatim: " \(votes.total.abbreviated)")
+                Text("""
+                    \(postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave))\
+                    \(Text(verbatim: saved ? " " : ""))\
+                    \(Text(Image(icon: voteIcon(votes))))\
+                    \(Text(verbatim: " \(votes.total.abbreviated)"))
+                    """)
             }
             .lineLimit(1)
             .font(.caption)
             .foregroundStyle(votes.color)
             .contentShape(.rect)
         }
+    }
+    
+    func voteIcon(_ votes: VotesModel) -> Icon {
+        if votes.myVote == .none {
+            return ScoringOperation.upvote.icon.representingState(active: false)
+        }
+        return votes.myVote.icon.representingState(active: true)
     }
 }
 
