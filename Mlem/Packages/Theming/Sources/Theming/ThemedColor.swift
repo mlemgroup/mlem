@@ -98,7 +98,7 @@ public extension ShapeStyle where Self == ThemedColor {
     }
     
     static func themedColorfulAccent(_ index: Int) -> ThemedColor {
-        .init(hashString: "colorfulAccent\(index)") { $0.colorfulAccents[index % $0.colorfulAccents.count] }
+        .init(hashString: "colorfulAccent\(index)") { $0.colorfulAccents[index % $0.colorfulAccents.count].color }
     }
     
     static func themedCommentIndentColor(_ index: Int) -> ThemedColor {

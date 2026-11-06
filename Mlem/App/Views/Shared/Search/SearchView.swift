@@ -92,7 +92,7 @@ struct SearchView: View {
         content
             .background(ThemedColor.themedGroupedBackground)
             .themedGroupedBackground()
-            .navigationTitle(searchBarMode == .regular ? "" : "Search")
+            .navigationTitle(searchBarMode == .regular ? "" : String(localized: "Search"))
             .navigationBarTitleDisplayMode(searchBarMode == .regular ? .inline : .large)
             .searchable(
                 text: $query,

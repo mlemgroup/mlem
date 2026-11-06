@@ -20,7 +20,7 @@ public struct Palette {
     
     public var accent: Color
     public var neutralAccent: Color
-    public var colorfulAccents: [Color]
+    public var colorfulAccents: [NamedColor]
     public var commentIndentColors: [Color]
     public var accountAgeColors: [Color]
     
@@ -59,7 +59,7 @@ public struct Palette {
         contrastingLabel: Color,
         accent: Color,
         neutralAccent: Color,
-        colorfulAccents: [Color],
+        colorfulAccents: [NamedColor],
         commentIndentColors: [Color],
         accountAgeColors: [Color],
         positive: Color,

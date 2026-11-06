@@ -1,0 +1,74 @@
+//
+//  CommentBarTheme.swift
+//  Mlem
+//
+//  Created by Sjmarf on 2026-11-05.
+//
+
+import Theming
+import SwiftUI
+
+enum CommentBarTheme: Codable, Identifiable, Hashable {
+    case rainbow
+    case colorfulAccent(Int)
+    case primaryLabel
+    case neutralAccent
+    case tertiaryLabelMonochrome
+
+    var id: Self { self }
+
+    static func allCases(in palette: Palette) -> [Self] {
+        var cases: [Self] = [.rainbow]
+        cases += (0..<palette.colorfulAccents.count).map { .colorfulAccent($0) }
+        cases += [.primaryLabel, .neutralAccent, .tertiaryLabelMonochrome]
+        return cases
+    }
+
+    func label(in palette: Palette) -> LocalizedStringResource {
+        switch self {
+        case .rainbow: "Rainbow"
+        case .primaryLabel: "Primary"
+        case .neutralAccent: "Neutral"
+        case .tertiaryLabelMonochrome: "Monochrome"
+        case let .colorfulAccent(value): palette.colorfulAccents[value % palette.colorfulAccents.count].label
+        }
+    }
+
+    func colors(in palette: Palette) -> [Color] {
+        switch self {
+        case .rainbow:
+            palette.commentIndentColors
+        case let .colorfulAccent(index):
+            palette.colorfulAccents[index % palette.colorfulAccents.count].color.gradientArray()
+        case .primaryLabel:
+            palette.label.primary.gradientArray()
+        case .neutralAccent:
+            palette.neutralAccent.gradientArray()
+        case .tertiaryLabelMonochrome:
+            [palette.label.tertiary]
+        }
+    }
+
+    func clamped(for palette: Palette) -> CommentBarTheme {
+        switch self {
+        case let .colorfulAccent(value): .colorfulAccent(value % palette.colorfulAccents.count)
+        default: self
+        }
+    }
+}
+
+private extension Color {
+    func gradientArray() -> [Color] {
+        let stepCount = 3
+
+        let start: CGFloat = 1
+        let end: CGFloat = 0.2
+
+        let interval = (end - start) / CGFloat(stepCount - 1)
+        let opacities = (0..<stepCount).map { start + CGFloat($0) * interval }
+
+        return opacities.map {
+            self.opacity($0)
+        }
+    }
+}
