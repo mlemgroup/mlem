@@ -105,25 +105,25 @@ extension ApiRepository {
         }
     }
     
-    func voteOnComment(id: Int, score: ScoringOperation, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+    func voteOnComment(id: Int, score: ScoringOperation) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.voteOnComment(id: id, score: score)
         }
     }
     
-    func saveComment(id: Int, save: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+    func saveComment(id: Int, save: Bool) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.saveComment(id: id, save: save)
         }
     }
     
-    func setCommentNotificationsEnabled(id: Int, enabled: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+    func setCommentNotificationsEnabled(id: Int, enabled: Bool) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.setCommentNotificationsEnabled(id: id, enabled: enabled)
         }
     }
     
-    func deleteComment(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Comment2Snapshot {
+    func deleteComment(id: Int, delete: Bool) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.deleteComment(id: id, delete: delete)
         }
@@ -170,8 +170,7 @@ extension ApiRepository {
     func removeComment(
         id: Int,
         remove: Bool,
-        reason: String?,
-        semaphore: UInt? = nil
+        reason: String?
     ) async throws -> Comment2Snapshot {
         try await performingForConnection { connection in
             try await connection.removeComment(id: id, remove: remove, reason: reason)
