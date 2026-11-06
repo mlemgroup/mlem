@@ -484,7 +484,8 @@
             "value" : "%1$@%2$@%3$@%4$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld Active" : {
       "localizations" : {
