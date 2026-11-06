@@ -17,10 +17,12 @@ struct TileScoreView: View {
     var body: some View {
         if let saved = saved.value, let votes = votes.value {
             Group {
-                postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) + // saved status
-                Text(verbatim: saved ? " " : "") + // spacing after save
-                Text(Image(icon: voteIcon(votes))) + // vote status
-                Text(verbatim: " \(votes.total.abbreviated)")
+                Text("""
+                    \(postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave))\
+                    \(Text(verbatim: saved ? " " : ""))\
+                    \(Text(Image(icon: voteIcon(votes))))\
+                    \(Text(verbatim: " \(votes.total.abbreviated)"))
+                    """)
             }
             .lineLimit(1)
             .font(.caption)
