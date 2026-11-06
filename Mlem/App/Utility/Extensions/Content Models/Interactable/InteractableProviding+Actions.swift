@@ -5,6 +5,7 @@
 //  Created by Eric Andrews on 2026-01-24.
 //
 
+import Icons
 import MlemMiddleware
 import Theming
 import os
@@ -19,23 +20,23 @@ extension InteractableProviding {
         .init(
             id: "created\(uid)",
             label: (updated ?? created).getShortRelativeTime(),
-            icon: updated == nil ? Icons.time : Icons.updated
+            icon: updated == nil ? .general.time : .general.updateTime
         )
     }
     
     func scoreReadout(showColor: Bool) -> Readout? {
         guard let votes = votes.value else { return nil }
-        let icon: String
+        let icon: Icon
         let color: ThemedColor?
         switch votes.myVote {
         case .upvote:
-            icon = Icons.upvoteSquareFill
+            icon = .lemmy.upvoted.representingState(active: true)
             color = .themedUpvote
         case .downvote:
-            icon = Icons.downvoteSquareFill
+            icon = .lemmy.downvoted.representingState(active: true)
             color = .themedDownvote
         default:
-            icon = Icons.upvoteSquare
+            icon = .lemmy.upvoted.representingState(active: false)
             color = nil
         }
         return Readout(
@@ -52,7 +53,7 @@ extension InteractableProviding {
         return Readout(
             id: "upvote\(uid)",
             label: votes.upvotes.description,
-            icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+            icon: .lemmy.upvoted.representingState(active: isOn),
             color: isOn && showColor ? .themedUpvote : nil
         )
     }
@@ -63,7 +64,7 @@ extension InteractableProviding {
         return Readout(
             id: "downvote\(uid)",
             label: votes.downvotes.description,
-            icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+            icon: .lemmy.downvoted.representingState(active: isOn),
             color: isOn && showColor ? .themedDownvote : nil
         )
     }
@@ -83,7 +84,7 @@ extension InteractableProviding {
         return .init(
             id: "comment\(uid)",
             label: commentCount.description,
-            icon: Icons.replies,
+            icon: .lemmy.comment,
             value: value,
             valueColor: .themedPositive
         )
@@ -95,7 +96,7 @@ extension InteractableProviding {
         return .init(
             id: "saved\(uid)",
             label: nil,
-            icon: isOn ? Icons.saveFill : Icons.save,
+            icon: .lemmy.saved.representingState(active: isOn),
             color: isOn && showColor ? .themedSave : nil
         )
     }
