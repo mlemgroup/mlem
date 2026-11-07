@@ -8,6 +8,7 @@
 import ComponentViews
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct ProfileSettingsView: View {
     @Environment(AppState.self) var appState
@@ -28,13 +29,19 @@ struct ProfileSettingsView: View {
     
     @State var avatarManager: ImageUploadManager = .init()
     @State var bannerManager: ImageUploadManager = .init()
+
+    enum SubmittingState {
+        case idle, uploadingImages, submitting
+    }
     
-    @State var isSubmitting: Bool = false
+    @State var submittingState: SubmittingState = .idle
     
     init(person: Person) {
         self.person = person
         self._profileDetails = .init(wrappedValue: person.profileDetails())
         bioTextView.text = person.description ?? ""
+        avatarManager.setPreviousUpload(person.avatar)
+        bannerManager.setPreviousUpload(person.banner)
     }
 
     var displayNameText: Binding<String> {
@@ -93,7 +100,7 @@ struct ProfileSettingsView: View {
         .onAppear {
             markdownToolbarEditorModel.imageUploadApi = person.api
         }
-        .navigationTitle("My Profile")
+        .navigationTitle(submittingState == .uploadingImages ? "Uploading Images..." : "My Profile")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
         .navigationBarBackButtonHidden(showToolbarOptions)
@@ -104,13 +111,14 @@ struct ProfileSettingsView: View {
                     Button {
                         profileDetails = person.profileDetails()
                         bioTextView.text = profileDetails.description
+                        avatarManager.setPreviousUpload(person.avatar)
+                        bannerManager.setPreviousUpload(person.banner)
                     } label: {
                         Label("Discard", icon: .general.delete)
                     }
-                    .disabled(isSubmitting)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    if isSubmitting {
+                    if submittingState != .idle {
                         ProgressView()
                     } else {
                         saveButtonView
@@ -120,9 +128,14 @@ struct ProfileSettingsView: View {
                 CloseButtonToolbarItem()
             }
         }
+        .disabled(submittingState != .idle)
     }
     
-    var showToolbarOptions: Bool { profileDetails != person.profileDetails() }
+    var showToolbarOptions: Bool {
+        profileDetails != person.profileDetails()
+            || !avatarManager.matchesPreviousUpload(person.avatar)
+            || !bannerManager.matchesPreviousUpload(person.banner)
+    }
 
     @ViewBuilder
     var displayNameSection: some View {
@@ -139,13 +152,23 @@ struct ProfileSettingsView: View {
     var avatarSection: some View {
         Section {
             HStack(spacing: 15) {
-                CircleCroppedImageView(url: profileDetails.avatar, frame: 48, fallback: .personAvatar)
+                switch avatarManager.state {
+                case .done, .previousUpload:
+                    CircleCroppedImageView(url: avatarManager.url, frame: 48, fallback: .personAvatar)
+                case let .waiting(image), let .uploading(image, progress: _):
+                    if let uiImage = UIImage(data: image.data) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(.circle)
+                            .frame(width: 48, height: 48)
+                    }
+                case .idle:
+                    CircleCroppedImageView(url: nil, frame: 48, fallback: .personAvatar)
+                }
                 Text("Avatar")
                 Spacer()
-                CircleImageUploadButton(imageManager: avatarManager, url: $profileDetails.avatar, api: person.api)
-            }
-            .onChange(of: avatarManager.image?.url) {
-                profileDetails.avatar = avatarManager.image?.url
+                CircleImageUploadButton(imageManager: avatarManager, api: person.api)
             }
         }
     }
@@ -154,34 +177,43 @@ struct ProfileSettingsView: View {
     var bannerSection: some View {
         Section {
             VStack(spacing: 0) {
-                if let bannerUrl = profileDetails.banner {
-                    MediaView(
-                        controlState: mediaTracker.controlState(for: bannerUrl) {
-                            .init(url: bannerUrl, blurred: false, animating: false, muted: true)
-                        },
-                        contentMode: .fill,
-                        enableContextMenu: true,
-                        enableImageViewer: true
-                    )
+                bannerImageView
                     .frame(height: 150)
                     .clipped()
-                } else {
-                    palette.label.secondary.opacity(0.5)
-                        .frame(height: 150)
-                }
                 HStack(spacing: 15) {
                     Text("Banner")
                     Spacer()
-                    CircleImageUploadButton(imageManager: bannerManager, url: $profileDetails.banner, api: person.api)
+                    CircleImageUploadButton(imageManager: bannerManager, api: person.api)
                 }
                 .padding(.horizontal, 15)
                 .padding(.vertical, 10)
             }
-            .onChange(of: bannerManager.image?.url) {
-                profileDetails.banner = bannerManager.image?.url
-            }
         }
         .listRowInsets(.init())
+    }
+
+    @ViewBuilder
+    var bannerImageView: some View {
+        switch bannerManager.state {
+        case .done, .previousUpload:
+            MediaView(
+                controlState: mediaTracker.controlState(for: bannerManager.url) {
+                    .init(url: bannerManager.url, blurred: false, animating: false, muted: true)
+                },
+                contentMode: .fill,
+                enableContextMenu: true,
+                enableImageViewer: true
+            )
+        case let .waiting(image), let .uploading(image, progress: _):
+            if let uiImage = UIImage(data: image.data) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+            }
+        case .idle:
+            palette.label.secondary.opacity(0.5)
+        }
+
     }
     
     @ViewBuilder
@@ -196,8 +228,29 @@ struct ProfileSettingsView: View {
     
     @MainActor
     func submit() async {
-        isSubmitting = true
+        if avatarManager.isWaiting || bannerManager.isWaiting {
+            submittingState = .uploadingImages
+        } 
         do {
+            // Intentionally skipping the upload confirmation dialogue here.
+            // The user had a chance to see the pending images already.
+            let shouldUploadAvatar = avatarManager.isWaiting
+            let shouldUploadBanner = bannerManager.isWaiting
+            async let avatarUpload: Void = avatarManager.uploadIfWaiting(api: person.api)
+            async let bannerUpload: Void = bannerManager.uploadIfWaiting(api: person.api)
+            _ = try await (avatarUpload, bannerUpload)
+
+            if shouldUploadAvatar {
+                profileDetails.avatar = avatarManager.image?.url
+            } else if avatarManager.state == .idle {
+                profileDetails.avatar = nil
+            }
+            if shouldUploadBanner {
+                profileDetails.banner = bannerManager.image?.url
+            } else if bannerManager.state == .idle {
+                profileDetails.banner = nil
+            }
+            submittingState = .submitting
             try await person.updateProfile(profileDetails)
             if let session = appState.firstSession as? UserSession, session.person === person {
                 try await session.updateAccount()
@@ -208,38 +261,41 @@ struct ProfileSettingsView: View {
         } catch {
             handleError(error)
         }
-        isSubmitting = false
+        submittingState = .idle
     }
 }
 
 private struct CircleImageUploadButton: View {
     let imageManager: ImageUploadManager
-    @Binding var url: URL?
     let api: ApiClient
     
     var body: some View {
         Group {
-            if url != nil {
+            switch imageManager.state {
+            case let .uploading(_, progress):
+                ProgressView(value: progress)
+                    .progressViewStyle(.circular)
+                    .controlSize(.extraLarge)
+            case .idle:
+                ImageUploadMenu(
+                    imageManager: imageManager,
+                    imageUploadApi: api,
+                    triggerUpload: false
+                ) {
+                    Image(icon: .general.add)
+                        .resizable()
+                        .symbolVariant(.circle.fill)
+                }
+            case .done, .waiting, .previousUpload:
                 Button {
-                    url = nil
+                    imageManager.clear()
                 } label: {
                     Image(icon: .general.delete)
                         .resizable()
                         .symbolVariant(.circle.fill)
                 }
-            } else {
-                switch imageManager.state {
-                case .uploading:
-                    ProgressView()
-                        .controlSize(.extraLarge)
-                default:
-                    ImageUploadMenu(imageManager: imageManager, imageUploadApi: api) {
-                        Image(icon: .general.add)
-                            .resizable()
-                            .symbolVariant(.circle.fill)
-                    }
-                }
             }
+
         }
         .aspectRatio(contentMode: .fit)
         .frame(height: 36)

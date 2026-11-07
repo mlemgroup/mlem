@@ -76,7 +76,7 @@ struct MarkdownEditorToolbarView: View {
     @ViewBuilder
     var content: some View {
         switch imageManager.state {
-        case let .uploading(progress):
+        case let .uploading(_, progress):
             Group {
                 if progress == 1 {
                     HStack {
@@ -198,7 +198,11 @@ struct MarkdownEditorToolbarView: View {
                 textView.toggleQuoteAtCursor()
             }
             if let imageUploadApi = model.imageUploadApi {
-                ImageUploadMenu(imageManager: imageManager, imageUploadApi: imageUploadApi) {
+                ImageUploadMenu(
+                    imageManager: imageManager,
+                    imageUploadApi: imageUploadApi,
+                    triggerUpload: true
+                ) {
                     Label("Image", icon: .markdown.uploadImage)
                 }
                 .disabled(!imageUploadApi.contextIsFetched)
