@@ -23,6 +23,29 @@ class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     }
 }
 
+class DoubleTapGestureRecognizer: UITapGestureRecognizer {
+    var shouldBlock: () -> Bool
+    private(set) var isBlocked: Bool?
+    
+    init(target: Any?, action: Selector?, shouldBlock: @escaping () -> Bool) {
+        self.shouldBlock = shouldBlock
+        super.init(target: target, action: action)
+        numberOfTapsRequired = 2
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        if isBlocked == nil {
+            isBlocked = shouldBlock()
+        }
+        super.touchesBegan(touches, with: event)
+    }
+    
+    override func reset() {
+        super.reset()
+        isBlocked = nil
+    }
+}
+
 class PanningPinchRecognizer: UIPinchGestureRecognizer {
     @Binding var zoomScale: CGFloat
     var panOffset: CGSize = .zero
