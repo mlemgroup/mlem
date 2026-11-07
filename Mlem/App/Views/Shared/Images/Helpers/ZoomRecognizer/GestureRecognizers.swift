@@ -11,15 +11,56 @@ import UIKit
 class MomentumResetTapGestureRecognizer: UITapGestureRecognizer {
     var momentumKilled: Bool = false
     var resetMomentum: () -> Bool
-    
+    var maximumMovement: CGFloat = 3
+    private var startLocation: CGPoint?
+
     init(target: Any?, action: Selector?, resetMomentum: @escaping () -> Bool) {
         self.resetMomentum = resetMomentum
         super.init(target: target, action: action)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         momentumKilled = resetMomentum()
+        if startLocation == nil {
+            startLocation = touches.first?.location(in: nil)
+        }
         super.touchesBegan(touches, with: event)
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesMoved(touches, with: event)
+        guard state == .possible, let startLocation, let location = touches.first?.location(in: nil) else { return }
+        if hypot(location.x - startLocation.x, location.y - startLocation.y) > maximumMovement {
+            state = .failed
+        }
+    }
+
+    override func reset() {
+        super.reset()
+        startLocation = nil
+    }
+}
+
+class DoubleTapGestureRecognizer: UITapGestureRecognizer {
+    var shouldBlock: () -> Bool
+    private(set) var isBlocked: Bool?
+    
+    init(target: Any?, action: Selector?, shouldBlock: @escaping () -> Bool) {
+        self.shouldBlock = shouldBlock
+        super.init(target: target, action: action)
+        numberOfTapsRequired = 2
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        if isBlocked == nil {
+            isBlocked = shouldBlock()
+        }
+        super.touchesBegan(touches, with: event)
+    }
+    
+    override func reset() {
+        super.reset()
+        isBlocked = nil
     }
 }
 
