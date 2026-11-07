@@ -58,6 +58,7 @@ struct PostEditorView: View {
     @State var markdownToolbarEditorModel: MarkdownEditorToolbarModel = .init()
     @State var language: Locale.Language?
     @State var sending: Bool = false
+    @State var keyboardAccessoryInset: CGFloat = 0
         
     @State var targets: [PostEditorTarget]
     
@@ -240,6 +241,10 @@ struct PostEditorView: View {
             }
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             .animation(.snappy(duration: 0.2, extraBounce: 0.05), value: animationHashValue)
+        }
+        .safeAreaPadding(.bottom, keyboardAccessoryInset)
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidChangeFrameNotification)) { notification in
+            updateKeyboardAccessoryInset(notification)
         }
     }
 }
