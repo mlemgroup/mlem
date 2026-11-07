@@ -106,6 +106,7 @@ struct MessageFeedView: View {
                     .padding(.bottom, 25)
                     .padding(.top, Constants.main.standardSpacing)
             }
+            .markdownToolbarKeyboardInset([textView])
             .defaultScrollAnchor(.bottom)
             .scrollDismissesKeyboard(.interactively)
             .themedGroupedBackground()
