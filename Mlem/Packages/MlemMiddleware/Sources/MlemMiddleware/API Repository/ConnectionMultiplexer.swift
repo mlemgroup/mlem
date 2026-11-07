@@ -25,10 +25,7 @@ class ConnectionMultiplexer<Candidate> {
     }
     
     @MainActor
-    func perform<T>(
-        ref: String? = nil,
-        _ callback: @escaping (Candidate) async throws -> T
-    ) async throws -> T {
+    func perform<T>(_ callback: @escaping (Candidate) async throws -> T) async throws -> T {
         // Iterate through all possible candidates, and call the callback on each in turn.
         // As soon as one of the calls succeeds, return the result and cancel the other ongoing calls.
         // Cache the `Candidate` that succeeded in the `self.selectedCandidate` property, and use that
@@ -73,11 +70,7 @@ class ConnectionMultiplexer<Candidate> {
                 for (candidate, result) in zip(candidates, results.map(\.1)) {
                     do {
                         let value = try result.get()
-                        if let ref {
-                            log.info("Selected \(String(describing: candidate)) at \(ref)")
-                        } else {
-                            log.info("Selected \(String(describing: candidate))")
-                        }
+                        log.info("Selected \(String(describing: candidate))")
                         self.selectedCandidate = candidate
                         self.ongoingTask = nil
                         return value
