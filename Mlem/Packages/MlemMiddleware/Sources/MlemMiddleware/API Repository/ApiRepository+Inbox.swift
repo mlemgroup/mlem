@@ -102,7 +102,7 @@ extension ApiRepository {
         }
     }
     
-    func deleteMessage(id: Int, delete: Bool, semaphore: UInt? = nil) async throws -> Message2Snapshot {
+    func deleteMessage(id: Int, delete: Bool) async throws -> Message2Snapshot {
         try await performingForConnection { connection in
             try await connection.deleteMessage(id: id, delete: delete)
         }

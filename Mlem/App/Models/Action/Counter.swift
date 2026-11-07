@@ -14,14 +14,4 @@ struct Counter: Identifiable {
     
     let leadingAction: ActionSeed?
     let trailingAction: ActionSeed?
-    
-    var appearance: CounterAppearance {
-        .init(
-            value: value,
-            leading: leadingAction?.appearance,
-            trailing: trailingAction?.appearance,
-            label: "Unknown",
-            singleIcon: ""
-        )
-    }
 }

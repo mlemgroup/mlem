@@ -8,7 +8,7 @@
 import Foundation
 
 class ImageUpload1Cache: CoreCache<ImageUpload1> {
-    func getModel(api: ApiClient, from snapshot: ImageUpload1Snapshot, semaphore: UInt? = nil) -> ImageUpload1 {
+    func getModel(api: ApiClient, from snapshot: ImageUpload1Snapshot) -> ImageUpload1 {
         if let item = retrieveModel(cacheId: snapshot.cacheId) { return item }
         
         let newItem: ImageUpload1 = .init(

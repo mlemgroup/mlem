@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "@%@" : {
       "localizations" : {
         "fr" : {
@@ -2841,6 +2844,7 @@
       }
     },
     "Confirm" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4692,6 +4696,9 @@
           }
         }
       }
+    },
+    "Flip Layout Direction" : {
+
     },
     "Follow on Mastodon" : {
       "localizations" : {
@@ -9767,6 +9774,9 @@
         }
       }
     },
+    "Subscribers Only" : {
+
+    },
     "Subscript" : {
       "localizations" : {
         "fr" : {
@@ -9991,6 +10001,9 @@
           }
         }
       }
+    },
+    "Tap to Reset Zoom" : {
+
     },
     "Tap to show slur filter regex." : {
       "localizations" : {
@@ -10662,6 +10675,7 @@
       }
     },
     "Top Communities" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -10762,6 +10776,7 @@
       }
     },
     "Trending Communities" : {
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
