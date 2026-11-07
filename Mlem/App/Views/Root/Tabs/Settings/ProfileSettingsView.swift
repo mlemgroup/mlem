@@ -96,6 +96,7 @@ struct ProfileSettingsView: View {
         .navigationTitle("My Profile")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .markdownToolbarKeyboardInset([bioTextView])
         .navigationBarBackButtonHidden(showToolbarOptions)
         .interactiveDismissDisabled(showToolbarOptions)
         .toolbar {

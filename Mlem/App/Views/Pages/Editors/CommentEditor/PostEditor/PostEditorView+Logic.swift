@@ -163,24 +163,6 @@ extension PostEditorView {
         }
     }
     
-    // The second time the keyboard appears, it removes the keyboard safe area for some reason.
-    // See #3110.
-    func updateKeyboardAccessoryInset(_ notification: Notification) {
-        var inset: CGFloat = 0
-        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
-           let accessory = focusedTextView()?.inputAccessoryView,
-           let screen = accessory.window?.screen,
-           keyboardFrame.minY < screen.bounds.maxY {
-            let accessoryFrame = accessory.convert(accessory.bounds, to: screen.coordinateSpace)
-            inset = max(0, keyboardFrame.minY - accessoryFrame.minY)
-        }
-        if inset != keyboardAccessoryInset {
-            withAnimation(.easeOut(duration: 0.2)) {
-                keyboardAccessoryInset = inset
-            }
-        }
-    }
-
     func focusedField() -> Field? {
         if contentUiTextView.isFirstResponder {
              .content
@@ -191,14 +173,6 @@ extension PostEditorView {
         }
     }
 
-    func focusedTextView() -> UITextView? {
-        switch focusedField() {
-        case .content: contentUiTextView
-        case .title: titleUiTextView
-        case nil: nil
-        }
-    }
-    
     func saveFocusState() {
         lastFocusedField = focusedField()
     }
