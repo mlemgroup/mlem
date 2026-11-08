@@ -12,6 +12,13 @@ public enum FeedLoaderSort: Comparable {
     
     public enum SortType {
         case new, top
+
+        var postSortType: PostSortType {
+            switch self {
+            case .new: .new
+            case .top: .top(.allTime)
+            }
+        }
     }
 }
 
@@ -20,13 +27,6 @@ public extension FeedLoaderSort {
         switch self {
         case .new: .new
         case .top: .top
-        }
-    }
-    
-    var apiType: LemmySortType {
-        switch self {
-        case .new: .new
-        case .top: .topAll
         }
     }
     

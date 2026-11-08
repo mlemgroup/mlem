@@ -83,7 +83,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         if postStream.needsMoreItems || commentStream.needsMoreItems, let cursor = self.location.cursor {
             let response = try await api.getContent(
                 authorId: userId,
-                sort: .new,
+                sort: self.sortType.postSortType,
                 pageInfo: .init(cursor: cursor, limit: pageSize),
                 savedOnly: savedOnly
             )

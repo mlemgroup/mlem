@@ -103,6 +103,9 @@ struct PersonView: View {
                 logVisit(person)
             }
             .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    sortPicker
+                }
                 ToolbarItemGroup(placement: .secondaryAction) {
                     SwiftUI.Section {
                         ActionButtons(person: person)
