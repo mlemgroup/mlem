@@ -8,11 +8,13 @@
 import Actions
 import ComponentViews
 import Flow
+import Icons
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
 import Theming
 
+// swiftlint:disable:next type_body_length
 struct PersonView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case overview, comments, posts, communities
@@ -43,6 +45,7 @@ struct PersonView: View {
     @State private var selectedContentType: PersonContentType = .all
     @State var feedLoader: SingleSourceMixedFeedLoader?
     @State var isLoading: Bool = false
+    @State private var sort: PersonContentSortType = .new
 
     let isProfileTab: Bool
     
@@ -268,6 +271,56 @@ struct PersonView: View {
             }
         }
         .padding([.horizontal, .bottom], Constants.main.standardSpacing)
+    }
+
+    @ViewBuilder
+    var sortPicker: some View {
+        Menu("Sort", icon: sort.icon) {
+            ForEach(PersonContentSortType.allCases, id: \.self) { item in
+                Toggle(
+                    item.label,
+                    icon: item.icon,
+                    isOn: .init(
+                        get: { sort == item },
+                        set: { _ in
+                            self.sort = item
+                            Task { @MainActor in
+                                do {
+                                    try await feedLoader?.changeSortType(to: item.feedSortType, forceRefresh: false)
+                                } catch {
+                                    handleError(error)
+                                }
+                            }
+                        }
+                    )
+                )
+            }
+        }
+    }
+}
+
+private enum PersonContentSortType: CaseIterable, Hashable {
+    case new, top
+
+    var label: LocalizedStringResource {
+        switch self {
+        case .new: "New"
+        case .top: "Top"
+        }
+    }
+
+    var icon: Icon {
+        switch self {
+        case .new: .lemmy.newSort
+        case .top: .lemmy.topSort
+        }
+    }
+
+    var feedSortType: FeedLoaderSort.SortType {
+        switch self {
+        case .new: .new
+        case .top: .top
+        }
     }
 }
 

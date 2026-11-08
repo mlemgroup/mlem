@@ -204,4 +204,15 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
         // note that this currently doesn't do anything because comments don't support prefetching yet [Eric 2024.11.13]
         commentStream.preloadImages(items)
     }
+
+    /// Changes the post sort type to the specified value and reloads the feed
+    public func changeSortType(to newSortType: FeedLoaderSort.SortType, forceRefresh: Bool = false) async throws {
+        // don't do anything if sort type not changed
+        guard singleSourceMixedFetcher.sortType != newSortType || forceRefresh else {
+            return
+        }
+        
+        self.singleSourceMixedFetcher.sortType = newSortType
+        try await refresh(clearBeforeRefresh: true)
+    }
 }
