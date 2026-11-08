@@ -73,8 +73,8 @@ public extension Person {
     
     func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch sortType {
-        case .new:
-            return .new(created)
+        case .new: .new(created)
+        case .top: .new(created)
         }
     }
 }
