@@ -384,6 +384,7 @@
 		03E614E72C0BCDC200F692A4 /* FullyQualifiedLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */; };
 		03E70DAE2FE1BA5500EEA369 /* TranslatableMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E70DAD2FE1BA5500EEA369 /* TranslatableMarkdownView.swift */; };
 		03E83F4130A107C500F2E3F5 /* PersonView+Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E83F4030A107C500F2E3F5 /* PersonView+Views.swift */; };
+		03E83F4330A10E3D00F2E3F5 /* PersonContentSortType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E83F4230A10E3D00F2E3F5 /* PersonContentSortType+Extensions.swift */; };
 		03EC83EE2E958A44004698BB /* OpenGraph in Frameworks */ = {isa = PBXBuildFile; productRef = 03EC83ED2E958A44004698BB /* OpenGraph */; };
 		03EC83F02E9590D3004698BB /* LinkHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC83EF2E9590D3004698BB /* LinkHostView.swift */; };
 		03EC84422E959AA5004698BB /* PostEditorWebsitePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */; };
@@ -978,6 +979,7 @@
 		03E614E62C0BCDC200F692A4 /* FullyQualifiedLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedLinkView.swift; sourceTree = "<group>"; };
 		03E70DAD2FE1BA5500EEA369 /* TranslatableMarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslatableMarkdownView.swift; sourceTree = "<group>"; };
 		03E83F4030A107C500F2E3F5 /* PersonView+Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonView+Views.swift"; sourceTree = "<group>"; };
+		03E83F4230A10E3D00F2E3F5 /* PersonContentSortType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonContentSortType+Extensions.swift"; sourceTree = "<group>"; };
 		03EC83EF2E9590D3004698BB /* LinkHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkHostView.swift; sourceTree = "<group>"; };
 		03EC84412E959AA5004698BB /* PostEditorWebsitePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorWebsitePreviewView.swift; sourceTree = "<group>"; };
 		03EC86452E9E9D4C004698BB /* PopupAnchorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupAnchorModel.swift; sourceTree = "<group>"; };
@@ -2089,6 +2091,7 @@
 				033FCAEB2C57DCCD007B7CD1 /* ListingType+Extensions.swift */,
 				03049A1D2C6508F400FF6889 /* RegistrationMode+Extensions.swift */,
 				0318BA9E2D72405F006CA71F /* PostSortType+Extensions.swift */,
+				03E83F4230A10E3D00F2E3F5 /* PersonContentSortType+Extensions.swift */,
 				038C86562D888EC100543F70 /* CommentSortType+Extensions.swift */,
 				032509272FD566B6006F8394 /* CommunitySortType+Extensions.swift */,
 				0325092B2FD58E35006F8394 /* PersonSortType+Extensions.swift */,
@@ -2707,6 +2710,7 @@
 				03AB48552CBC0B8000567FF9 /* AccountAdvancedSettingsView.swift in Sources */,
 				039F588A2C7B54FE00C61658 /* GeneralSettingsView.swift in Sources */,
 				03F967272CE218110081C9A3 /* PersonBanEditorView.swift in Sources */,
+				03E83F4330A10E3D00F2E3F5 /* PersonContentSortType+Extensions.swift in Sources */,
 				03AD0A822CFDBFA0001EF9F7 /* AccountLocalSettingsView.swift in Sources */,
 				034A82032EBA688F00E5F904 /* LinkEditorView.swift in Sources */,
 				039F58992C7B697D00C61658 /* Bundle+Extensions.swift in Sources */,

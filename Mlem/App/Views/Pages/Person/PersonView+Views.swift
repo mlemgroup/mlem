@@ -165,7 +165,7 @@ extension PersonView {
                             self.sort = item
                             Task { @MainActor in
                                 do {
-                                    try await feedLoader?.changeSortType(to: item.feedSortType, forceRefresh: false)
+                                    try await feedLoader?.changeSortType(to: item, forceRefresh: false)
                                 } catch {
                                     handleError(error)
                                 }
@@ -174,31 +174,6 @@ extension PersonView {
                     )
                 )
             }
-        }
-    }
-}
-
-enum PersonContentSortType: CaseIterable, Hashable {
-    case new, top
-
-    var label: LocalizedStringResource {
-        switch self {
-        case .new: "New"
-        case .top: "Top"
-        }
-    }
-
-    var icon: Icon {
-        switch self {
-        case .new: .lemmy.newSort
-        case .top: .lemmy.topSort
-        }
-    }
-
-    var feedSortType: FeedLoaderSort.SortType {
-        switch self {
-        case .new: .new
-        case .top: .top
         }
     }
 }

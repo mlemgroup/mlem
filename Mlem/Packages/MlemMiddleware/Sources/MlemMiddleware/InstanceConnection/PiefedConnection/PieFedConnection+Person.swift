@@ -138,7 +138,7 @@ public extension PieFedConnection {
     
     func getContent(
         authorId id: Int,
-        sort: PostSortType,
+        sort: PersonContentSortType,
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
@@ -146,7 +146,7 @@ public extension PieFedConnection {
         let request = PieFedGetPersonDetailsRequest(
             personId: id,
             username: nil,
-            sort: .new,
+            sort: sort.pieFedSortType,
             page: try pageInfo.cursor.requirePageNumber,
             limit: pageInfo.limit,
             communityId: nil,
