@@ -104,7 +104,9 @@ struct PersonView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    sortPicker
+                    if showSortPicker {
+                        sortPicker
+                    }
                 }
                 ToolbarItemGroup(placement: .secondaryAction) {
                     SwiftUI.Section {

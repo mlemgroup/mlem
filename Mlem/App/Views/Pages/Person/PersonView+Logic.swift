@@ -41,4 +41,11 @@ extension PersonView {
             }
         }
     }
+
+    var showSortPicker: Bool {
+        guard let feedLoader else { return false }
+        return PersonContentSortType.allCases.allSatisfy {
+            feedLoader.api.supports(.personContentSortType($0), defaultValue: false)
+        }
+    }
 }
