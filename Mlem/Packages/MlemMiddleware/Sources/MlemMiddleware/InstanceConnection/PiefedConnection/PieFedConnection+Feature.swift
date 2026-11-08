@@ -35,6 +35,8 @@ public extension PieFedConnection {
             version >= sort.minimumVersion
         case let .sortTimeRange(timeRange):
             version >= timeRange.minimumVersion
+        case .personContentSortType(.new), .personContentSortType(.top):
+            true
         case let .listingType(listingType):
             listingType.pieFedListingType != nil
         case .userNotes, .searchLocalComments, .fetchLinkMetadata:

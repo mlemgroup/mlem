@@ -8,9 +8,17 @@ import Foundation
 
 public enum FeedLoaderSort: Comparable {
     case new(Date)
+    case top(score: Int)
     
     public enum SortType {
-        case new
+        case new, top
+
+        var postSortType: PostSortType {
+            switch self {
+            case .new: .new
+            case .top: .top(.allTime)
+            }
+        }
     }
 }
 
@@ -18,12 +26,7 @@ public extension FeedLoaderSort {
     var sortType: FeedLoaderSort.SortType {
         switch self {
         case .new: .new
-        }
-    }
-    
-    var apiType: LemmySortType {
-        switch self {
-        case .new: .new
+        case .top: .top
         }
     }
     
@@ -38,12 +41,13 @@ public extension FeedLoaderSort {
             return true
         }
         
-        switch lhs {
-        case let .new(lhsDate):
-            switch rhs {
-            case let .new(rhsDate):
-                return lhsDate < rhsDate
-            }
+        return switch (lhs, rhs) {
+        case let (.new(date1), .new(date2)):
+            date1 < date2
+        case let (.top(score1), .top(score2)):
+            score1 < score2
+        default:
+            false
         }
     }
 }

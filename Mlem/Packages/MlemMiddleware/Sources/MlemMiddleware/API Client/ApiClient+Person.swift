@@ -124,7 +124,7 @@ public extension ApiClient {
     
     func getContent(
         authorId id: Int,
-        sort: PostSortType,
+        sort: PersonContentSortType,
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil

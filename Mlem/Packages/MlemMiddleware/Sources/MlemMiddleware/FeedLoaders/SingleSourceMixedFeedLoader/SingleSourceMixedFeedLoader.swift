@@ -20,7 +20,7 @@ import Semaphore
 
 @Observable
 class SingleSourceMixedFetcher: Fetcher<PersonContent> {
-    var sortType: FeedLoaderSort.SortType
+    var sortType: PersonContentSortType
     var userId: Int
     var savedOnly: Bool
     
@@ -30,7 +30,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
     init(
         api: ApiClient,
         pageSize: Int,
-        sortType: FeedLoaderSort.SortType,
+        sortType: PersonContentSortType,
         userId: Int,
         savedOnly: Bool,
         prefetchingConfiguration: PrefetchingConfiguration
@@ -83,7 +83,7 @@ class SingleSourceMixedFetcher: Fetcher<PersonContent> {
         if postStream.needsMoreItems || commentStream.needsMoreItems, let cursor = self.location.cursor {
             let response = try await api.getContent(
                 authorId: userId,
-                sort: .new,
+                sort: self.sortType,
                 pageInfo: .init(cursor: cursor, limit: pageSize),
                 savedOnly: savedOnly
             )
@@ -139,7 +139,7 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
         api: ApiClient,
         pageSize: Int,
         userId: Int,
-        sortType: FeedLoaderSort.SortType,
+        sortType: PersonContentSortType,
         savedOnly: Bool,
         prefetchingConfiguration: PrefetchingConfiguration
     ) {
@@ -203,5 +203,16 @@ public class SingleSourceMixedFeedLoader: StandardFeedLoader<PersonContent> {
         postStream.preloadImages(items)
         // note that this currently doesn't do anything because comments don't support prefetching yet [Eric 2024.11.13]
         commentStream.preloadImages(items)
+    }
+
+    /// Changes the post sort type to the specified value and reloads the feed
+    public func changeSortType(to newSortType: PersonContentSortType, forceRefresh: Bool = false) async throws {
+        // don't do anything if sort type not changed
+        guard singleSourceMixedFetcher.sortType != newSortType || forceRefresh else {
+            return
+        }
+        
+        self.singleSourceMixedFetcher.sortType = newSortType
+        try await refresh(clearBeforeRefresh: true)
     }
 }
