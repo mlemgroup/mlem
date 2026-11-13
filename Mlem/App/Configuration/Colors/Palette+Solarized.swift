@@ -51,15 +51,19 @@ extension Palette {
         contrastingLabel: base2,
         accent: blue,
         neutralAccent: base0,
-        colorfulAccents: [
-            .init(label: "Orange", color: orange),
-            .init(label: "Violet", color: violet),
-            .init(label: "Blue", color: blue),
-            .init(label: "Cyan", color: cyan),
-            .init(label: "Magenta", color: magenta),
-            .init(label: "Green", color: green),
-            .init(label: "Cyan", color: cyan)
-        ],
+        nominalColors: .init(
+            orange: orange,
+            pink: magenta,
+            blue: blue,
+            green: green,
+            purple: violet,
+            indigo: violet,
+            mint: green,
+            teal: cyan,
+            yellow: yellow,
+            cyan: cyan,
+            red: red
+        ),
         commentIndentColors: [red, orange, yellow, cyan, blue, violet],
         accountAgeColors: [cyan, blue, violet],
         positive: cyan,

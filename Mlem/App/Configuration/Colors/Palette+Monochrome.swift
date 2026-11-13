@@ -31,7 +31,19 @@ extension Palette {
         contrastingLabel: Color(uiColor: .systemBackground),
         accent: .primary,
         neutralAccent: .gray,
-        colorfulAccents: [.gray],
+        nominalColors: .init(
+            orange: .gray,
+            pink: .gray,
+            blue: .gray,
+            green: .gray,
+            purple: .gray,
+            indigo: .gray,
+            mint: .gray,
+            teal: .gray,
+            yellow: .gray,
+            cyan: .gray,
+            red: .gray
+        ),
         commentIndentColors: [
             Color(uiColor: .systemGray),
             Color(uiColor: .systemGray2),
