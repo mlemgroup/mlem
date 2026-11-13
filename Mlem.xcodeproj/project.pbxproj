@@ -93,6 +93,9 @@
 		032C320A2C34495D00595286 /* SelectTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32092C34495D00595286 /* SelectTextView.swift */; };
 		032C32162C36F65500595286 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32152C36F65500595286 /* ReplyView.swift */; };
 		032C32182C36F70300595286 /* ReplyBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C32172C36F70300595286 /* ReplyBarConfiguration.swift */; };
+		032D5F6C3096778900D9E6CB /* FeedSortPicker+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032D5F6B3096778900D9E6CB /* FeedSortPicker+Logic.swift */; };
+		032D5F6E3096795100D9E6CB /* ToolbarContent+AxisBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032D5F6D3096795100D9E6CB /* ToolbarContent+AxisBehavior.swift */; };
+		032D639130967A4400D9E6CB /* EnvironmentValues+ToolbarVerticalEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032D639030967A4400D9E6CB /* EnvironmentValues+ToolbarVerticalEdge.swift */; };
 		0331715E2CCD6D95002DA370 /* ContentPurgeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */; };
 		0335AE112D8991330094FFD9 /* View+HiddenNavigationTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */; };
 		0336990E3088043D008811BB /* EnvironmentValues+SearchBarMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0336990D3088043D008811BB /* EnvironmentValues+SearchBarMode.swift */; };
@@ -375,6 +378,7 @@
 		03DD69442D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */; };
 		03E0EF432CA73D7A002CB66C /* PostStubResolutionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF422CA73D7A002CB66C /* PostStubResolutionPage.swift */; };
 		03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E0EF442CA74036002CB66C /* CommentPage.swift */; };
+		03E129DC3091383300DF2F8A /* PendingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E129DB3091383300DF2F8A /* PendingImageView.swift */; };
 		03E46ACB2D1216CE002589DB /* PostViewLinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46ACA2D1216CE002589DB /* PostViewLinkType.swift */; };
 		03E46ACD2D121C19002589DB /* HeadlinePostBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46ACC2D121C19002589DB /* HeadlinePostBodyView.swift */; };
 		03E46AD22D130681002589DB /* VotesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E46AD12D130681002589DB /* VotesListView.swift */; };
@@ -695,6 +699,9 @@
 		032C32092C34495D00595286 /* SelectTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTextView.swift; sourceTree = "<group>"; };
 		032C32152C36F65500595286 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
 		032C32172C36F70300595286 /* ReplyBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyBarConfiguration.swift; sourceTree = "<group>"; };
+		032D5F6B3096778900D9E6CB /* FeedSortPicker+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedSortPicker+Logic.swift"; sourceTree = "<group>"; };
+		032D5F6D3096795100D9E6CB /* ToolbarContent+AxisBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarContent+AxisBehavior.swift"; sourceTree = "<group>"; };
+		032D639030967A4400D9E6CB /* EnvironmentValues+ToolbarVerticalEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+ToolbarVerticalEdge.swift"; sourceTree = "<group>"; };
 		0331715D2CCD6D95002DA370 /* ContentPurgeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPurgeEditorView.swift; sourceTree = "<group>"; };
 		0335AE102D8991330094FFD9 /* View+HiddenNavigationTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HiddenNavigationTitle.swift"; sourceTree = "<group>"; };
 		0336990D3088043D008811BB /* EnvironmentValues+SearchBarMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+SearchBarMode.swift"; sourceTree = "<group>"; };
@@ -969,6 +976,7 @@
 		03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewModifier+SampleEnvironment.swift"; sourceTree = "<group>"; };
 		03E0EF422CA73D7A002CB66C /* PostStubResolutionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStubResolutionPage.swift; sourceTree = "<group>"; };
 		03E0EF442CA74036002CB66C /* CommentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPage.swift; sourceTree = "<group>"; };
+		03E129DB3091383300DF2F8A /* PendingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingImageView.swift; sourceTree = "<group>"; };
 		03E46ACA2D1216CE002589DB /* PostViewLinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewLinkType.swift; sourceTree = "<group>"; };
 		03E46ACC2D121C19002589DB /* HeadlinePostBodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlinePostBodyView.swift; sourceTree = "<group>"; };
 		03E46AD12D130681002589DB /* VotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesListView.swift; sourceTree = "<group>"; };
@@ -1441,6 +1449,7 @@
 				033FCAF32C59843E007B7CD1 /* CommunityView.swift */,
 				03049A212C650B2C00FF6889 /* CommunityDetailsView.swift */,
 				0397D4632C676CA8002C6CDC /* FeedSortPicker.swift */,
+				032D5F6B3096778900D9E6CB /* FeedSortPicker+Logic.swift */,
 				036ED67C2D0B006C0018E5EA /* TopSortPicker.swift */,
 				036ED67E2D0B9A520018E5EA /* CommunitySearchSortPicker.swift */,
 				0391E0FD2D05B2DF0040CCA8 /* AdvancedSortView.swift */,
@@ -1888,6 +1897,7 @@
 				03B04FBF2C5FC32300824128 /* SimpleAvatarView.swift */,
 				CDB2EC892BFAEFDF00DBC0EF /* ThumbnailImageView.swift */,
 				CD13CC642C5D2B9D001AF428 /* CircleCroppedImageView.swift */,
+				03E129DB3091383300DF2F8A /* PendingImageView.swift */,
 			);
 			path = Wrappers;
 			sourceTree = "<group>";
@@ -2072,6 +2082,7 @@
 			children = (
 				031DBA672F9A65DC00B4BAE4 /* BackendClient+Extensions.swift */,
 				CD737FB92F771BF100E46411 /* InstanceSummarySoftware+Extensions.swift */,
+				032D639030967A4400D9E6CB /* EnvironmentValues+ToolbarVerticalEdge.swift */,
 				CD03B5BD2F3BA16100AEF786 /* Blockable+Extensions.swift */,
 				CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */,
 				CDA67A9E2D9B329D00E5D17B /* CGPoint+Extensions.swift */,
@@ -2209,6 +2220,7 @@
 		CD4ED8482BF1112A00EFA0A2 /* View Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				032D5F6D3096795100D9E6CB /* ToolbarContent+AxisBehavior.swift */,
 				CD7C4E562F3B92A600ADCBDD /* View+ReloadOnAccountSwitch.swift */,
 				CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */,
 				CDB738282CB8A69D005B11BB /* View+PaletteBorder.swift */,
@@ -2716,6 +2728,7 @@
 				03B25B2F2CC43F8600EB6DF5 /* InstanceSafetyView.swift in Sources */,
 				CDADDB272F49210A00A4214A /* CommunityStubResolutionPage.swift in Sources */,
 				035DF9112EB2AA160021DE8C /* PersonContentGridView+FeedLoaderType.swift in Sources */,
+				032D5F6C3096778900D9E6CB /* FeedSortPicker+Logic.swift in Sources */,
 				03E0EF452CA74036002CB66C /* CommentPage.swift in Sources */,
 				030BCB1B2C3EA5FD0037680F /* InstanceDetailsView.swift in Sources */,
 				0325FF342FD43068006F8394 /* UnsupportedVersionWarningView.swift in Sources */,
@@ -2926,6 +2939,7 @@
 				0381889B2D4412A40073E88D /* SafetyBlurNsfwSettingsView.swift in Sources */,
 				03ECD71B2C811D6700D48BF6 /* PostEditorView+ImageView.swift in Sources */,
 				038C85692D861A2100543F70 /* Comment+Mock.swift in Sources */,
+				03E129DC3091383300DF2F8A /* PendingImageView.swift in Sources */,
 				0397D48C2C6BE9A2002C6CDC /* CollapsibleSection.swift in Sources */,
 				CD737FBA2F771BF600E46411 /* InstanceSummarySoftware+Extensions.swift in Sources */,
 				035DFA232EB3F7240021DE8C /* CommunityAboutView.swift in Sources */,
@@ -2936,6 +2950,7 @@
 				0389DDD32C39E4D40005B808 /* PasteLinkButtonView.swift in Sources */,
 				03AF91EA2C1CE96600E56644 /* Counter.swift in Sources */,
 				03D283FC2D25A3F700A6659B /* VisitHistory+CodedData.swift in Sources */,
+				032D5F6E3096795100D9E6CB /* ToolbarContent+AxisBehavior.swift in Sources */,
 				03B431C22C45BA00001A1EB5 /* MarkdownEditorToolbarView.swift in Sources */,
 				03AD09E82CF88007001EF9F7 /* MoreRepliesButton.swift in Sources */,
 				034B948E2C0937BA00039AF4 /* FancyScrollView.swift in Sources */,
@@ -3073,6 +3088,7 @@
 				03A814292ED1BCA90023E9E8 /* ModlogView+Filters.swift in Sources */,
 				036CC3AF2B8145C30098B6A1 /* AppState.swift in Sources */,
 				033F844D2D18D90900D87A9E /* MessageBubbleView.swift in Sources */,
+				032D639130967A4400D9E6CB /* EnvironmentValues+ToolbarVerticalEdge.swift in Sources */,
 				03134A502BEAD245002662CC /* NavigationLink+NavigationPage.swift in Sources */,
 				03B431BC2C455838001A1EB5 /* LargePostBodyView.swift in Sources */,
 				CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */,
