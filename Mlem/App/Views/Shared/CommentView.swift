@@ -154,7 +154,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         Group {
                             postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) +
                             Text(verbatim: " ") +
-                            postTag(active: votes.myVote != .none, icon: .init(votes.iconName), color: votes.iconColor)
+                            postTag(active: votes.myVote != .none, icon: votes.icon, color: votes.color)
                         }
                         .lineLimit(1)
                         .font(.caption)

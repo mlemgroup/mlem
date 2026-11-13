@@ -40,7 +40,7 @@ struct PostEditorImageUploadWidgetView: View {
                     }
                 }
                 .transition(.opacity)
-            case let .uploading(progress: progress):
+            case let .uploading(_, progress: progress):
                 uploadingProgressView(progress: progress)
                     .transition(.opacity)
             default:
@@ -70,11 +70,12 @@ struct PostEditorImageUploadWidgetView: View {
             cornerRadius: Constants.main.mediumItemCornerRadius
         )
         .overlay(alignment: .topTrailing) {
-            Button("Remove", systemImage: Icons.closeCircleFill) {
+            Button("Remove", icon: .general.close) {
                 onRemove()
                 imageManager = nil
                 imageUrl = nil
             }
+            .symbolVariant(.circle.fill)
             .symbolRenderingMode(.palette)
             .foregroundStyle(.secondary, .thinMaterial)
             .font(.title)
@@ -97,11 +98,12 @@ struct PostEditorImageUploadWidgetView: View {
                 .padding(.leading, 4)
                 .frame(maxWidth: .infinity, alignment: imageManager?.state == nil ? .center : .leading)
                 if imageManager?.state != nil {
-                    Button("Remove", systemImage: Icons.closeCircleFill) {
+                    Button("Remove", icon: .general.close) {
                         imageManager = nil
                     }
                     .font(.title2)
                     .labelStyle(.iconOnly)
+                    .symbolVariant(.circle.fill)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.themedAccent)
                 }
@@ -145,15 +147,40 @@ struct PostEditorImageUploadWidgetView: View {
         HStack {
             Button("Photos", icon: .general.photoLibary) {
                 guard let imageManager else { return }
-                navigation.showPhotosPicker(for: imageManager, api: primaryApi)
+                Task {
+                    do {
+                        try await navigation.showPhotosPicker(for: imageManager, api: primaryApi)
+                        if imageManager.isWaiting {
+                            try await navigation.triggerUpload(for: imageManager, api: primaryApi)
+                        }
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
             Button("Files", icon: .general.chooseFile) {
                 guard let imageManager else { return }
-                navigation.showFilePicker(for: imageManager, api: primaryApi)
+                Task {
+                    do {
+                        try await navigation.showFilePicker(for: imageManager, api: primaryApi)
+                        if imageManager.isWaiting {
+                            try await navigation.triggerUpload(for: imageManager, api: primaryApi)
+                        }
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
             Button("Paste", icon: .general.paste) {
                 guard let imageManager else { return }
-                navigation.uploadImageFromClipboard(for: imageManager, api: primaryApi)
+                Task {
+                    await imageManager.pasteFromClipboard()
+                    do {
+                        try await navigation.triggerUpload(for: imageManager, api: primaryApi)
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
         }
         .font(.subheadline)

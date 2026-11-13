@@ -20,7 +20,7 @@ extension Post {
             return Readout(
                 id: "upvote\(actorId)",
                 label: votes.upvotes.description,
-                icon: isOn ? Icons.upvoteSquareFill : Icons.upvoteSquare,
+                icon: .lemmy.upvoted.representingState(active: isOn),
                 color: isOn && showColor ? .themedUpvote : nil
             )
         }
@@ -33,7 +33,7 @@ extension Post {
             return Readout(
                 id: "downvote\(actorId)",
                 label: votes.downvotes.description,
-                icon: isOn ? Icons.downvoteSquareFill : Icons.downvoteSquare,
+                icon: .lemmy.downvoted.representingState(active: isOn),
                 color: isOn && showColor ? .themedDownvote : nil
             )
         }
