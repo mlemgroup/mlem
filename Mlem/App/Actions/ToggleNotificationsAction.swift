@@ -30,20 +30,20 @@ extension ToggleNotificationsAction {
     static let enableAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Notifications Disabled", icon: .lemmy.notification.representingState(active: false)),
         stateTransitionLabel: .init("Enable Notifications", icon: .lemmy.enableNotifications),
-        color: .themedColorfulAccent(4)
+        color: .themedNominalColor(.purple)
     )
 
     static let disableAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Notifications Enabled", icon: .lemmy.notification.representingState(active: true)),
         stateTransitionLabel: .init("Disable Notifications", icon: .lemmy.disableNotifications),
-        color: .themedColorfulAccent(4),
+        color: .themedNominalColor(.purple),
         prominent: true
     )
 
     static let appearance: ActionAppearance = .init(
         "Toggle Notifications",
         icon: .lemmy.notification,
-        color: .themedColorfulAccent(4)
+        color: .themedNominalColor(.purple)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

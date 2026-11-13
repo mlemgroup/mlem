@@ -34,7 +34,7 @@ struct ImageViewerDismissSettingsView: View {
             description: "Choose how far you have to drag to dismiss the image viewer.",
             icon: .settings.imageViewerDismissSensitivity
         )
-        .gradientTint(.themedColorfulAccent(5))
+        .gradientTint(.themedNominalColor(.indigo))
     }
 
     @ViewBuilder

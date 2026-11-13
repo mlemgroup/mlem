@@ -30,13 +30,13 @@ extension CollapseAction {
     static let collapseAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Expanded", icon: .general.expand),
         stateTransitionLabel: .init("Collapse", icon: .general.collapse),
-        color: .themedColorfulAccent(0)
+        color: .themedNominalColor(.orange)
     )
 
     static let expandAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Collapsed", icon: .general.collapse),
         stateTransitionLabel: .init("Expand", icon: .general.expand),
-        color: .themedColorfulAccent(0),
+        color: .themedNominalColor(.orange),
         prominent: true
     )
 

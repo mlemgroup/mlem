@@ -17,7 +17,7 @@ struct ImageViewerShowControlsSettingsView: View {
                 description: "Choose when the image viewer controls should appear.",
                 icon: .settings.imageViewerControls
             )
-            .gradientTint(.themedColorfulAccent(5))
+            .gradientTint(.themedNominalColor(.indigo))
             Picker("Show Controls", selection: $showControls) {
                 ForEach(ShowImageViewerControls.allCases, id: \.self) { value in
                     Text(value.label)

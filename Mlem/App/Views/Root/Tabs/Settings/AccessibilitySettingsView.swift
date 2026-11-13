@@ -25,7 +25,7 @@ struct AccessibilitySettingsView: View {
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 icon: .settings.accessibility
             )
-            .gradientTint(.themedColorfulAccent(2))
+            .gradientTint(.themedNominalColor(.blue))
             if differentiateWithoutColor {
                 Section {
                     NavigationLink(

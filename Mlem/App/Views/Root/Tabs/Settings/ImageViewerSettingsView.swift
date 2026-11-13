@@ -33,7 +33,7 @@ struct ImageViewerSettingsView: View {
             description: "Customize the image viewer's buttons and gestures.",
             icon: .settings.imageViewer
         )
-        .gradientTint(.themedColorfulAccent(5))
+        .gradientTint(.themedNominalColor(.indigo))
     }
 
     @ViewBuilder

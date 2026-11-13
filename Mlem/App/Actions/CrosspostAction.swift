@@ -30,7 +30,7 @@ extension CrosspostAction {
     static let appearance: ActionAppearance = .init(
         "Crosspost",
         icon: .lemmy.crosspost,
-        color: .themedColorfulAccent(5)
+        color: .themedNominalColor(.indigo)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

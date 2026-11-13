@@ -25,7 +25,7 @@ struct ErrorToastTimeoutSettingsView: View {
                 description: "Customize how long error notifications remain on-screen.",
                 icon: .general.time
             )
-            .gradientTint(.themedColorfulAccent(0))
+            .gradientTint(.themedNominalColor(.orange))
             Section {
                 HStack {
                     Text("Timeout")

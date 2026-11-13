@@ -30,7 +30,7 @@ extension CollapseToTopAction {
     static let appearance: ActionAppearance = .init(
         "Collapse to Top",
         icon: .lemmy.collapseToTop,
-        color: .themedColorfulAccent(0)
+        color: .themedNominalColor(.orange)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

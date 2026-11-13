@@ -97,8 +97,8 @@ public extension ShapeStyle where Self == ThemedColor {
         .init(hashString: "neutralAccent", getColor: \.neutralAccent)
     }
     
-    static func themedColorfulAccent(_ index: Int) -> ThemedColor {
-        .init(hashString: "colorfulAccent\(index)") { $0.colorfulAccents[index % $0.colorfulAccents.count] }
+    static func themedNominalColor(_ color: NominalColor) -> ThemedColor {
+        .init(hashString: "nominalColor.\(color)") { $0.nominalColors.get(color) }
     }
     
     static func themedCommentIndentColor(_ index: Int) -> ThemedColor {
@@ -197,13 +197,13 @@ public extension ShapeStyle where Self == ThemedColor {
         .init(hashString: "fediseerCensure", getColor: \.fediseerCensure)
     }
 
-    static var themedCommentAccent: ThemedColor { themedColorfulAccent(0) }
-    static var themedPostAccent: ThemedColor { themedColorfulAccent(1) }
-    static var themedPersonAccent: ThemedColor { themedColorfulAccent(2) }
-    static var themedInstanceAccent: ThemedColor { themedColorfulAccent(1) }
-    static var themedCommunityAccent: ThemedColor { themedColorfulAccent(3) }
-    static var themedLockAccent: ThemedColor { themedColorfulAccent(0) }
-    static var themedTranslationAccent: ThemedColor { themedColorfulAccent(9) }
+    static var themedCommentAccent: ThemedColor { themedNominalColor(.orange) }
+    static var themedPostAccent: ThemedColor { themedNominalColor(.pink) }
+    static var themedPersonAccent: ThemedColor { themedNominalColor(.blue) }
+    static var themedInstanceAccent: ThemedColor { themedNominalColor(.pink) }
+    static var themedCommunityAccent: ThemedColor { themedNominalColor(.green) }
+    static var themedLockAccent: ThemedColor { themedNominalColor(.orange) }
+    static var themedTranslationAccent: ThemedColor { themedNominalColor(.cyan) }
     
     static var themedDivider: ThemedColor {
         .init(hashString: "divider") {
