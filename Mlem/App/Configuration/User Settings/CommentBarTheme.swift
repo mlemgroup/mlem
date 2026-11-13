@@ -8,20 +8,17 @@
 import Theming
 import SwiftUI
 
-enum CommentBarTheme: Codable, Identifiable, Hashable {
+enum CommentBarTheme: Codable, Identifiable, Hashable, CaseIterable {
     case rainbow
-    case colorfulAccent(Int)
+    case nominal(NominalColor)
     case primaryLabel
     case neutralAccent
     case tertiaryLabelMonochrome
 
     var id: Self { self }
 
-    static func allCases(in palette: Palette) -> [Self] {
-        var cases: [Self] = [.rainbow]
-        cases += (0..<palette.colorfulAccents.count).map { .colorfulAccent($0) }
-        cases += [.primaryLabel, .neutralAccent, .tertiaryLabelMonochrome]
-        return cases
+    static var allCases: [Self] {
+        [.rainbow] + NominalColor.allCases.map { .nominal($0) } + [.primaryLabel, .neutralAccent, .tertiaryLabelMonochrome]
     }
 
     func label(in palette: Palette) -> LocalizedStringResource {
@@ -30,7 +27,7 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         case .primaryLabel: "Primary"
         case .neutralAccent: "Neutral"
         case .tertiaryLabelMonochrome: "Monochrome"
-        case let .colorfulAccent(value): palette.colorfulAccents[value % palette.colorfulAccents.count].label
+        case .nominal: "Nominal"
         }
     }
 
@@ -38,21 +35,14 @@ enum CommentBarTheme: Codable, Identifiable, Hashable {
         switch self {
         case .rainbow:
             palette.commentIndentColors
-        case let .colorfulAccent(index):
-            palette.colorfulAccents[index % palette.colorfulAccents.count].color.gradientArray()
+        case let .nominal(color):
+            palette.nominalColors.get(color).gradientArray()
         case .primaryLabel:
             palette.label.primary.gradientArray()
         case .neutralAccent:
             palette.neutralAccent.gradientArray()
         case .tertiaryLabelMonochrome:
             [palette.label.tertiary]
-        }
-    }
-
-    func clamped(for palette: Palette) -> CommentBarTheme {
-        switch self {
-        case let .colorfulAccent(value): .colorfulAccent(value % palette.colorfulAccents.count)
-        default: self
         }
     }
 }

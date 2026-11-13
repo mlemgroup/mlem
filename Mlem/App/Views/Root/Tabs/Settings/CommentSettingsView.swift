@@ -41,7 +41,7 @@ struct CommentSettingsView: View {
                         Text("Bars")
                             .frame(maxWidth: .infinity, alignment: .leading)
                         if showCommentBars {
-                            CommentBarThemeDotsView(colors: commentBarTheme.clamped(for: palette).colors(in: palette))
+                            CommentBarThemeDotsView(colors: commentBarTheme.colors(in: palette))
                                 .padding(.trailing, 5)
                         } else {
                             Text("Off")

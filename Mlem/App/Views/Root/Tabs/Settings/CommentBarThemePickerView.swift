@@ -14,10 +14,10 @@ struct CommentBarThemePickerView: View {
 
     var body: some View {
         Picker("Comment Bar Colors", selection: .init(
-            get: { commentBarTheme.clamped(for: palette) },
+            get: { commentBarTheme },
             set: { commentBarTheme = $0 }
         )) {
-            ForEach(CommentBarTheme.allCases(in: palette)) { value in
+            ForEach(CommentBarTheme.allCases) { value in
                 HStack(spacing: 16) {
                     CommentBarThemeDotsView(colors: value.colors(in: palette))
                     Text(value.label(in: palette))

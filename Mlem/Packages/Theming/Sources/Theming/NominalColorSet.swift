@@ -46,6 +46,7 @@ public struct NominalColorSet {
         self.red = red
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     public func get(_ type: NominalColor) -> Color {
         switch type {
         case .orange: orange
