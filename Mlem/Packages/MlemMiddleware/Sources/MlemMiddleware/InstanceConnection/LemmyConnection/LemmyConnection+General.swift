@@ -9,8 +9,23 @@ import Foundation
 
 internal extension LemmyConnection {
     func getVersionFallback() async throws -> SiteVersion {
-        let response = try await performingForEndpoint { endpoint in
-            LemmyFallbackGetVersionRequest(endpoint: endpoint)
+        // Inconveniently, PieFed offers the `api/v3/site` endpoint in an attempt to look like a Lemmy instance.
+        // We need to check that this *isn't* a PieFed instance, which we can do by making a second request.
+        // The type of request doesn't matter - we're using `UnreadCountRequest` here.
+        let response = try await processingForEndpoint { endpoint in
+            switch endpoint {
+            case .v3:
+                async let site = await self.perform(LemmyFallbackGetVersionRequest(endpoint: .v3), endpoint: .v3)
+                async let other = await self.perform(LemmyUnreadCountRequest(), endpoint: .v3)
+                do {
+                    _ = try await other
+                } catch ApiClientError.notLoggedIn {
+                    // no-op
+                }
+                return try await site
+            case .v4:
+                return try await self.perform(LemmyFallbackGetVersionRequest(endpoint: .v4), endpoint: .v4)
+            }
         }
         return response.version
     }
