@@ -17,7 +17,7 @@ public extension Comment2Snapshot {
 
         try self.init(
             comment: .init(from: comment.comment),
-            creator: .init(from: comment.creator),
+            creator: .init(from: comment.creator, noteProvided: true),
             post: .init(from: comment.post),
             community: .init(from: comment.community),
             commentCount: comment.counts.childCount,
@@ -38,7 +38,7 @@ public extension Comment2Snapshot {
 
         try self.init(
             comment: .init(from: report.comment),
-            creator: .init(from: report.commentCreator),
+            creator: .init(from: report.commentCreator, noteProvided: true),
             post: .init(from: report.post),
             community: .init(from: report.community),
             commentCount: report.counts.childCount,
@@ -59,7 +59,7 @@ public extension Comment2Snapshot {
 
         try self.init(
             comment: .init(from: reply.comment),
-            creator: .init(from: reply.creator),
+            creator: .init(from: reply.creator, noteProvided: true),
             post: .init(from: reply.post),
             community: .init(from: reply.community),
             commentCount: reply.counts.childCount,

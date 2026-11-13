@@ -24,7 +24,7 @@ public extension Instance3Snapshot {
         var administrators: [Person2Snapshot] = []
         administrators.reserveCapacity(pieFed.admins.count)
         for admin in pieFed.admins {
-            try administrators.append(.init(from: admin))
+            try administrators.append(.init(from: admin, noteProvided: false))
         }
 
         try self.init(
