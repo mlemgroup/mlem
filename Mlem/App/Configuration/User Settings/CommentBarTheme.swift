@@ -27,7 +27,7 @@ enum CommentBarTheme: Codable, Identifiable, Hashable, CaseIterable {
         case .primaryLabel: "Primary"
         case .neutralAccent: "Neutral"
         case .tertiaryLabelMonochrome: "Monochrome"
-        case .nominal: "Nominal"
+        case let .nominal(color): color.label
         }
     }
 
