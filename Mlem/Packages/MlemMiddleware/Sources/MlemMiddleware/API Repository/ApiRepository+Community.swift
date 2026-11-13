@@ -60,7 +60,7 @@ extension ApiRepository {
         }
     }
     
-    func blockCommunity(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Community2Snapshot {
+    func blockCommunity(id: Int, block: Bool) async throws -> Community2Snapshot {
         try await performingForConnection { connection in
             try await connection.blockCommunity(id: id, block: block)
         }

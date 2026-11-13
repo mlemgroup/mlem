@@ -209,12 +209,11 @@ extension NavigationPage {
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):
             BypassProxyWarningSheet(callback: callback)
-        case let .confirmUpload(imageData: imageData, fileType: fileType, imageManager: imageManager, uploadApi: uploadApi):
+        case let .confirmUpload(imageManager: imageManager, uploadApi: uploadApi, callback: callback):
             UploadConfirmationView(
-                imageData: imageData,
-                fileType: fileType,
                 imageManager: imageManager,
-                uploadApi: uploadApi
+                uploadApi: uploadApi,
+                callback: callback
             )
         case let .rulesList(model, callback):
             RulesPickerView(model: model, callback: callback)

@@ -575,7 +575,7 @@ public extension Person {
             isBot: isBot,
             instanceBan: instanceBan,
             deleted: deleted,
-            allPropertiesPresent: true
+            allPropertiesPresent: false
         )
     }
 }

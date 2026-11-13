@@ -158,73 +158,33 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        model?.contentPickerTracker.photosPickerCallback = { photo in
-            Task {
-                do {
-                    guard let data = try await photo.loadTransferable(type: Data.self) else {
-                        throw ApiClientError.unsuccessful
-                    }
-                    if Settings.get(\.behavior_confirmImageUploads) {
-                        self.openSheet(.confirmUpload(
-                            imageData: data,
-                            fileType: photo.supportedContentTypes.first,
-                            imageManager: imageUploadManager,
-                            uploadApi: api
-                        ))
-                    } else {
-                        try await imageUploadManager.upload(
-                            data: data,
-                            fileType: photo.supportedContentTypes.first,
-                            api: api
-                        )
-                    }
-                } catch {
-                    handleError(error)
-                }
-            }
+    func showPhotosPicker(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws {
+        guard let model else { return }
+        let photo = await withCheckedContinuation { continuation in
+            model.contentPickerTracker.photosPickerCallback = { continuation.resume(returning: $0) }
         }
+        guard let photo else { return }
+        try await imageUploadManager.choosePhoto(photo)
     }
     
     @MainActor
-    func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        model?.contentPickerTracker.showingFilePicker = true
-        model?.contentPickerTracker.filePickerContentTypes = [.image]
-        model?.contentPickerTracker.filePickerCallback = { url in
-            Task {
-                do {
-                    guard url.startAccessingSecurityScopedResource() else {
-                        throw MlemError.cannotAccessSecurityScopedResource
-                    }
-                    let data = try Data(contentsOf: url)
-                    url.stopAccessingSecurityScopedResource()
-                    if Settings.get(\.behavior_confirmImageUploads) {
-                        self.openSheet(.confirmUpload(
-                            imageData: data,
-                            fileType: .init(filenameExtension: url.pathExtension),
-                            imageManager: imageUploadManager,
-                            uploadApi: api
-                        ))
-                    } else {
-                        try await imageUploadManager.upload(
-                            data: data,
-                            fileType: .init(filenameExtension: url.pathExtension),
-                            api: api
-                        )
-                    }
-                } catch {
-                    url.stopAccessingSecurityScopedResource()
-                    handleError(error)
-                }
-            }
+    func showFilePicker(for imageUploadManager: ImageUploadManager, api: ApiClient) async throws {
+        guard let model else { return }
+        let url = await withCheckedContinuation { continuation in
+            model.contentPickerTracker.showingFilePicker = true
+            model.contentPickerTracker.filePickerContentTypes = [.image]
+            model.contentPickerTracker.filePickerCallback = { continuation.resume(returning: $0) }
         }
+        guard let url else { return }
+        try await imageUploadManager.chooseFile(localUrl: url)
     }
-    
+
     @MainActor
     func showFilePicker(types: [UTType], callback: @escaping (Data) async -> Void) {
         model?.contentPickerTracker.showingFilePicker = true
         model?.contentPickerTracker.filePickerContentTypes = types
         model?.contentPickerTracker.filePickerCallback = { url in
+            guard let url else { return }
             Task {
                 do {
                     guard url.startAccessingSecurityScopedResource() else {
@@ -242,26 +202,22 @@ class NavigationLayer: Identifiable {
     }
     
     @MainActor
-    func uploadImageFromClipboard(for imageUploadManager: ImageUploadManager, api: ApiClient) {
-        if UIPasteboard.general.hasImages, let content = UIPasteboard.general.image {
-            if let data = content.pngData() {
-                if Settings.get(\.behavior_confirmImageUploads) {
-                    openSheet(.confirmUpload(
-                        imageData: data,
-                        fileType: .png,
-                        imageManager: imageUploadManager,
-                        uploadApi: api
-                    ))
-                } else {
-                    Task {
-                        do {
-                            try await imageUploadManager.upload(data: data, fileType: .png, api: api)
-                        } catch {
-                            handleError(error)
-                        }
-                    }
-                }
+    @discardableResult
+    func triggerUpload(
+        for imageUploadManager: ImageUploadManager,
+        api: ApiClient
+    ) async throws -> UploadConfirmationView.Outcome {
+        if Settings.get(\.behavior_confirmImageUploads) {
+            return await withCheckedContinuation { continuation in
+                openSheet(.confirmUpload(
+                    imageManager: imageUploadManager,
+                    uploadApi: api,
+                    callback: { continuation.resume(returning: $0) }
+                ))
             }
+        } else {
+            try await imageUploadManager.upload(api: api)
+            return .uploaded
         }
     }
 

@@ -25,29 +25,23 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func approveRegistrationApplication(
-        id: Int,
-        semaphore: UInt? = nil
-    ) async throws -> RegistrationApplication {
+    func approveRegistrationApplication(id: Int) async throws -> RegistrationApplication {
         let snapshot = try await repository.approveRegistrationApplication(id: id)
         return await caches.registrationApplication.getModel(
             api: self,
-            from: snapshot,
-            semaphore: semaphore
+            from: snapshot
         )
     }
     
     @discardableResult
     func denyRegistrationApplication(
         id: Int,
-        reason: String?,
-        semaphore: UInt? = nil
+        reason: String?
     ) async throws -> RegistrationApplication {
         let snapshot = try await repository.denyRegistrationApplication(id: id, reason: reason)
         return await caches.registrationApplication.getModel(
             api: self,
-            from: snapshot,
-            semaphore: semaphore
+            from: snapshot
         )
     }
 }

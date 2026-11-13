@@ -63,12 +63,11 @@ public extension ApiClient {
     }
     
     @discardableResult
-    func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person {
+    func blockPerson(id: Int, block: Bool) async throws -> Person {
         let snapshot = try await repository.blockPerson(id: id, block: block)
         return await caches.person.getModel(
             api: self,
-            from: .person2(snapshot),
-            semaphore: semaphore
+            from: .person2(snapshot)
         )
     }
     

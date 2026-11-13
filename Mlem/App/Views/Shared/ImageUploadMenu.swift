@@ -13,26 +13,64 @@ struct ImageUploadMenu<Label: View>: View {
 
     let imageManager: ImageUploadManager
     let imageUploadApi: ApiClient
+    let triggerUpload: Bool
     @ViewBuilder let label: () -> Label
     
-    init(imageManager: ImageUploadManager, imageUploadApi: ApiClient, @ViewBuilder label: @escaping () -> Label) {
+    init(
+        imageManager: ImageUploadManager,
+        imageUploadApi: ApiClient,
+        triggerUpload: Bool,
+        @ViewBuilder label: @escaping () -> Label
+    ) {
         self.imageManager = imageManager
         self.imageUploadApi = imageUploadApi
+        self.triggerUpload = triggerUpload
         self.label = label
     }
     
     var body: some View {
         Menu(content: {
             Button("Photo Library", icon: .general.chooseImage) {
-                navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
+                Task {
+                    do {
+                        try await navigation.showPhotosPicker(for: imageManager, api: imageUploadApi)
+                        if imageManager.isWaiting {
+                            try await upload()
+                        }
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
             Button("Choose File", icon: .general.chooseFile) {
-                navigation.showFilePicker(for: imageManager, api: imageUploadApi)
+                Task {
+                    do {
+                        try await navigation.showFilePicker(for: imageManager, api: imageUploadApi)
+                        if imageManager.isWaiting {
+                            try await upload()
+                        }
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
             Button("Paste", icon: .general.paste) {
-                navigation.uploadImageFromClipboard(for: imageManager, api: imageUploadApi)
+                Task {
+                    await imageManager.pasteFromClipboard()
+                    do {
+                        try await upload()
+                    } catch {
+                        handleError(error)
+                    }
+                }
             }
         }, label: label)
             .disabled(imageManager.state != .idle)
+    }
+
+    func upload() async throws {
+        if triggerUpload {
+            try await navigation.triggerUpload(for: imageManager, api: imageUploadApi)
+        }
     }
 }
