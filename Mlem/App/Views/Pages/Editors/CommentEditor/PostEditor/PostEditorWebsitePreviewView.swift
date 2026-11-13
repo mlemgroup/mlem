@@ -134,7 +134,11 @@ struct PostEditorWebsitePreviewView: View {
                 Text("No image")
                     .foregroundStyle(.themedAccent.opacity(0.5))
                     .fontWeight(.semibold)
-                ImageUploadMenu(imageManager: imageManager, imageUploadApi: primaryApi) {
+                ImageUploadMenu(
+                    imageManager: imageManager,
+                    imageUploadApi: primaryApi,
+                    triggerUpload: true
+                ) {
                     Text("Upload")
                 }
                 .font(.footnote)
@@ -196,7 +200,11 @@ struct PostEditorWebsitePreviewView: View {
             .foregroundStyle(.secondary)
             .padding(5)
         } else {
-            ImageUploadMenu(imageManager: imageManager, imageUploadApi: primaryApi) {
+            ImageUploadMenu(
+                imageManager: imageManager,
+                imageUploadApi: primaryApi,
+                triggerUpload: true
+            ) {
                 Label("Change Thumbnail", icon: .general.chooseImage)
             }
             .buttonStyle(OverlayButtonStyle())
