@@ -25,9 +25,7 @@ class ConnectionMultiplexer<Candidate> {
     }
     
     @MainActor
-    func perform<T>(
-        _ callback: @escaping (Candidate) async throws -> T
-    ) async throws -> T {
+    func perform<T>(_ callback: @escaping (Candidate) async throws -> T) async throws -> T {
         // Iterate through all possible candidates, and call the callback on each in turn.
         // As soon as one of the calls succeeds, return the result and cancel the other ongoing calls.
         // Cache the `Candidate` that succeeded in the `self.selectedCandidate` property, and use that

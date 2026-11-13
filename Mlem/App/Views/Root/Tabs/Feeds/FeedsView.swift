@@ -57,7 +57,10 @@ struct FeedsView: View {
             .toolbar {
                 // SwiftUI complains if both this and the menu are in the same toolbar
                 if let postFeedLoader {
-                    FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
+                    ToolbarItem(placement: .topBarTrailing) {
+                        FeedSortPicker(feedLoader: postFeedLoader, showTopTimescaleInIcon: true)
+                    }
+                    .axisBehavior_(.verticalPreferred)
                 }
             }
             .conditionalNavigationTitle((postFeedLoader?.feedType.label ?? nil).map(String.init(localized:)) ?? "")
