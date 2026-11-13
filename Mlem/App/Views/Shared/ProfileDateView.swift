@@ -25,9 +25,9 @@ struct ProfileDateView: View {
     
     var color: ThemedColor {
         if profilable.createdRecently {
-            .themedColorfulAccent(3)
+            .themedNominalColor(.green)
         } else if profilable.isCakeDay {
-            .themedColorfulAccent(1)
+            .themedNominalColor(.pink)
         } else {
             .themedSecondary
         }

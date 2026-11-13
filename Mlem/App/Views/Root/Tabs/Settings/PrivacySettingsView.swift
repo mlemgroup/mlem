@@ -20,7 +20,7 @@ struct PrivacySettingsView: View {
                 description: "Manage how Mlem interacts with Lemmy instances and other websites.",
                 icon: .settings.privacy
             )
-            .gradientTint(.themedColorfulAccent(2))
+            .gradientTint(.themedNominalColor(.blue))
             Section {
                 Toggle("Confirm Image Uploads", icon: .settings.confirmImageUploads, isOn: $confirmImageUploads)
             } footer: {

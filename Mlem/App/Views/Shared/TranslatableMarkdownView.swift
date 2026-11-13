@@ -52,7 +52,7 @@ private struct GlowFlashModifier: ViewModifier {
             .phaseAnimator([false, true, false], trigger: trigger) { view, phase in
                 view
                     .overlay {
-                        ThemedColor.themedColorfulAccent(9)
+                        ThemedColor.themedNominalColor(.cyan)
                             .resolve(with: palette)
                             .opacity(phase ? 0.7 : 0)
                             .blendMode(.sourceAtop)

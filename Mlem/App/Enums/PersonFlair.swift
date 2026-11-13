@@ -59,11 +59,11 @@ enum PersonFlair: Hashable {
         switch self {
         case .admin: .themedAdministration
         case .moderator: .themedModeration
-        case .op: .themedColorfulAccent(0)
-        case .bot: .themedColorfulAccent(5)
+        case .op: .themedNominalColor(.orange)
+        case .bot: .themedNominalColor(.indigo)
         case .bannedFromInstance, .bannedFromCommunity: .themedNegative
-        case .developer: .themedColorfulAccent(4)
-        case .cakeDay: .themedColorfulAccent(1)
+        case .developer: .themedNominalColor(.purple)
+        case .cakeDay: .themedNominalColor(.pink)
         case let .accountAge(date): AccountAgeBracket(date: date).color
         }
     }

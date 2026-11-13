@@ -51,9 +51,9 @@ extension ModlogEntryContent {
         case .purgePost, .purgeComment, .purgeCommunity, .purgePerson:
             .themedNegative
         case .hideCommunity:
-            .themedColorfulAccent(4)
+            .themedNominalColor(.purple)
         case .transferCommunityOwnership:
-            .themedColorfulAccent(8)
+            .themedNominalColor(.yellow)
         case let .updatePersonModeratorStatus(_, _, appointed):
             appointed ? .themedModeration : .themedNegative
         case let .updatePersonAdminStatus(_, appointed):
