@@ -32,6 +32,10 @@ extension ContentView {
         guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else { return }
         let session = queryItems.first { $0.name == "session" }?.value
         let handle = queryItems.first { $0.name == "actor" }?.value
+
+        // "Canvas" doesn't really need to be localized.
+        let serviceName = queryItems.first { $0.name == "name" }?.value ?? "Canvas"
+
         guard let session,
             let handle,
             let personHandle = try? PersonHandle(string: handle, allowMissingPrefix: true) else { return }
@@ -47,7 +51,8 @@ extension ContentView {
                 session: session,
                 personHandle: personHandle,
                 openedFromInAppBrowser: true,
-                defaultAccount: defaultAccount
+                defaultAccount: defaultAccount,
+                serviceName: serviceName
             )
             .environment(appState)
             .environment(mediaTracker)
@@ -59,7 +64,8 @@ extension ContentView {
             navigationModel.openSheet(.authHandoff(
                 session: session,
                 personHandle: personHandle,
-                defaultAccount: defaultAccount
+                defaultAccount: defaultAccount,
+                serviceName: serviceName
             ))
         }
     }
