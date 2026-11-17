@@ -51,7 +51,7 @@ When your code is approved, it can be merged into the `dev` branch by a member o
 
 ### Policy
 
-Mlem does not place explicit restrictions on the manner in which contributions are generated. We do, however, enforce strong standards of quality and intentionality. Regardless of how a pull request is written, it must adhere to the following requirements:
+Mlem doesn't restrict how contributions are made. We do, however, enforce high standards of quality and intentionality. Regardless of how a pull request is written, it must adhere to the following requirements:
 
 - Every line is deliberate; every line can be justified. Pull requests should be clean, carefully engineered, and free of the excessive verbosity typical of unfiltered AI output. We expect any contributor to be able to explain, in their own words, why their contribution is structured as it is and what the intent behind each line is. New contributors, or contributors unfamiliar with the technologies we use, should not feel intimidated by this requirement! If you want to contribute but are unsure how to proceed, please reach out on the dev Matrix for guidance--we are always happy to help, and will not review beginner mistakes unkindly.
 - All creative assets (app icons, design documents, themes, custom glyphs, etc.) must be fully human-generated.
