@@ -163,14 +163,18 @@ extension PostEditorView {
         }
     }
     
-    func saveFocusState() {
+    func focusedField() -> Field? {
         if contentUiTextView.isFirstResponder {
-            lastFocusedField = .content
+             .content
         } else if titleUiTextView.isFirstResponder {
-            lastFocusedField = .title
+             .title
         } else {
-            lastFocusedField = nil
+             nil
         }
+    }
+
+    func saveFocusState() {
+        lastFocusedField = focusedField()
     }
     
     func checkSlurFilter(text: String, slurMatches: Binding<[String: String]>, pendingTask: Binding<Task<Void, Never>?>) {

@@ -23,7 +23,6 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.imageViewer_tapToResetZoom) var tapToResetZoom
-    @Setting(\.imageViewer_showControls) var showControls
     
     @Binding var scale: CGFloat
     @Binding var offset: CGSize
@@ -52,7 +51,7 @@ class ZoomRecognizerCoordinator: NSObject, UIGestureRecognizerDelegate {
     var customPanStartLocation: CGPoint?
     
     var tapShouldResetZoom: Bool {
-        scale != 1 && (tapToResetZoom || showControls == .never)
+        scale != 1 && tapToResetZoom
     }
     
     /// Computes the maximum allowed offsets for a given scale.

@@ -38,8 +38,8 @@ extension ZoomRecognizerCoordinator {
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let doubleTap = gestureRecognizer as? UITapGestureRecognizer, doubleTap.numberOfTapsRequired == 2 {
-            return !tapShouldResetZoom
+        if let doubleTap = gestureRecognizer as? DoubleTapGestureRecognizer {
+            return doubleTap.isBlocked != true
         } else if gestureRecognizer is UIPinchGestureRecognizer || gestureRecognizer is UITapGestureRecognizer {
             return true
         } else if gestureRecognizer is UIPanGestureRecognizer {

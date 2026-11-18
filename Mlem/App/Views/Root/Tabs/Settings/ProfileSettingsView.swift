@@ -103,6 +103,7 @@ struct ProfileSettingsView: View {
         .navigationTitle(submittingState == .uploadingImages ? "Uploading Images..." : "My Profile")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .markdownToolbarKeyboardInset([bioTextView])
         .navigationBarBackButtonHidden(showToolbarOptions)
         .interactiveDismissDisabled(showToolbarOptions)
         .toolbar {

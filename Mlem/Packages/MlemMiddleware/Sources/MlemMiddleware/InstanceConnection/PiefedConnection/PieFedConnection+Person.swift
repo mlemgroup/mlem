@@ -181,7 +181,9 @@ public extension PieFedConnection {
     internal func rawGetMyPerson() async throws -> (PieFedGetSiteResponse, PieFedLemmyCompatibleSiteResponse) {
         async let pieFedResponse = await perform(PieFedGetSiteRequest())
         async let lemmyResponse = await perform(PieFedLemmyCompatibleGetSiteRequest())
-        return try await (pieFedResponse, lemmyResponse)
+        let pieFed = try await pieFedResponse
+        let lemmy = try await lemmyResponse
+        return (pieFed, lemmy)
     }
     
     // Calls rawGetMyPerson, but if there's already a task running in the `contextDataManager` uses that instead.
