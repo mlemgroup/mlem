@@ -115,6 +115,7 @@ struct ExpandedPostView<Content: View>: View {
                 }
             }.value
         }
+        .environment(\.communityContext, post.community.value)
     }
     
     @ViewBuilder
