@@ -27,7 +27,9 @@ public extension Post {
     func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch sortType {
         case .new:
-            return .new(created)
+            .new(created)
+        case .top:
+            .top(score: self.votes.value?.total ?? 0)
         }
     }
 }

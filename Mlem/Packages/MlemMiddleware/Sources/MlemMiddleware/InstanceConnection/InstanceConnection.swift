@@ -265,7 +265,7 @@ internal protocol InstanceConnection {
     
     func getContent(
         authorId id: Int,
-        sort: PostSortType,
+        sort: PersonContentSortType,
         pageInfo: PageInfo,
         savedOnly: Bool?,
         communityId: Int?
