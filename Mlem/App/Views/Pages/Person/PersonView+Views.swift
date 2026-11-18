@@ -48,7 +48,7 @@ extension PersonView {
                 if person.isMlemDeveloper {
                     Label("Mlem Developer", icon: .lemmy.developerFlair)
                         .symbolVariant(.fill)
-                        .tint(.themedColorfulAccent(4))
+                        .tint(.themedNominalColor(.purple))
                 }
                 if person.isAdmin.value ?? false {
                     Label("\(person.host) Administrator", icon: .lemmy.administration)
@@ -57,7 +57,7 @@ extension PersonView {
                 }
                 if person.isBot {
                     Label("Bot Account", icon: .lemmy.botFlair)
-                        .tint(.themedColorfulAccent(5))
+                        .tint(.themedNominalColor(.indigo))
                 }
                 if let note = person.note {
                     Label(note, icon: .lemmy.note)

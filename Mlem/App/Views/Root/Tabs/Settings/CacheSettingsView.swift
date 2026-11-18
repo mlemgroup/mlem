@@ -18,7 +18,7 @@ struct CacheSettingsView: View {
                 description: "Images are cached on your device for fast reuse. The maximum cache size is around \(Self.maximumCacheSize).",
                 icon: .settings.cache
             )
-            .gradientTint(.themedColorfulAccent(5))
+            .gradientTint(.themedNominalColor(.indigo))
 
             Section {
                 HStack {

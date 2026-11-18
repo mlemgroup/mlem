@@ -30,7 +30,7 @@ extension CollapseParentAction {
     static let appearance: ActionAppearance = .init(
         "Collapse Parent",
         icon: .lemmy.collapseParent,
-        color: .themedColorfulAccent(0)
+        color: .themedNominalColor(.orange)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

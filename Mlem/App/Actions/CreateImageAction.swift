@@ -36,7 +36,7 @@ extension CreateImageAction {
     static let appearance: ActionAppearance = .init(
         "Create Image",
         icon: .general.createImage,
-        color: .themedColorfulAccent(5)
+        color: .themedNominalColor(.indigo)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

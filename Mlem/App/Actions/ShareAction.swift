@@ -30,7 +30,7 @@ extension ShareAction {
     static let appearance: ActionAppearance = .init(
         "Share...",
         icon: .general.share,
-        color: .themedColorfulAccent(3)
+        color: .themedNominalColor(.green)
     )
 }
 
