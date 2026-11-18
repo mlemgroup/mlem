@@ -10,6 +10,12 @@
             "value" : "Open in Mlem"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en Mlem"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35,6 +41,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2.5.1"
+          }
+        },
+        "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "2.5.1"
