@@ -1,4 +1,4 @@
-name: CI - Build - Xcode 26
+name: CI - Build - Xcode 27
 
 on:
     push:
@@ -12,7 +12,7 @@ on:
 jobs:
   Build:
     permissions: write-all
-    runs-on: macos-26
+    runs-on: xcode-27
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -22,6 +22,6 @@ jobs:
     - name: Build
       uses: "./.github/actions/ci_xcodebuild"
       with:
-        xcode_version: "26.4"
-        xcodebuild_destination: "platform=iOS Simulator,name=iPhone 17,OS=26.4.1"
+        xcode_version: "27.1"
+        xcodebuild_destination: "platform=iOS Simulator,name=iPhone Duo,OS=27.1"
         xcodebuild_action: "build"

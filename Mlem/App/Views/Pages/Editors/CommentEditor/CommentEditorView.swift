@@ -210,6 +210,7 @@ struct CommentEditorView: View {
             .padding(.bottom, Constants.main.standardSpacing)
         }
         .scrollBounceBehavior(.basedOnSize)
+        .markdownToolbarKeyboardInset([textView])
         .task { await inferContextFromCommentToEdit() }
     }
     

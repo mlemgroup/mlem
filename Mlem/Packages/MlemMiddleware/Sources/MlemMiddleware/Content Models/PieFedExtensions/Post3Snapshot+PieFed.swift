@@ -16,7 +16,7 @@ public extension Post3Snapshot {
 
         try self.init(
             post: .init(from: post.postView),
-            community: .init(from: post.communityView, allPropertiesPresent: false),
+            community: .init(from: post.communityView),
             crossPosts: crossPosts
         )
     }

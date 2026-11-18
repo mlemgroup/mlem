@@ -67,11 +67,13 @@ struct ZoomRecognizer: UIViewRepresentable {
         panGesture.delegate = context.coordinator
         ret.addGestureRecognizer(panGesture)
         
-        let doubleTap = UITapGestureRecognizer(
+        let doubleTap: DoubleTapGestureRecognizer = .init(
             target: context.coordinator,
-            action: #selector(Coordinator.handleDoubleTap(gesture:))
+            action: #selector(Coordinator.handleDoubleTap(gesture:)),
+            shouldBlock: { [weak coordinator = context.coordinator] in
+                coordinator?.tapShouldResetZoom ?? false
+            }
         )
-        doubleTap.numberOfTapsRequired = 2
         doubleTap.delegate = context.coordinator
         ret.addGestureRecognizer(doubleTap)
         

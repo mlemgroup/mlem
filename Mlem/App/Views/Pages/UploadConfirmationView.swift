@@ -9,30 +9,30 @@ import Haptics
 import MlemMiddleware
 import PhotosUI
 import SwiftUI
+import Theming
 
 struct UploadConfirmationView: View {
+    enum Outcome {
+        case uploaded, cancelled
+    }
+    
     @Environment(HapticManager.self) var hapticManager
     @Environment(\.palette) var palette
     @Environment(\.dismiss) var dismiss
     
     @Setting(\.behavior_confirmImageUploads) var confirmImageUploads
     
-    var imageData: Data
-    var fileType: UTType?
     var imageManager: ImageUploadManager
     var uploadApi: ApiClient
+    var callback: (Outcome) -> Void
     
     @State var isUploading: Bool = false
+    @State var outcome: Outcome = .cancelled
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                if let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
-                }
+                imageView
                 Spacer()
                     .frame(height: 100)
             }
@@ -46,63 +46,77 @@ struct UploadConfirmationView: View {
                 .frame(height: 100)
                 .allowsHitTesting(false)
             }
-            VStack(spacing: 0) {
-                VStack(spacing: 16) {
-                    if isUploading {
-                        VStack {
-                            Text("Uploading...")
-                            ProgressView()
-                        }
-                        .font(.title3)
-                        .padding(.vertical, 100)
-                    } else {
-                        Text("Upload this image to \(uploadApi.host)?")
-                            .font(.largeTitle)
-                            .multilineTextAlignment(.center)
-                        Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
-                            .controlSize(.mini)
-                            .padding(.horizontal)
-                        Button {
-                            Task { @MainActor in
-                                isUploading = true
-                                do {
-                                    try await imageManager.upload(
-                                        data: imageData,
-                                        fileType: fileType,
-                                        api: uploadApi
-                                    )
-                                    hapticManager.play(haptic: .success, tier: .low)
-                                    dismiss()
-                                } catch {
-                                    handleError(error)
-                                }
-                                isUploading = false
-                            }
-                        } label: {
-                            Text("Upload")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .controlSize(.large)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .buttonStyle(.borderedProminent)
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .controlSize(.large)
-                        .buttonStyle(.bordered)
-                    }
-                }
-                .padding(.top, 15)
-                .padding(.bottom, 20)
-                .background(.themedBackground)
-            }
-            .interactiveDismissDisabled()
-            .animation(.easeOut(duration: 0.1), value: isUploading)
+            footerView
         }
         .padding()
         .presentationBackground(.themedBackground)
+        .onDisappear { callback(outcome) }
+    }
+
+    @ViewBuilder
+    var imageView: some View {
+        switch imageManager.state {
+        case let .waiting(image), let .uploading(image, progress: _):
+            PendingImageView(data: image.data, contentType: image.type)
+                .clipShape(.rect(cornerRadius: Constants.main.largeItemCornerRadius))
+        default:
+            Text(verbatim: "Error: not in 'waiting' state")
+        }
+    }
+
+    @ViewBuilder
+    var footerView: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 16) {
+                if isUploading {
+                    VStack {
+                        Text("Uploading...")
+                        ProgressView()
+                    }
+                    .font(.title3)
+                    .padding(.vertical, 100)
+                } else {
+                    Text("Upload this image to \(uploadApi.host)?")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                    Toggle("Ask to confirm every time", isOn: $confirmImageUploads)
+                        .controlSize(.mini)
+                        .padding(.horizontal)
+                    Button {
+                        Task { @MainActor in
+                            isUploading = true
+                            do {
+                                try await imageManager.upload(api: uploadApi)
+                                hapticManager.play(haptic: .success, tier: .low)
+                                outcome = .uploaded
+                                dismiss()
+                            } catch {
+                                handleError(error)
+                            }
+                            isUploading = false
+                        }
+                    } label: {
+                        Text("Upload")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .buttonStyle(.borderedProminent)
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding(.top, 15)
+            .padding(.bottom, 20)
+            .background(.themedBackground)
+        }
+        .interactiveDismissDisabled()
+        .animation(.easeOut(duration: 0.1), value: isUploading)
     }
 }

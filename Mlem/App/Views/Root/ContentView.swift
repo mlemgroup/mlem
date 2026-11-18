@@ -37,6 +37,7 @@ struct ContentView: View {
     var tabReselectTracker: TabReselectTracker { .main }
     var navigationModel: NavigationModel { .main }
     var mediaTracker: MediaTracker { .main }
+    var toastModel: ToastModel { .main }
 
     var filtersTracker: FiltersTracker { .main }
     var errorsTracker: ErrorsTracker { .main }
@@ -90,7 +91,7 @@ struct ContentView: View {
                 .environment(backendClient)
                 .environment(eventsTracker)
                 .environment(mediaTracker)
-                .environment(ToastModel.main)
+                .environment(toastModel)
                 .quickSwipesDisabled(!quickSwipesEnabled)
                 .quickSwipeThresholds(primary: 60, secondary: 150, tertiary: 240)
                 .quickSwipeMinimumDrag(20)
