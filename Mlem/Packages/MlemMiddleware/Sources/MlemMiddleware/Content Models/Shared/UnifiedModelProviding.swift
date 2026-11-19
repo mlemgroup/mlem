@@ -29,6 +29,13 @@ extension UnifiedModelProviding {
         }
     }
     
+    @MainActor
+    func setIfChangedAndProvided<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: MaybePresent<T>) {
+        if value.isProvided {
+            setIfChanged(keyPath, value.value)
+        }
+    }
+
     /// If the provided value is non-nil and different from the current value at the target key path, updates
     /// the target key path with the provided value
     @MainActor

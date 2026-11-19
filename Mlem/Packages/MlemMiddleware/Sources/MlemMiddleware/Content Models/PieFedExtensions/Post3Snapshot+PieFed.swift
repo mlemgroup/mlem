@@ -11,7 +11,7 @@ public extension Post3Snapshot {
     init(from post: PieFedGetPostResponse) throws(ApiClientError) {
         var crossPosts: [Post2Snapshot] = []
         for crossPost in post.crossPosts {
-            try crossPosts.append(.init(from: crossPost))
+            try crossPosts.append(.init(from: crossPost, noteProvided: false))
         }
 
         try self.init(

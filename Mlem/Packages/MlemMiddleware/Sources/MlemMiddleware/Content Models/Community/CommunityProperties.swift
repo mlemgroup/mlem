@@ -25,8 +25,8 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
 
     // From Community1Snapshot, but PieFed does not always provide these
     // https://codeberg.org/rimu/pyfedi/issues/882
-    var banner: URL??
-    var description: String??
+    var banner: MaybePresent<URL>
+    var description: MaybePresent<String>
     
     // From Community2Snapshot
     var subscription: SubscriptionModel?
@@ -91,11 +91,8 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         avatar = snapshot1.avatar
         hidden = snapshot1.hidden
         onlyModeratorsCanPost = snapshot1.onlyModeratorsCanPost
-
-        if snapshot1.allPropertiesPresent {
-            banner = snapshot1.banner
-            description = snapshot1.description
-        }
+        banner = snapshot1.banner
+        description = snapshot1.description
     }
     
     public mutating func merge(_ other: CommunityProperties) {
@@ -109,10 +106,10 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
         self.hidden = other.hidden
         self.onlyModeratorsCanPost = other.onlyModeratorsCanPost
         
+        self.description = other.description.isProvided ? other.description : self.description
+        self.banner = other.banner.isProvided ? other.banner : self.banner
+        
         // tier 2, 3 properties: only assign if incoming non-nil
-        self.description = other.description ?? self.description
-        self.banner = other.banner ?? self.banner
-
         self.subscription = other.subscription ?? self.subscription
         self.postCount = other.postCount ?? self.postCount
         self.commentCount = other.commentCount ?? self.commentCount

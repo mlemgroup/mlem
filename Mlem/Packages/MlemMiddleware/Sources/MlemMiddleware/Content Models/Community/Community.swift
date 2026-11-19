@@ -89,9 +89,8 @@ public final class Community:
         self.hidden = properties.hidden
         self.onlyModeratorsCanPost = properties.onlyModeratorsCanPost
 
-        // nil-coalesced because PieFed doesn't return these values for some requests.
-        self.description = properties.description ?? nil
-        self.banner = properties.banner ?? nil
+        self.description = properties.description.value
+        self.banner = properties.banner.value
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
@@ -138,12 +137,8 @@ public final class Community:
         setIfChanged(\.onlyModeratorsCanPost, properties.onlyModeratorsCanPost)
 
 
-        if let description = properties.description {
-            setIfChanged(\.description, description)
-        }
-        if let banner = properties.banner {
-            setIfChanged(\.banner, banner)
-        }
+        setIfChangedAndProvided(\.description, properties.description)
+        setIfChangedAndProvided(\.banner, properties.banner)
         
         updateIfChanged(\.subscription.value_, properties.subscription)
         updateIfChanged(\.postCount.value_, properties.postCount)
@@ -407,15 +402,14 @@ public extension Community {
               instanceId: instanceId,
               updated: updated,
               displayName: displayName,
-              description: description,
+              description: .notProvided,
               deleted: deleted,
               removed: removed,
               nsfw: nsfw,
               avatar: avatar,
-              banner: banner,
+              banner: .notProvided,
               hidden: hidden,
-              onlyModeratorsCanPost: onlyModeratorsCanPost,
-              allPropertiesPresent: false
+              onlyModeratorsCanPost: onlyModeratorsCanPost
         )
     }
 }

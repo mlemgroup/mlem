@@ -19,18 +19,16 @@ public struct Community1Snapshot: CacheIdentifiable {
     // remember to also amend the `update` method of Community1!
     public let updated: Date?
     public let displayName: String
-    public let description: String?
+
+    // https://codeberg.org/rimu/pyfedi/issues/882
+    public let description: MaybePresent<String>
     public let deleted: Bool
     public let removed: Bool
     public let nsfw: Bool
     public let avatar: URL?
-    public let banner: URL?
+    public let banner: MaybePresent<URL>
     public let hidden: Bool
     public let onlyModeratorsCanPost: Bool
-    
-    // This is a dodgy workaround for https://codeberg.org/rimu/pyfedi/issues/882
-    // TODO: If that issue gets fixed, we can remove this
-    public let allPropertiesPresent: Bool
 
     public var cacheId: Int { id }
     
@@ -42,15 +40,14 @@ public struct Community1Snapshot: CacheIdentifiable {
         instanceId: Int,
         updated: Date?,
         displayName: String,
-        description: String?,
+        description: MaybePresent<String>,
         deleted: Bool,
         removed: Bool,
         nsfw: Bool,
         avatar: URL?,
-        banner: URL?,
+        banner: MaybePresent<URL>,
         hidden: Bool,
-        onlyModeratorsCanPost: Bool,
-        allPropertiesPresent: Bool
+        onlyModeratorsCanPost: Bool
     ) {
         self.actorId = actorId
         self.id = id
@@ -67,6 +64,5 @@ public struct Community1Snapshot: CacheIdentifiable {
         self.banner = banner
         self.hidden = hidden
         self.onlyModeratorsCanPost = onlyModeratorsCanPost
-        self.allPropertiesPresent = allPropertiesPresent
     }
 }
