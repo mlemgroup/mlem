@@ -56,7 +56,7 @@ extension CopyNameAction {
         .init(
             relationship == .identity ? "Copy Name" : "Copy Username",
             icon: .general.copy,
-            color: .themedColorfulAccent(4)
+            color: .themedNominalColor(.purple)
         )
     }
 

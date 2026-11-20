@@ -25,6 +25,7 @@ public extension RegistrationApplication {
     func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch sortType {
         case .new: .new(created)
+        case .top: .new(created)
         }
     }
 }

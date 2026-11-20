@@ -16,6 +16,7 @@ struct ExportableCommentView: View {
     @Setting(\.post_createImage_showCommunity) var postShowCommunity
     @Setting(\.post_createImage_showCreator) var postShowCreator
     @Setting(\.post_createImage_showStats) var postShowStats
+    @Setting(\.appearance_showCommentBars) var showCommentBars
     
     let comments: [Comment]
     
@@ -25,7 +26,7 @@ struct ExportableCommentView: View {
     
     let infoStackReadouts: [ReadoutType] = [.upvote, .downvote, .created, .comment]
     
-    var showBars: Bool { showPost || comments.count > 1 }
+    var showBars: Bool { showCommentBars && (showPost || comments.count > 1) }
     
     var animationHashValue: Int {
         var hasher = Hasher()

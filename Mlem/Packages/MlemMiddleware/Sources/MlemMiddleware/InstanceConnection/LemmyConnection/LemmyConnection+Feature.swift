@@ -39,13 +39,16 @@ public extension LemmyConnection {
             version >= listingType.minimumVersion
         case .combinedPagedResponses:
             version >= .v1_0_0
+        case .personContentSortType(.top):
+            // Looks possible, but not implemented yet
+            version < .v1_0_0
         case .viewInstanceSettings, .viewInstanceCreationDate, .modlog,
              .logIn, .signUp, .uploadImages, .editAccountSettings, .viewReports,
              .reportPrivateMessages, .purgeContent, .removeCommunity, .banFromInstance,
              .editModeratorList,
              .hidePosts, .editDisplayName, .fetchLinkMetadata, .unbanWithReason,
              .customPostThumbnail, .banFromNonLocalCommunity,
-             .searchLocalComments:
+             .searchLocalComments, .personContentSortType(.new):
             true
         case .moderatorSetNsfw, .userNotes, .toggleNotifications:
             false

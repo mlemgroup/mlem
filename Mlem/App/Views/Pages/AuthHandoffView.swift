@@ -27,6 +27,7 @@ struct AuthHandoffView: View {
     let personHandle: PersonHandle
     let openedFromInAppBrowser: Bool
     let defaultAccount: UserAccount
+    let serviceName: String
 
     @State var chosenAccount: UserAccount?
 
@@ -65,7 +66,7 @@ struct AuthHandoffView: View {
     @ViewBuilder
     var askToAuthenticateView: some View {
         VStack {
-            Text("Sign In to Canvas")
+            Text("Sign In to \(serviceName)")
                 .font(.title)
                 .fontWeight(.bold)
             accountView
@@ -113,7 +114,7 @@ struct AuthHandoffView: View {
                 Text("Signed In")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                Text("Please return to Canvas.")
+                Text("Please return to \(serviceName).")
             }
             .frame(maxHeight: .infinity)
             Button("Dismiss") {
@@ -165,7 +166,7 @@ struct AuthHandoffView: View {
             let person = try await account.api.getPerson(handle: personHandle)
             try await account.api.createMessage(
                 personId: person.id,
-                content: "\(String(localized: "Sent by Mlem to sign in to Canvas."))\n\n\(session)"
+                content: "\(String(localized: "Sent by Mlem to sign in to \(serviceName)."))\n\n\(session)"
             )
             hapticManager.play(haptic: .success, tier: .low)
             if openedFromInAppBrowser {

@@ -37,31 +37,31 @@ struct SettingsView: View {
                     icon: .settings.privacy,
                     destination: .settings(.privacy)
                 )
-                .gradientTint(.themedColorfulAccent(2))
+                .gradientTint(.themedNominalColor(.blue))
                 NavigationLink(
                     "Safety & Filtering",
                     icon: .settings.safety,
                     destination: .settings(.safety)
                 )
-                .gradientTint(.themedColorfulAccent(3))
+                .gradientTint(.themedNominalColor(.green))
                 NavigationLink(
                     "Accessibility",
                     icon: .settings.accessibility,
                     destination: .settings(.accessibility)
                 )
-                .gradientTint(.themedColorfulAccent(2))
+                .gradientTint(.themedNominalColor(.blue))
                 NavigationLink(
                     "Media & Links",
                     icon: .general.image,
                     destination: .settings(.mediaAndLinks)
                 )
-                .gradientTint(.themedColorfulAccent(4))
+                .gradientTint(.themedNominalColor(.purple))
                 NavigationLink(
                     "Sorting",
                     icon: .settings.sorting,
                     destination: .settings(.sorting)
                 )
-                .gradientTint(.themedColorfulAccent(5))
+                .gradientTint(.themedNominalColor(.indigo))
                 if AccountsTracker.main.highestLevelAccountType >= .moderator {
                     NavigationLink(
                         "Moderation",
@@ -95,17 +95,17 @@ struct SettingsView: View {
                 NavigationLink("Instances", icon: .lemmy.instance, destination: .settings(.instance))
                     .gradientTint(.themedInstanceAccent)
                 NavigationLink("Tab Bar", icon: .settings.tabBar, destination: .settings(.tabBar))
-                    .gradientTint(.themedColorfulAccent(5))
+                    .gradientTint(.themedNominalColor(.indigo))
             }
             
             Section {
                 NavigationLink("About Mlem", icon: .general.info, destination: .settings(.about))
-                    .gradientTint(.themedColorfulAccent(2))
+                    .gradientTint(.themedNominalColor(.blue))
                 NavigationLink("Advanced", icon: .settings.advanced, destination: .settings(.advanced))
                     .gradientTint(.themedNeutralAccent)
                 #if DEBUG
                 NavigationLink("Developer", icon: .settings.developerMode, destination: .settings(.developer))
-                    .gradientTint(.themedColorfulAccent(2))
+                    .gradientTint(.themedNominalColor(.blue))
                 #endif
             }
         }

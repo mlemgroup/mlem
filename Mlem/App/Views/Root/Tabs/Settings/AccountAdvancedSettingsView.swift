@@ -23,7 +23,7 @@ struct AccountAdvancedSettingsView: View {
             if let updateSettings = appState.firstPerson?.updateSettings {
                 Section {
                     Toggle("Bot Account", icon: .lemmy.botFlair, isOn: $isBot)
-                        .tint(.themedColorfulAccent(5))
+                        .tint(.themedNominalColor(.indigo))
                         .onChange(of: isBot) {
                             Task {
                                 do {
