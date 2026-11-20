@@ -47,6 +47,15 @@ extension InteractableProviding {
         )
     }
     
+    func voteRatioReadout() -> Readout? {
+        guard let percentage = votes.value?.upvotePercentage else { return nil }
+        return Readout(
+            id: "voteRatio\(uid)",
+            label: "\(percentage)%",
+            icon: .lemmy.votes
+        )
+    }
+
     func upvoteReadout(showColor: Bool) -> Readout? {
         guard let votes = votes.value else { return nil }
         let isOn = votes.myVote == .upvote

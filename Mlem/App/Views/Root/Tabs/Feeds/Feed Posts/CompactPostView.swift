@@ -24,7 +24,7 @@ struct CompactPostView: View {
     var requireConsistentHeight: Bool = false
     
     var readouts: [ReadoutType] {
-        var readouts: [ReadoutType] = [.created]
+        var readouts: [ReadoutType] = [.voteRatio, .created]
         readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
         readouts.appendIfPresent(post.saved.value ?? false ? .saved : nil)
         return readouts
