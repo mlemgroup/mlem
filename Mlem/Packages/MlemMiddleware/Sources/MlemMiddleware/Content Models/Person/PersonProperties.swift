@@ -24,9 +24,9 @@ public struct PersonProperties: UnifiedPropertiesProviding {
 
     // From Person1Snapshot, but PieFed does not always provide these
     // https://codeberg.org/rimu/pyfedi/issues/882
-    var description: MaybePresent<String>
-    var banner: MaybePresent<URL>
-    var note: MaybePresent<String>
+    var description: MaybeProvided<String>
+    var banner: MaybeProvided<URL>
+    var note: MaybeProvided<String>
     
     // From Person2Snapshot
     var isAdmin: Bool?

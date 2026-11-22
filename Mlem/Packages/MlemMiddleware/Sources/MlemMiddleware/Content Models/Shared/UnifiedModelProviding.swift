@@ -30,7 +30,7 @@ extension UnifiedModelProviding {
     }
     
     @MainActor
-    func setIfChangedAndProvided<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: MaybePresent<T>) {
+    func setIfChangedAndProvided<T: Equatable>(_ keyPath: ReferenceWritableKeyPath<Self, T?>, _ value: MaybeProvided<T>) {
         if value.isProvided {
             setIfChanged(keyPath, value.value)
         }

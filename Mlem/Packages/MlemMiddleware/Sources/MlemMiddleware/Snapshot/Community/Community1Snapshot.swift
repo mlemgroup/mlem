@@ -21,12 +21,12 @@ public struct Community1Snapshot: CacheIdentifiable {
     public let displayName: String
 
     // https://codeberg.org/rimu/pyfedi/issues/882
-    public let description: MaybePresent<String>
+    public let description: MaybeProvided<String>
     public let deleted: Bool
     public let removed: Bool
     public let nsfw: Bool
     public let avatar: URL?
-    public let banner: MaybePresent<URL>
+    public let banner: MaybeProvided<URL>
     public let hidden: Bool
     public let onlyModeratorsCanPost: Bool
 
@@ -40,12 +40,12 @@ public struct Community1Snapshot: CacheIdentifiable {
         instanceId: Int,
         updated: Date?,
         displayName: String,
-        description: MaybePresent<String>,
+        description: MaybeProvided<String>,
         deleted: Bool,
         removed: Bool,
         nsfw: Bool,
         avatar: URL?,
-        banner: MaybePresent<URL>,
+        banner: MaybeProvided<URL>,
         hidden: Bool,
         onlyModeratorsCanPost: Bool
     ) {

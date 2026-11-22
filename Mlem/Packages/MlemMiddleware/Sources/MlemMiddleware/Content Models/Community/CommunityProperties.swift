@@ -25,8 +25,8 @@ public struct CommunityProperties: UnifiedPropertiesProviding {
 
     // From Community1Snapshot, but PieFed does not always provide these
     // https://codeberg.org/rimu/pyfedi/issues/882
-    var banner: MaybePresent<URL>
-    var description: MaybePresent<String>
+    var banner: MaybeProvided<URL>
+    var description: MaybeProvided<String>
     
     // From Community2Snapshot
     var subscription: SubscriptionModel?

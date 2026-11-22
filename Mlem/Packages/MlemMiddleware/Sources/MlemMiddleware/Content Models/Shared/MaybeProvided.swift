@@ -1,11 +1,11 @@
 //
-//  MaybePresent.swift
+//  MaybeProvided.swift
 //  MlemMiddleware
 //
 //  Created by Sjmarf on 2026-11-05.
 //
 
-public enum MaybePresent<Value> {
+public enum MaybeProvided<Value> {
     case some(Value)
     case none
     case notProvided
@@ -33,6 +33,6 @@ public enum MaybePresent<Value> {
     }
 }
 
-extension MaybePresent: Equatable where Value: Equatable {}
-extension MaybePresent: Hashable where Value: Hashable {}
-extension MaybePresent: Sendable where Value: Sendable {}
+extension MaybeProvided: Equatable where Value: Equatable {}
+extension MaybeProvided: Hashable where Value: Hashable {}
+extension MaybeProvided: Sendable where Value: Sendable {}

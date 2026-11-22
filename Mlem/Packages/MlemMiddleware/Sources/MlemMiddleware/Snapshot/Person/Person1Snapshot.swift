@@ -21,11 +21,11 @@ public struct Person1Snapshot: CacheIdentifiable {
     public let avatar: URL?
 
     // https://codeberg.org/rimu/pyfedi/issues/882
-    public let banner: MaybePresent<URL>
+    public let banner: MaybeProvided<URL>
     // https://codeberg.org/rimu/pyfedi/issues/1961
-    public let note: MaybePresent<String>
+    public let note: MaybeProvided<String>
     public let updated: Date?
-    public let description: MaybePresent<String>
+    public let description: MaybeProvided<String>
     public let matrixUserId: String?
     public let isBot: Bool
     public let instanceBan: InstanceBanType
@@ -41,10 +41,10 @@ public struct Person1Snapshot: CacheIdentifiable {
         instanceId: Int,
         displayName: String,
         avatar: URL?,
-        banner: MaybePresent<URL>,
-        note: MaybePresent<String>,
+        banner: MaybeProvided<URL>,
+        note: MaybeProvided<String>,
         updated: Date?,
-        description: MaybePresent<String>,
+        description: MaybeProvided<String>,
         matrixUserId: String?,
         isBot: Bool,
         instanceBan: InstanceBanType,
