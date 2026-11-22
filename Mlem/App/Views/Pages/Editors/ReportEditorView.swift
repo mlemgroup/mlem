@@ -38,8 +38,13 @@ struct ReportEditorView: View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
                 Form {
-                    TextField("Reason", text: $reason, axis: .vertical)
-                        .focused($reasonFocused)
+                    Section {
+                        TextField("Reason", text: $reason, axis: .vertical)
+                            .focused($reasonFocused)
+                    } footer: {
+                        Text("Tap to fill from common reasons below")
+                    }
+                    
                     Section {
                         ReasonShortcutView(reason: $reason)
                     }
