@@ -33,6 +33,7 @@ enum SettingsPage {
     case importExportSettings
     case theme, icon
     case post, comment, inbox, community, person, instance, subscriptionList
+    case commentBarTheme
     case tabBar
     case postThumbnail, postSubscriptionIndicator, postReadIndicator
     case commentMaximumDepth, commentJumpButton
@@ -171,6 +172,8 @@ enum SettingsPage {
             ModeratorActionSeparationSettingsView()
         case .subscriptionList:
             SubscriptionListSettingsView()
+        case .commentBarTheme:
+            CommentBarThemeSettingsView()
         case .tabBar:
             TabBarSettingsView()
         case .inboxBadge:

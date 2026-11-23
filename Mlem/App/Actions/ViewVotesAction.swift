@@ -31,7 +31,7 @@ extension ViewVotesAction {
     static let appearance: ActionAppearance = .init(
         "View Votes",
         icon: .lemmy.votes,
-        color: .themedColorfulAccent(4)
+        color: .themedNominalColor(.purple)
     )
 
     func createAppearance(environment: EnvironmentValues) -> ActionAppearance {

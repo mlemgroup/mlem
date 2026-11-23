@@ -30,13 +30,13 @@ extension HideAction {
     static let hideAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Shown", icon: .general.hidden.representingState(active: false)),
         stateTransitionLabel: .init("Hide", icon: .general.hide),
-        color: .themedColorfulAccent(4)
+        color: .themedNominalColor(.purple)
     )
 
     static let showAppearance: ActionAppearance = .init(
         currentStateLabel: .init("Hidden", icon: .general.hidden.representingState(active: true)),
         stateTransitionLabel: .init("Show", icon: .general.show),
-        color: .themedColorfulAccent(4),
+        color: .themedNominalColor(.purple),
         prominent: true
     )
 

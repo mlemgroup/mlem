@@ -9,6 +9,12 @@
             "state" : "new",
             "value" : "World News"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noticias del mundo"
+          }
         }
       }
     },
@@ -19,6 +25,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "news"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "noticias"
           }
         }
       }
@@ -31,6 +43,12 @@
             "state" : "new",
             "value" : "Pics"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos"
+          }
         }
       }
     },
@@ -42,6 +60,12 @@
             "state" : "new",
             "value" : "pics"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fotos"
+          }
         }
       }
     },
@@ -51,6 +75,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "me_irl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "me_irl"
           }
         }
@@ -64,6 +94,12 @@
             "state" : "new",
             "value" : "me_irl"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "me_irl"
+          }
         }
       }
     },
@@ -74,6 +110,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Technology"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tecnología"
           }
         }
       }
@@ -86,6 +128,12 @@
             "state" : "new",
             "value" : "technology"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tecnologia"
+          }
         }
       }
     },
@@ -96,6 +144,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Nature"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naturaleza"
           }
         }
       }
@@ -108,6 +162,12 @@
             "state" : "new",
             "value" : "nature"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "naturaleza"
+          }
         }
       }
     },
@@ -119,6 +179,12 @@
             "state" : "new",
             "value" : "Nature"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naturaleza"
+          }
         }
       }
     },
@@ -128,6 +194,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "showerthoughts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "showerthoughts"
           }
         }
@@ -141,6 +213,12 @@
             "state" : "new",
             "value" : "Flowertail"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flowertail"
+          }
         }
       }
     },
@@ -150,6 +228,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "flowertail"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "flowertail"
           }
         }
@@ -163,6 +247,12 @@
             "state" : "new",
             "value" : "HONK"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HONK"
+          }
         }
       }
     },
@@ -172,6 +262,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Commander Goose"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Commander Goose"
           }
         }
@@ -185,6 +281,12 @@
             "state" : "new",
             "value" : "CommanderGoose"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CommanderGoose"
+          }
         }
       }
     },
@@ -194,6 +296,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "BillyDAFISH"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "BillyDAFISH"
           }
         }
@@ -207,6 +315,12 @@
             "state" : "new",
             "value" : "BillyDAFISH"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BillyDAFISH"
+          }
         }
       }
     },
@@ -216,6 +330,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "Grt38"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "Grt38"
           }
         }
@@ -229,6 +349,12 @@
             "state" : "new",
             "value" : "Grt38"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grt38"
+          }
         }
       }
     },
@@ -238,6 +364,12 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "AnteSocial"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "AnteSocial"
           }
         }
@@ -251,6 +383,12 @@
             "state" : "new",
             "value" : "ante_social_58"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ante_social_58"
+          }
         }
       }
     },
@@ -261,6 +399,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "The Yorkshire Dales, England"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yorkshire Dales, Inglaterra"
           }
         }
       }
@@ -273,6 +417,12 @@
             "state" : "new",
             "value" : "Meguro River, Matsuno, Japan"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Río Meguro, Matsuno, Japón"
+          }
         }
       }
     },
@@ -283,6 +433,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "During a nuclear explosion, there is a certain distance of the radius where all the frozen supermarket pizzas are cooked to perfection."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durante una explosión nuclear hay cierta distancia del radio en la que todas las pizzas congeladas del súper quedan perfectamente hechas."
           }
         }
       }

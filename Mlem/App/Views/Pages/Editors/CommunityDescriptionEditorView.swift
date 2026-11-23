@@ -77,6 +77,7 @@ struct CommunityDescriptionEditorView: View {
         .background(.themedGroupedBackground)
         .presentationBackground(.themedGroupedBackground)
         .scrollBounceBehavior(.basedOnSize)
+        .markdownToolbarKeyboardInset([textView])
     }
 
     var textEditorView: some View {

@@ -84,9 +84,16 @@ extension InboxNotification: FeedLoadable {
         case .new:
             switch self.content {
             case let .mention(comment), let .reply(comment):
-                return .new(comment.created)
+                .new(comment.created)
             case let .message(message):
-                return .new(message.created)
+                .new(message.created)
+            }
+        case .top:
+            switch self.content {
+            case let .mention(comment), let .reply(comment):
+                .top(score: comment.votes.value?.total ?? 0)
+            case .message:
+                .top(score: 0)
             }
         }
     }

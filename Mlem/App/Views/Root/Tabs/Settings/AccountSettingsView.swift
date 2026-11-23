@@ -38,20 +38,20 @@ struct AccountSettingsView: View {
                         icon: .lemmy.person,
                         destination: .settings(.profile)
                     )
-                    .gradientTint(.themedColorfulAccent(5))
+                    .gradientTint(.themedNominalColor(.indigo))
                     if appState.firstAccount.siteSoftware?.supports(.editAccountSettings) ?? false {
                         NavigationLink(
                             "Sign-In & Security",
                             icon: .general.security,
                             destination: .settings(.accountSignIn)
                         )
-                        .gradientTint(.themedColorfulAccent(2))
+                        .gradientTint(.themedNominalColor(.blue))
                         NavigationLink(
                             "Content & Notifications",
                             icon: .lemmy.post,
                             destination: .settings(.accountContent)
                         )
-                        .gradientTint(.themedColorfulAccent(0))
+                        .gradientTint(.themedNominalColor(.orange))
                         NavigationLink(
                             "Advanced",
                             icon: .settings.advanced,
@@ -74,7 +74,7 @@ struct AccountSettingsView: View {
                         icon: .settings.localAccountOptions,
                         destination: .settings(.accountLocal)
                     )
-                    .gradientTint(.themedColorfulAccent(2))
+                    .gradientTint(.themedNominalColor(.blue))
                 } footer: {
                     Text("These options are stored locally in Mlem and not on your Lemmy account.")
                 }

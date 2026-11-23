@@ -13,11 +13,10 @@ class PersonVoteCache: CoreCache<PersonVote> {
         api: ApiClient,
         from snapshot: PersonVoteSnapshot,
         target: PersonVote.Target,
-        communityId: Int,
-        semaphore: UInt? = nil
+        communityId: Int
     ) -> PersonVote {
         if let item = retrieveModel(cacheId: getCacheId(target: target, creatorId: snapshot.creator.id)) {
-            item.update(with: snapshot, semaphore: semaphore)
+            item.update(with: snapshot)
             return item
         }
         
@@ -38,16 +37,14 @@ class PersonVoteCache: CoreCache<PersonVote> {
         api: ApiClient,
         from snapshots: [PersonVoteSnapshot],
         target: PersonVote.Target,
-        communityId: Int,
-        semaphore: UInt? = nil
+        communityId: Int
     ) -> [PersonVote] {
         snapshots.map {
             getModel(
                 api: api,
                 from: $0,
                 target: target,
-                communityId: communityId,
-                semaphore: semaphore
+                communityId: communityId
             )
         }
     }

@@ -14,7 +14,7 @@ public struct RegistrationApplicationSnapshot: CacheIdentifiable {
     
     // I don't *think* these can change, but I'm assuming they do
     // incase the ability to edit applications is added in future.
-    // Update RegistrationApplication if you change these!
+    // Update RegistrationApplication and its Properties if you change these!
     public let questionResponse: String
     public let email: String?
     public let showNsfw: Bool

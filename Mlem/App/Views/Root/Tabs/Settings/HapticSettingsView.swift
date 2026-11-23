@@ -19,7 +19,7 @@ struct HapticSettingsView: View {
                 description: "Customize how often Mlem plays haptic feedback.",
                 icon: .general.haptics
             )
-            .gradientTint(.themedColorfulAccent(1))
+            .gradientTint(.themedNominalColor(.pink))
             Picker("Haptic Level", selection: $hapticLevel) {
                 ForEach(HapticTier.allCases, id: \.self) { level in
                     Text(level.label)

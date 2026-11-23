@@ -17,7 +17,8 @@ struct AccessibilitySettingsView: View {
     @Setting(\.a11y_zoomSliderLocation) var zoomSliderLocation
     @Setting(\.media_animatedAvatars) var animatedAvatars
     @Setting(\.a11y_showInteractionBarButtonBackground) var showInteractionBarButtonBackground
-    
+    @Setting(\.comment_tallerCollapsed) var tallerCollapsed
+
     var body: some View {
         Form {
             SettingsHeaderView(
@@ -25,7 +26,7 @@ struct AccessibilitySettingsView: View {
                 description: "Customize Mlem to work best for you. Some features are tied to system-wide accessibility settings.",
                 icon: .settings.accessibility
             )
-            .gradientTint(.themedColorfulAccent(2))
+            .gradientTint(.themedNominalColor(.blue))
             if differentiateWithoutColor {
                 Section {
                     NavigationLink(
@@ -65,6 +66,12 @@ struct AccessibilitySettingsView: View {
                 Text("Contrast")
             }
             
+            Section {
+                Toggle("Taller Collapsed Comments", icon: .general.expand, isOn: $tallerCollapsed)
+            } header: {
+                Text("Comments")
+            }
+
             Section {
                 NavigationLink(
                     "Slide to Zoom Images",

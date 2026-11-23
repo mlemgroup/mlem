@@ -16,7 +16,7 @@ extension PersonVote: CacheIdentifiable {
     }
     
     @MainActor
-    func update(with snapshot: PersonVoteSnapshot, semaphore: UInt? = nil) {
+    func update(with snapshot: PersonVoteSnapshot) {
         setIfChanged(\.vote, ScoringOperation(rawValue: snapshot.score) ?? .none)
         if let creatorBannedFromCommunity = snapshot.creatorBannedFromCommunity {
             creator.updateKnownCommunityBanState(id: communityId, banned: creatorBannedFromCommunity)

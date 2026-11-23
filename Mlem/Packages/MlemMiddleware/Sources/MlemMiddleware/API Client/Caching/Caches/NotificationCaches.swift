@@ -12,8 +12,7 @@ class NotificationCache: CoreCache<InboxNotification> {
     func getModel(
         api: ApiClient,
         from snapshot: InboxNotificationSnapshot,
-        myPersonId: Int,
-        semaphore: UInt? = nil
+        myPersonId: Int
     ) -> InboxNotification {
         if let item = retrieveModel(cacheId: snapshot.cacheId) {
             Task {
@@ -53,9 +52,8 @@ class NotificationCache: CoreCache<InboxNotification> {
     func getModels(
         api: ApiClient,
         from snapshots: [InboxNotificationSnapshot],
-        myPersonId: Int,
-        semaphore: UInt? = nil
+        myPersonId: Int
     ) -> [InboxNotification] {
-        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId, semaphore: semaphore) }
+        snapshots.map { getModel(api: api, from: $0, myPersonId: myPersonId) }
     }
 }

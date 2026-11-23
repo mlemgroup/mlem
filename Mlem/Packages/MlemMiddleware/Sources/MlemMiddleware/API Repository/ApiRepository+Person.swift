@@ -49,7 +49,7 @@ extension ApiRepository {
         }
     }
     
-    func blockPerson(id: Int, block: Bool, semaphore: UInt? = nil) async throws -> Person2Snapshot {
+    func blockPerson(id: Int, block: Bool) async throws -> Person2Snapshot {
         try await performingForConnection { connection in
             try await connection.blockPerson(id: id, block: block)
         }
@@ -101,7 +101,7 @@ extension ApiRepository {
     
     func getContent(
         authorId id: Int,
-        sort: PostSortType,
+        sort: PersonContentSortType,
         pageInfo: PageInfo,
         savedOnly: Bool? = nil,
         communityId: Int? = nil
