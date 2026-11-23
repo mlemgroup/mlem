@@ -241,5 +241,6 @@ struct PostEditorView: View {
             .padding([.horizontal, .bottom], Constants.main.standardSpacing)
             .animation(.snappy(duration: 0.2, extraBounce: 0.05), value: animationHashValue)
         }
+        .markdownToolbarKeyboardInset([titleUiTextView, contentUiTextView])
     }
 }

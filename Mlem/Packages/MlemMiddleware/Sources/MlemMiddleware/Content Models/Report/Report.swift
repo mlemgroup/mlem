@@ -8,8 +8,6 @@
 import Observation
 import Foundation
 
-import os
-
 @Observable
 public class Report: UnifiedModelProviding, FeedLoadable {
     public typealias Properties = ReportProperties
@@ -19,7 +17,7 @@ public class Report: UnifiedModelProviding, FeedLoadable {
     @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<Report> = .init(parent: self, properties: properties)
     
     // MARK: API Properties
-    // Properties that are provided by teh API
+    // Properties that are provided by the API
     
     public let id: Int
     public let created: Date

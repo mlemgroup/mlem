@@ -8,6 +8,7 @@
 import LemmyMarkdownUI
 import MlemMiddleware
 import SwiftUI
+import Theming
 
 struct CommentView<EmbeddedContent: View>: View {
     @Environment(AppState.self) var appState
@@ -154,7 +155,7 @@ struct CommentView<EmbeddedContent: View>: View {
                         Group {
                             postTag(active: saved, icon: .lemmy.saved.representingState(active: true), color: .themedSave) +
                             Text(verbatim: " ") +
-                            postTag(active: votes.myVote != .none, icon: .init(votes.iconName), color: votes.iconColor)
+                            postTag(active: votes.myVote != .none, icon: votes.icon, color: votes.color)
                         }
                         .lineLimit(1)
                         .font(.caption)
@@ -199,17 +200,32 @@ struct CommentView<EmbeddedContent: View>: View {
 }
 
 struct CommentBarView: View {
+    @Setting(\.appearance_commentBarTheme) var commentBarTheme
+    @Setting(\.appearance_showCommentBars) var showCommentBars
+    @Environment(\.palette) var palette
+
     let depth: Int
     var inFeed: Bool = false
-    
+
     var body: some View {
-        Capsule()
-            .fill(inFeed ? .themedTertiary : .themedCommentIndentColor(depth))
-            .frame(width: 3)
-            .frame(maxHeight: .infinity)
-            .padding(.leading, 8)
-            .padding(.bottom, 8)
-            .padding(.top, inFeed ? 0 : 8)
+        if showCommentBars || inFeed {
+            Capsule()
+                .fill(color)
+                .frame(width: 3)
+                .frame(maxHeight: .infinity)
+                .padding(.leading, 8)
+                .padding(.bottom, 8)
+                .padding(.top, inFeed ? 0 : 8)
+        }
+    }
+
+    var color: Color {
+        if inFeed {
+            return palette.label.tertiary
+        } else {
+            let colors = commentBarTheme.colors(in: palette)
+            return colors[depth % colors.count]
+        }
     }
 }
 

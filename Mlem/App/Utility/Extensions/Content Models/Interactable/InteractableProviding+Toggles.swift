@@ -13,13 +13,10 @@ import Theming
 // Convenience methods for toggling statuses with feedback
 
 extension InteractableProviding {
-    private var inboxItem: (any InboxItemProviding)? { self as? any InboxItemProviding }
-    
     var toggleVote: ((ScoringOperation) -> Void)? {
         if let updateVote, let votes = votes.value {
             return { operation in
                 updateVote(operation == votes.myVote ? .none : operation)
-                self.inboxItem?.updateRead(true)
             }
         }
         return nil
@@ -29,7 +26,6 @@ extension InteractableProviding {
         if let updateVote, let votes = votes.value {
             return {
                 updateVote(votes.myVote == .upvote ? .none : .upvote)
-                self.inboxItem?.updateRead(true)
             }
         }
         return nil
@@ -39,7 +35,6 @@ extension InteractableProviding {
         if let updateVote, let votes = votes.value {
             return {
                 updateVote(votes.myVote == .downvote ? .none : .downvote)
-                self.inboxItem?.updateRead(true)
             }
         }
         return nil

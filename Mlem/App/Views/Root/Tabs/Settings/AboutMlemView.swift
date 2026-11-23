@@ -29,12 +29,12 @@ struct AboutMlemView: View {
                     FormChevron { Label("Website", icon: .general.website) }
                         .foregroundStyle(.themedPrimary)
                 }
-                .gradientTint(.themedColorfulAccent(2))
+                .gradientTint(.themedNominalColor(.blue))
                 Link(destination: URL(string: "https://lemmy.ml/c/mlemapp")!) {
                     FormChevron { Label("Lemmy Community", icon: .lemmy.community) }
                         .foregroundStyle(.themedPrimary)
                 }
-                .gradientTint(.themedColorfulAccent(3))
+                .gradientTint(.themedNominalColor(.green))
                 Link(destination: URL(string: "https://matrix.to/#/#mlemappspace:matrix.org")!) {
                     FormChevron { Label("Matrix Room", image: "matrix.logo") }
                         .foregroundStyle(.themedPrimary)
@@ -48,11 +48,11 @@ struct AboutMlemView: View {
             }
             Section {
                 NavigationLink("Privacy Policy", icon: .settings.privacy, destination: .settings(.document(.privacyPolicy)))
-                    .gradientTint(.themedColorfulAccent(2))
+                    .gradientTint(.themedNominalColor(.blue))
                 NavigationLink("EULA", icon: .settings.eula, destination: .settings(.document(.eula)))
-                    .gradientTint(.themedColorfulAccent(0))
+                    .gradientTint(.themedNominalColor(.orange))
                 NavigationLink("Licenses", icon: .settings.licence, destination: .settings(.licences))
-                    .gradientTint(.themedColorfulAccent(4))
+                    .gradientTint(.themedNominalColor(.purple))
             }
         }
         .buttonStyle(.plain)

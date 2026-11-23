@@ -28,7 +28,7 @@ struct ReadoutView: View {
     
     var body: some View {
         HStack(spacing: 2) {
-            Image(systemName: readout.icon)
+            Image(icon: readout.icon)
             Group {
                 if readout.label?.allSatisfy(\.isNumber) ?? false {
                     Text(readout.label ?? " ")

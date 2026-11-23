@@ -76,7 +76,7 @@ struct InteractionBarWidgetPickerView<Configuration: InteractionBarConfiguration
             let label = action.appearance.label(describing: .stateTransition)
             return Label(label.title, icon: label.icon)
         case let .counter(counter):
-            return Label(counter.appearance.label, systemImage: counter.appearance.singleIcon)
+            return Label(counter.appearance.label, icon: counter.appearance.singleIcon)
         }
     }
 }

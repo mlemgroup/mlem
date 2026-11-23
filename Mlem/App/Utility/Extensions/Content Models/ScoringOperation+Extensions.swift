@@ -11,14 +11,6 @@ import SwiftUI
 import Theming
 
 extension ScoringOperation {
-    var systemImage: String {
-        switch self {
-        case .none: Icons.resetVoteSquare
-        case .upvote: Icons.upvoteSquare
-        case .downvote: Icons.downvoteSquare
-        }
-    }
-
     var icon: Icon {
         switch self {
         case .none: .lemmy.removeUpvote

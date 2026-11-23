@@ -20,7 +20,7 @@ struct AvatarSettingsView: View {
                 description: "Choose whether avatars should be shown, and whether they should animate.",
                 icon: .settings.avatar
             )
-            .gradientTint(.themedColorfulAccent(4))
+            .gradientTint(.themedNominalColor(.purple))
             
             Section("Show avatars for...") {
                 Toggle("Users", icon: .lemmy.person, isOn: $showPersonAvatar)

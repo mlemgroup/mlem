@@ -7,11 +7,12 @@
 
 import Actions
 import Foundation
+import Icons
 
 struct CounterAppearance {
     let value: Int?
     let leading: ActionAppearance?
     let trailing: ActionAppearance?
     let label: LocalizedStringResource
-    let singleIcon: String
+    let singleIcon: Icon
 }

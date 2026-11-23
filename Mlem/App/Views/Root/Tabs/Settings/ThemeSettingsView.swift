@@ -10,6 +10,7 @@ import SwiftUI
 struct ThemeSettingsView: View {
     @Setting(\.appearance_interfaceStyle) var interfaceStyle
     @Setting(\.appearance_palette) var colorPalette
+    @Setting(\.appearance_showCommentBars) var showCommentBars
     
     // convenience
     var supportedModes: UIUserInterfaceStyle { colorPalette.supportedModes }
@@ -33,15 +34,25 @@ struct ThemeSettingsView: View {
                 }
             }
             
-            Picker("Theme", selection: $colorPalette) {
-                ForEach(PaletteOption.allCases, id: \.rawValue) { item in
-                    ThemeLabel(palette: item)
-                        .tag(item)
+            Section {
+                Picker("Theme", selection: $colorPalette) {
+                    ForEach(PaletteOption.allCases, id: \.rawValue) { item in
+                        ThemeLabel(palette: item)
+                            .tag(item)
+                    }
+                    .labelStyle(.titleAndIcon)
                 }
-                .labelStyle(.titleAndIcon)
+                .labelsHidden()
+                .pickerStyle(.inline)
             }
-            .labelsHidden()
-            .pickerStyle(.inline)
+            
+            Section("Comment Bar Colors") {
+                if !showCommentBars {
+                    Text("Comment bars are currently hidden. You can show them again in Comment settings.")
+                        .foregroundStyle(.themedSecondary)
+                }
+                CommentBarThemePickerView()
+            }
         }
         .withConditionalLabelStyle()
         .navigationTitle("Theme")

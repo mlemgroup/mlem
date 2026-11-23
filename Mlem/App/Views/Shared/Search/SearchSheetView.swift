@@ -33,7 +33,7 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
+            LazyVStack(alignment: .leading, spacing: 0) {
                 content(results, navigation)
             }
         }
@@ -83,11 +83,11 @@ extension SearchSheetView {
         filter: ListingType? = nil,
         @ViewBuilder content: @escaping (Item, NavigationLayer) -> RowContent,
         @ViewBuilder header: @escaping () -> HeaderContent
-    ) where Content == VStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
+    ) where Content == LazyVStack<TupleView<(HeaderContent, SearchResultsView<Item, RowContent>)>> {
         self.api = api ?? AppState.main.firstApi
         self.filter = filter ?? .all
         self.content = { (results: [Item], dismiss: NavigationLayer) in
-            VStack(alignment: .leading, spacing: 0) {
+            LazyVStack(alignment: .leading, spacing: 0) {
                 header()
                 SearchResultsView(results: results) { item in
                     content(item, dismiss)

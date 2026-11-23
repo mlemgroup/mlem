@@ -209,12 +209,11 @@ extension NavigationPage {
             DeleteAccountView(account: account)
         case let .bypassImageProxy(callback):
             BypassProxyWarningSheet(callback: callback)
-        case let .confirmUpload(imageData: imageData, fileType: fileType, imageManager: imageManager, uploadApi: uploadApi):
+        case let .confirmUpload(imageManager: imageManager, uploadApi: uploadApi, callback: callback):
             UploadConfirmationView(
-                imageData: imageData,
-                fileType: fileType,
                 imageManager: imageManager,
-                uploadApi: uploadApi
+                uploadApi: uploadApi,
+                callback: callback
             )
         case let .rulesList(model, callback):
             RulesPickerView(model: model, callback: callback)
@@ -249,12 +248,13 @@ extension NavigationPage {
             UnavailableContentInfoView()
         case let .unsupportedVersion(account):
             UnsupportedVersionWarningView(account: account)
-        case let .authHandoff(session: session, personHandle: personHandle, defaultAccount: defaultAccount):
+        case let .authHandoff(session: session, personHandle: personHandle, defaultAccount: defaultAccount, serviceName: serviceName):
             AuthHandoffView(
                 session: session,
                 personHandle: personHandle,
                 openedFromInAppBrowser: false,
-                defaultAccount: defaultAccount
+                defaultAccount: defaultAccount,
+                serviceName: serviceName
             )
         case .dummy:
             {

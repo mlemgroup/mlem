@@ -84,9 +84,8 @@ struct VotesListView: View {
         HStack {
             FullyQualifiedLinkView(vote.creator, labelStyle: .medium)
             Spacer()
-            Image(systemName: vote.vote.systemImage)
+            Image(icon: vote.vote.icon.representingState(active: true))
                 .imageScale(.large)
-                .symbolVariant(.fill)
                 .symbolRenderingMode(.palette)
                 .foregroundStyle(.themedContrastingLabel, vote.vote.color)
         }

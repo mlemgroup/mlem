@@ -32,14 +32,14 @@ class NavigationModel {
 
     @Observable
     class ContentPickerTracker {
-        var photosPickerCallback: ((PhotosPickerItem) -> Void)?
+        var photosPickerCallback: ((PhotosPickerItem?) -> Void)?
         
         // This needs two values unlike `photosPickerCallback` because
         // `fileImporter` sets `isPresented` to `false` before calling
         // `onCompletion`, which makes it impossible to call the callback
         // before setting it to `nil`.
         var showingFilePicker: Bool = false
-        var filePickerCallback: ((URL) -> Void)?
+        var filePickerCallback: ((URL?) -> Void)?
         var filePickerContentTypes: [UTType] = []
     }
     

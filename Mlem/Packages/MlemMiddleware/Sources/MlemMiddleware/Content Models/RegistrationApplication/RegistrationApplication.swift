@@ -1,91 +1,123 @@
 //
-//  RegistrationApplication1.swift
+//  RegistrationApplication.swift
 //  MlemMiddleware
 //
-//  Created by Sjmarf on 2025-01-12.
+//  Created by Eric Andrews on 2026-10-31.
 //
 
+import Observation
 import Foundation
 
-// This could be two-tiered but doing so is tricky because whether the application has
-// been approved or denied is unknown at tier 1, which would make the tier 1 model pretty
-// useless. At this time, only tier 2 applications are returned anyways.
-
 @Observable
-public final class RegistrationApplication: ContentIdentifiable, FeedLoadable {
-    public typealias FilterType = ModMailItemFilterType
+public class RegistrationApplication: UnifiedModelProviding, ContentIdentifiable, FeedLoadable {
+    public typealias Properties = RegistrationApplicationProperties
     
-    public static let modelTypeId: ContentType = .registrationApplication
-    public let api: ApiClient
+    public var api: ApiClient
+    private let properties: RegistrationApplicationProperties
+    @ObservationIgnored lazy var updateQueue: UnifiedUpdateQueue<RegistrationApplication> = .init(parent: self, properties: properties)
+    
+    // MARK: API Properties
+    // Properties that are provided by the API
     
     public let id: Int
-    public internal(set) var questionResponse: String
-    public let creator: Person
-    public internal(set) var resolver: Person?
-    public internal(set) var email: String?
-    public internal(set) var emailVerified: Bool
-    public internal(set) var showNsfw: Bool
     public let created: Date
+    public let questionResponse: String
+    public let email: String?
+    public let showNsfw: Bool
+    public let creator: Person
+    public var emailVerified: Bool
+    public var resolver: Person?
+    public var resolution: RegistrationApplication.ResolutionState
     
-    var resolutionManager: StateManager<ResolutionState>
-    public var resolution: ResolutionState { resolutionManager.displayedValue }
+    // MARK: Initializers and Updates
     
-    init(
-        api: ApiClient,
-        id: Int,
-        questionResponse: String,
-        creator: Person,
-        resolver: Person?,
-        email: String?,
-        emailVerified: Bool,
-        showNsfw: Bool,
-        created: Date,
-        resolution: ResolutionState
-    ) {
+    public init(api: ApiClient, properties: RegistrationApplicationProperties) {
         self.api = api
-        self.id = id
-        self.questionResponse = questionResponse
-        self.creator = creator
-        self.resolver = resolver
-        self.email = email
-        self.emailVerified = emailVerified
-        self.showNsfw = showNsfw
-        self.created = created
-        self.resolutionManager = .init(wrappedValue: resolution)
-        resolutionManager.onSet = { newValue, type, _ in
-            if type == .begin || type == .rollback {
-                api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: newValue != .unresolved)
-            }
-        }
-        resolutionManager.onVerify = { newValue, _ in
-            api.unreadCount?.verifyItem(itemType: .moderation, isRead: newValue != .unresolved)
-        }
+        self.properties = properties
+        
+        self.id = properties.id
+        self.created = properties.created
+        self.questionResponse = properties.questionResponse
+        self.email = properties.email
+        self.showNsfw = properties.showNsfw
+        self.creator = properties.creator
+        self.emailVerified = properties.emailVerified
+        self.resolver = properties.resolver
+        self.resolution = properties.resolution
     }
     
+    @MainActor
+    public func update(with properties: RegistrationApplicationProperties) {
+        setIfChanged(\.emailVerified, properties.emailVerified)
+        setIfChanged(\.resolver, properties.resolver)
+        setIfChanged(\.resolution, properties.resolution)
+    }
+    
+    public func softUpdate(with properties: RegistrationApplicationProperties) {
+        // noop - no higher-tier properties to update
+    }
+    
+    public func fetchUpgraded() async throws -> RegistrationApplicationProperties {
+        assertionFailure("Cannot upgrade RegistrationApplication")
+        return self.properties
+    }
+    
+    public func resolve(with api: ApiClient) async throws -> Self {
+        assertionFailure("Cannot resolve RegistrationApplication")
+        throw ApiClientError.invalidInput
+    }
+}
+
+// MARK: - Computed
+
+public extension RegistrationApplication {
     var modMailId: Int {
         var hasher: Hasher = .init()
         hasher.combine("application")
         hasher.combine(id)
         return hasher.finalize()
     }
+}
+
+// MARK: - Interactions
+
+public extension RegistrationApplication {
     
-    public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
-        switch sortType {
-        case .new: .new(created)
+    func approve(callback: ((UpdateStatus) -> Void)? = nil) {
+        self.resolution = .approved
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: true)
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.approveRegistrationApplication(id: self.id)
+                    self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: true)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
         }
     }
     
-    @discardableResult
-    public func approve() -> Task<StateUpdateResult, Never> {
-        resolutionManager.performRequest(expectedResult: .approved) { semaphore in
-            try await self.api.approveRegistrationApplication(id: self.id, semaphore: semaphore)
-        }
-    }
-    
-    @discardableResult
-    public func deny(reason: String?) -> Task<StateUpdateResult, Never> {
-        resolutionManager.performRequest(expectedResult: .denied(reason: reason)) { semaphore in
-            try await self.api.denyRegistrationApplication(id: self.id, reason: reason, semaphore: semaphore)
+    func deny(reason: String?, callback: ((UpdateStatus) -> Void)?) {
+        self.resolution = .denied(reason: reason)
+        api.unreadCount?.updateUnverifiedItem(itemType: .moderation, isRead: true)
+        
+        Task {
+            await updateQueue.addItem {
+                do {
+                    let snapshot = try await self.api.repository.denyRegistrationApplication(id: self.id, reason: reason)
+                    self.api.unreadCount?.verifyItem(itemType: .moderation, isRead: true)
+                    callback?(.success)
+                    return await .init(api: self.api, snapshot: snapshot)
+                } catch {
+                    callback?(.failure(error))
+                    throw error
+                }
+            }
         }
     }
 }

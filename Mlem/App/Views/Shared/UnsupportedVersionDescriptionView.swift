@@ -20,7 +20,7 @@ struct UnsupportedVersionDescriptionView: View {
                 .symbolVariant(.square.fill)
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 70)
-                .foregroundStyle(.themedColorfulAccent(5))
+                .foregroundStyle(.themedNominalColor(.indigo))
 
             Text("\(host) is unsupported")
                 .font(.title)

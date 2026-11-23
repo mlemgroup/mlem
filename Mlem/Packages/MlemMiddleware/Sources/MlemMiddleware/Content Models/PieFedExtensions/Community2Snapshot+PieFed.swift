@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Community2Snapshot {
-    init(from community: PieFedCommunityView, allPropertiesPresent: Bool = false) throws(ApiClientError) {
+    init(from community: PieFedCommunityView) throws(ApiClientError) {
         let subscription: SubscriptionModel = .init(
             total: community.counts.totalSubscriptionsCount,
             local: community.counts.subscriptionsCount,
@@ -24,7 +24,7 @@ public extension Community2Snapshot {
         )
             
         try self.init(
-            community: .init(from: community.community, allPropertiesPresent: allPropertiesPresent),
+            community: .init(from: community.community, allPropertiesPresent: true),
             subscription: subscription,
             postCount: community.counts.postCount,
             commentCount: community.counts.postReplyCount,

@@ -30,10 +30,24 @@ public class PersonContent: Hashable, Equatable, FeedLoadable, ActorIdentifiable
         .init(wrappedValue: .comment(comment))
     }
     
+    public func sortVal(sortType: PersonContentSortType) -> FeedLoaderSort {
+        switch sortType {
+        case .top: .top(score: interactable.votes.value?.total ?? 0)
+        case .new: .new(interactable.created)
+        }
+    }
+
     public func sortVal(sortType: FeedLoaderSort.SortType) -> FeedLoaderSort {
         switch wrappedValue {
         case let .post(post): post.sortVal(sortType: sortType)
         case let .comment(comment): comment.sortVal(sortType: sortType)
+        }
+    }
+
+    public var interactable: any InteractableProviding {
+        switch wrappedValue {
+        case let .post(post): post
+        case let .comment(comment): comment
         }
     }
 
