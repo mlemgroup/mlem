@@ -102,16 +102,15 @@ public final class Person:
         self.instanceId = properties.instanceId
         self.displayName = properties.displayName
         self.avatar = properties.avatar
-        self.note = properties.note
+        self.note = properties.note.value
         self.updated = properties.updated
         self.matrixUserId = properties.matrixUserId
         self.isBot = properties.isBot
         self.instanceBan = properties.instanceBan
         self.deleted = properties.deleted
 
-        // nil-coalesced because PieFed doesn't return these values for some requests.
-        self.description = properties.description ?? nil
-        self.banner = properties.banner ?? nil
+        self.description = properties.description.value
+        self.banner = properties.banner.value
         
         // because upgrade() is not available until all properties are initialized, first populate all properties
         // with ExpectedValues that don't actually do anything, then reassign them properly at the end of the init
@@ -183,19 +182,15 @@ public final class Person:
     public func update(with properties: PersonProperties) {
         setIfChanged(\.displayName, properties.displayName)
         setIfChanged(\.avatar, properties.avatar)
-        setIfChanged(\.note, properties.note)
+        setIfChangedAndProvided(\.note, properties.note)
         setIfChanged(\.updated, properties.updated)
         setIfChanged(\.matrixUserId, properties.matrixUserId)
         setIfChanged(\.isBot, properties.isBot)
         setIfChanged(\.instanceBan, properties.instanceBan)
         setIfChanged(\.deleted, properties.deleted)
 
-        if let description = properties.description {
-            setIfChanged(\.description, description)
-        }
-        if let banner = properties.banner {
-            setIfChanged(\.banner, banner)
-        }
+        setIfChangedAndProvided(\.description, properties.description)
+        setIfChangedAndProvided(\.banner, properties.banner)
         
         updateIfChanged(\.isAdmin.value_, properties.isAdmin)
         updateIfChanged(\.postCount.value_, properties.postCount)
@@ -400,7 +395,7 @@ public extension Person {
             await updateQueue.addItem { properties in
                 var properties = properties
                 try await self.api.repository.editNote(id: self.id, content: content)
-                properties.note = content
+                properties.note = .fromOptional(content)
                 return properties
             }
         }
@@ -430,9 +425,9 @@ public extension Person {
             
             var properties = properties
             properties.avatar = details.avatar
-            properties.banner = details.banner
+            properties.banner = .fromOptional(details.banner)
             properties.displayName = details.displayName ?? properties.name
-            properties.description = details.description
+            properties.description = .fromOptional(details.description)
             properties.matrixUserId = details.matrixUserId
             return properties
         }
@@ -509,10 +504,10 @@ public extension Person {
                         defaultListingType: properties.defaultListingType ?? defaultListingType,
                         interfaceLanguage: properties.interfaceLanguage ?? interfaceLanguage,
                         avatar: properties.avatar?.absoluteString ?? "",
-                        banner: properties.banner??.absoluteString ?? "",
+                        banner: properties.banner.value?.absoluteString ?? "",
                         displayName: properties.displayName,
                         email: newEmail,
-                        bio: properties.description ?? "",
+                        bio: properties.description.value ?? "",
                         matrixUserId: newMatrixUserId,
                         showAvatars: properties.showAvatars ?? showAvatars,
                         sendNotificationsToEmail: newSendNotificationsToEmail,
@@ -567,15 +562,14 @@ public extension Person {
             instanceId: instanceId,
             displayName: displayName,
             avatar: avatar,
-            banner: banner,
-            note: note,
+            banner: .notProvided,
+            note: .fromOptional(note),
             updated: updated,
-            description: description,
+            description: .notProvided,
             matrixUserId: matrixUserId,
             isBot: isBot,
             instanceBan: instanceBan,
-            deleted: deleted,
-            allPropertiesPresent: false
+            deleted: deleted
         )
     }
 }

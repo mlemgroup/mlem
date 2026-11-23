@@ -24,7 +24,7 @@ public extension Community2Snapshot {
         )
             
         try self.init(
-            community: .init(from: community.community, allPropertiesPresent: true),
+            community: .init(from: community.community, descriptionAndBannerProvided: true),
             subscription: subscription,
             postCount: community.counts.postCount,
             commentCount: community.counts.postReplyCount,
