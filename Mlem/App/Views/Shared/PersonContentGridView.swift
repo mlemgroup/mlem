@@ -101,7 +101,7 @@ struct PersonContentGridView: View {
     func personContentItem(_ personContent: PersonContent) -> some View {
         switch personContent.wrappedValue {
         case let .post(post):
-            NavigationLink(.post(post)) {
+            PostNavigationLink(.post(post)) {
                 FeedPostView(post: post)
             }
         case let .comment(comment):

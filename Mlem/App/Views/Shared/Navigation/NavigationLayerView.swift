@@ -27,6 +27,7 @@ struct NavigationLayerView: View {
                         .navigationDestination(for: NavigationFrame.self) {
                             NavigationFrameView(frame: $0)
                                 .environment(\.isRootView, false)
+                                .environment(layer)
                         }
                 }
             } else {

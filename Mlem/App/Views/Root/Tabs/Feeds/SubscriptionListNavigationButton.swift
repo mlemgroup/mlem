@@ -29,10 +29,15 @@ struct SubscriptionListNavigationButton<Content: View>: View {
     var body: some View {
         Button {
             navigation.popToRoot()
-            navigation.replace(destination)
+            if sidebarPresentationMode == .stacked {
+                navigation.clearDetailLayer()
+                navigation.push(destination)
+            } else {
+                navigation.replace(destination)
+            }
         } label: {
             Group {
-                if sidebarPresentationMode == .single {
+                if sidebarPresentationMode != .double {
                     FormChevron { label() }
                 } else {
                     label()

@@ -98,6 +98,7 @@ struct CompactPostView: View {
                     titleAndHostView
                 }
                 InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(ReadoutType.allCases))
+                    .unselectedPostPalette(inset: -Constants.main.halfSpacing)
             }
             .frame(maxWidth: .infinity)
             

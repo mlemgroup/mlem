@@ -7281,6 +7281,9 @@
         }
       }
     },
+    "Feeds open in the sidebar, and posts open in the detail view." : {
+
+    },
     "Files" : {
       "localizations" : {
         "es" : {
@@ -10443,6 +10446,9 @@
           }
         }
       }
+    },
+    "No Post Selected" : {
+
     },
     "No reason given" : {
       "localizations" : {
@@ -14657,6 +14663,9 @@
           }
         }
       }
+    },
+    "Show Feed in Sidebar" : {
+
     },
     "Show Full URL" : {
       "localizations" : {

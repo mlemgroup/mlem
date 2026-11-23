@@ -19,6 +19,7 @@ struct PostSettingsView: View {
     @Setting(\.post_showSubscribedStatus) var showSubscribedStatus
     @Setting(\.post_showDownvotesCompact) var showDownvotesCompact
     @Setting(\.post_gestures_tapToCollapse) var tapPostsToCollapse
+    @Setting(\.navigation_feedInSidebar) var feedInSidebar
     
     @Setting(\.interactionBar_post) var postInteractionBar
     
@@ -81,6 +82,12 @@ struct PostSettingsView: View {
                 Section {
                     Toggle("Always Show Usernames", icon: .settings.author, isOn: $showCreator)
                 }
+            }
+
+            Section {
+                Toggle("Show Feed in Sidebar", icon: .lemmy.feed, isOn: $feedInSidebar)
+            } footer: {
+                Text("Feeds open in the sidebar, and posts open in the detail view.")
             }
         }
         .withConditionalLabelStyle()
