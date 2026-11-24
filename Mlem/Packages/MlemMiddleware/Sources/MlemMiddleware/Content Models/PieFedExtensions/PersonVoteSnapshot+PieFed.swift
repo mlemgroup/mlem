@@ -10,7 +10,7 @@ import Foundation
 extension PersonVoteSnapshot {
     init(from vote: PieFedPostLikeView) throws(ApiClientError) {
         try self.init(
-            creator: .init(from: vote.creator),
+            creator: .init(from: vote.creator, noteProvided: true),
             score: vote.score,
             creatorBannedFromCommunity: vote.creatorBannedFromCommunity
         )
@@ -18,7 +18,7 @@ extension PersonVoteSnapshot {
     
     init(from vote: PieFedCommentLikeView) throws(ApiClientError) {
         try self.init(
-            creator: .init(from: vote.creator),
+            creator: .init(from: vote.creator, noteProvided: true),
             score: vote.score,
             creatorBannedFromCommunity: vote.creatorBannedFromCommunity
         )
