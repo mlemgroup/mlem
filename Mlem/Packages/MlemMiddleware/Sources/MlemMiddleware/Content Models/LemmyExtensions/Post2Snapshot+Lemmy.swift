@@ -95,8 +95,15 @@ extension Post2Snapshot {
             throw .responseMissingRequiredData("LemmyPostReportView scores")
         }
         
-        guard let creatorBlocked = report.creatorBlocked else {
-            throw .responseMissingRequiredData("LemmyPostReportView creatorBlocked")
+        let creatorBlocked: Bool
+        if let personActions = report.personActions {
+            creatorBlocked = personActions.blockedAt != nil
+        } else if let creatorBlocked_ = report.creatorBlocked {
+            creatorBlocked = creatorBlocked_
+        } else {
+            // `personActions` is `nil` on Lemmy 1.0 for your own posts.
+            // Therefore we can set `creatorBlocked` to `false`.
+            creatorBlocked = false
         }
         
         let commentCount: Int
