@@ -93,7 +93,7 @@ struct NavigationSplitRootView: View {
         }
         .onChange(of: horizontalSizeClass, initial: true) {
             if horizontalSizeClass == .regular {
-                columnVisibility = .all
+                columnVisibility = columnVisibility == .all ? .doubleColumn : .all
             }
         }
         .onChange(of: preferredColumn) {
