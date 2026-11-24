@@ -9,6 +9,19 @@ import ComponentViews
 import Haptics
 import MlemMiddleware
 import SwiftUI
+import TipKit
+
+struct ReportEditorTip: Tip {
+    var title: Text {
+        Text("Quick Reports")
+    }
+    
+    var message: Text? {
+        Text("Tap a reason or rule below to auto-fill the report")
+    }
+    
+    var image: Image? { nil }
+}
 
 struct ReportEditorView: View {
     @Environment(AppState.self) var appState
@@ -38,8 +51,15 @@ struct ReportEditorView: View {
         CollapsibleSheetView(presentationSelection: $presentationSelection, canDismiss: reason.isEmpty) {
             NavigationStack {
                 Form {
-                    TextField("Reason", text: $reason, axis: .vertical)
-                        .focused($reasonFocused)
+                    Section {
+                        TextField("Reason", text: $reason, axis: .vertical)
+                            .focused($reasonFocused)
+                        TipView(ReportEditorTip())
+                            .tipViewStyle(NoPaddingTipViewStyle())
+                            .tipBackground(.clear)
+                            .tipCornerRadius(0)
+                    }
+                    
                     Section {
                         ReasonShortcutView(reason: $reason)
                     }
