@@ -77,6 +77,7 @@ enum NavigationPage {
     case selectText(_ string: String)
     case shareInstancePicker(_ sharable: any Sharable & ContentModel)
     case subscriptionList
+    case noPostSelected
     case createComment(_ context: CommentEditorView.Context, commentTreeTracker: CommentTreeTracker? = nil)
     case editComment(_ comment: Comment, context: CommentEditorView.Context?)
     case editCommunity(_ community: Community)

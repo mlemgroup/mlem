@@ -71,8 +71,8 @@ class NavigationLayer: Identifiable {
 
     @MainActor
     func clearDetailLayer() {
-        guard detailLayer != nil, let model else { return }
-        detailLayer = .init(root: .dummy, model: model)
+        detailLayer?.popToRoot()
+        detailLayer?.replace(.noPostSelected)
     }
 
     func isShowingInDetailLayer(_ page: NavigationPage) -> Bool {

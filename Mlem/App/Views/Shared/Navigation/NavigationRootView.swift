@@ -13,6 +13,7 @@ struct NavigationSplitRootView: View {
 
     @State var layer: NavigationLayer
     @State var sidebarLayer: NavigationLayer
+    @State var postLayer: NavigationLayer
     let sidebar: NavigationPage
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
@@ -25,8 +26,10 @@ struct NavigationSplitRootView: View {
             model: .main
         ))
         let sidebarLayer = NavigationLayer(root: sidebar, path: [root], model: .main)
-        sidebarLayer.detailLayer = NavigationLayer(root: .dummy, model: .main)
+        let postLayer = NavigationLayer(root: .noPostSelected, model: .main)
+        sidebarLayer.detailLayer = postLayer
         self._sidebarLayer = .init(wrappedValue: sidebarLayer)
+        self._postLayer = .init(wrappedValue: postLayer)
         self.sidebar = sidebar
         self._columnVisibility = .init(wrappedValue: Settings.get(\.navigation_sidebarVisibleByDefault) ? .all : .detailOnly)
         if Settings.get(\.navigation_feedInSidebar) {
@@ -77,23 +80,20 @@ struct NavigationSplitRootView: View {
                     .environment(\.sidebarPresentationMode, .stacked)
             },
             detail: {
-                Group {
-                    if let postLayer = sidebarLayer.detailLayer, hasSelectedPost {
-                        NavigationLayerView(layer: postLayer, hasSheetModifiers: false)
-                            .id(postLayer.id)
-                    } else {
-                        ContentUnavailableView("No Post Selected", systemImage: "doc.text")
-                            .background(.themedBackground)
-                    }
-                }
-                .animation(nil, value: hasSelectedPost)
+                NavigationLayerView(layer: postLayer, hasSheetModifiers: false)
+                    .animation(nil, value: hasSelectedPost)
             }
         )
         .modifier(HandleThreadiverseLinksModifier())
         .environment(sidebarLayer)
-        .onChange(of: sidebarLayer.detailLayer?.root.updateCountHash) {
+        .onChange(of: postLayer.root.updateCountHash) {
             if hasSelectedPost {
                 preferredColumn = .detail
+            }
+        }
+        .onChange(of: horizontalSizeClass, initial: true) {
+            if horizontalSizeClass == .regular {
+                columnVisibility = .all
             }
         }
         .onChange(of: preferredColumn) {
@@ -106,10 +106,7 @@ struct NavigationSplitRootView: View {
     }
 
     var hasSelectedPost: Bool {
-        switch sidebarLayer.detailLayer?.root.page {
-        case .dummy, nil: false
-        default: true
-        }
+        if case .noPostSelected = postLayer.root.page { false } else { true }
     }
 }
 

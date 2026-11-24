@@ -26,6 +26,9 @@ extension NavigationPage {
         switch self {
         case .subscriptionList:
             SubscriptionListView()
+        case .noPostSelected:
+            ContentUnavailableView("No Post Selected", systemImage: "doc.text")
+                .background(.themedBackground)
         case let .selectText(string):
             SelectTextView(text: string)
         case let .shareInstancePicker(sharable):
