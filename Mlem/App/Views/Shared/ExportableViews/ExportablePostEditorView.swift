@@ -42,7 +42,7 @@ struct ExportablePostEditorView: View {
             exportablePost
                 .padding(.bottom, 200)
         }
-        .presentationBackground(.themedGroupedBackground)
+        .background(.themedGroupedBackground)
         .overlay(alignment: .bottom) {
             ExportableViewControlOverlay {
                 createImageFromView(exportablePost, environment: environment)

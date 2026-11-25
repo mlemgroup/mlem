@@ -157,7 +157,7 @@ struct PostDetailsView: View {
             }
             .padding(.top, 16)
         }
-        .presentationBackground(.themedGroupedBackground)
+        .background(.themedGroupedBackground)
         .presentationDragIndicator(.hidden)
         .presentationBackgroundInteraction(.enabled)
         .navigationTitle("Post Details")

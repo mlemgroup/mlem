@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftUIIntrospect
+import Theming
 import UIKit
 
 struct NavigationLayerView: View {
@@ -29,6 +30,7 @@ struct NavigationLayerView: View {
                                 .environment(\.isRootView, false)
                         }
                 }
+                .modifier(OptionalPresentationBackgroundModifier(background: layer.root.page.presentationBackground))
             } else {
                 rootView()
                     .environment(\.isRootView, true)
@@ -83,5 +85,17 @@ struct NavigationLayerView: View {
         }
         
         return newStyle.colorScheme
+    }
+}
+
+private struct OptionalPresentationBackgroundModifier: ViewModifier {
+    let background: ThemedColor?
+    
+    func body(content: Content) -> some View {
+        if let background {
+            content.presentationBackground(background)
+        } else {
+            content
+        }
     }
 }
