@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 
 struct NavigationSplitRootView: View {
     @Setting(\.navigation_feedInSidebar) var feedInSidebar
@@ -17,6 +18,7 @@ struct NavigationSplitRootView: View {
     let sidebar: NavigationPage
     
     @State var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var splitViewController: UISplitViewController?
 
     @State private var preferredColumn = NavigationSplitViewColumn.detail
     
@@ -87,13 +89,16 @@ struct NavigationSplitRootView: View {
         .modifier(HandleThreadiverseLinksModifier())
         .environment(sidebarLayer)
         .onChange(of: postLayer.root.updateCountHash) {
-            if hasSelectedPost {
-                preferredColumn = .detail
-            }
+            preferredColumn = hasSelectedPost ? .detail : .sidebar
         }
-        .onChange(of: horizontalSizeClass, initial: true) {
-            if horizontalSizeClass == .regular {
-                columnVisibility = columnVisibility == .all ? .doubleColumn : .all
+        .introspect(.navigationSplitView, on: .iOS(.v26, .v27)) {
+            if splitViewController !== $0 {
+                splitViewController = $0
+                $0.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (splitViewController: UISplitViewController, _: UITraitCollection) in
+                    if splitViewController.traitCollection.horizontalSizeClass == .regular {
+                        Self.showSidebarIfHidden(in: splitViewController)
+                    }
+                }
             }
         }
         .onChange(of: preferredColumn) {
@@ -107,6 +112,19 @@ struct NavigationSplitRootView: View {
 
     var hasSelectedPost: Bool {
         if case .noPostSelected = postLayer.root.page { false } else { true }
+    }
+
+    private static func showSidebarIfHidden(in splitViewController: UISplitViewController) {
+        let showSidebar = {
+            if splitViewController.displayMode == .secondaryOnly {
+                splitViewController.preferredDisplayMode = .oneBesideSecondary
+            }
+        }
+        if let transitionCoordinator = splitViewController.transitionCoordinator {
+            transitionCoordinator.animate(alongsideTransition: nil) { _ in showSidebar() }
+        } else {
+            showSidebar()
+        }
     }
 }
 
