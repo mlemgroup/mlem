@@ -30,6 +30,7 @@ enum PersistencePath {
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var pinnedSortTypes = root.appendingPathComponent("Sort Settings", conformingTo: .json)
     static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
+    static var commentDrafts = root.appendingPathComponent("Comment Drafts", conformingTo: .directory)
     
     static func accountSettingsDirectory(for account: any Account) -> URL {
         root
@@ -184,6 +185,22 @@ class PersistenceRepository {
     /// Loads given system settings, if present
     func loadSystemSettings(_ setting: SystemSetting) -> SettingsValues? {
         load(SettingsValues.self, from: PersistencePath.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
+    }
+    
+    func saveCommentDraftsIndex(_ value: DraftsIndex) async throws {
+        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(DraftsIndex.persistenceKey, conformingTo: .json))
+    }
+    
+    func loadCommentDraftsIndex() -> DraftsIndex? {
+        load(DraftsIndex.self, from: PersistencePath.commentDrafts.appendingPathComponent(DraftsIndex.persistenceKey, conformingTo: .json))
+    }
+    
+    func loadCommentDraft(_ id: UUID) -> CommentDraft? {
+        load(CommentDraft.self, from: PersistencePath.commentDrafts.appendingPathComponent(id.uuidString, conformingTo: .json))
+    }
+    
+    func saveCommentDraft(_ value: CommentDraft) async throws {
+        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(value.id.uuidString, conformingTo: .json))
     }
     
     // DEV ONLY
