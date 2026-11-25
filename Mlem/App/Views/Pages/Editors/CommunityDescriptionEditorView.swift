@@ -47,6 +47,7 @@ struct CommunityDescriptionEditorView: View {
                         }
                     }
             }
+            .presentationBackground(.themedGroupedBackground)
         }
         .onChange(of: presentationSelection) {
             if presentationSelection == .large {
@@ -75,7 +76,6 @@ struct CommunityDescriptionEditorView: View {
                 .padding(.horizontal, Constants.main.standardSpacing)
         }
         .background(.themedGroupedBackground)
-        .presentationBackground(.themedGroupedBackground)
         .scrollBounceBehavior(.basedOnSize)
         .markdownToolbarKeyboardInset([textView])
     }

@@ -49,7 +49,7 @@ struct UploadConfirmationView: View {
             footerView
         }
         .padding()
-        .presentationBackground(.themedBackground)
+        .background(.themedBackground)
         .onDisappear { callback(outcome) }
     }
 

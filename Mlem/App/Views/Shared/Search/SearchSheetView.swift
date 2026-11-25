@@ -38,7 +38,6 @@ struct SearchSheetView<Item: Searchable, Content: View>: View {
             }
         }
         .background(.themedGroupedBackground)
-        .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .withSheetSearch(query: $query)
         .task(id: query, priority: .userInitiated) {
