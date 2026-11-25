@@ -84,7 +84,6 @@ struct SignUpView: View {
         .animation(.easeOut(duration: 0.1), value: signInResult)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.themedGroupedBackground)
-        .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if navigation.isInsideSheet, isRootView {

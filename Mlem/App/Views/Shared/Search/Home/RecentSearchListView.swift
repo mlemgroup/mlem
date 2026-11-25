@@ -22,7 +22,7 @@ struct RecentSearchListView: View {
     var body: some View {
         let items = visitHistory.all(withContext: .search)
         if !items.isEmpty {
-            Section {
+            SwiftUI.Section {
                 content(items)
             } header: {
                 Text("Recently Searched")

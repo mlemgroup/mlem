@@ -34,7 +34,6 @@ struct AdvancedSortView: View {
             }
         }
         .background(.themedGroupedBackground)
-        .presentationBackground(.themedGroupedBackground)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             CloseButtonToolbarItem()

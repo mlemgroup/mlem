@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Post2Snapshot {
-    init(from post: PieFedPostView, overrideRead: Bool? = nil) throws(ApiClientError) {
+    init(from post: PieFedPostView, overrideRead: Bool? = nil, noteProvided: Bool = true) throws(ApiClientError) {
         let votes = VotesModel(
             upvotes: post.counts.upvotes,
             downvotes: post.counts.downvotes,
@@ -17,7 +17,7 @@ public extension Post2Snapshot {
 
         try self.init(
             post: .init(from: post.post),
-            creator: .init(from: post.creator),
+            creator: .init(from: post.creator, noteProvided: noteProvided),
             community: .init(from: post.community),
             commentCount: post.counts.comments,
             unreadCommentCount: post.unreadComments,
@@ -40,7 +40,7 @@ public extension Post2Snapshot {
 
         try self.init(
             post: .init(from: report.post),
-            creator: .init(from: report.postCreator),
+            creator: .init(from: report.postCreator, noteProvided: true),
             community: .init(from: report.community),
             commentCount: report.counts.comments,
             unreadCommentCount: 0,
