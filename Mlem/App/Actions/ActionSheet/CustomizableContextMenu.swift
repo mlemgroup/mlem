@@ -83,9 +83,9 @@ extension CustomizableActionMenu {
         self.init(
             configuration: { environment in
                 if environment.reportContext != nil && Settings.get(\.interactionBar_alternateReportLayout) {
-                    configuration
-                } else {
                     modMailConfiguration
+                } else {
+                    configuration
                 }
             },
             createAction: { seed, environment in
