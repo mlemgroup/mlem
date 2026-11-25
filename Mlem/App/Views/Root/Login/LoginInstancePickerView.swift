@@ -27,7 +27,6 @@ struct LoginInstancePickerView: View {
         content
             .interactiveDismissDisabled(!domain.isEmpty)
             .background(.themedGroupedBackground)
-            .presentationBackground(.themedGroupedBackground)
             .toolbar {
                 if navigation.isInsideSheet, isRootView {
                     ToolbarItem(placement: .topBarLeading) {
