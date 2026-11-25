@@ -43,7 +43,10 @@ struct MlemApp: App {
                 .task {
                     do {
                         #if DEBUG
-                        Tips.showAllTipsForTesting()
+                        @Setting(\.dev_resetTipsOnLaunch) var resetTipsOnLaunch: Bool
+                        if resetTipsOnLaunch {
+                            Tips.showAllTipsForTesting()
+                        }
                         #endif
                         
                         try Tips.configure()

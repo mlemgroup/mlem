@@ -60,6 +60,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var dev_developerMode: Bool
     var dev_errorTimeout: Double
     var dev_flipLayoutDirection: Bool
+    var dev_resetTipsOnLaunch: Bool
     var feed_default: ListingType
     var feed_markReadOnScroll: Bool
     var feed_showRead: Bool
@@ -199,6 +200,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.dev_developerMode = try container.decodeIfPresent(Bool.self, forKey: ._dev_developerMode) ?? false
         self.dev_errorTimeout = try container.decodeIfPresent(Double.self, forKey: ._dev_errorTimeout) ?? 1.5
         self.dev_flipLayoutDirection = try container.decodeIfPresent(Bool.self, forKey: ._dev_flipLayoutDirection) ?? false
+        self.dev_resetTipsOnLaunch = try container.decodeIfPresent(Bool.self, forKey: ._dev_resetTipsOnLaunch) ?? false
         self.feed_default = try container.decodeIfPresent(ListingType.self, forKey: ._feed_default) ?? .subscribed
         self.feed_markReadOnScroll = try container.decodeIfPresent(Bool.self, forKey: ._feed_markReadOnScroll) ?? false
         self.feed_showRead = try container.decodeIfPresent(Bool.self, forKey: ._feed_showRead) ?? true
@@ -327,6 +329,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.dev_developerMode = false
         self.dev_errorTimeout = 1.5
         self.dev_flipLayoutDirection = false
+        self.dev_resetTipsOnLaunch = false
         self.feed_default = .subscribed
         self.feed_markReadOnScroll = false
         self.feed_showRead = true
@@ -442,6 +445,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         community_showInstance = otherValues.community_showInstance
         dev_developerMode = otherValues.dev_developerMode
         dev_flipLayoutDirection = otherValues.dev_flipLayoutDirection
+        dev_resetTipsOnLaunch = otherValues.dev_resetTipsOnLaunch
         feed_default = otherValues.feed_default
         feed_markReadOnScroll = otherValues.feed_markReadOnScroll
         feed_showRead = otherValues.feed_showRead
@@ -563,6 +567,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _dev_developerMode = "dev_developerMode"
         case _dev_errorTimeout = "dev_errorTimeout"
         case _dev_flipLayoutDirection = "dev_flipLayoutDirection"
+        case _dev_resetTipsOnLaunch = "dev_resetTipsOnLaunch"
         case _feed_default = "feed_default"
         case _feed_markReadOnScroll = "feed_markReadOnScroll"
         case _feed_showRead = "feed_showRead"
