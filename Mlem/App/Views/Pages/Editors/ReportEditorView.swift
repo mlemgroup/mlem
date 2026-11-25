@@ -55,9 +55,7 @@ struct ReportEditorView: View {
                         TextField("Reason", text: $reason, axis: .vertical)
                             .focused($reasonFocused)
                         TipView(ReportEditorTip())
-                            .tipViewStyle(NoPaddingTipViewStyle())
-                            .tipBackground(.clear)
-                            .tipCornerRadius(0)
+                            .tipViewStyle(.blank)
                     }
                     
                     Section {

@@ -1,5 +1,5 @@
 //
-//  NoPaddingTipViewStyle.swift
+//  BlankTipViewStyle.swift
 //  Mlem
 //
 //  Created by Eric Andrews on 2026-11-24.
@@ -8,8 +8,8 @@
 import TipKit
 
 /// Minimal TipViewStyle with no padding, suitable for embedding in views that force padding (e.g., Form)
-/// Recommended to use .tipBackground(.clear).tipCornerRadius(0) along with this style
-struct NoPaddingTipViewStyle: TipViewStyle {
+/// Requires .tipBackground(.clear).tipCornerRadius(0) to display properly, so exposed using the view extension below
+private struct NoPaddingTipViewStyle: TipViewStyle {
     func makeBody(configuration: TipViewStyle.Configuration) -> some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top) {
@@ -31,5 +31,19 @@ struct NoPaddingTipViewStyle: TipViewStyle {
             
             configuration.message
         }
+    }
+}
+
+enum BlankTipViewStyle {
+    case blank
+}
+
+extension View {
+    @ViewBuilder
+    func tipViewStyle(_ style: BlankTipViewStyle) -> some View {
+        self
+            .tipViewStyle(NoPaddingTipViewStyle())
+            .tipBackground(.clear)
+            .tipCornerRadius(0)
     }
 }
