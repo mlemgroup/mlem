@@ -6,6 +6,7 @@
 //
 
 import ComponentViews
+import Icons
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
@@ -27,7 +28,7 @@ extension NavigationPage {
         case .subscriptionList:
             SubscriptionListView()
         case .noPostSelected:
-            ContentUnavailableView("No Post Selected", systemImage: "doc.text")
+            ContentUnavailableView("No Post Selected", icon: .lemmy.post)
                 .background(.themedBackground)
         case let .selectText(string):
             SelectTextView(text: string)
