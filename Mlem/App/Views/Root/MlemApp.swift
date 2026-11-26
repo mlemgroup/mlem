@@ -10,6 +10,7 @@ import Nuke
 import SDWebImageWebPCoder
 import SwiftUI
 import Media
+import TipKit
 
 /// Root view for the app
 @main
@@ -39,6 +40,20 @@ struct MlemApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    do {
+                        #if DEBUG
+                        @Setting(\.dev_resetTipsOnLaunch) var resetTipsOnLaunch: Bool
+                        if resetTipsOnLaunch {
+                            Tips.showAllTipsForTesting()
+                        }
+                        #endif
+                        
+                        try Tips.configure()
+                    } catch {
+                        print("Error initializing TipKit \(error.localizedDescription)")
+                    }
+                }
         }
     }
 }

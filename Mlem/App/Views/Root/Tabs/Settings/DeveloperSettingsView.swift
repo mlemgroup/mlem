@@ -24,6 +24,7 @@ struct DeveloperSettingsView: View {
     @Dependency(\.persistenceRepository) var persistenceRepository
     
     @Setting(\.tip_feedWelcomePrompt) var showFeedWelcomePrompt
+    @Setting(\.dev_resetTipsOnLaunch) var resetTipsOnLaunch
     
     @AppStorage("lastTestFlightUpdate") var lastTestFlightUpdate: URL?
     
@@ -39,6 +40,10 @@ struct DeveloperSettingsView: View {
                                    set: { eventsTracker.changeEnvironment(to: $0 ? .qualityControl : .production) }))
             } footer: {
                 Text(verbatim: "These settings will be cleared when the app restarts.")
+            }
+            
+            Section {
+                Toggle(String("Reset Tips on Launch"), isOn: $resetTipsOnLaunch)
             }
             
             Section {
