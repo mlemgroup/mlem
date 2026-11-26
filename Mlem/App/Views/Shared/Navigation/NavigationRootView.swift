@@ -30,6 +30,7 @@ struct NavigationSplitRootView: View {
         let sidebarLayer = NavigationLayer(root: sidebar, path: [root], model: .main)
         let postLayer = NavigationLayer(root: .noPostSelected, model: .main)
         sidebarLayer.detailLayer = postLayer
+        postLayer.sidebarLayer = sidebarLayer
         self._sidebarLayer = .init(wrappedValue: sidebarLayer)
         self._postLayer = .init(wrappedValue: postLayer)
         self.sidebar = sidebar
@@ -90,6 +91,11 @@ struct NavigationSplitRootView: View {
         .environment(sidebarLayer)
         .onChange(of: postLayer.root.updateCountHash) {
             preferredColumn = hasSelectedPost ? .detail : .sidebar
+        }
+        .onChange(of: sidebarLayer.path.count) {
+            if horizontalSizeClass == .compact {
+                preferredColumn = .sidebar
+            }
         }
         .introspect(.navigationSplitView, on: .iOS(.v26, .v27)) {
             if splitViewController !== $0 {

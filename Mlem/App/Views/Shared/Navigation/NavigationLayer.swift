@@ -15,6 +15,7 @@ class NavigationLayer: Identifiable {
     
     weak var model: NavigationModel?
     var detailLayer: NavigationLayer?
+    weak var sidebarLayer: NavigationLayer?
     var index: Int
     
     var root: NavigationFrame
@@ -49,7 +50,7 @@ class NavigationLayer: Identifiable {
     
     @MainActor
     func push(_ page: NavigationPage) {
-        if openInDetailLayer(page) {
+        if openInDetailLayer(page) || openInSidebarLayer(page) {
             return
         }
         if hasNavigationStack {
@@ -66,6 +67,13 @@ class NavigationLayer: Identifiable {
         guard let detailLayer, let detailPage = page.detailPage else { return false }
         detailLayer.popToRoot()
         detailLayer.replace(detailPage)
+        return true
+    }
+
+    @MainActor
+    private func openInSidebarLayer(_ page: NavigationPage) -> Bool {
+        guard let sidebarLayer, page.opensInSidebar else { return false }
+        sidebarLayer.push(page)
         return true
     }
 
@@ -279,6 +287,15 @@ private extension NavigationPage {
             .postStub(stub)
         default:
             nil
+        }
+    }
+
+    var opensInSidebar: Bool {
+        switch self {
+        case .community, .communityStub:
+            true
+        default:
+            false
         }
     }
 }
