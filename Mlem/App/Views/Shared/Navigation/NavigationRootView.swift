@@ -51,6 +51,8 @@ struct NavigationSplitRootView: View {
         .onChange(of: feedInSidebar) {
             preferredColumn = feedInSidebar && !hasSelectedPost ? .sidebar : .detail
         }
+        .modifier(HandleThreadiverseLinksModifier())
+        .environment(feedInSidebar ? sidebarLayer : layer)
     }
 
     var standardSplitView: some View {
@@ -66,8 +68,6 @@ struct NavigationSplitRootView: View {
                 NavigationLayerView(layer: layer, hasSheetModifiers: false)
             }
         )
-        .modifier(HandleThreadiverseLinksModifier())
-        .environment(layer)
         .onChange(of: layer.root.updateCountHash) {
             preferredColumn = .detail
         }
@@ -87,8 +87,6 @@ struct NavigationSplitRootView: View {
                     .animation(nil, value: hasSelectedPost)
             }
         )
-        .modifier(HandleThreadiverseLinksModifier())
-        .environment(sidebarLayer)
         .onChange(of: postLayer.root.updateCountHash) {
             preferredColumn = hasSelectedPost ? .detail : .sidebar
         }
