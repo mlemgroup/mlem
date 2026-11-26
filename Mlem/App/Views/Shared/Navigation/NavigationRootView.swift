@@ -94,7 +94,9 @@ struct NavigationSplitRootView: View {
         .introspect(.navigationSplitView, on: .iOS(.v26, .v27)) {
             if splitViewController !== $0 {
                 splitViewController = $0
-                $0.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { (splitViewController: UISplitViewController, _: UITraitCollection) in
+                $0.registerForTraitChanges(
+                    [UITraitHorizontalSizeClass.self]
+                ) { (splitViewController: UISplitViewController, _: UITraitCollection) in
                     if splitViewController.traitCollection.horizontalSizeClass == .regular {
                         Self.showSidebarIfHidden(in: splitViewController)
                     }
