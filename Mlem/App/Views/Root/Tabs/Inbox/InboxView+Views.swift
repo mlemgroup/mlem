@@ -93,11 +93,16 @@ extension InboxView {
                     .buttonStyle(.glassProminent)
             }
         }
-        if selectedFeed == .inbox {
+        switch selectedFeed {
+        case .inbox:
             MarkAllAsReadButton {
                 if !showRead {
                     await refresh()
                 }
+            }
+        case .modMail:
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink("Modlog", icon: .lemmy.modlog, destination: .modlog())
             }
         }
     }
