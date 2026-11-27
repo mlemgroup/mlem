@@ -17,6 +17,7 @@ struct CompactPostView: View {
     
     @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.isSelectedPost) var isSelectedPost
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
     
@@ -131,7 +132,7 @@ struct CompactPostView: View {
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
             .imageScale(.small)
-            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
+            .foregroundStyle(post.read.value ?? false && !isSelectedPost ? .themedSecondary : .themedPrimary)
             .font(.subheadline)
     }
 }

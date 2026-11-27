@@ -47,6 +47,8 @@ private struct UnselectedPostPalette: ViewModifier {
 
 extension EnvironmentValues {
     @Entry var unselectedPostPalette: Palette?
+
+    var isSelectedPost: Bool { unselectedPostPalette != nil }
 }
 
 extension Palette {

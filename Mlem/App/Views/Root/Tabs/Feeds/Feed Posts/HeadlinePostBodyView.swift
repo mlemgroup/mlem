@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HeadlinePostBodyView: View {
     @Environment(\.communityContext) var communityContext: Community?
+    @Environment(\.isSelectedPost) var isSelectedPost
     
     @Setting(\.post_thumbnailLocation) var thumbnailLocation
     @Setting(\.safety_blurNsfw) var blurNsfw
@@ -81,7 +82,7 @@ struct HeadlinePostBodyView: View {
         post.taggedTitle(communityContext: communityContext)
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
-            .foregroundStyle((post.read.value ?? false) ? .themedSecondary : .themedPrimary)
+            .foregroundStyle((post.read.value ?? false) && !isSelectedPost ? .themedSecondary : .themedPrimary)
             .font(.headline)
             .imageScale(.small)
             .fixedSize(horizontal: false, vertical: true)

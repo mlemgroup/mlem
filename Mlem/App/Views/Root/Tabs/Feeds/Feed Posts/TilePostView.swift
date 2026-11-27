@@ -20,6 +20,7 @@ struct TilePostView: View {
     @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.parentFrameWidth) var parentFrameWidth: CGFloat
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.isSelectedPost) var isSelectedPost
     
     let post: Post
 
@@ -74,7 +75,7 @@ struct TilePostView: View {
         post.taggedTitle(communityContext: communityContext)
             .symbolVariant(.fill)
             .lineLimit(post.type.lineLimit)
-            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
+            .foregroundStyle(post.read.value ?? false && !isSelectedPost ? .themedSecondary : .themedPrimary)
             .font(.footnote)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity, minHeight: minTitleHeight, alignment: .topLeading)
