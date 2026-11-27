@@ -123,7 +123,7 @@ extension CommentEditorView {
         }
         do {
             try await draftsTracker.saveCommentDraft(.init(
-                id: draftId,
+                draftId: draftId,
                 author: account.actorId,
                 target: originalContext.actorId,
                 language: language,
@@ -165,7 +165,7 @@ extension CommentEditorView {
         }
         
         account = authorAccount
-        draftId = draftContents.id
+        draftId = draftContents.draftId
         language = draftContents.language
         draftSaved = draftMetadata.touched
         textView.text = draftContents.text

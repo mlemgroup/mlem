@@ -340,23 +340,24 @@ struct CommentEditorView: View {
     func draftPicker(availableDrafts: [DraftMetadata]) -> some View {
         VStack {
             ForEach(availableDrafts) { draft in
-                HStack {
-                    if draft.draftId == draftId {
-                        Image(icon: .general.circle)
-                            .symbolVariant(.fill)
-                            .foregroundStyle(.themedPositive)
-                            .font(.system(size: 10.0))
-                            .padding(.trailing, 7)
-                    }
-                    Text(draft.author.description)
-                    Spacer()
-                    Text(dateTimeFormatter.localizedString(for: draft.touched, relativeTo: .now))
-                    Button("Delete", icon: .general.remove) {
-                        Task {
-                            await deleteDraft(draft.draftId)
-                        }
-                    }
-                }
+                DraftRowView(draftMetadata: draft)
+//                HStack {
+//                    if draft.draftId == draftId {
+//                        Image(icon: .general.circle)
+//                            .symbolVariant(.fill)
+//                            .foregroundStyle(.themedPositive)
+//                            .font(.system(size: 10.0))
+//                            .padding(.trailing, 7)
+//                    }
+//                    Text(draft.author.description)
+//                    Spacer()
+//                    Text(dateTimeFormatter.localizedString(for: draft.touched, relativeTo: .now))
+//                    Button("Delete", icon: .general.remove) {
+//                        Task {
+//                            await deleteDraft(draft.draftId)
+//                        }
+//                    }
+//                }
                 .contentShape(.rect)
                 .onTapGesture {
                     Task {

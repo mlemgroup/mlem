@@ -23,8 +23,8 @@ class DraftsTracker {
         commentsIndex.retrieveByTarget(target) ?? .init()
     }
     
-    public func getCommentDraft(_ id: UUID) -> CommentDraft? {
-        persistenceRepository.loadCommentDraft(id)
+    public func getCommentDraft(_ draftId: UUID) -> CommentDraft? {
+        persistenceRepository.loadCommentDraft(draftId)
     }
     
     public func saveCommentDraft(_ commentDraft: CommentDraft) async throws {
@@ -33,9 +33,9 @@ class DraftsTracker {
         try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
     }
     
-    public func deleteCommentDraft(_ id: UUID) async throws {
-        commentsIndex.deindex(id)
-        try persistenceRepository.deleteCommentDraft(id)
+    public func deleteCommentDraft(_ draftId: UUID) async throws {
+        commentsIndex.deindex(draftId)
+        try persistenceRepository.deleteCommentDraft(draftId)
         try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
     }
 }

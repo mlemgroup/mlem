@@ -10,13 +10,13 @@ import MlemMiddleware
 import Foundation
 
 public struct CommentDraft: Codable {
-    let id: UUID
+    let draftId: UUID
     let author: ActorIdentifier
     let target: ActorIdentifier
     let language: Locale.Language?
     let text: String
     
     var metadata: DraftMetadata {
-        .init(draftId: id, touched: .now, target: target, author: author)
+        .init(draftId: draftId, touched: .now, target: target, author: author)
     }
 }

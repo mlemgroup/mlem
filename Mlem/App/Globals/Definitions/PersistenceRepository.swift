@@ -195,16 +195,18 @@ class PersistenceRepository {
         load(DraftsIndex.self, from: PersistencePath.commentDrafts.appendingPathComponent(DraftsIndex.persistenceKey, conformingTo: .json))
     }
     
-    func loadCommentDraft(_ id: UUID) -> CommentDraft? {
-        load(CommentDraft.self, from: PersistencePath.commentDrafts.appendingPathComponent(id.uuidString, conformingTo: .json))
+    func loadCommentDraft(_ draftId: UUID) -> CommentDraft? {
+        load(CommentDraft.self, from: PersistencePath.commentDrafts.appendingPathComponent(draftId.uuidString, conformingTo: .json))
     }
     
     func saveCommentDraft(_ value: CommentDraft) async throws {
-        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(value.id.uuidString, conformingTo: .json))
+        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(value.draftId.uuidString, conformingTo: .json))
     }
     
-    func deleteCommentDraft(_ id: UUID) throws {
-        try FileManager.default.removeItem(at: PersistencePath.commentDrafts.appendingPathComponent(id.uuidString, conformingTo: .json))
+    func deleteCommentDraft(_ draftId: UUID) throws {
+        try FileManager.default.removeItem(
+            at: PersistencePath.commentDrafts.appendingPathComponent(draftId.uuidString, conformingTo: .json)
+        )
     }
     
     func deleteAllDrafts() throws {
