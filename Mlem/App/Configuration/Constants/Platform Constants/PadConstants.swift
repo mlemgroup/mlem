@@ -26,7 +26,7 @@ extension PlatformConstants {
         smallItemCornerRadius: 6,
         appIconSize: 60,
         appIconCornerRadius: 16,
-        settingsIconSize: 28,
+        settingsIconSize: 32,
         barIconSize: 15.5,
         barIconCornerRadius: 4,
         barIconHitbox: 44
