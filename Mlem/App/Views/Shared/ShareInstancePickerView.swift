@@ -40,7 +40,7 @@ struct ShareInstancePickerView: View {
             chooseButtonView
         }
         .padding(16)
-        .presentationBackground(.themedGroupedBackground)
+        .background(.themedGroupedBackground)
     }
     
     @ViewBuilder

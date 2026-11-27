@@ -55,21 +55,23 @@ struct BlockListView: View {
                     return blockList.instanceCount
                 }
             })
-            switch selectedTab {
-            case .people:
-                SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
-                    deleteButton(entity: person) {
-                        PersonListRow(person, showBlockStatus: false)
+            LazyVStack(spacing: 0) {
+                switch selectedTab {
+                case .people:
+                    SearchResultsView(results: people.filter(\.blocked_.realizedValue)) { person in
+                        deleteButton(entity: person) {
+                            PersonListRow(person, showBlockStatus: false)
+                        }
                     }
-                }
-            case .communities:
-                SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
-                    deleteButton(entity: community) {
-                        CommunityListRow(community, showBlockStatus: false)
+                case .communities:
+                    SearchResultsView(results: communities.filter(\.blocked_.realizedValue)) { community in
+                        deleteButton(entity: community) {
+                            CommunityListRow(community, showBlockStatus: false)
+                        }
                     }
+                case .instances:
+                    instancesView
                 }
-            case .instances:
-                instancesView
             }
         }
         .themedGroupedBackground()

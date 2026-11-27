@@ -9,6 +9,7 @@ import Actions
 import MlemBackend
 import MlemMiddleware
 import SwiftUI
+import Theming
 import UniformTypeIdentifiers
 
 enum NavigationPage {
@@ -248,6 +249,15 @@ enum NavigationPage {
             false
         default:
             true
+        }
+    }
+    
+    var presentationBackground: ThemedColor? {
+        switch self {
+        case .communityPicker, .personPicker, .instancePicker, .signUp, .logIn(.pickInstance):
+            .themedGroupedBackground
+        default:
+            nil
         }
     }
     
