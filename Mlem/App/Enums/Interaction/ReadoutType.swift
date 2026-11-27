@@ -15,10 +15,12 @@ enum ReadoutType: String, Codable, CaseIterable, Hashable {
     case downvote
     case comment
     case saved
-        
+    case voteRatio
+
     var appearance: MockReadoutAppearance {
         switch self {
         case .created: .init(icon: .general.time, label: "18h")
+        case .voteRatio: .init(icon: .lemmy.votes, label: "85%")
         case .score: .init(icon: .lemmy.votes, label: "7")
         case .upvote: .init(icon: .lemmy.upvoted, label: "9")
         case .downvote: .init(icon: .lemmy.downvoted, label: "2")

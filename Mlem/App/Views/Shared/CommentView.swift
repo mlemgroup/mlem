@@ -39,7 +39,7 @@ struct CommentView<EmbeddedContent: View>: View {
     let depthOffset: Int
     
     var compactReadouts: [ReadoutType] {
-        var readouts: [ReadoutType] = [.created]
+        var readouts: [ReadoutType] = [.voteRatio, .created]
         readouts.append(contentsOf: showDownvotesCompact ? [.upvote, .downvote, .comment] : [.score, .comment])
         readouts.appendIfPresent(comment.saved.value ?? false ? .saved : nil)
         return readouts

@@ -22,6 +22,7 @@ extension Comment {
         case .downvote: downvotesEnabled ? downvoteReadout(showColor: showColor) : nil
         case .comment: commentReadout
         case .saved: savedReadout(showColor: showColor)
+        case .voteRatio: downvotesEnabled ? voteRatioReadout() : nil
         }
     }
 
