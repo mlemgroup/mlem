@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct AccountSwitcherGesture: ViewModifier {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.toolbarVerticalEdge_) var toolbarVerticalEdge
+
     let tabReselectTracker: TabReselectTracker
     let navigationModel: NavigationModel
     
@@ -16,7 +19,7 @@ struct AccountSwitcherGesture: ViewModifier {
     @State var dragCompleted: Bool = false
     
     func body(content: Content) -> some View {
-        if !UIDevice.isPad {
+        if !UIDevice.isPad, horizontalSizeClass == .compact, toolbarVerticalEdge == nil {
             content
                 .simultaneousGesture(DragGesture()
                     .updating($dragGestureActive) { _, state, _ in

@@ -15,17 +15,14 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     private let log: Logger = .mlemLogger()
     
     @Binding var selectedIndexBinding: Int
-    let swipeGestureCallback: () -> Void
     let palette: Theming.Palette
     
     init(
         selectedIndex: Binding<Int>,
-        swipeGestureCallback: @escaping () -> Void,
         palette: Theming.Palette,
         nibName: String? = nil,
         bundle: Bundle? = nil
     ) {
-        self.swipeGestureCallback = swipeGestureCallback
         self._selectedIndexBinding = selectedIndex
         self.palette = palette
         super.init(nibName: nibName, bundle: bundle)

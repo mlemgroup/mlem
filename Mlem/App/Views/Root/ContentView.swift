@@ -175,9 +175,7 @@ struct ContentView: View {
             CustomTabItem(.settings, appState: appState, profileLabelType: tabProfileLabelType) {
                 NavigationLayerView(layer: .init(root: .settings(), model: navigationModel), hasSheetModifiers: false)
             }
-        ], onSwipeUp: {
-            navigationModel.openSheet(.quickSwitcher)
-        })
+        ])
         .withAccountSwitcherGesture(tabReselectTracker: tabReselectTracker, navigationModel: navigationModel)
         .overlay(alignment: .bottom) {
             ToastOverlayView(
