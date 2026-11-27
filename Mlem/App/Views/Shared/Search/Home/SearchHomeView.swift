@@ -46,6 +46,7 @@ struct SearchHomeView: View {
             }
         }
         .padding(.top, 20)
+        .frame(maxWidth: .infinity)
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
     }
 
