@@ -27,12 +27,10 @@ class DraftsTracker {
         persistenceRepository.loadCommentDraft(id)
     }
     
-    public func saveCommentDraft(_ commentDraft: CommentDraft) async throws -> DraftMetadata {
-        let metadata = commentDraft.metadata
-        commentsIndex.index(metadata)
+    public func saveCommentDraft(_ commentDraft: CommentDraft) async throws {
+        commentsIndex.index(commentDraft.metadata)
         try await persistenceRepository.saveCommentDraft(commentDraft)
         try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
-        return metadata
     }
     
     public func deleteCommentDraft(_ id: UUID) async throws {

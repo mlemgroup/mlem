@@ -8,11 +8,13 @@
 import Foundation
 import MlemMiddleware
 
-struct DraftMetadata: Codable {
-    let id: UUID
+struct DraftMetadata: Codable, Hashable, Identifiable {
+    let draftId: UUID
     let touched: Date
     let target: ActorIdentifier
     let author: ActorIdentifier
+    
+    var id: Int { hashValue }
 }
 
 class DraftsIndex: Codable {
@@ -32,31 +34,24 @@ class DraftsIndex: Codable {
     
     /// Inserts or updates the given DraftMetadata
     func index(_ draftMetadata: DraftMetadata) {
-        if let existing = idIndex[draftMetadata.id] {
-            // if already indexed, remove from all indices that are now stale
-            if existing.target != draftMetadata.target {
-                targetIndex[draftMetadata.target]?.removeAll { $0.id == draftMetadata.id }
-                targetIndex[draftMetadata.target]?.append(draftMetadata)
-            }
-            if existing.author != draftMetadata.author {
-                authorIndex[draftMetadata.author]?.removeAll { $0.id == draftMetadata.id }
-                authorIndex[draftMetadata.author]?.append(draftMetadata)
-            }
-        } else {
-            // if not already indexed, just create entries
-            targetIndex[draftMetadata.target, default: .init()].append(draftMetadata)
-            authorIndex[draftMetadata.author, default: .init()].append(draftMetadata)
+        if let existing = idIndex[draftMetadata.draftId] {
+            // if already indexed, remove stale entries
+            targetIndex[draftMetadata.target]?.removeAll { $0.draftId == draftMetadata.draftId }
+            authorIndex[draftMetadata.author]?.removeAll { $0.draftId == draftMetadata.draftId }
         }
-        // idIndex overwritten in all cases
-        idIndex[draftMetadata.id] = draftMetadata
+        
+        // create fresh entries
+        idIndex[draftMetadata.draftId] = draftMetadata
+        targetIndex[draftMetadata.target, default: .init()].append(draftMetadata)
+        authorIndex[draftMetadata.author, default: .init()].append(draftMetadata)
     }
     
     /// Removes the given DraftMetadata from all indices
     func deindex(_ id: UUID) {
         guard let draftMetadata = retrieveById(id) else { return }
         idIndex.removeValue(forKey: id)
-        targetIndex[draftMetadata.target]?.removeAll { $0.id == id }
-        authorIndex[draftMetadata.author]?.removeAll { $0.id == id }
+        targetIndex[draftMetadata.target]?.removeAll { $0.draftId == id }
+        authorIndex[draftMetadata.author]?.removeAll { $0.draftId == id }
     }
     
     // MARK: Retrieval

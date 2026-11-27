@@ -122,12 +122,13 @@ extension CommentEditorView {
             return
         }
         do {
-            draftSaved = try await draftsTracker.saveCommentDraft(.init(
+            try await draftsTracker.saveCommentDraft(.init(
                 id: draftId,
-                author: appState.firstAccount.actorId,
+                author: account.actorId,
                 target: originalContext.actorId,
                 language: language,
-                text: textView.text)).touched
+                text: textView.text))
+            loadAvailableDrafts()
         } catch {
             handleError(error)
         }
@@ -144,15 +145,26 @@ extension CommentEditorView {
     
     func loadAvailableDrafts() {
         guard let originalContext else { return }
-        availableDrafts = draftsTracker.getAvailableCommentDraftsForTarget(originalContext.actorId)
+        availableDrafts = draftsTracker
+            .getAvailableCommentDraftsForTarget(originalContext.actorId)
+            .filter { draft in
+                accountsTracker.userAccounts.contains { $0.actorId == draft.author }
+            }
+            .sorted { $0.touched > $1.touched }
     }
     
     func loadDraft(_ draftMetadata: DraftMetadata) {
-        guard let draftContents = draftsTracker.getCommentDraft(draftMetadata.id) else {
+        guard let draftContents = draftsTracker.getCommentDraft(draftMetadata.draftId) else {
             assertionFailure()
             return
         }
         
+        guard let authorAccount = accountsTracker.userAccounts.first(where: { $0.actorId == draftMetadata.author }) else {
+            assertionFailure()
+            return
+        }
+        
+        account = authorAccount
         draftId = draftContents.id
         language = draftContents.language
         draftSaved = draftMetadata.touched

@@ -56,6 +56,7 @@ struct CommentEditorView: View {
 
     @State var slurRegex: Regex<AnyRegexOutput>?
     
+    var accountsTracker: AccountsTracker { .main }
     @State var draftId: UUID = UUID()
     @State var availableDrafts: [DraftMetadata]?
     @State var draftSaved: Date?
@@ -338,9 +339,9 @@ struct CommentEditorView: View {
     @ViewBuilder
     func draftPicker(availableDrafts: [DraftMetadata]) -> some View {
         VStack {
-            ForEach(availableDrafts, id: \.id) { draft in
+            ForEach(availableDrafts) { draft in
                 HStack {
-                    if draft.id == draftId {
+                    if draft.draftId == draftId {
                         Image(icon: .general.circle)
                             .symbolVariant(.fill)
                             .foregroundStyle(.themedPositive)
@@ -352,7 +353,7 @@ struct CommentEditorView: View {
                     Text(dateTimeFormatter.localizedString(for: draft.touched, relativeTo: .now))
                     Button("Delete", icon: .general.remove) {
                         Task {
-                            await deleteDraft(draft.id)
+                            await deleteDraft(draft.draftId)
                         }
                     }
                 }
@@ -363,6 +364,7 @@ struct CommentEditorView: View {
                         loadDraft(draft)
                     }
                 }
+                .id(draft.id)
             }
         }
     }

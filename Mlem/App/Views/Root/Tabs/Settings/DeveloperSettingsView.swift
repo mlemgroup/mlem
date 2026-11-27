@@ -66,6 +66,15 @@ struct DeveloperSettingsView: View {
                     handleError(ApiClientError.noEntityFound, silent: true)
                 }
             }
+            
+            Button(String("Delete All Drafts")) {
+                do {
+                    try persistenceRepository.deleteAllDrafts()
+                } catch {
+                    handleError(error)
+                }
+            }
+            
             Button(String("Reset Settings State")) {
                 do {
                     try persistenceRepository.deleteAllSystemSettings()

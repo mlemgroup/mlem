@@ -17,6 +17,6 @@ public struct CommentDraft: Codable {
     let text: String
     
     var metadata: DraftMetadata {
-        .init(id: id, touched: .now, target: target, author: author)
+        .init(draftId: id, touched: .now, target: target, author: author)
     }
 }
