@@ -11,13 +11,11 @@ import Theming
 
 struct CustomTabView: UIViewControllerRepresentable {
     let tabs: [CustomTabItem]
-    let swipeGestureCallback: () -> Void
     
     @Binding var selectedIndex: Int
     
-    init(selectedIndex: Binding<Int>, tabs: [CustomTabItem], onSwipeUp: @escaping () -> Void) {
+    init(selectedIndex: Binding<Int>, tabs: [CustomTabItem]) {
         self.tabs = tabs
-        self.swipeGestureCallback = onSwipeUp
         self._selectedIndex = selectedIndex
     }
     
@@ -26,7 +24,6 @@ struct CustomTabView: UIViewControllerRepresentable {
     ) -> UITabBarController {
         let tabBarController = CustomTabBarController(
             selectedIndex: $selectedIndex,
-            swipeGestureCallback: swipeGestureCallback,
             palette: context.environment.palette
         )
         tabBarController.viewControllers = tabs.enumerated().map { CustomTabViewHostingController(item: $1, index: $0) }
