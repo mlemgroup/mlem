@@ -203,6 +203,10 @@ class PersistenceRepository {
         try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(value.id.uuidString, conformingTo: .json))
     }
     
+    func deleteCommentDraft(_ id: UUID) throws {
+        try FileManager.default.removeItem(at: PersistencePath.commentDrafts.appendingPathComponent(id.uuidString, conformingTo: .json))
+    }
+    
     // DEV ONLY
     func deleteAllSystemSettings() throws {
         try FileManager.default.removeItem(at: PersistencePath.systemSettings)

@@ -42,5 +42,14 @@ extension CommentEditorView {
                 comment.api
             }
         }
+        
+        var actorId: ActorIdentifier {
+            switch self {
+            case let .post(post):
+                post.actorId
+            case let .comment(comment):
+                comment.actorId
+            }
+        }
     }
 }

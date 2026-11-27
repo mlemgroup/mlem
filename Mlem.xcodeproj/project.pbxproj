@@ -523,6 +523,7 @@
 		CD8DB93A2D22004000EB0C7B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8DB9392D22003D00EB0C7B /* Animations.swift */; };
 		CD93420B2DCD069800945333 /* InstanceUptimeView+Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */; };
 		CD950E0F2F0ED6F7002A0595 /* FeedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD950E042F0ED6F7002A0595 /* FeedPostView.swift */; };
+		CD98351330B771FB0030C84C /* DraftsTracker+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD98351230B771F70030C84C /* DraftsTracker+Dependency.swift */; };
 		CD9857A42C5E7F9D0084C71F /* NsfwOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */; };
 		CD9BD5812D8F8F7D0006AB7F /* ZoomRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */; };
 		CD9CFA2A2C2E1E8400739BBC /* FeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */; };
@@ -1123,6 +1124,7 @@
 		CD8DB9392D22003D00EB0C7B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		CD93420A2DCD069800945333 /* InstanceUptimeView+Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceUptimeView+Logic.swift"; sourceTree = "<group>"; };
 		CD950E042F0ED6F7002A0595 /* FeedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPostView.swift; sourceTree = "<group>"; };
+		CD98351230B771F70030C84C /* DraftsTracker+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DraftsTracker+Dependency.swift"; sourceTree = "<group>"; };
 		CD9857A32C5E7F9D0084C71F /* NsfwOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NsfwOverlayView.swift; sourceTree = "<group>"; };
 		CD9BD5802D8F8F750006AB7F /* ZoomRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRecognizer.swift; sourceTree = "<group>"; };
 		CD9CFA292C2E1E8400739BBC /* FeedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeaderView.swift; sourceTree = "<group>"; };
@@ -1991,6 +1993,7 @@
 		CD4D58672B86B38600B82964 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				CD98351230B771F70030C84C /* DraftsTracker+Dependency.swift */,
 				CD4D58B42B86BFFA00B82964 /* PersistenceRepository+Dependency.swift */,
 			);
 			path = Dependencies;
@@ -3245,6 +3248,7 @@
 				CDD99C3C2C73F3FF0010367F /* DeleteAccountView.swift in Sources */,
 				CD9CFA302C2E22F600739BBC /* FeedDescription.swift in Sources */,
 				6363D5C527EE196700E34822 /* MlemApp.swift in Sources */,
+				CD98351330B771FB0030C84C /* DraftsTracker+Dependency.swift in Sources */,
 				03B0EB6F2C87827A00F79FDF /* ExpandedPostView.swift in Sources */,
 				03D001DD2EC53A97001BF97D /* NavigationPage+PresentationDetents.swift in Sources */,
 				039F58912C7B5C7A00C61658 /* ContentView+Logic.swift in Sources */,

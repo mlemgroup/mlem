@@ -8,6 +8,8 @@
 import MlemMiddleware
 import SwiftUI
 
+import os
+
 extension CommentEditorView {
     func resolveContext() async {
         guard let originalContext else { return }
@@ -113,5 +115,48 @@ extension CommentEditorView {
                 handleError(error, silent: true)
             }
         }
+    }
+    
+    func saveDraft() async {
+        guard let originalContext, !textView.text.isEmpty else {
+            return
+        }
+        do {
+            draftSaved = try await draftsTracker.saveCommentDraft(.init(
+                id: draftId,
+                author: appState.firstAccount.actorId,
+                target: originalContext.actorId,
+                language: language,
+                text: textView.text)).touched
+        } catch {
+            handleError(error)
+        }
+    }
+    
+    func deleteDraft(_ id: UUID) async {
+        do {
+            try await draftsTracker.deleteCommentDraft(id)
+            loadAvailableDrafts()
+        } catch {
+            handleError(error)
+        }
+    }
+    
+    func loadAvailableDrafts() {
+        guard let originalContext else { return }
+        availableDrafts = draftsTracker.getAvailableCommentDraftsForTarget(originalContext.actorId)
+    }
+    
+    func loadDraft(_ draftMetadata: DraftMetadata) {
+        guard let draftContents = draftsTracker.getCommentDraft(draftMetadata.id) else {
+            assertionFailure()
+            return
+        }
+        
+        draftId = draftContents.id
+        language = draftContents.language
+        draftSaved = draftMetadata.touched
+        textView.text = draftContents.text
+        textView.delegate?.textViewDidChange?(textView) // required to clear prompt, assignment doesn't trigger didChange
     }
 }

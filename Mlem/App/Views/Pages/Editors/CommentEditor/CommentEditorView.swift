@@ -12,10 +12,14 @@ import MlemMiddleware
 import os
 import SwiftUI
 import Theming
+import Dependencies
+import Combine
 
 // swiftlint:disable:next type_body_length
 struct CommentEditorView: View {
     private let log: Logger = .mlemLogger()
+    
+    @Dependency(\.draftsTracker) var draftsTracker
     
     @Environment(AppState.self) var appState
     @Environment(HapticManager.self) var hapticManager
@@ -24,6 +28,7 @@ struct CommentEditorView: View {
     
     @Setting(\.person_showAvatar) private var showPersonAvatar
     @Setting(\.community_showAvatar) private var showCommunityAvatar
+    @Setting(\.dev_developerMode) private var developerMode
     
     enum ResolutionState: Equatable {
         case success, notFound, error(ErrorDetails), resolving
@@ -51,6 +56,13 @@ struct CommentEditorView: View {
 
     @State var slurRegex: Regex<AnyRegexOutput>?
     
+    @State var draftId: UUID = UUID()
+    @State var availableDrafts: [DraftMetadata]?
+    @State var draftSaved: Date?
+    let dateTimeFormatter: RelativeDateTimeFormatter
+    var timer = Timer.publish(every: 0.5, on: .main, in: .common)
+        .autoconnect()
+    
     init?(
         commentToEdit: Comment? = nil,
         context: Context? = nil,
@@ -66,6 +78,9 @@ struct CommentEditorView: View {
             return nil
         }
         self._slurRegex = .init(wrappedValue: AppState.main.firstApi.myInstance?.slurRegex())
+        
+        self.dateTimeFormatter = RelativeDateTimeFormatter()
+        self.dateTimeFormatter.unitsStyle = .short
         
         textView.text = commentToEdit?.content.string ?? ""
     }
@@ -145,6 +160,14 @@ struct CommentEditorView: View {
                 }
             }
         }
+        .onAppear {
+            loadAvailableDrafts()
+        }
+        .onReceive(timer) { _ in
+            Task {
+                await saveDraft()
+            }
+        }
     }
     
     @ViewBuilder
@@ -199,6 +222,21 @@ struct CommentEditorView: View {
                 .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                 .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
+                
+                if developerMode {
+                    Text("\(draftId)")
+                        .font(.footnote)
+                        .foregroundStyle(.themedSecondary)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                }
+                
+                if let availableDrafts, !availableDrafts.isEmpty {
+                    draftPicker(availableDrafts: availableDrafts)
+                        .padding(Constants.main.standardSpacing)
+                        .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
+                        .paletteBorder(cornerRadius: Constants.main.standardSpacing)
+                        .padding(.horizontal, Constants.main.standardSpacing)
+                }
                 
                 contextView
                     .padding(Constants.main.standardSpacing)
@@ -295,5 +333,37 @@ struct CommentEditorView: View {
         }
         .disabled(resolutionState != .success || textIsEmpty || slurMatch != nil)
         .buttonStyle(.glassProminent)
+    }
+    
+    @ViewBuilder
+    func draftPicker(availableDrafts: [DraftMetadata]) -> some View {
+        VStack {
+            ForEach(availableDrafts, id: \.id) { draft in
+                HStack {
+                    if draft.id == draftId {
+                        Image(icon: .general.circle)
+                            .symbolVariant(.fill)
+                            .foregroundStyle(.themedPositive)
+                            .font(.system(size: 10.0))
+                            .padding(.trailing, 7)
+                    }
+                    Text(draft.author.description)
+                    Spacer()
+                    Text(dateTimeFormatter.localizedString(for: draft.touched, relativeTo: .now))
+                    Button("Delete", icon: .general.remove) {
+                        Task {
+                            await deleteDraft(draft.id)
+                        }
+                    }
+                }
+                .contentShape(.rect)
+                .onTapGesture {
+                    Task {
+                        await saveDraft()
+                        loadDraft(draft)
+                    }
+                }
+            }
+        }
     }
 }

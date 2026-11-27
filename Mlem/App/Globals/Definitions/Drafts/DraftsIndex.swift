@@ -52,10 +52,11 @@ class DraftsIndex: Codable {
     }
     
     /// Removes the given DraftMetadata from all indices
-    func deindex(_ draftMetadata: DraftMetadata) {
-        idIndex.removeValue(forKey: draftMetadata.id)
-        targetIndex[draftMetadata.target]?.removeAll { $0.id == draftMetadata.id }
-        authorIndex[draftMetadata.author]?.removeAll { $0.id == draftMetadata.id }
+    func deindex(_ id: UUID) {
+        guard let draftMetadata = retrieveById(id) else { return }
+        idIndex.removeValue(forKey: id)
+        targetIndex[draftMetadata.target]?.removeAll { $0.id == id }
+        authorIndex[draftMetadata.author]?.removeAll { $0.id == id }
     }
     
     // MARK: Retrieval
@@ -86,7 +87,7 @@ class DraftsIndex: Codable {
         
         self.targetIndex = .init()
         self.authorIndex = .init()
-        self.idIndex.forEach { id, draftMetadata in
+        self.idIndex.values.forEach { draftMetadata in
             self.targetIndex[draftMetadata.target, default: .init()].append(draftMetadata)
             self.authorIndex[draftMetadata.author, default: .init()].append(draftMetadata)
         }

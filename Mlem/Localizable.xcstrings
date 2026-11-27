@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "@%@" : {
       "localizations" : {
         "es" : {
@@ -85,6 +82,9 @@
           }
         }
       }
+    },
+    "%@" : {
+
     },
     "%@ Administrator" : {
       "localizations" : {
@@ -8334,6 +8334,9 @@
         }
       }
     },
+    "Indigo" : {
+
+    },
     "Infinite Scroll" : {
       "localizations" : {
         "es" : {
@@ -9261,9 +9264,6 @@
         }
       }
     },
-    "Magenta" : {
-
-    },
     "Manage how Mlem handles links and control how images and videos are displayed." : {
       "localizations" : {
         "es" : {
@@ -9601,6 +9601,9 @@
           }
         }
       }
+    },
+    "Mint" : {
+
     },
     "Mlem Developer" : {
       "localizations" : {
@@ -11586,7 +11589,11 @@
         }
       }
     },
+    "Please return to %@." : {
+
+    },
     "Please return to Canvas." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -13932,6 +13939,9 @@
         }
       }
     },
+    "Saved %@" : {
+
+    },
     "Saved Settings" : {
       "localizations" : {
         "es" : {
@@ -14254,7 +14264,11 @@
         }
       }
     },
+    "Sent by Mlem to sign in to %@." : {
+
+    },
     "Sent by Mlem to sign in to Canvas." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -14898,7 +14912,11 @@
         }
       }
     },
+    "Sign In to %@" : {
+
+    },
     "Sign In to Canvas" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -15936,6 +15954,9 @@
           }
         }
       }
+    },
+    "Teal" : {
+
     },
     "Temporary" : {
       "localizations" : {
@@ -18600,9 +18621,6 @@
           }
         }
       }
-    },
-    "Violet" : {
-
     },
     "Visit" : {
       "localizations" : {
