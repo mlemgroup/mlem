@@ -13,29 +13,38 @@ import Foundation
 class DraftsTracker {
     @Dependency(\.persistenceRepository) private var persistenceRepository
     
-    private let commentsIndex: DraftsIndex
+    private let commentsIndex: DraftsIndex<CommentDraft>
     
     init() {
         self.commentsIndex = PersistenceRepository.liveValue.loadCommentDraftsIndex() ?? .init()
     }
     
-    public func getAvailableCommentDraftsForTarget(_ target: ActorIdentifier) -> [DraftMetadata] {
+    public func getAvailableCommentDraftsForTarget(_ target: ActorIdentifier) -> [CommentDraft] {
         commentsIndex.retrieveByTarget(target) ?? .init()
     }
     
-    public func getCommentDraft(_ draftId: UUID) -> CommentDraft? {
-        persistenceRepository.loadCommentDraft(draftId)
+    public func saveCommentsIndex() async throws {
+        try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
     }
     
-    public func saveCommentDraft(_ commentDraft: CommentDraft) async throws {
-        commentsIndex.index(commentDraft.metadata)
-        try await persistenceRepository.saveCommentDraft(commentDraft)
+    public func createCommentDraft(
+        authorActorId: ActorIdentifier,
+        targetActorId: ActorIdentifier,
+        language: Locale.Language?,
+        text: String
+    ) async throws -> CommentDraft {
+        let draft: CommentDraft = .init(
+            index: commentsIndex,
+            authorActorId: authorActorId,
+            targetActorId: targetActorId,
+            language: language,
+            text: text)
         try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
+        return draft
     }
     
     public func deleteCommentDraft(_ draftId: UUID) async throws {
         commentsIndex.deindex(draftId)
-        try persistenceRepository.deleteCommentDraft(draftId)
         try await persistenceRepository.saveCommentDraftsIndex(commentsIndex)
     }
 }

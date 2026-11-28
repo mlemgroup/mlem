@@ -57,8 +57,8 @@ struct CommentEditorView: View {
     @State var slurRegex: Regex<AnyRegexOutput>?
     
     var accountsTracker: AccountsTracker { .main }
-    @State var draftId: UUID = UUID()
-    @State var availableDrafts: [DraftMetadata]?
+    @State var draft: CommentDraft?
+    @State var availableDrafts: [CommentDraft]?
     @State var draftSaved: Date?
     let dateTimeFormatter: RelativeDateTimeFormatter
     var timer = Timer.publish(every: 3, on: .main, in: .common)
@@ -224,15 +224,15 @@ struct CommentEditorView: View {
                 .paletteBorder(cornerRadius: Constants.main.standardSpacing)
                 .padding(.horizontal, Constants.main.standardSpacing)
                 
-                if developerMode {
-                    Text("\(draftId)")
+                if developerMode, let draft {
+                    Text("\(draft.draftId)")
                         .font(.footnote)
                         .foregroundStyle(.themedSecondary)
                         .padding(.horizontal, Constants.main.standardSpacing)
                 }
                 
                 if let availableDrafts, !availableDrafts.isEmpty {
-                    draftPicker(availableDrafts: availableDrafts)
+                    draftPicker(drafts: availableDrafts)
                         .padding(Constants.main.standardSpacing)
                         .background(.themedSecondaryGroupedBackground, in: .rect(cornerRadius: Constants.main.standardSpacing))
                         .paletteBorder(cornerRadius: Constants.main.standardSpacing)
@@ -337,27 +337,12 @@ struct CommentEditorView: View {
     }
     
     @ViewBuilder
-    func draftPicker(availableDrafts: [DraftMetadata]) -> some View {
+    func draftPicker(drafts: [CommentDraft]) -> some View {
         VStack {
-            ForEach(availableDrafts, id: \.draftId) { draft in
-                DraftRowView(draftMetadata: draft)
-//                HStack {
-//                    if draft.draftId == draftId {
-//                        Image(icon: .general.circle)
-//                            .symbolVariant(.fill)
-//                            .foregroundStyle(.themedPositive)
-//                            .font(.system(size: 10.0))
-//                            .padding(.trailing, 7)
-//                    }
-//                    Text(draft.author.description)
-//                    Spacer()
-//                    Text(dateTimeFormatter.localizedString(for: draft.touched, relativeTo: .now))
-//                    Button("Delete", icon: .general.remove) {
-//                        Task {
-//                            await deleteDraft(draft.draftId)
-//                        }
-//                    }
-//                }
+            ForEach(drafts, id: \.draftId) { draft in
+                CommentDraftRowView(draft: draft, active: self.draft?.draftId == draft.draftId, inline: true) {
+                    availableDrafts?.removeAll { $0.authorActorId == draft.authorActorId }
+                }
                 .contentShape(.rect)
                 .onTapGesture {
                     Task {
@@ -365,7 +350,10 @@ struct CommentEditorView: View {
                         loadDraft(draft)
                     }
                 }
-                .id(draft.id)
+                
+                if draft.draftId != drafts.last?.draftId {
+                    Divider()
+                }
             }
         }
     }

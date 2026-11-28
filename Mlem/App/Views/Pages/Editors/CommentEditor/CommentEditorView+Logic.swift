@@ -122,21 +122,25 @@ extension CommentEditorView {
             return
         }
         do {
-            try await draftsTracker.saveCommentDraft(.init(
-                draftId: draftId,
-                author: account.actorId,
-                target: originalContext.actorId,
-                language: language,
-                text: textView.text))
+            if let draft {
+                try await draft.update(author: account, language: language, text: textView.text)
+                try await draftsTracker.saveCommentsIndex()
+            } else {
+                draft = try await draftsTracker.createCommentDraft(
+                    authorActorId: account.actorId,
+                    targetActorId: originalContext.actorId,
+                    language: language,
+                    text: textView.text)
+            }
             loadAvailableDrafts()
         } catch {
             handleError(error)
         }
     }
     
-    func deleteDraft(_ id: UUID) async {
+    func deleteDraft(_ draftId: UUID) async {
         do {
-            try await draftsTracker.deleteCommentDraft(id)
+            try await draftsTracker.deleteCommentDraft(draftId)
             loadAvailableDrafts()
         } catch {
             handleError(error)
@@ -148,27 +152,33 @@ extension CommentEditorView {
         availableDrafts = draftsTracker
             .getAvailableCommentDraftsForTarget(originalContext.actorId)
             .filter { draft in
-                accountsTracker.userAccounts.contains { $0.actorId == draft.author }
+                accountsTracker.userAccounts.contains { $0.actorId == draft.authorActorId }
             }
             .sorted { $0.touched > $1.touched }
+        availableDrafts?.forEach { draft in
+            if draft.resolved == .notStarted {
+                Task {
+                    do {
+                        try await draft.resolve()
+                    } catch {
+                        handleError(error)
+                    }
+                }
+            }
+        }
     }
     
-    func loadDraft(_ draftMetadata: DraftMetadata) {
-        guard let draftContents = draftsTracker.getCommentDraft(draftMetadata.draftId) else {
+    func loadDraft(_ draft: CommentDraft) {
+        guard let authorAccount = accountsTracker.userAccounts.first(where: { $0.actorId == draft.authorActorId }) else {
             assertionFailure()
             return
         }
         
-        guard let authorAccount = accountsTracker.userAccounts.first(where: { $0.actorId == draftMetadata.author }) else {
-            assertionFailure()
-            return
-        }
-        
+        self.draft = draft
         account = authorAccount
-        draftId = draftContents.draftId
-        language = draftContents.language
-        draftSaved = draftMetadata.touched
-        textView.text = draftContents.text
+        language = draft.language
+        draftSaved = draft.touched
+        textView.text = draft.text
         textView.delegate?.textViewDidChange?(textView) // required to clear prompt, assignment doesn't trigger didChange
     }
 }

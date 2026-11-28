@@ -30,7 +30,7 @@ enum PersistencePath {
     static var instanceMetadata = root.appendingPathComponent("Instance Metadata", conformingTo: .json)
     static var pinnedSortTypes = root.appendingPathComponent("Sort Settings", conformingTo: .json)
     static var systemSettings = root.appendingPathComponent("System Settings", conformingTo: .directory)
-    static var commentDrafts = root.appendingPathComponent("Comment Drafts", conformingTo: .directory)
+    static var commentDrafts = root.appendingPathComponent("Comment Drafts", conformingTo: .json)
     
     static func accountSettingsDirectory(for account: any Account) -> URL {
         root
@@ -187,26 +187,12 @@ class PersistenceRepository {
         load(SettingsValues.self, from: PersistencePath.systemSettings.appendingPathComponent(setting.path, conformingTo: .json))
     }
     
-    func saveCommentDraftsIndex(_ value: DraftsIndex) async throws {
-        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(DraftsIndex.persistenceKey, conformingTo: .json))
+    func saveCommentDraftsIndex(_ value: DraftsIndex<CommentDraft>) async throws {
+        try await save(value, to: PersistencePath.commentDrafts)
     }
     
-    func loadCommentDraftsIndex() -> DraftsIndex? {
-        load(DraftsIndex.self, from: PersistencePath.commentDrafts.appendingPathComponent(DraftsIndex.persistenceKey, conformingTo: .json))
-    }
-    
-    func loadCommentDraft(_ draftId: UUID) -> CommentDraft? {
-        load(CommentDraft.self, from: PersistencePath.commentDrafts.appendingPathComponent(draftId.uuidString, conformingTo: .json))
-    }
-    
-    func saveCommentDraft(_ value: CommentDraft) async throws {
-        try await save(value, to: PersistencePath.commentDrafts.appendingPathComponent(value.draftId.uuidString, conformingTo: .json))
-    }
-    
-    func deleteCommentDraft(_ draftId: UUID) throws {
-        try FileManager.default.removeItem(
-            at: PersistencePath.commentDrafts.appendingPathComponent(draftId.uuidString, conformingTo: .json)
-        )
+    func loadCommentDraftsIndex() -> DraftsIndex<CommentDraft>? {
+        load(DraftsIndex.self, from: PersistencePath.commentDrafts)
     }
     
     func deleteAllDrafts() throws {

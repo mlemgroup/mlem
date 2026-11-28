@@ -170,4 +170,8 @@ class AccountsTracker {
     var highestLevelAccountType: AccountType {
         userAccounts.lazy.map(\.accountType).max() ?? .guest
     }
+    
+    func getUserAccountByActorId(_ actorId: ActorIdentifier) -> UserAccount? {
+        return userAccounts.first(where: { $0.actorId == actorId })
+    }
 }

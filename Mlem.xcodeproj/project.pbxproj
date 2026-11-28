@@ -577,7 +577,7 @@
 		CDE88C352E68938D00183AE5 /* View+AccountSwitcherGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */; };
 		CDEE15522D22190600EB9D7B /* ErrorsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */; };
 		CDEE15542D22364B00EB9D7B /* ErrorLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE15532D22364500EB9D7B /* ErrorLogView.swift */; };
-		CDEE1BB230BA08BD0053E1A5 /* DraftRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE1BB130BA08230053E1A5 /* DraftRowView.swift */; };
+		CDEE1BB230BA08BD0053E1A5 /* CommentDraftRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEE1BB130BA08230053E1A5 /* CommentDraftRowView.swift */; };
 		CDF60A012E998BB5005FA3F1 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */; };
 		CDFB8C692C7796020070845F /* View+DynamicBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFB8C682C7796020070845F /* View+DynamicBlur.swift */; };
 		CDFF9A332D88C3C1009E02E2 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */; };
@@ -1178,7 +1178,7 @@
 		CDE88C342E68938800183AE5 /* View+AccountSwitcherGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AccountSwitcherGesture.swift"; sourceTree = "<group>"; };
 		CDEE15512D22190000EB9D7B /* ErrorsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorsTracker.swift; sourceTree = "<group>"; };
 		CDEE15532D22364500EB9D7B /* ErrorLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorLogView.swift; sourceTree = "<group>"; };
-		CDEE1BB130BA08230053E1A5 /* DraftRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftRowView.swift; sourceTree = "<group>"; };
+		CDEE1BB130BA08230053E1A5 /* CommentDraftRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDraftRowView.swift; sourceTree = "<group>"; };
 		CDF60A002E998BB2005FA3F1 /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		CDFB8C682C7796020070845F /* View+DynamicBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+DynamicBlur.swift"; sourceTree = "<group>"; };
 		CDFF9A322D88C3BE009E02E2 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
@@ -2013,7 +2013,7 @@
 		CD4D58A82B86BE4C00B82964 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CDEE1BB130BA08230053E1A5 /* DraftRowView.swift */,
+				CDEE1BB130BA08230053E1A5 /* CommentDraftRowView.swift */,
 				CD5634E72FEB7909002F4B7B /* PostDetailsView.swift */,
 				0325FF332FD43068006F8394 /* UnsupportedVersionWarningView.swift */,
 				0325FF352FD433EB006F8394 /* UnsupportedVersionDescriptionView.swift */,
@@ -2750,7 +2750,7 @@
 				033F84D92C2B61FB002E3EDF /* ToastType.swift in Sources */,
 				03600D932D4531DF00C704CB /* PrivacyBypassImageProxySettingsView.swift in Sources */,
 				03A82FA12C0D1E8500D01A5C /* ApiClient+Extensions.swift in Sources */,
-				CDEE1BB230BA08BD0053E1A5 /* DraftRowView.swift in Sources */,
+				CDEE1BB230BA08BD0053E1A5 /* CommentDraftRowView.swift in Sources */,
 				0397D47A2C693444002C6CDC /* ReportEditorView.swift in Sources */,
 				CDA683F82C77E577000C4486 /* NsfwBlurBehavior.swift in Sources */,
 				03B25B2F2CC43F8600EB6DF5 /* InstanceSafetyView.swift in Sources */,
