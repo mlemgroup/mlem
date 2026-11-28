@@ -14,6 +14,8 @@ class NavigationLayer: Identifiable {
     var id: ObjectIdentifier { .init(self) }
     
     weak var model: NavigationModel?
+    var detailLayer: NavigationLayer?
+    weak var sidebarLayer: NavigationLayer?
     var index: Int
     
     var root: NavigationFrame
@@ -48,6 +50,9 @@ class NavigationLayer: Identifiable {
     
     @MainActor
     func push(_ page: NavigationPage) {
+        if openInDetailLayer(page) || openInSidebarLayer(page) {
+            return
+        }
         if hasNavigationStack {
             // This prevents keyboard animation glitches when navigating whilst the keyboard is open
             UIApplication.shared.firstKeyWindow?.endEditing(true)
@@ -57,6 +62,33 @@ class NavigationLayer: Identifiable {
         }
     }
     
+    @MainActor
+    private func openInDetailLayer(_ page: NavigationPage) -> Bool {
+        guard let detailLayer, let detailPage = page.detailPage else { return false }
+        detailLayer.popToRoot()
+        detailLayer.replace(detailPage)
+        return true
+    }
+
+    @MainActor
+    private func openInSidebarLayer(_ page: NavigationPage) -> Bool {
+        guard let sidebarLayer, page.opensInSidebar else { return false }
+        sidebarLayer.push(page)
+        return true
+    }
+
+    @MainActor
+    func clearDetailLayer() {
+        detailLayer?.popToRoot()
+        detailLayer?.replace(.noPostSelected)
+    }
+
+    func isShowingInDetailLayer(_ page: NavigationPage) -> Bool {
+        guard case let .post(post, _, _, _) = page,
+              case let .post(selectedPost, _, _, _) = detailLayer?.root.page else { return false }
+        return post.actorId == selectedPost.actorId
+    }
+
     /// Replaces the current top level page with the given NavigationPage. Useful for redirecting from interim
     /// pages that should not appear in navigation history.
     @MainActor
@@ -242,6 +274,28 @@ class NavigationLayer: Identifiable {
         switch root.page {
         case .imageViewer: true
         default: false
+        }
+    }
+}
+
+private extension NavigationPage {
+    var detailPage: NavigationPage? {
+        switch self {
+        case let .post(post, scrollTargetedComment, communityContext, _):
+            .post(post, scrollTargetedComment: scrollTargetedComment, communityContext: communityContext)
+        case let .postStub(stub, _):
+            .postStub(stub)
+        default:
+            nil
+        }
+    }
+
+    var opensInSidebar: Bool {
+        switch self {
+        case .community, .communityStub:
+            true
+        default:
+            false
         }
     }
 }

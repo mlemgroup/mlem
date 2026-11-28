@@ -81,6 +81,7 @@ struct FeedPostView<EmbeddedContent: View>: View {
         }
         .contentShape(.interaction, .rect)
         .paletteBorder(cornerRadius: postSize.cornerRadius)
+        .containerShape(.rect(cornerRadius: postSize.cornerRadius))
         .onChange(of: filtersTracker.changeHash) {
             obscured = filtersTracker.postWouldBeFiltered(post)
         }

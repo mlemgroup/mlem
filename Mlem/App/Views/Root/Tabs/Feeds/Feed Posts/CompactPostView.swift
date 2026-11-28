@@ -17,6 +17,7 @@ struct CompactPostView: View {
     
     @Environment(\.communityContext) var communityContext: Community?
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.isSelectedPost) var isSelectedPost
     
     @ScaledMetric(relativeTo: .caption) var titleHostHeightLimit: CGFloat = 40
     
@@ -98,6 +99,7 @@ struct CompactPostView: View {
                     titleAndHostView
                 }
                 InfoStackView(post: post, readouts: readouts, coloredReadouts: .init(ReadoutType.allCases))
+                    .unselectedPostPalette(inset: -Constants.main.halfSpacing)
             }
             .frame(maxWidth: .infinity)
             
@@ -130,7 +132,7 @@ struct CompactPostView: View {
             .symbolVariant(.fill)
             .multilineTextAlignment(.leading)
             .imageScale(.small)
-            .foregroundStyle(post.read.value ?? false ? .themedSecondary : .themedPrimary)
+            .foregroundStyle(post.read.value ?? false && !isSelectedPost ? .themedSecondary : .themedPrimary)
             .font(.subheadline)
     }
 }

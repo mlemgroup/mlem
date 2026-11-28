@@ -418,6 +418,7 @@
 		03FE14042BF93FDD00A8377F /* ErrorDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14032BF93FDD00A8377F /* ErrorDetails.swift */; };
 		03FE14082BF94FFB00A8377F /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE14072BF94FFB00A8377F /* ErrorView.swift */; };
 		03FE140C2BF953B000A8377F /* HandleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FE140B2BF953B000A8377F /* HandleError.swift */; };
+		540A8A2530B8795300DA21EB /* PostNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540A8A2430B8795300DA21EB /* PostNavigationLink.swift */; };
 		50C99B562A61D792005D57DD /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 50C99B552A61D792005D57DD /* Dependencies */; };
 		6332FDBD27EFAF7C0009A98A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6332FDBC27EFAF7B0009A98A /* Settings.bundle */; };
 		636250DC2A18111400FC59B4 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 636250DB2A18111400FC59B4 /* KeychainAccess */; };
@@ -1018,6 +1019,7 @@
 		03FE14032BF93FDD00A8377F /* ErrorDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDetails.swift; sourceTree = "<group>"; };
 		03FE14072BF94FFB00A8377F /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		03FE140B2BF953B000A8377F /* HandleError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandleError.swift; sourceTree = "<group>"; };
+		540A8A2430B8795300DA21EB /* PostNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNavigationLink.swift; sourceTree = "<group>"; };
 		630D753C27F65E44006E60C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6332FDBC27EFAF7B0009A98A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6363D5C127EE196700E34822 /* Mlem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mlem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1388,6 +1390,7 @@
 				03134A4F2BEAD245002662CC /* NavigationLink+NavigationPage.swift */,
 				03F9672A2CE221220081C9A3 /* Label+Profile1.swift */,
 				03DD69432D4FEA0000F8950D /* PreviewModifier+SampleEnvironment.swift */,
+				540A8A2430B8795300DA21EB /* PostNavigationLink.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3070,6 +3073,7 @@
 				0377BE9F2DEA361600E38593 /* OnboardingModel.swift in Sources */,
 				0311ADBD2E4F668900EC3120 /* TopCommunitiesListView.swift in Sources */,
 				03049A1E2C6508F400FF6889 /* RegistrationMode+Extensions.swift in Sources */,
+				540A8A2530B8795300DA21EB /* PostNavigationLink.swift in Sources */,
 				037DE0752CE023E3007F7B92 /* BlockListView.swift in Sources */,
 				CD3FC6802D4A75090088E63B /* CounterApperance+StaticValues.swift in Sources */,
 				038028D52CAB479D0091A8A2 /* PostEditorView+Views.swift in Sources */,

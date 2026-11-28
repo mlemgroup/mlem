@@ -148,6 +148,7 @@ struct InteractionBarView: View {
                 .fixedSize(horizontal: true, vertical: false)
         }
         .frame(height: Constants.main.barIconHitbox)
+        .unselectedPostPalette(inset: Constants.main.halfSpacing)
         .geometryGroup()
     }
     

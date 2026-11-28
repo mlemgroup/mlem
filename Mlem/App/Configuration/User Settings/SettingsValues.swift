@@ -117,6 +117,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
     var subscriptions_instanceLocation: InstanceLocation
     var subscriptions_sort: SubscriptionListSort
     var navigation_sidebarVisibleByDefault: Bool
+    var navigation_feedInSidebar: Bool
     var navigation_swipeAnywhere: Bool
     var filters_keywordFilterEnabled: Bool
     var filters_keywords: Set<String>
@@ -266,6 +267,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.subscriptions_instanceLocation = try container.decodeIfPresent(InstanceLocation.self, forKey: ._subscriptions_instanceLocation) ?? (UIDevice.isPad ? .bottom : .trailing)
         self.subscriptions_sort = try container.decodeIfPresent(SubscriptionListSort.self, forKey: ._subscriptions_sort) ?? .alphabetical
         self.navigation_sidebarVisibleByDefault = try container.decodeIfPresent(Bool.self, forKey: ._navigation_sidebarVisibleByDefault) ?? true
+        self.navigation_feedInSidebar = try container.decodeIfPresent(Bool.self, forKey: ._navigation_feedInSidebar) ?? false
         self.navigation_swipeAnywhere = try container.decodeIfPresent(Bool.self, forKey: ._navigation_swipeAnywhere) ?? false
         self.filters_keywordFilterEnabled = try container.decodeIfPresent(Bool.self, forKey: ._filters_keywordFilterEnabled) ?? true
         self.filters_keywords = try container.decodeIfPresent(Set<String>.self, forKey: ._filters_keywords) ?? .init()
@@ -386,6 +388,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         self.subscriptions_instanceLocation = UIDevice.isPad ? .bottom : .trailing
         self.subscriptions_sort = .alphabetical
         self.navigation_sidebarVisibleByDefault = true
+        self.navigation_feedInSidebar = false
         self.navigation_swipeAnywhere = false
         self.filters_keywordFilterEnabled = true
         self.filters_keywords = .init()
@@ -502,6 +505,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         subscriptions_instanceLocation = otherValues.subscriptions_instanceLocation
         subscriptions_sort = otherValues.subscriptions_sort
         navigation_sidebarVisibleByDefault = otherValues.navigation_sidebarVisibleByDefault
+        navigation_feedInSidebar = otherValues.navigation_feedInSidebar
         navigation_swipeAnywhere = otherValues.navigation_swipeAnywhere
         filters_keywordFilterEnabled = otherValues.filters_keywordFilterEnabled
         filters_keywords = otherValues.filters_keywords
@@ -624,6 +628,7 @@ class SettingsValues: Codable { // swiftlint:disable:this type_body_length
         case _subscriptions_instanceLocation = "subscriptions_instanceLocation"
         case _subscriptions_sort = "subscriptions_sort"
         case _navigation_sidebarVisibleByDefault = "navigation_sidebarVisibleByDefault"
+        case _navigation_feedInSidebar = "navigation_feedInSidebar"
         case _navigation_swipeAnywhere = "navigation_swipeAnywhere"
         case _filters_keywordFilterEnabled = "filters_keywordFilterEnabled"
         case _filters_keywords = "filters_keywords"

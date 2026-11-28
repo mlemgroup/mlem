@@ -12,6 +12,7 @@ import SwiftUI
 struct LargePostBodyView: View {
     @Environment(\.palette) var palette
     @Environment(\.communityContext) private var communityContext: Community?
+    @Environment(\.isSelectedPost) var isSelectedPost
 
     let post: Post
     let isPostPage: Bool
@@ -21,7 +22,7 @@ struct LargePostBodyView: View {
         VStack(alignment: .leading, spacing: Constants.main.standardSpacing) {
             post.taggedTitle(communityContext: communityContext)
                 .foregroundStyle(
-                    (post.read.value ?? false && !isPostPage)
+                    (post.read.value ?? false && !isPostPage && !isSelectedPost)
                         ? .themedSecondary : .themedPrimary
                 )
                 .font(.headline)

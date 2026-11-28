@@ -28,6 +28,7 @@ struct TileScoreView: View {
             .font(.caption)
             .foregroundStyle(votes.color)
             .contentShape(.rect)
+            .unselectedPostPalette(inset: -Constants.main.halfSpacing)
         }
     }
     
