@@ -25,9 +25,11 @@ struct NavigationLayerView: View {
                     rootView()
                         .id(layer.root.updateCountHash)
                         .environment(\.isRootView, true)
+                        .fixedNavigationBarSafeArea()
                         .navigationDestination(for: NavigationFrame.self) {
                             NavigationFrameView(frame: $0)
                                 .environment(\.isRootView, false)
+                                .fixedNavigationBarSafeArea()
                         }
                 }
                 .modifier(OptionalPresentationBackgroundModifier(background: layer.root.page.presentationBackground))
@@ -96,6 +98,17 @@ private struct OptionalPresentationBackgroundModifier: ViewModifier {
             content.presentationBackground(background)
         } else {
             content
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func fixedNavigationBarSafeArea() -> some View {
+        if #available(iOS 27, *) {
+            toolbarMinimizationSafeAreaAdjustment(.disabled, for: .navigationBar)
+        } else {
+            self
         }
     }
 }
