@@ -61,7 +61,7 @@ struct CommentEditorView: View {
     @State var availableDrafts: [DraftMetadata]?
     @State var draftSaved: Date?
     let dateTimeFormatter: RelativeDateTimeFormatter
-    var timer = Timer.publish(every: 0.5, on: .main, in: .common)
+    var timer = Timer.publish(every: 3, on: .main, in: .common)
         .autoconnect()
     
     init?(
@@ -339,7 +339,7 @@ struct CommentEditorView: View {
     @ViewBuilder
     func draftPicker(availableDrafts: [DraftMetadata]) -> some View {
         VStack {
-            ForEach(availableDrafts) { draft in
+            ForEach(availableDrafts, id: \.draftId) { draft in
                 DraftRowView(draftMetadata: draft)
 //                HStack {
 //                    if draft.draftId == draftId {

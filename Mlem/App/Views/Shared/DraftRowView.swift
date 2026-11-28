@@ -11,10 +11,10 @@ import MlemMiddleware
 import os
 
 struct DraftRowView: View {
-    let draftMetadata: DraftMetadata
     
     @Environment(AppState.self) var appState
     
+    @State var draftMetadata: DraftMetadata
     @State var account: UserAccount?
     @State var targetComment: Comment?
     @State var targetPost: Post?

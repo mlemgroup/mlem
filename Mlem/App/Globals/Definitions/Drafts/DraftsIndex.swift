@@ -15,6 +15,10 @@ struct DraftMetadata: Codable, Hashable, Identifiable {
     let author: ActorIdentifier
     
     var id: Int { hashValue }
+    
+    fileprivate func test() {
+        print("hi")
+    }
 }
 
 class DraftsIndex: Codable {
@@ -35,6 +39,8 @@ class DraftsIndex: Codable {
     /// Inserts or updates the given DraftMetadata
     func index(_ draftMetadata: DraftMetadata) {
         if let existing = idIndex[draftMetadata.draftId] {
+            existing.test()
+            
             // if already indexed, remove stale entries
             targetIndex[draftMetadata.target]?.removeAll { $0.draftId == draftMetadata.draftId }
             authorIndex[draftMetadata.author]?.removeAll { $0.draftId == draftMetadata.draftId }
